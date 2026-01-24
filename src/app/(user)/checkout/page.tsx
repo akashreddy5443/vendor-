@@ -145,9 +145,9 @@ export default function CheckoutPage() {
 
                         <div className="space-y-4 mb-6 max-h-80 overflow-y-auto custom-scrollbar">
                             {cart.map((item) => (
-                                <div key={item.id} className="flex gap-4">
+                                <div key={item.productId} className="flex gap-4">
                                     <div className="h-16 w-16 bg-zinc-800 rounded-md overflow-hidden flex-shrink-0">
-                                        <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
+                                        <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="text-sm font-medium line-clamp-1">{item.title}</h3>
