@@ -1,12 +1,27 @@
 import { login, signup } from './actions'
 
-export default function LoginPage() {
+export default function LoginPage(props: {
+    searchParams: { error?: string; message?: string }
+}) {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
             <div className="w-full max-w-md rounded-lg border border-gray-800 bg-black p-8 shadow-lg">
                 <h2 className="mb-6 text-center text-3xl font-bold text-orange-500">
                     TechDev Login
                 </h2>
+
+                {props.searchParams.error && (
+                    <div className="mb-4 rounded bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/20">
+                        {props.searchParams.error}
+                    </div>
+                )}
+
+                {props.searchParams.message && (
+                    <div className="mb-4 rounded bg-green-500/10 p-3 text-sm text-green-500 border border-green-500/20">
+                        {props.searchParams.message}
+                    </div>
+                )}
+
                 <form className="flex flex-col gap-4">
                     <div>
                         <label htmlFor="email" className="mb-2 block text-sm font-medium">
