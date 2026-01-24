@@ -55,6 +55,14 @@ export function AdminSidebar() {
                     <Mail className="h-5 w-5" />
                     Subscribers
                 </Link>
+                <Link
+                    href="/"
+                    target="_blank"
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-900 hover:text-white transition-colors"
+                >
+                    <ExternalLink className="h-5 w-5" />
+                    Open Live Site
+                </Link>
             </div>
         </aside>
     )
