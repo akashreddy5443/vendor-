@@ -1,7 +1,4 @@
 import Link from 'next/link'
-import { ShoppingBag } from 'lucide-react'
-
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function HomePage() {
