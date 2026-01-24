@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
     // Protected Routes Logic
     if (request.nextUrl.pathname.startsWith('/admin')) {
         if (!user) {
-            return NextResponse.redirect(new URL('/auth/login', request.url))
+            return NextResponse.redirect(new URL('/login', request.url))
         }
         // TODO: Add Role Check here once User table is set up
         // const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
@@ -51,7 +51,7 @@ export async function updateSession(request: NextRequest) {
 
     if (request.nextUrl.pathname.startsWith('/user')) {
         if (!user) {
-            return NextResponse.redirect(new URL('/auth/login', request.url))
+            return NextResponse.redirect(new URL('/login', request.url))
         }
     }
 
