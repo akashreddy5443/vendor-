@@ -20,9 +20,9 @@ export function ProductCard({ product }: ProductCardProps) {
     return (
         <Link
             href={`/products/${product.id}`}
-            className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-800 bg-gray-900 transition-all hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-900/10"
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
         >
-            <div className="aspect-square bg-gray-950 relative overflow-hidden flex items-center justify-center">
+            <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center">
                 {imageUrl ? (
                     <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105">
                         <Image
@@ -34,19 +34,19 @@ export function ProductCard({ product }: ProductCardProps) {
                         />
                     </div>
                 ) : (
-                    <span className="text-gray-700 text-sm">No Image</span>
+                    <span className="text-muted-foreground text-sm">No Image</span>
                 )}
 
                 {/* Quick actions or badges could go here */}
             </div>
 
             <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold text-gray-100 mb-1 group-hover:text-orange-500 transition-colors line-clamp-2">
+                <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors line-clamp-2">
                     {product.title}
                 </h3>
                 <div className="mt-auto flex items-center justify-between pt-2">
-                    <span className="text-gray-300 font-medium">{formatPrice(product.price)}</span>
-                    <span className="text-xs font-bold text-orange-500 uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
+                    <span className="text-muted-foreground font-medium">{formatPrice(product.price)}</span>
+                    <span className="text-xs font-bold text-primary uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
                         View Details
                     </span>
                 </div>

@@ -37,7 +37,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Hero Section (CMS Driven) */}
       <section className="relative flex h-[600px] flex-col items-center justify-center text-center">
         <div

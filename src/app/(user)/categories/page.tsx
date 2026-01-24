@@ -35,18 +35,18 @@ export default function CategoriesPage() {
                             <Link
                                 key={cat.id}
                                 href={`/products?category=${cat.id}`}
-                                className="group relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 p-6 transition-all hover:border-orange-500 hover:bg-gray-900"
+                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/10"
                             >
                                 <div className="flex flex-col items-center text-center gap-4">
                                     {/* Placeholder Icon/Image Logic - could be dynamic later */}
-                                    <div className="h-16 w-16 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-orange-600 transition-colors">
-                                        <span className="text-2xl text-white font-bold">{cat.name.charAt(0)}</span>
+                                    <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary transition-colors">
+                                        <span className="text-2xl text-foreground font-bold group-hover:text-primary-foreground">{cat.name.charAt(0)}</span>
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-gray-200 group-hover:text-white">
+                                    <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors">
                                         {cat.name}
                                     </h3>
-                                    <p className="text-sm text-gray-500 group-hover:text-gray-400">
+                                    <p className="text-sm text-muted-foreground group-hover:text-card-foreground/80">
                                         {cat.description || 'Browse products'}
                                     </p>
                                 </div>
