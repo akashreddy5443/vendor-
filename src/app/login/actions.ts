@@ -22,6 +22,21 @@ export async function login(formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
+
+    // Check user role for redirect
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+        const { data: profile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+        if (profile?.role === 'admin') {
+            redirect('/admin/dashboard')
+        }
+    }
+
     redirect('/')
 }
 
