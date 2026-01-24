@@ -2,13 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, FolderTree, ShoppingCart, Image as ImageIcon, Settings, Users, Home } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Settings, Image as ImageIcon, FileText, Palette, Mail } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
     { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { label: 'Products', href: '/admin/products', icon: ShoppingBag },
-    { label: 'Categories', href: '/admin/categories', icon: FolderTree },
     { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { label: 'Media', href: '/admin/media', icon: ImageIcon },
     { label: 'Homepage', href: '/admin/homepage', icon: Home },
@@ -49,12 +48,18 @@ export function AdminSidebar() {
             </nav>
             <div className="mt-auto border-t border-gray-800 p-4">
                 <Link
-                    href="/"
-                    target="_blank"
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-900 hover:text-white transition-colors"
+                    href="/admin/subscribers"
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/subscribers' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
                 >
-                    <ExternalLink className="h-5 w-5" />
-                    Open Live Site
+                    <Mail className="h-5 w-5" />
+                    Subscribers
+                </Link>
+                <Link
+                    href="/admin/settings"
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/settings' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
+                >
+                    <Settings className="h-5 w-5" />
+                    Settings
                 </Link>
             </div>
         </aside>

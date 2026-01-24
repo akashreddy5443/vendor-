@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { Facebook, Twitter, Instagram, Youtube, Globe, ArrowRight } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Youtube, Globe } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { NewsletterForm } from '@/components/shop/NewsletterForm'
 
 export async function Footer() {
     const supabase = await createClient()
@@ -34,14 +35,7 @@ export async function Footer() {
                             ) : (config.newsletterTitle)}
                         </h2>
                         <div className="relative max-w-md">
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                className="w-full border-b border-muted-foreground/30 bg-transparent py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none"
-                            />
-                            <button className="absolute right-0 top-2 text-muted-foreground hover:text-foreground">
-                                <ArrowRight className="h-5 w-5" />
-                            </button>
+                            <NewsletterForm />
                         </div>
 
                         <div className="flex gap-4 pt-4 text-muted-foreground">
