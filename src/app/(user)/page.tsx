@@ -13,7 +13,7 @@ export default function HomePage() {
         <div className="flex gap-4 text-sm font-medium text-gray-300">
           <Link href="/products" className="hover:text-white">Products</Link>
           <Link href="/cart" className="hover:text-white">Cart</Link>
-          <Link href="/auth/login" className="hover:text-white">Login</Link>
+          <Link href="/login" className="hover:text-white">Login</Link>
         </div>
       </nav>
 
