@@ -19,6 +19,10 @@ interface CartContextType {
     clearCart: () => void
     cartCount: number
     cartTotal: number
+    subtotal: number
+    coupon: { id: string, code: string, discountAmount: number } | null
+    applyCoupon: (data: { id: string, code: string, discountAmount: number }) => void
+    removeCoupon: () => void
     isOpen: boolean
     setIsOpen: (open: boolean) => void
 }
@@ -90,8 +94,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setItems([])
     }
 
+    const [coupon, setCoupon] = useState<{ id: string, code: string, discountAmount: number } | null>(null)
+
+    // ... (existing UseEffects)
+
+    const applyCoupon = (data: { id: string, code: string, discountAmount: number }) => {
+        setCoupon(data)
+    }
+
+    const removeCoupon = () => {
+        setCoupon(null)
+    }
+
     const cartCount = items.reduce((total, item) => total + item.quantity, 0)
-    const cartTotal = items.reduce((total, item) => total + (item.price * item.quantity), 0)
+    const subtotal = items.reduce((total, item) => total + (item.price * item.quantity), 0)
+
+    // Recalculate discount if subtotal changes (optional: strictly usually we should re-validate with server, but for UI we assume valid for now)
+    // Note: If discount is fixed, it's fine. If percentage, we might need to store the raw coupon data. 
+    // For simplicity, we just trust the passed amount or clear it if 0.
+    const cartTotal = Math.max(0, subtotal - (coupon?.discountAmount || 0))
 
     return (
         <CartContext.Provider value={{
@@ -102,6 +123,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             clearCart,
             cartCount,
             cartTotal,
+            subtotal,
+            coupon,
+            applyCoupon,
+            removeCoupon,
             isOpen,
             setIsOpen
         }}>
