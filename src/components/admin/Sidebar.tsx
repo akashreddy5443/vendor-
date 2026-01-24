@@ -55,6 +55,13 @@ export function AdminSidebar() {
                     Subscribers
                 </Link>
                 <Link
+                    href="/admin/pages"
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/pages' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
+                >
+                    <FileText className="h-5 w-5" />
+                    Pages
+                </Link>
+                <Link
                     href="/admin/settings"
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/settings' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
                 >
