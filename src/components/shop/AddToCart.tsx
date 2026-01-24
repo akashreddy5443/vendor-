@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 import { Minus, Plus, ShoppingCart } from 'lucide-react'
+import { useCart } from '@/context/CartContext'
 
-export function AddToCart({ productId, price, stock }: { productId: string, price: number, stock: number }) {
+export function AddToCart({ productId, price, stock, title, image }: { productId: string, price: number, stock: number, title: string, image?: string }) {
     const [quantity, setQuantity] = useState(1)
     const [isAdding, setIsAdding] = useState(false)
     const [buttonText, setButtonText] = useState('Add to Cart')
+    const { addItem } = useCart()
 
     const handleDecrease = () => {
         if (quantity > 1) setQuantity(prev => prev - 1)
@@ -17,17 +19,19 @@ export function AddToCart({ productId, price, stock }: { productId: string, pric
     }
 
     const handleAddToCart = () => {
-        // Phase 5 will implement actual context/cart logic
         setIsAdding(true)
 
-        // Simulate API call/processing
+        // Add to context
+        addItem({ productId, price, title, image, maxStock: stock }, quantity)
+
+        // Simulate feedback
         setTimeout(() => {
             setIsAdding(false)
             setButtonText('Added!')
 
             // Reset after 2 seconds
             setTimeout(() => setButtonText('Add to Cart'), 2000)
-        }, 800)
+        }, 500)
     }
 
     if (stock === 0) {
