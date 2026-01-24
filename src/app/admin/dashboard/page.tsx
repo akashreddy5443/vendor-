@@ -5,26 +5,26 @@ import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react'
 const stats = [
     {
         title: 'Total Revenue',
-        value: '$45,231.89',
-        change: '+20.1% from last month',
+        value: '$0.00',
+        change: 'No revenue yet',
         icon: DollarSign,
     },
     {
         title: 'Orders',
-        value: '+2350',
-        change: '+180.1% from last month',
+        value: '0',
+        change: 'No orders yet',
         icon: ShoppingCart,
     },
     {
         title: 'Products',
-        value: '12',
-        change: '+2 new this week',
+        value: '0',
+        change: 'Start adding products',
         icon: Package,
     },
     {
         title: 'Active Users',
-        value: '+573',
-        change: '+201 since last hour',
+        value: '0',
+        change: 'No active users',
         icon: Users,
     },
 ]
