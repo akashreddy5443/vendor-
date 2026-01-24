@@ -10,7 +10,7 @@ import { Loader2, CheckCircle, MapPin, CreditCard } from 'lucide-react'
 import { createOrder } from './actions'
 
 export default function CheckoutPage() {
-    const { cart, total, clearCart } = useCart()
+    const { items: cart, cartTotal: total, clearCart } = useCart()
     const [addresses, setAddresses] = useState<any[]>([])
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)
@@ -108,8 +108,8 @@ export default function CheckoutPage() {
                                         key={addr.id}
                                         onClick={() => setSelectedAddress(addr.id)}
                                         className={`p-4 rounded-xl border cursor-pointer transition-all ${selectedAddress === addr.id
-                                                ? 'border-orange-500 bg-orange-500/10'
-                                                : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+                                            ? 'border-orange-500 bg-orange-500/10'
+                                            : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                                             }`}
                                     >
                                         <div className="flex items-center justify-between">
