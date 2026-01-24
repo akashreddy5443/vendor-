@@ -20,7 +20,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return (
         <Link
             href={`/products/${product.id}`}
-            className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20"
         >
             <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center">
                 {imageUrl ? (
