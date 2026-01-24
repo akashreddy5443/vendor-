@@ -5,47 +5,18 @@ import Link from 'next/link'
 import { ShoppingBag, ShoppingCart } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
-import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
+
+// ... imports
 
 export function Navbar() {
-    const [announcement, setAnnouncement] = useState<any>(null)
-    const [loading, setLoading] = useState(true)
-    const { cartCount } = useCart()
-
-    useEffect(() => {
-        const fetchAnnouncement = async () => {
-            const supabase = createClient()
-            const { data } = await supabase
-                .from('homepage_sections')
-                .select('content_json, is_active')
-                .eq('section_type', 'announcement')
-                .single()
-
-            if (data) setAnnouncement(data)
-            setLoading(false)
-        }
-        fetchAnnouncement()
-    }, [])
-
-    const showAnnouncement = announcement?.is_active && announcement?.content_json?.show !== false
-    const text = announcement?.content_json?.text || ''
-    const link = announcement?.content_json?.link || '#'
+    // ... code
 
     return (
         <div className="flex flex-col">
-            {!loading && showAnnouncement && (
-                <div className="bg-orange-600 text-white text-xs font-bold py-2 text-center uppercase tracking-wider relative z-50">
-                    {link && link !== '#' ? (
-                        <Link href={link} className="hover:underline">
-                            {text}
-                        </Link>
-                    ) : (
-                        <span>{text}</span>
-                    )}
-                </div>
-            )}
+            {/* ... Announcement Bar ... */}
 
-            <nav className="flex h-16 items-center justify-between border-b border-gray-800 bg-black px-6 text-white sticky top-0 z-40">
+            <nav className="flex h-16 items-center justify-between border-b border-gray-800 bg-background px-6 text-foreground sticky top-0 z-40 transition-colors duration-300">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
                         <ShoppingBag />
@@ -54,9 +25,10 @@ export function Navbar() {
                     <SpotlightSearch />
                 </div>
 
-                <div className="flex gap-6 text-sm font-medium text-gray-300 items-center">
-                    <Link href="/products" className="hover:text-white transition-colors">Products</Link>
-                    <Link href="/cart" className="hover:text-white transition-colors relative group">
+                <div className="flex gap-6 text-sm font-medium items-center">
+                    <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
+                    <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
+                    <Link href="/cart" className="hover:text-primary transition-colors relative group">
                         <span className="sr-only">Cart</span>
                         <div className="relative">
                             <ShoppingCart className="h-5 w-5" />
@@ -67,6 +39,7 @@ export function Navbar() {
                             )}
                         </div>
                     </Link>
+                    <ThemeToggle />
                 </div>
             </nav>
         </div>
