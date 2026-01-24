@@ -45,10 +45,8 @@ export function Navbar() {
             )}
 
             <nav className="flex h-16 items-center justify-between border-b border-gray-800 bg-black px-6 text-white sticky top-0 z-40">
-                <Link href="/" className="flex items-center gap-2 text-xl font-bold text-white">
-                    <div className="relative h-8 w-8 overflow-hidden rounded-full">
-                        <img src="/logo.png" alt="Logo" className="h-full w-full object-cover" />
-                    </div>
+                <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
+                    <ShoppingBag />
                     TechDev Store
                 </Link>
                 <div className="flex gap-6 text-sm font-medium text-gray-300 items-center">
