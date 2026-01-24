@@ -1,25 +1,46 @@
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
 
-export default function HomePage() {
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
+
+export default async function HomePage() {
+  const supabase = await createClient()
+
+  // Fetch Hero Section
+  const { data: heroSection } = await supabase
+    .from('homepage_sections')
+    .select('*')
+    .eq('section_type', 'hero')
+    .single()
+
+  const heroData = {
+    title: heroSection?.title || 'LEVEL UP YOUR SETUP',
+    subtitle: heroSection?.subtitle || 'Premium gear for developers and tech enthusiasts. High quality, industrial design, and built to last.',
+    imageUrl: heroSection?.content_json?.imageUrl || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f',
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Hero Section (CMS Driven) */}
+      <section className="relative flex h-[600px] flex-col items-center justify-center text-center">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-1000"
+          style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
-
-      {/* Hero Section Placeholder (Will be CMS driven) */}
-      <section className="relative flex h-[600px] flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-black text-center">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f')] bg-cover bg-center opacity-20"></div>
         <div className="relative z-10 space-y-4 p-4">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white mb-4">
-            LEVEL UP YOUR SETUP
+          <h1 className="text-5xl font-extrabold tracking-tight text-white mb-4 drop-shadow-lg">
+            {heroData.title}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Premium gear for developers and tech enthusiasts. High quality, industrial design, and built to last.
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md">
+            {heroData.subtitle}
           </p>
           <div className="pt-4">
             <Link
               href="/products"
-              className="rounded-full bg-orange-600 px-8 py-3 font-bold text-white transition-transform hover:scale-105 hover:bg-orange-500"
+              className="rounded-full bg-orange-600 px-8 py-3 font-bold text-white transition-transform hover:scale-105 hover:bg-orange-500 shadow-lg shadow-orange-900/20"
             >
               SHOP NOW
             </Link>
