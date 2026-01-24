@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createPage, updatePage } from '../actions'
+import { createPage, updatePage } from '@/app/admin/pages/actions'
 import { Loader2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
