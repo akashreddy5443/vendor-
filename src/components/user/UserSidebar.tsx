@@ -11,7 +11,7 @@ const navItems = [
     { label: 'Overview', href: '/user', icon: LayoutDashboard },
     { label: 'My Orders', href: '/user/orders', icon: ShoppingBag },
     { label: 'Wishlist', href: '/user/wishlist', icon: Heart },
-    { label: 'Addresses', href: '/user/settings', icon: MapPin }, // Using settings for now or dedicated address page
+    { label: 'Addresses', href: '/user/addresses', icon: MapPin },
     { label: 'Settings', href: '/user/settings', icon: Settings },
 ]
 

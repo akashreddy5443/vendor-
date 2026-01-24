@@ -1,4 +1,5 @@
 import { login, signup } from './actions'
+import Link from 'next/link'
 
 export default function LoginPage(props: {
     searchParams: { error?: string; message?: string }
@@ -54,6 +55,13 @@ export default function LoginPage(props: {
                         Log in
                     </button>
                 </form>
+
+                <p className="mt-6 text-center text-sm text-gray-500">
+                    Don&apos;t have an account?{' '}
+                    <Link href="/register" className="text-orange-500 hover:underline">
+                        Sign up
+                    </Link>
+                </p>
             </div>
         </div>
     )
