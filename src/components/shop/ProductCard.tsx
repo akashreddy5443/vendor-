@@ -1,0 +1,56 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { formatPrice } from '@/lib/utils'
+
+interface ProductCardProps {
+    product: {
+        id: string
+        title: string
+        price: number
+        slug?: string
+        product_images?: { cloudinary_url: string; is_primary: boolean }[] // Supabase join shape
+    }
+}
+
+export function ProductCard({ product }: ProductCardProps) {
+    // Find primary image or default to first, or placeholder
+    const primaryImage = product.product_images?.find(img => img.is_primary) || product.product_images?.[0]
+    const imageUrl = primaryImage?.cloudinary_url
+
+    return (
+        <Link
+            href={`/products/${product.id}`}
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-800 bg-gray-900 transition-all hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-900/10"
+        >
+            <div className="aspect-square bg-gray-950 relative overflow-hidden flex items-center justify-center">
+                {imageUrl ? (
+                    <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105">
+                        <Image
+                            src={imageUrl}
+                            alt={product.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                    </div>
+                ) : (
+                    <span className="text-gray-700 text-sm">No Image</span>
+                )}
+
+                {/* Quick actions or badges could go here */}
+            </div>
+
+            <div className="p-4 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold text-gray-100 mb-1 group-hover:text-orange-500 transition-colors line-clamp-2">
+                    {product.title}
+                </h3>
+                <div className="mt-auto flex items-center justify-between pt-2">
+                    <span className="text-gray-300 font-medium">{formatPrice(product.price)}</span>
+                    <span className="text-xs font-bold text-orange-500 uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
+                        View Details
+                    </span>
+                </div>
+            </div>
+        </Link>
+    )
+}

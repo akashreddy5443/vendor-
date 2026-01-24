@@ -1,7 +1,22 @@
 import Link from 'next/link'
 import { Facebook, Twitter, Instagram, Youtube, Globe, ArrowRight } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
 
-export function Footer() {
+export async function Footer() {
+    const supabase = await createClient()
+    const { data: footerData } = await supabase
+        .from('homepage_sections')
+        .select('content_json')
+        .eq('section_type', 'footer')
+        .single()
+
+    const config = footerData?.content_json || {
+        newsletterTitle: "SUBSCRIBE TO OUR NEWSLETTER",
+        socialLinks: {},
+        infoLinks: [],
+        supportLinks: []
+    }
+
     return (
         <footer className="border-t border-gray-800 bg-black pt-16 pb-8 text-white">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -10,8 +25,13 @@ export function Footer() {
                     {/* Newsletter Section */}
                     <div className="space-y-6">
                         <h2 className="text-4xl font-extrabold tracking-tight text-white/90">
-                            <span className="text-blue-700">SUBSCRIBE</span> TO OUR <br />
-                            <span className="text-orange-500">NEWSLETTER</span>
+                            {/* Manual split for style, or dynamic if simple text */}
+                            {config.newsletterTitle.includes('NEWSLETTER') ? (
+                                <>
+                                    <span className="text-blue-700">SUBSCRIBE</span> TO OUR <br />
+                                    <span className="text-orange-500">NEWSLETTER</span>
+                                </>
+                            ) : (config.newsletterTitle)}
                         </h2>
                         <div className="relative max-w-md">
                             <input
@@ -25,10 +45,10 @@ export function Footer() {
                         </div>
 
                         <div className="flex gap-4 pt-4 text-gray-400">
-                            <Link href="#" className="hover:text-white"><Twitter className="h-5 w-5" /></Link>
-                            <Link href="#" className="hover:text-white"><Facebook className="h-5 w-5" /></Link>
-                            <Link href="#" className="hover:text-white"><Instagram className="h-5 w-5" /></Link>
-                            <Link href="#" className="hover:text-white"><Youtube className="h-5 w-5" /></Link>
+                            {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-white"><Twitter className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-white"><Facebook className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-white"><Instagram className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-white"><Youtube className="h-5 w-5" /></Link>}
                         </div>
                     </div>
 
@@ -37,21 +57,17 @@ export function Footer() {
                         <div>
                             <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-200">Info</h3>
                             <ul className="space-y-3 text-sm text-gray-400">
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Newsletter</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Careers</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Bulk Order Requests</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Creator Partnership Requests</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Terms and Conditions</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Privacy Policy</Link></li>
+                                {config.infoLinks?.map((link: any, i: number) => (
+                                    <li key={i}><Link href={link.url} className="hover:text-orange-500 transition-colors">{link.label}</Link></li>
+                                ))}
                             </ul>
                         </div>
                         <div>
                             <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-200">Support</h3>
                             <ul className="space-y-3 text-sm text-gray-400">
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Help Center / Contact Us</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Shipping Policy</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Customs & Duty Fees</Link></li>
-                                <li><Link href="#" className="hover:text-orange-500 transition-colors">Return Policy</Link></li>
+                                {config.supportLinks?.map((link: any, i: number) => (
+                                    <li key={i}><Link href={link.url} className="hover:text-orange-500 transition-colors">{link.label}</Link></li>
+                                ))}
                             </ul>
                         </div>
                     </div>
