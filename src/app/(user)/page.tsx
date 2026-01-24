@@ -4,18 +4,7 @@ import { ShoppingBag } from 'lucide-react'
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navbar Placeholder */}
-      <nav className="flex h-16 items-center justify-between border-b border-gray-800 px-6">
-        <div className="flex items-center gap-2 text-xl font-bold text-orange-500">
-          <ShoppingBag />
-          TechDev Store
-        </div>
-        <div className="flex gap-4 text-sm font-medium text-gray-300">
-          <Link href="/products" className="hover:text-white">Products</Link>
-          <Link href="/cart" className="hover:text-white">Cart</Link>
-          <Link href="/login" className="hover:text-white">Login</Link>
-        </div>
-      </nav>
+
 
       {/* Hero Section Placeholder (Will be CMS driven) */}
       <section className="relative flex h-[600px] flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-black text-center">
