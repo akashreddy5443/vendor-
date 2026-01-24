@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, ShoppingCart, Heart, User } from 'lucide-react'
+import { ShoppingBag, ShoppingCart, Heart, User, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -12,6 +12,7 @@ export function Navbar() {
     const [announcement, setAnnouncement] = useState<any>(null)
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const { cartCount } = useCart()
 
     useEffect(() => {
@@ -54,17 +55,26 @@ export function Navbar() {
             )}
 
             <nav className="flex h-16 items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md px-6 text-foreground sticky top-0 z-40 transition-colors duration-300 shadow-sm support-[backdrop-filter]:bg-background/60">
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-4 md:gap-8">
+                    {/* Mobile Menu Button */}
+                    <button
+                        className="md:hidden text-gray-400 hover:text-white"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X /> : <Menu />}
+                    </button>
+
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
-                        <ShoppingBag />
-                        TechDev Store
+                        <ShoppingBag className="h-6 w-6" />
+                        <span className="hidden min-[370px]:inline">TechDev</span>
                     </Link>
                     <SpotlightSearch />
                 </div>
 
-                <div className="flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="hidden md:block hover:text-primary transition-colors">Products</Link>
-                    <Link href="/categories" className="hidden md:block hover:text-primary transition-colors">Categories</Link>
+                {/* Desktop Nav */}
+                <div className="hidden md:flex gap-6 text-sm font-medium items-center">
+                    <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
+                    <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
 
                     {user ? (
                         <>
@@ -99,7 +109,57 @@ export function Navbar() {
                     </Link>
                     <ThemeToggle />
                 </div>
+
+                {/* Mobile Right Icons (Cart only, keep it accessible) */}
+                <div className="flex md:hidden items-center gap-4">
+                    <Link href="/cart" className="relative text-gray-400 hover:text-white">
+                        <ShoppingCart className="h-5 w-5" />
+                        {cartCount > 0 && (
+                            <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-orange-500 text-[8px] font-bold text-white">
+                                {cartCount}
+                            </span>
+                        )}
+                    </Link>
+                </div>
             </nav>
+
+            {/* Mobile Menu Dropdown */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden fixed inset-0 top-16 z-30 bg-black/95 backdrop-blur-xl border-t border-zinc-800 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5">
+                    <div className="flex flex-col gap-4 text-lg font-medium text-gray-300">
+                        <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Home</Link>
+                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Products</Link>
+                        <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Categories</Link>
+                    </div>
+
+                    <div className="border-t border-zinc-800 pt-6 flex flex-col gap-4">
+                        {user ? (
+                            <>
+                                <Link href="/user/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-gray-300 hover:text-white">
+                                    <Heart className="h-5 w-5" /> My Wishlist
+                                </Link>
+                                <Link href="/user" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-gray-300 hover:text-white">
+                                    <User className="h-5 w-5" /> My Account
+                                </Link>
+                            </>
+                        ) : (
+                            <div className="flex flex-col gap-3">
+                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg border border-zinc-700 hover:bg-zinc-800 text-white">
+                                    Login
+                                </Link>
+                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold">
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="mt-auto flex justify-between items-center border-t border-zinc-800 pt-4">
+                        <span className="text-sm text-gray-500">Theme</span>
+                        <ThemeToggle />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
