@@ -24,7 +24,10 @@ export default async function AddressesPage() {
                 <div className="rounded-xl border border-dashed border-zinc-700 bg-zinc-900/30 p-6 flex flex-col justify-center items-center text-center cursor-pointer hover:bg-zinc-900/50 transition-colors group">
                     {/* Simple Form embedded for now, usually would be a modal or separate route */}
                     {/* For simplicity in this iteration, keeping it as a form block */}
-                    <form action={addAddress} className="w-full space-y-3 text-left">
+                    <form action={async (formData) => {
+                        'use server'
+                        await addAddress(formData)
+                    }} className="w-full space-y-3 text-left">
                         <h3 className="text-lg font-medium text-orange-500 mb-4 flex items-center gap-2">
                             <Plus className="h-5 w-5" /> Add New Address
                         </h3>
