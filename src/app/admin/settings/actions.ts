@@ -13,14 +13,14 @@ export async function updateSettings(formData: FormData) {
 
     const { error } = await supabase
         .from('site_settings')
-        .update({
+        .upsert({
+            id: 1,
             site_name,
             description,
             contact_email,
             maintenance_mode,
             updated_at: new Date().toISOString()
-        })
-        .eq('id', 1)
+        }, { onConflict: 'id' })
 
     if (error) {
         console.error('Error updating settings:', error)
