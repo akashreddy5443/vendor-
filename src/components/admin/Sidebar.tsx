@@ -11,6 +11,7 @@ const navItems = [
     { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { label: 'Media', href: '/admin/media', icon: ImageIcon },
     { label: 'Homepage', href: '/admin/homepage', icon: Home },
+    { label: 'Pages', href: '/admin/pages', icon: FileText },
     { label: 'Site Layout', href: '/admin/layout-site', icon: LayoutDashboard },
     { label: 'Users', href: '/admin/users', icon: Users },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
@@ -53,20 +54,6 @@ export function AdminSidebar() {
                 >
                     <Mail className="h-5 w-5" />
                     Subscribers
-                </Link>
-                <Link
-                    href="/admin/pages"
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/pages' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
-                >
-                    <FileText className="h-5 w-5" />
-                    Pages
-                </Link>
-                <Link
-                    href="/admin/settings"
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/settings' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
-                >
-                    <Settings className="h-5 w-5" />
-                    Settings
                 </Link>
             </div>
         </aside>
