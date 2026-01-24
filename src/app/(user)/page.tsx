@@ -1,34 +1,46 @@
+'use client'
+
+import React from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { formatPrice } from '@/lib/utils'
 import { ProductCard } from '@/components/shop/ProductCard'
+import { motion } from 'framer-motion'
 
-export default async function HomePage() {
-  const supabase = await createClient()
+export default function HomePage() {
+  const [heroSection, setHeroSection] = React.useState<any>(null)
+  const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
 
-  // Fetch Hero Section
-  const { data: heroSection } = await supabase
-    .from('homepage_sections')
-    .select('*')
-    .eq('section_type', 'hero')
-    .single()
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient()
 
-  const { data: featuredSection } = await supabase
-    .from('homepage_sections')
-    .select('*')
-    .eq('section_type', 'featured')
-    .single()
+      // Fetch Hero
+      const { data: hero } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'hero')
+        .single()
+      setHeroSection(hero)
 
-  let featuredProducts = []
-  if (featuredSection?.content_json?.productIds?.length > 0) {
-    const { data } = await supabase
-      .from('products')
-      .select('*, product_images(*)')
-      .in('id', featuredSection.content_json.productIds)
-      .eq('status', 'active')
+      // Fetch Featured
+      const { data: featured } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'featured')
+        .single()
 
-    featuredProducts = data || []
-  }
+      if (featured?.content_json?.productIds?.length > 0) {
+        const { data: products } = await supabase
+          .from('products')
+          .select('*, product_images(*)')
+          .in('id', featured.content_json.productIds)
+          .eq('status', 'active')
+        setFeaturedProducts(products || [])
+      }
+    }
+    fetchData()
+  }, [])
 
   const heroData = {
     title: heroSection?.title || 'LEVEL UP YOUR SETUP',
@@ -36,45 +48,84 @@ export default async function HomePage() {
     imageUrl: heroSection?.content_json?.imageUrl || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f',
   }
 
+  // Animation variants
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Hero Section (CMS Driven) */}
       {/* Hero Section (CMS Driven) - Always Dark for Premium Feel */}
       <section className="relative flex h-[600px] flex-col items-center justify-center text-center bg-black overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-40 transition-opacity duration-1000"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
-        ></div>
+        ></motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
         <div className="relative z-10 space-y-4 p-4">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white mb-4 drop-shadow-lg">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl font-extrabold tracking-tight text-white mb-4 drop-shadow-lg"
+          >
             {heroData.title}
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md"
+          >
             {heroData.subtitle}
-          </p>
-          <div className="pt-4">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="pt-4"
+          >
             <Link
               href="/products"
               className="rounded-full bg-orange-600 px-8 py-3 font-bold text-white transition-transform hover:scale-105 hover:bg-orange-500 shadow-lg shadow-orange-900/20"
             >
               SHOP NOW
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Featured Products Placeholder */}
       <section className="py-20 px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">FEATURED GEAR</h2>
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+          className="text-3xl font-bold text-center mb-12"
+        >
+          FEATURED GEAR
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {featuredProducts.length > 0 ? (
-            featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            featuredProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
             ))
           ) : (
-            <div className="col-span-full text-center text-gray-500 py-10">
+            <div className="col-span-full text-center text-muted-foreground py-10">
               No featured products selected. Check Admin Panel.
             </div>
           )}
