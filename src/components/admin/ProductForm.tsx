@@ -10,7 +10,18 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ categories = [] }: ProductFormProps) {
-    const [imageUrl, setImageUrl] = useState('')
+    const [media, setMedia] = useState<{ url: string, type: 'image' | 'video' }[]>([])
+
+    const addMedia = (url: string, type: string) => {
+        // Cloudinary returns 'image' or 'video'. We map it to our type.
+        // Ensure type is 'image' or 'video'
+        const mediaType = type === 'video' ? 'video' : 'image'
+        setMedia(prev => [...prev, { url, type: mediaType }])
+    }
+
+    const removeMedia = (index: number) => {
+        setMedia(prev => prev.filter((_, i) => i !== index))
+    }
 
     const handleSubmit = async (formData: FormData) => {
         await createProduct(formData)
@@ -92,27 +103,45 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                 </div>
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-200">Product Image</label>
-                <input type="hidden" name="imageUrl" value={imageUrl} />
+            <div className="space-y-4">
+                <label className="text-sm font-medium text-gray-200">Media Gallery (Images & Videos)</label>
+                <input type="hidden" name="media" value={JSON.stringify(media)} />
 
-                {imageUrl ? (
-                    <div className="relative aspect-video w-full max-w-sm overflow-hidden rounded-lg border border-gray-700">
-                        <img src={imageUrl} alt="Uploaded" className="h-full w-full object-cover" />
-                        <button
-                            type="button"
-                            onClick={() => setImageUrl('')}
-                            className="absolute right-2 top-2 rounded-full bg-black/50 p-1 text-white hover:bg-black/70"
-                        >
-                            <X className="h-4 w-4" />
-                        </button>
-                    </div>
-                ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {media.map((item, index) => (
+                        <div key={index} className="relative aspect-square overflow-hidden rounded-lg border border-gray-700 bg-black/50 group">
+                            {item.type === 'video' ? (
+                                <video src={item.url} className="h-full w-full object-cover" />
+                            ) : (
+                                <img src={item.url} alt={`Media ${index}`} className="h-full w-full object-cover" />
+                            )}
+
+                            <button
+                                type="button"
+                                onClick={() => removeMedia(index)}
+                                className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+
+                            {item.type === 'video' && (
+                                <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-[10px] text-white uppercase font-bold tracking-wider">
+                                    Video
+                                </div>
+                            )}
+                        </div>
+                    ))}
+
                     <CldUploadWidget
-                        uploadPreset="ml_default" // TODO: Using unsigned default for now, user might need to config
+                        uploadPreset="ml_default"
+                        options={{
+                            resourceType: 'auto',  // Allow images and videos
+                            multiple: true,
+                            maxFiles: 6
+                        }}
                         onSuccess={(result: any) => {
                             if (result.info?.secure_url) {
-                                setImageUrl(result.info.secure_url)
+                                addMedia(result.info.secure_url, result.info.resource_type)
                             }
                         }}
                     >
@@ -120,14 +149,16 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                             <button
                                 type="button"
                                 onClick={() => open()}
-                                className="flex aspect-video w-full max-w-sm flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-700 hover:border-orange-500 hover:bg-gray-800/50"
+                                className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-700 hover:border-orange-500 hover:bg-gray-800/50 transition-colors"
                             >
                                 <ImagePlus className="h-8 w-8 text-gray-400" />
-                                <span className="text-sm text-gray-400">Upload Image</span>
+                                <span className="text-xs text-center text-gray-400 font-medium p-2">
+                                    Add Media
+                                </span>
                             </button>
                         )}
                     </CldUploadWidget>
-                )}
+                </div>
             </div>
 
             <div className="space-y-2">

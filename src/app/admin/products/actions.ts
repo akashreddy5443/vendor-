@@ -16,7 +16,8 @@ export async function createProduct(formData: FormData) {
     const stock = parseInt(formData.get('stock') as string)
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
-    const imageUrl = formData.get('imageUrl') as string // From Cloudinary Widget
+    const mediaString = formData.get('media') as string
+    const media = mediaString ? JSON.parse(mediaString) : []
 
     // 1. Create Product
     const { data: product, error } = await supabase
@@ -38,13 +39,16 @@ export async function createProduct(formData: FormData) {
         return { error: 'Failed to create product' }
     }
 
-    // 2. Create Product Image (Primary)
-    if (imageUrl && product) {
-        await supabase.from('product_images').insert({
+    // 2. Create Product Images
+    if (media.length > 0 && product) {
+        const imagesData = media.map((item: any, index: number) => ({
             product_id: product.id,
-            cloudinary_url: imageUrl,
-            is_primary: true,
-        })
+            cloudinary_url: item.url,
+            media_type: item.type,
+            is_primary: index === 0 // First item is primary
+        }))
+
+        await supabase.from('product_images').insert(imagesData)
     }
 
     revalidatePath('/admin/products')
