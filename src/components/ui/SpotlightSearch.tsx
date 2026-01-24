@@ -173,23 +173,23 @@ export function SpotlightSearch() {
                                 ))}
                             </div>
 
-                        </motion.div>
 
-                        <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2 flex items-center justify-between">
-                            <button
-                                onClick={handleSearchAll}
-                                className="text-xs text-orange-500 hover:text-orange-400 font-medium"
-                            >
-                                Press Enter to see all results
-                            </button>
-                            <p className="text-[10px] text-gray-500 gap-2 hidden sm:flex">
-                                <span>Search by TechDev</span>
-                            </p>
-                        </div>
-                    </motion.div>
+
+                            <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2 flex items-center justify-between">
+                                <button
+                                    onClick={handleSearchAll}
+                                    className="text-xs text-orange-500 hover:text-orange-400 font-medium"
+                                >
+                                    Press Enter to see all results
+                                </button>
+                                <p className="text-[10px] text-gray-500 gap-2 hidden sm:flex">
+                                    <span>Search by TechDev</span>
+                                </p>
+                            </div>
+                        </motion.div>
                     </div>
                 )}
-        </AnimatePresence >
+            </AnimatePresence >
         </>
     )
 }
