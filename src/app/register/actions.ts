@@ -18,7 +18,8 @@ export async function signup(formData: FormData) {
         options: {
             data: {
                 full_name: fullName,
-            }
+            },
+            emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vencortech17.vercel.app'}/auth/callback`,
         }
     })
 
