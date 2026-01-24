@@ -1,4 +1,4 @@
-import { UserSidebar } from '@/components/user/UserSidebar'
+import { UserSidebar } from "@/components/user/UserSidebar"
 
 export default function UserLayout({
     children,
@@ -6,14 +6,18 @@ export default function UserLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="bg-black text-white min-h-screen">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
-                <h1 className="text-3xl font-bold font-serif mb-8">Dashboard</h1>
-                <div className="flex flex-col md:flex-row gap-8">
+        <div className="min-h-screen bg-black text-white pt-24 pb-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Sidebar */}
                     <UserSidebar />
-                    <main className="flex-1 min-w-0">
-                        {children}
-                    </main>
+
+                    {/* Main Content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 lg:p-8 min-h-[600px]">
+                            {children}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
