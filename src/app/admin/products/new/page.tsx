@@ -1,6 +1,10 @@
 import { ProductForm } from '@/components/admin/ProductForm'
+import { createClient } from '@/lib/supabase/server'
 
-export default function NewProductPage() {
+export default async function NewProductPage() {
+    const supabase = await createClient()
+    const { data: categories } = await supabase.from('categories').select('id, name')
+
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             <div>
@@ -9,7 +13,7 @@ export default function NewProductPage() {
             </div>
 
             <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <ProductForm />
+                <ProductForm categories={categories || []} />
             </div>
         </div>
     )

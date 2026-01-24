@@ -15,6 +15,7 @@ export async function createProduct(formData: FormData) {
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
     const status = formData.get('status') as string
+    const category_id = formData.get('category_id') as string || null
     const imageUrl = formData.get('imageUrl') as string // From Cloudinary Widget
 
     // 1. Create Product
@@ -27,6 +28,7 @@ export async function createProduct(formData: FormData) {
             price,
             stock,
             status,
+            category_id,
         })
         .select()
         .single()

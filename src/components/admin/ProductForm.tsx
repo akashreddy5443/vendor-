@@ -5,7 +5,11 @@ import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus, X } from 'lucide-react'
 import { useState } from 'react'
 
-export function ProductForm() {
+interface ProductFormProps {
+    categories?: { id: string, name: string }[]
+}
+
+export function ProductForm({ categories = [] }: ProductFormProps) {
     const [imageUrl, setImageUrl] = useState('')
 
     const handleSubmit = async (formData: FormData) => {
@@ -14,17 +18,35 @@ export function ProductForm() {
 
     return (
         <form action={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-                <label htmlFor="title" className="text-sm font-medium text-gray-200">
-                    Product Title
-                </label>
-                <input
-                    id="title"
-                    name="title"
-                    required
-                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
-                    placeholder="e.g. LTT Screwdriver"
-                />
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <label htmlFor="title" className="text-sm font-medium text-gray-200">
+                        Product Title
+                    </label>
+                    <input
+                        id="title"
+                        name="title"
+                        required
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        placeholder="e.g. LTT Screwdriver"
+                    />
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="category_id" className="text-sm font-medium text-gray-200">
+                        Category
+                    </label>
+                    <select
+                        id="category_id"
+                        name="category_id"
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                    >
+                        <option value="">Select a Category</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <div className="space-y-2">
