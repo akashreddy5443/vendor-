@@ -46,7 +46,7 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center justify-between border-b border-gray-800 bg-background px-6 text-foreground sticky top-0 z-40 transition-colors duration-300">
+            <nav className="flex h-16 items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md px-6 text-foreground sticky top-0 z-40 transition-colors duration-300 shadow-sm support-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
                         <ShoppingBag />

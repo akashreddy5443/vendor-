@@ -45,10 +45,10 @@ export async function Footer() {
                         </div>
 
                         <div className="flex gap-4 pt-4 text-muted-foreground">
-                            {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-foreground"><Twitter className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-foreground"><Facebook className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-foreground"><Instagram className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-foreground"><Youtube className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-sky-500 transition-colors"><Twitter className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-blue-600 transition-colors"><Facebook className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-pink-600 transition-colors"><Instagram className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-red-600 transition-colors"><Youtube className="h-5 w-5" /></Link>}
                         </div>
                     </div>
 
