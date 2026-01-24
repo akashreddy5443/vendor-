@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { formatPrice } from '@/lib/utils'
+import { WishlistToggle } from './WishlistToggle'
 
 interface ProductCardProps {
     product: {
@@ -38,6 +39,9 @@ export function ProductCard({ product }: ProductCardProps) {
                 )}
 
                 {/* Quick actions or badges could go here */}
+                <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <WishlistToggle productId={product.id} />
+                </div>
             </div>
 
             <div className="p-4 flex flex-col flex-grow">

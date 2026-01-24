@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { ProductGallery } from '@/components/shop/ProductGallery'
 import { AddToCart } from '@/components/shop/AddToCart'
 import { formatPrice } from '@/lib/utils'
+import { ReviewForm } from '@/components/shop/ReviewForm'
+import { ReviewsList } from '@/components/shop/ReviewsList'
 
 interface PageProps {
     params: {
@@ -79,6 +81,23 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
                 </div>
             </div>
+
+            {/* Reviews Section */}
+            <div className="mt-20 border-t border-zinc-800 pt-12">
+                <h2 className="text-2xl font-bold font-serif mb-8 text-white">Customer Reviews</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    {/* Review Form */}
+                    <div className="lg:col-span-1">
+                        <ReviewForm productId={product.id} />
+                    </div>
+
+                    {/* Reviews List */}
+                    <div className="lg:col-span-2">
+                        <ReviewsList productId={product.id} />
+                    </div>
+                </div>
+            </div>
         </div>
+        </div >
     )
 }
