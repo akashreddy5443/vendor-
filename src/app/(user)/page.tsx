@@ -39,9 +39,10 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Hero Section (CMS Driven) */}
-      <section className="relative flex h-[600px] flex-col items-center justify-center text-center">
+      {/* Hero Section (CMS Driven) - Always Dark for Premium Feel */}
+      <section className="relative flex h-[600px] flex-col items-center justify-center text-center bg-black overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-20 transition-opacity duration-1000"
+          className="absolute inset-0 bg-cover bg-center opacity-40 transition-opacity duration-1000"
           style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
