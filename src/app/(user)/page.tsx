@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+// Trigger Deployment
 import { createClient } from '@/lib/supabase/client'
 import { formatPrice } from '@/lib/utils'
 import { ProductCard } from '@/components/shop/ProductCard'
