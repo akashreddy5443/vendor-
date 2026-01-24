@@ -1,97 +1,198 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/utils'
-import { placeOrder } from './actions'
-import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Loader2, CheckCircle, MapPin, CreditCard } from 'lucide-react'
+import { createOrder } from './actions'
 
 export default function CheckoutPage() {
-    const { items, cartTotal, clearCart } = useCart()
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const { cart, total, clearCart } = useCart()
+    const [addresses, setAddresses] = useState<any[]>([])
+    const [selectedAddress, setSelectedAddress] = useState<string>('')
+    const [loading, setLoading] = useState(true)
+    const [submitting, setSubmitting] = useState(false)
+    const router = useRouter()
 
-    // Redirect if cart empty? Or show message.
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            const supabase = createClient()
+            const { data: { user } } = await supabase.auth.getUser()
 
-    const handleSubmit = async (formData: FormData) => {
-        setIsSubmitting(true)
-        // Append cart items and total to formdata before submitting
-        formData.append('cartItems', JSON.stringify(items))
-        formData.append('total', cartTotal.toString())
+            if (!user) {
+                router.push('/login?message=Please login to checkout')
+                return
+            }
 
-        await placeOrder(formData)
-        // Note: If redirect happens on server, we won't reach here. 
-        // But if we want to clear cart on client, we strictly should wait or use effect on success page.
-        // For simplicity, we'll let the server redirect, and the success page will expect cart to be cleared
-        // OR we can clear it here if we use a client-side fetch wrapper.
-        // Let's implement clearing in the success page for now or simply rely on "Ordering" state.
+            const { data } = await supabase
+                .from('addresses')
+                .select('*')
+                .eq('user_id', user.id)
+
+            if (data) {
+                setAddresses(data)
+                // Select default or first
+                const def = data.find(a => a.is_default)
+                if (def) setSelectedAddress(def.id)
+                else if (data.length > 0) setSelectedAddress(data[0].id)
+            }
+            setLoading(false)
+        }
+        fetchAddresses()
+    }, [router])
+
+    const handlePlaceOrder = async () => {
+        if (!selectedAddress) {
+            alert('Please select a shipping address')
+            return
+        }
+        setSubmitting(true)
+
+        // Simulate Payment Delay
+        await new Promise(r => setTimeout(r, 1500))
+
+        const res = await createOrder({
+            addressId: selectedAddress,
+            paymentMethod: 'cod', // Placeholder
+            total: total,
+            items: cart
+        })
+
+        if (res?.error) {
+            alert(res.error)
+            setSubmitting(false)
+            return
+        }
+
+        clearCart()
+        router.push(`/checkout/success?orderId=${res.orderId}`)
     }
 
-    if (items.length === 0) {
-        return <div className="p-10 text-center text-white">Your cart is empty.</div>
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-black text-white"><Loader2 className="animate-spin" /></div>
+
+    if (cart.length === 0) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white space-y-4">
+                <h2 className="text-2xl font-bold">Your Cart is Empty</h2>
+                <Link href="/products" className="text-orange-500 hover:underline">Continue Shopping</Link>
+            </div>
+        )
     }
 
     return (
-        <div className="bg-black text-white min-h-screen py-16">
-            <div className="mx-auto max-w-4xl px-6">
-                <h1 className="text-3xl font-bold font-serif mb-8">Checkout</h1>
+        <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* Left Column: Details */}
+                <div className="space-y-8">
+                    {/* Address Selection */}
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-bold font-serif flex items-center gap-2">
+                                <MapPin className="text-orange-500" /> Shipping Address
+                            </h2>
+                            <Link href="/user/addresses" className="text-sm text-gray-400 hover:text-white">Manage Addresses</Link>
+                        </div>
 
-                    {/* Form */}
-                    <form action={handleSubmit} className="space-y-6">
-                        <div className="space-y-4">
-                            <h2 className="text-xl font-bold border-b border-gray-800 pb-2">Shipping Details</h2>
+                        {addresses.length === 0 ? (
+                            <Link href="/user/addresses" className="block p-6 rounded-xl border border-dashed border-zinc-700 hover:bg-zinc-900 text-center">
+                                <span className="text-orange-500">+ Add New Address</span>
+                            </Link>
+                        ) : (
+                            <div className="grid gap-4">
+                                {addresses.map(addr => (
+                                    <div
+                                        key={addr.id}
+                                        onClick={() => setSelectedAddress(addr.id)}
+                                        className={`p-4 rounded-xl border cursor-pointer transition-all ${selectedAddress === addr.id
+                                                ? 'border-orange-500 bg-orange-500/10'
+                                                : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-bold">{addr.full_name}</span>
+                                            {selectedAddress === addr.id && <CheckCircle className="h-5 w-5 text-orange-500" />}
+                                        </div>
+                                        <p className="text-sm text-gray-400 mt-1">{addr.street_address}, {addr.city}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
-                            <div>
-                                <label className="block text-sm text-gray-400 mb-1">Full Name</label>
-                                <input name="name" required className="w-full bg-gray-900 border border-gray-800 rounded p-2 focus:border-orange-500 outline-none" placeholder="John Doe" />
+                    {/* Payment Method */}
+                    <div>
+                        <h2 className="text-xl font-bold font-serif flex items-center gap-2 mb-4">
+                            <CreditCard className="text-blue-500" /> Payment Method
+                        </h2>
+                        <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900">
+                            <div className="flex items-center gap-3">
+                                <input type="radio" checked readOnly className="h-4 w-4 text-orange-600 focus:ring-orange-500" />
+                                <span className="font-medium">Cash on Delivery / Pay on Arrival</span>
                             </div>
-                            <div>
-                                <label className="block text-sm text-gray-400 mb-1">Email</label>
-                                <input name="email" type="email" required className="w-full bg-gray-900 border border-gray-800 rounded p-2 focus:border-orange-500 outline-none" placeholder="john@example.com" />
-                            </div>
-                            <div>
-                                <label className="block text-sm text-gray-400 mb-1">Address</label>
-                                <input name="address" required className="w-full bg-gray-900 border border-gray-800 rounded p-2 focus:border-orange-500 outline-none" placeholder="123 Street Name" />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm text-gray-400 mb-1">City</label>
-                                    <input name="city" required className="w-full bg-gray-900 border border-gray-800 rounded p-2 focus:border-orange-500 outline-none" />
+                            <p className="text-xs text-gray-500 ml-7 mt-1">Pay comfortably when your order arrives.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Column: Summary */}
+                <div className="lg:pl-12">
+                    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 lg:p-8 sticky top-24">
+                        <h2 className="text-xl font-bold font-serif mb-6">Order Summary</h2>
+
+                        <div className="space-y-4 mb-6 max-h-80 overflow-y-auto custom-scrollbar">
+                            {cart.map((item) => (
+                                <div key={item.id} className="flex gap-4">
+                                    <div className="h-16 w-16 bg-zinc-800 rounded-md overflow-hidden flex-shrink-0">
+                                        <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="text-sm font-medium line-clamp-1">{item.title}</h3>
+                                        <p className="text-sm text-gray-400">Qty: {item.quantity}</p>
+                                    </div>
+                                    <div className="text-sm font-medium">{formatPrice(item.price * item.quantity)}</div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm text-gray-400 mb-1">Zip Code</label>
-                                    <input name="zip" required className="w-full bg-gray-900 border border-gray-800 rounded p-2 focus:border-orange-500 outline-none" />
-                                </div>
+                            ))}
+                        </div>
+
+                        <div className="border-t border-zinc-800 pt-4 space-y-2 text-sm">
+                            <div className="flex justify-between text-gray-400">
+                                <span>Subtotal</span>
+                                <span>{formatPrice(total)}</span>
+                            </div>
+                            <div className="flex justify-between text-gray-400">
+                                <span>Shipping</span>
+                                <span className="text-green-500">Free</span>
+                            </div>
+                            <div className="flex justify-between text-lg font-bold text-white pt-2 border-t border-zinc-800 mt-2">
+                                <span>Total</span>
+                                <span className="text-orange-500">{formatPrice(total)}</span>
                             </div>
                         </div>
 
                         <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full rounded-full bg-orange-600 py-4 font-bold text-white transition-all hover:bg-orange-500 disabled:opacity-50"
+                            onClick={handlePlaceOrder}
+                            disabled={submitting || !selectedAddress}
+                            className="w-full mt-8 rounded-full bg-orange-600 py-4 font-bold text-white shadow-lg shadow-orange-900/20 hover:bg-orange-500 hover:shadow-orange-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
-                            {isSubmitting ? 'Processing...' : `Pay ${formatPrice(cartTotal)}`}
+                            {submitting ? (
+                                <span className="flex items-center justify-center gap-2">
+                                    <Loader2 className="animate-spin h-5 w-5" /> Processing...
+                                </span>
+                            ) : (
+                                `Pay ${formatPrice(total)}`
+                            )}
                         </button>
-                    </form>
 
-                    {/* Summary */}
-                    <div className="bg-gray-900/50 p-6 rounded-xl border border-gray-800 h-fit">
-                        <h3 className="font-bold mb-4">Your Order</h3>
-                        <div className="space-y-4 max-h-60 overflow-y-auto mb-4 custom-scrollbar">
-                            {items.map(item => (
-                                <div key={item.productId} className="flex justify-between text-sm">
-                                    <span className="text-gray-300">{item.title} x {item.quantity}</span>
-                                    <span className="text-white font-medium">{formatPrice(item.price * item.quantity)}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="border-t border-gray-800 pt-4 flex justify-between font-bold text-lg">
-                            <span>Total</span>
-                            <span className="text-orange-500">{formatPrice(cartTotal)}</span>
-                        </div>
+                        <p className="text-xs text-center text-gray-500 mt-4">
+                            By placing your order, you agree to our Terms of Service.
+                        </p>
                     </div>
-
                 </div>
+
             </div>
         </div>
     )

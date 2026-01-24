@@ -2,73 +2,37 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
-export async function placeOrder(formData: FormData) {
+export async function createOrder(data: { addressId: string, paymentMethod: string, total: number, items: any[] }) {
     const supabase = await createClient()
-
-    const name = formData.get('name')
-    const email = formData.get('email')
-    const address = formData.get('address')
-    const city = formData.get('city')
-    const zip = formData.get('zip')
-    const country = formData.get('country')
-    const cartItemsString = formData.get('cartItems') as string
-    const totalAmount = parseFloat(formData.get('total') as string)
-
-    if (!cartItemsString) {
-        return { error: 'Cart is empty' }
-    }
-
-    const cartItems = JSON.parse(cartItemsString)
-
-    // Construct Shipping Address JSON
-    const shipping_address = {
-        name,
-        address,
-        city,
-        zip,
-        country
-    }
-
-    // Get User (Optional, can be guest)
     const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        return { error: "User not authenticated" }
+    }
 
     // 1. Create Order
     const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
-            user_id: user?.id || null, // Allow null for guest checkout if policy permits
-            email: email,
-            status: 'pending',
-            total_amount: totalAmount,
-            shipping_address: shipping_address
+            user_id: user.id,
+            status: 'pending', // paid if payment succeeds instantly
+            total_amount: data.total,
+            shipping_address: data.addressId, // We might want to store JSON of address snapshot instead of ID in production
+            payment_status: 'pending',
+            items: data.items // If we have a jsonb items column, otherwise likely separate order_items table
         })
         .select()
         .single()
 
     if (orderError) {
-        console.error('Order creation failed:', orderError)
-        return { error: 'Failed to place order' }
+        console.error("Order creation failed:", orderError)
+        return { error: "Failed to create order" }
     }
 
-    // 2. Create Order Items
-    const orderItemsData = cartItems.map((item: any) => ({
-        order_id: order.id,
-        product_id: item.productId,
-        quantity: item.quantity,
-        price: item.price
-    }))
+    // 2. Clear Cart (Client side usually does this, but we can do it if cart is in DB)
+    // For local storage cart, client must clear it.
 
-    const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItemsData)
-
-    if (itemsError) {
-        console.error('Order items failed:', itemsError)
-        // Ideally rollback order here, keeping simple for now
-        return { error: 'Failed to save order items' }
-    }
-
-    // Success - Redirect
-    redirect(`/order-confirmation/${order.id}`)
+    return { orderId: order.id }
 }
