@@ -1,11 +1,35 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ShoppingBag, ShoppingCart } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
+import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
 
-// ... existing imports
-
 export function Navbar() {
-    // ... existing code
+    const [announcement, setAnnouncement] = useState<any>(null)
+    const [loading, setLoading] = useState(true)
+    const { cartCount } = useCart()
+
+    useEffect(() => {
+        const fetchAnnouncement = async () => {
+            const supabase = createClient()
+            const { data } = await supabase
+                .from('homepage_sections')
+                .select('content_json, is_active')
+                .eq('section_type', 'announcement')
+                .single()
+
+            if (data) setAnnouncement(data)
+            setLoading(false)
+        }
+        fetchAnnouncement()
+    }, [])
+
+    const showAnnouncement = announcement?.is_active && announcement?.content_json?.show !== false
+    const text = announcement?.content_json?.text || ''
+    const link = announcement?.content_json?.link || '#'
 
     return (
         <div className="flex flex-col">
