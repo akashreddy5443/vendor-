@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, ShoppingCart, Heart } from 'lucide-react'
+import { ShoppingBag, ShoppingCart, Heart, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -10,12 +10,19 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export function Navbar() {
     const [announcement, setAnnouncement] = useState<any>(null)
+    const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const { cartCount } = useCart()
 
     useEffect(() => {
-        const fetchAnnouncement = async () => {
+        const init = async () => {
             const supabase = createClient()
+
+            // Fetch User
+            const { data: { user } } = await supabase.auth.getUser()
+            setUser(user)
+
+            // Fetch Announcement
             const { data } = await supabase
                 .from('homepage_sections')
                 .select('content_json, is_active')
@@ -25,7 +32,7 @@ export function Navbar() {
             if (data) setAnnouncement(data)
             setLoading(false)
         }
-        fetchAnnouncement()
+        init()
     }, [])
 
     const showAnnouncement = announcement?.is_active && announcement?.content_json?.show !== false
@@ -56,12 +63,29 @@ export function Navbar() {
                 </div>
 
                 <div className="flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-                    <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
-                    <Link href="/user/wishlist" className="hover:text-primary transition-colors">
-                        <span className="sr-only">Wishlist</span>
-                        <Heart className="h-5 w-5" />
-                    </Link>
+                    <Link href="/products" className="hidden md:block hover:text-primary transition-colors">Products</Link>
+                    <Link href="/categories" className="hidden md:block hover:text-primary transition-colors">Categories</Link>
+
+                    {user ? (
+                        <>
+                            <Link href="/user/wishlist" className="hover:text-primary transition-colors">
+                                <span className="sr-only">Wishlist</span>
+                                <Heart className="h-5 w-5" />
+                            </Link>
+                            <Link href="/user" className="hover:text-primary transition-colors">
+                                <span className="sr-only">Account</span>
+                                <User className="h-5 w-5" />
+                            </Link>
+                        </>
+                    ) : (
+                        <div className="flex items-center gap-4">
+                            <Link href="/login" className="hover:text-primary transition-colors">Login</Link>
+                            <Link href="/register" className="px-4 py-2 rounded-full bg-orange-600 text-white hover:bg-orange-500 transition-colors">
+                                Sign Up
+                            </Link>
+                        </div>
+                    )}
+
                     <Link href="/cart" className="hover:text-primary transition-colors relative group">
                         <span className="sr-only">Cart</span>
                         <div className="relative">
