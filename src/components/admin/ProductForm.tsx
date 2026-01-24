@@ -8,8 +8,12 @@ import { useState } from 'react'
 export function ProductForm() {
     const [imageUrl, setImageUrl] = useState('')
 
+    const handleSubmit = async (formData: FormData) => {
+        await createProduct(formData)
+    }
+
     return (
-        <form action={createProduct} className="space-y-6">
+        <form action={handleSubmit} className="space-y-6">
             <div className="space-y-2">
                 <label htmlFor="title" className="text-sm font-medium text-gray-200">
                     Product Title

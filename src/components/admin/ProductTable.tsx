@@ -57,7 +57,9 @@ export function ProductTable({ products }: { products: any[] }) {
                                     >
                                         <Edit className="h-4 w-4" />
                                     </Link>
-                                    <form action={deleteProduct}>
+                                    <form action={async (formData) => {
+                                        await deleteProduct(formData)
+                                    }}>
                                         <input type="hidden" name="id" value={product.id} />
                                         <button className="rounded p-1 hover:bg-gray-800 hover:text-red-400">
                                             <Trash2 className="h-4 w-4" />
