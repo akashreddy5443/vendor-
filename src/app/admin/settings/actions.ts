@@ -7,22 +7,26 @@ export async function updateSettings(formData: FormData) {
     const supabase = await createClient()
 
     const site_name = formData.get('site_name') as string
+    const description = formData.get('description') as string
+    const contact_email = formData.get('contact_email') as string
     const maintenance_mode = formData.get('maintenance_mode') === 'on'
 
-    // Upsert settings for ID 1 (Singleton)
     const { error } = await supabase
         .from('site_settings')
-        .upsert({
-            id: 1,
+        .update({
             site_name,
+            description,
+            contact_email,
             maintenance_mode,
+            updated_at: new Date().toISOString()
         })
+        .eq('id', 1)
 
     if (error) {
         console.error('Error updating settings:', error)
         return { error: 'Failed to update settings' }
     }
 
-    revalidatePath('/admin/settings')
-    revalidatePath('/', 'layout') // Revalidate global layout to reflect site name change
+    revalidatePath('/', 'layout') // Revalidate everything
+    return { success: 'Settings updated successfully' }
 }
