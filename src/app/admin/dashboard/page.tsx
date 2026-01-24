@@ -5,7 +5,7 @@ import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react'
 const stats = [
     {
         title: 'Total Revenue',
-        value: '$0.00',
+        value: '₹0.00',
         change: 'No revenue yet',
         icon: DollarSign,
     },
