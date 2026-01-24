@@ -52,3 +52,45 @@ export async function updateHero(formData: FormData) {
     revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }
+
+export async function updateFeatured(formData: FormData) {
+    const supabase = await createClient()
+
+    const productIds = JSON.parse(formData.get('productIds') as string)
+
+    // Find section with type 'featured'.
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'featured')
+        .single()
+
+    const payload = {
+        section_type: 'featured',
+        title: 'FEATURED GEAR', // Default title, could be made editable
+        content_json: { productIds },
+        is_active: true,
+    }
+
+    let error;
+    if (existing) {
+        const { error: updateError } = await supabase
+            .from('homepage_sections')
+            .update(payload)
+            .eq('id', existing.id)
+        error = updateError
+    } else {
+        const { error: insertError } = await supabase
+            .from('homepage_sections')
+            .insert(payload)
+        error = insertError
+    }
+
+    if (error) {
+        console.error('Error updating featured section:', error)
+        return { error: 'Failed to update featured section' }
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}
