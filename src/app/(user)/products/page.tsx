@@ -6,14 +6,26 @@ export const metadata = {
     description: 'Browse our collection of premium developer gear.',
 }
 
-export default async function ProductsPage() {
+interface ProductPageProps {
+    searchParams: {
+        category?: string
+    }
+}
+
+export default async function ProductsPage({ searchParams }: ProductPageProps) {
     const supabase = await createClient()
 
-    const { data: products } = await supabase
+    let query = supabase
         .from('products')
         .select('*, product_images(*)')
         .eq('status', 'active')
         .order('created_at', { ascending: false })
+
+    if (searchParams.category) {
+        query = query.eq('category_id', searchParams.category)
+    }
+
+    const { data: products } = await query
 
     return (
         <div className="bg-black text-white min-h-screen">
