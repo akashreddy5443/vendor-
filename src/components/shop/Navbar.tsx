@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, ShoppingCart } from 'lucide-react'
+import { ShoppingBag, ShoppingCart, Heart } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -58,6 +58,10 @@ export function Navbar() {
                 <div className="flex gap-6 text-sm font-medium items-center">
                     <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
                     <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
+                    <Link href="/user/wishlist" className="hover:text-primary transition-colors">
+                        <span className="sr-only">Wishlist</span>
+                        <Heart className="h-5 w-5" />
+                    </Link>
                     <Link href="/cart" className="hover:text-primary transition-colors relative group">
                         <span className="sr-only">Cart</span>
                         <div className="relative">
