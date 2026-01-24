@@ -38,6 +38,10 @@ export default function RegisterPage() {
                 <form action={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
                         <div>
+                            <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+                            <input name="fullName" type="text" required className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
+                        </div>
+                        <div>
                             <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
                             <input name="email" type="email" required className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
                         </div>

@@ -9,13 +9,16 @@ export async function signup(formData: FormData) {
 
     const email = formData.get('email') as string
     const password = formData.get('password') as string
+    const fullName = formData.get('fullName') as string
 
     // 1. Sign Up Auth User (Standard)
     const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-            // Optional: You could add default metadata here if needed
+            data: {
+                full_name: fullName,
+            }
         }
     })
 
