@@ -71,6 +71,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
                                 productId={product.id}
                                 price={product.price}
                                 stock={product.stock}
+                                title={product.title}
+                                image={product.product_images?.[0]?.cloudinary_url}
                             />
                         </div>
                     </div>
