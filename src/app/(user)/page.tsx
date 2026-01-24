@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { formatPrice } from '@/lib/utils'
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -10,6 +11,23 @@ export default async function HomePage() {
     .select('*')
     .eq('section_type', 'hero')
     .single()
+
+  const { data: featuredSection } = await supabase
+    .from('homepage_sections')
+    .select('*')
+    .eq('section_type', 'featured')
+    .single()
+
+  let featuredProducts = []
+  if (featuredSection?.content_json?.productIds?.length > 0) {
+    const { data } = await supabase
+      .from('products')
+      .select('*')
+      .in('id', featuredSection.content_json.productIds)
+      .eq('status', 'active')
+
+    featuredProducts = data || []
+  }
 
   const heroData = {
     title: heroSection?.title || 'LEVEL UP YOUR SETUP',
@@ -49,16 +67,28 @@ export default async function HomePage() {
       <section className="py-20 px-6">
         <h2 className="text-3xl font-bold text-center mb-12">FEATURED GEAR</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Skeleton Cards */}
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="group relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
-              <div className="aspect-square bg-gray-800 animate-pulse"></div>
-              <div className="p-4">
-                <div className="h-6 w-3/4 bg-gray-800 rounded animate-pulse mb-2"></div>
-                <div className="h-4 w-1/4 bg-gray-800 rounded animate-pulse"></div>
-              </div>
+          {featuredProducts.length > 0 ? (
+            featuredProducts.map((product) => (
+              <Link key={product.id} href={`/products/${product.id}`} className="group relative overflow-hidden rounded-xl border border-gray-800 bg-gray-900 transition-all hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-900/10">
+                <div className="aspect-square bg-gray-800 flex items-center justify-center overflow-hidden">
+                  {/* Placeholder for Product Image if not joined yet */}
+                  <span className="text-gray-600">No Image</span>
+                  {/* In real implementation, we would fetch product_images and display primary one */}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-orange-500 transition-colors">{product.title}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">{formatPrice(product.price)}</span>
+                    <span className="text-xs font-bold text-orange-500 uppercase tracking-wider">View</span>
+                  </div>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500 py-10">
+              No featured products selected. Check Admin Panel.
             </div>
-          ))}
+          )}
         </div>
       </section>
     </div>

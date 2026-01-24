@@ -16,6 +16,8 @@ const navItems = [
     { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
+import { ExternalLink } from 'lucide-react'
+
 export function AdminSidebar() {
     const pathname = usePathname()
 
@@ -44,6 +46,16 @@ export function AdminSidebar() {
                     )
                 })}
             </nav>
+            <div className="mt-auto border-t border-gray-800 p-4">
+                <Link
+                    href="/"
+                    target="_blank"
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-900 hover:text-white transition-colors"
+                >
+                    <ExternalLink className="h-5 w-5" />
+                    Open Live Site
+                </Link>
+            </div>
         </aside>
     )
 }
