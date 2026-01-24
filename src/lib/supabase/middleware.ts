@@ -20,11 +20,13 @@ export async function updateSession(request: NextRequest) {
                     cookiesToSet.forEach(({ name, value, options }) =>
                         request.cookies.set(name, value)
                     )
+
                     response = NextResponse.next({
                         request: {
                             headers: request.headers,
                         },
                     })
+
                     cookiesToSet.forEach(({ name, value, options }) =>
                         response.cookies.set(name, value, options)
                     )
@@ -32,6 +34,10 @@ export async function updateSession(request: NextRequest) {
             },
         }
     )
+
+    // IMPORTANT: Avoid writing any logic between createServerClient and
+    // supabase.auth.getUser(). A simple mistake could make it very hard to debug
+    // why users are being logged out randomly.
 
     const {
         data: { user },
@@ -42,11 +48,6 @@ export async function updateSession(request: NextRequest) {
         if (!user) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
-        // TODO: Add Role Check here once User table is set up
-        // const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
-        // if (profile?.role !== 'admin') {
-        //   return NextResponse.redirect(new URL('/', request.url))
-        // }
     }
 
     if (request.nextUrl.pathname.startsWith('/user')) {
@@ -54,6 +55,8 @@ export async function updateSession(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }
+
+    // Refresh Session if needed (getUser handles this internally via setAll)
 
     return response
 }
