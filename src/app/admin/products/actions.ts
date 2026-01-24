@@ -48,3 +48,17 @@ export async function createProduct(formData: FormData) {
     revalidatePath('/admin/products')
     redirect('/admin/products')
 }
+
+export async function deleteProduct(formData: FormData) {
+    const supabase = await createClient()
+    const id = formData.get('id') as string
+
+    const { error } = await supabase.from('products').delete().eq('id', id)
+
+    if (error) {
+        console.error('Error deleting product:', error)
+        return { error: 'Failed to delete product' }
+    }
+
+    revalidatePath('/admin/products')
+}
