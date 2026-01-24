@@ -16,14 +16,17 @@ export async function updateAnnouncementBar(formData: FormData) {
         show
     }
 
+    // robustness: delete existing to avoid duplicate issues if unique constraint is missing
+    await supabase.from('homepage_sections').delete().eq('section_type', 'announcement')
+
     const { error } = await supabase
         .from('homepage_sections')
-        .upsert({
+        .insert({
             section_type: 'announcement',
             title: 'Announcement Bar',
             content_json: content,
             is_active: show
-        }, { onConflict: 'section_type' })
+        })
 
     if (error) {
         return { error: error.message }
@@ -36,14 +39,17 @@ export async function updateAnnouncementBar(formData: FormData) {
 export async function updateFooter(data: any) {
     const supabase = await createClient()
 
+    // robustness: delete existing to avoid duplicate issues
+    await supabase.from('homepage_sections').delete().eq('section_type', 'footer')
+
     const { error } = await supabase
         .from('homepage_sections')
-        .upsert({
+        .insert({
             section_type: 'footer',
             title: 'Footer Configuration',
             content_json: data,
             is_active: true
-        }, { onConflict: 'section_type' })
+        })
 
     if (error) {
         return { error: error.message }
