@@ -7,7 +7,7 @@ export default function LoginPage(props: {
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
             <div className="w-full max-w-md rounded-lg border border-gray-800 bg-black p-8 shadow-lg">
                 <h2 className="mb-6 text-center text-3xl font-bold text-orange-500">
-                    TechDev Login
+                    Admin Login
                 </h2>
 
                 {props.searchParams.error && (
@@ -52,12 +52,6 @@ export default function LoginPage(props: {
                         className="mt-4 rounded bg-orange-600 px-4 py-2 font-bold text-white hover:bg-orange-500"
                     >
                         Log in
-                    </button>
-                    <button
-                        formAction={signup}
-                        className="mt-2 rounded border border-gray-700 bg-transparent px-4 py-2 font-bold text-gray-300 hover:bg-gray-800"
-                    >
-                        Sign up
                     </button>
                 </form>
             </div>
