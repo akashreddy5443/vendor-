@@ -1,0 +1,91 @@
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+
+export function FilterSidebar({ categories }: { categories: any[] }) {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    // Initial State from URL
+    const currentCategory = searchParams.get('category') || 'all'
+    const currentMinPrice = searchParams.get('min_price') || ''
+    const currentMaxPrice = searchParams.get('max_price') || ''
+
+    const [minPrice, setMinPrice] = useState(currentMinPrice)
+    const [maxPrice, setMaxPrice] = useState(currentMaxPrice)
+
+    const handleCategoryChange = (catId: string) => {
+        const params = new URLSearchParams(searchParams.toString())
+        if (catId === 'all') params.delete('category')
+        else params.set('category', catId)
+        router.push(`/search?${params.toString()}`)
+    }
+
+    const applyPriceFilter = () => {
+        const params = new URLSearchParams(searchParams.toString())
+        if (minPrice) params.set('min_price', minPrice)
+        else params.delete('min_price')
+
+        if (maxPrice) params.set('max_price', maxPrice)
+        else params.delete('max_price')
+
+        router.push(`/search?${params.toString()}`)
+    }
+
+    return (
+        <div className="space-y-8">
+            {/* Categories */}
+            <div>
+                <h3 className="font-bold text-white mb-4">Categories</h3>
+                <div className="space-y-2">
+                    <button
+                        onClick={() => handleCategoryChange('all')}
+                        className={`block text-sm ${currentCategory === 'all' ? 'text-orange-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                    >
+                        All Products
+                    </button>
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.id}
+                            onClick={() => handleCategoryChange(cat.id)}
+                            className={`block text-sm ${currentCategory === cat.id ? 'text-orange-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            {cat.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Price Range */}
+            <div>
+                <h3 className="font-bold text-white mb-4">Price Range</h3>
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="number"
+                            placeholder="Min"
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                        />
+                        <span className="text-gray-500">-</span>
+                        <input
+                            type="number"
+                            placeholder="Max"
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                        />
+                    </div>
+                    <button
+                        onClick={applyPriceFilter}
+                        className="w-full rounded bg-zinc-800 py-2 text-xs font-bold text-white hover:bg-zinc-700"
+                    >
+                        Apply Price
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}

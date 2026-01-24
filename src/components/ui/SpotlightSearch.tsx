@@ -65,6 +65,18 @@ export function SpotlightSearch() {
         setQuery('')
     }
 
+    const handleSearchAll = () => {
+        setOpen(false)
+        router.push(`/search?q=${encodeURIComponent(query)}`)
+        setQuery('')
+    }
+
+    const onKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSearchAll()
+        }
+    }
+
     return (
         <>
             {/* Trigger Button (Visible on Desktop Navbar usually, or hidden if pure shortcut) */}
@@ -112,6 +124,7 @@ export function SpotlightSearch() {
                                     ref={inputRef}
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
+                                    onKeyDown={onKeyDown}
                                     placeholder="Search products..."
                                     className="flex h-14 w-full bg-transparent py-3 text-lg text-white placeholder:text-gray-500 focus:outline-none"
                                 />
@@ -160,15 +173,23 @@ export function SpotlightSearch() {
                                 ))}
                             </div>
 
-                            <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2">
-                                <p className="text-[10px] text-gray-500 flex justify-end gap-2">
-                                    <span>Search by TechDev</span>
-                                </p>
-                            </div>
                         </motion.div>
+
+                        <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2 flex items-center justify-between">
+                            <button
+                                onClick={handleSearchAll}
+                                className="text-xs text-orange-500 hover:text-orange-400 font-medium"
+                            >
+                                Press Enter to see all results
+                            </button>
+                            <p className="text-[10px] text-gray-500 gap-2 hidden sm:flex">
+                                <span>Search by TechDev</span>
+                            </p>
+                        </div>
+                    </motion.div>
                     </div>
                 )}
-            </AnimatePresence>
+        </AnimatePresence >
         </>
     )
 }
