@@ -8,7 +8,7 @@ export default function LoginPage(props: {
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
             <div className="w-full max-w-md rounded-lg border border-gray-800 bg-black p-8 shadow-lg">
                 <h2 className="mb-6 text-center text-3xl font-bold text-orange-500">
-                    Admin Login
+                    Sign In
                 </h2>
 
                 {props.searchParams.error && (
