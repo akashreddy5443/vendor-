@@ -55,17 +55,29 @@ export function SettingsForm({ settings }: { settings: any }) {
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label htmlFor="description" className="text-sm font-medium text-gray-400">Site Description (SEO)</label>
-                    <textarea
-                        name="description"
-                        id="description"
-                        defaultValue={settings?.description}
-                        rows={3}
+                <div className="space-y-2 col-span-1 md:col-span-2">
+                    <label htmlFor="logo_url" className="text-sm font-medium text-gray-400">Logo URL (Square image recommended)</label>
+                    <input
+                        name="logo_url"
+                        id="logo_url"
+                        defaultValue={settings?.logo_url}
+                        placeholder="https://..."
                         className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-orange-500 outline-none"
                     />
                 </div>
             </div>
+
+            <div className="space-y-2">
+                <label htmlFor="description" className="text-sm font-medium text-gray-400">Site Description (SEO)</label>
+                <textarea
+                    name="description"
+                    id="description"
+                    defaultValue={settings?.description}
+                    rows={3}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-orange-500 outline-none"
+                />
+            </div>
+
 
             {/* Danger Zone */}
             <div className="space-y-4 pt-4">
@@ -101,6 +113,6 @@ export function SettingsForm({ settings }: { settings: any }) {
                     {isPending ? 'Saving...' : 'Save Changes'}
                 </button>
             </div>
-        </form>
+        </form >
     )
 }

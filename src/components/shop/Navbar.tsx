@@ -15,13 +15,23 @@ export function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const { cartCount } = useCart()
 
+    const [settings, setSettings] = useState<any>(null)
+
     useEffect(() => {
         const supabase = createClient()
 
         const init = async () => {
+            // Fetch Settings
+            const { data: settingsData } = await supabase
+                .from('site_settings')
+                .select('logo_url, site_name')
+                .single()
+            setSettings(settingsData)
+
             // Fetch User
             const { data: { user } } = await supabase.auth.getUser()
             setUser(user)
+            // ... existing announcement fetch logic
 
             // Fetch Announcement
             const { data } = await supabase
@@ -35,7 +45,7 @@ export function Navbar() {
         }
         init()
 
-        // Real-time Auth Listener
+        // ... auth listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null)
         })
@@ -72,8 +82,12 @@ export function Navbar() {
                     </button>
 
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
-                        <ShoppingBag className="h-6 w-6" />
-                        <span className="hidden min-[370px]:inline">TechDev</span>
+                        {settings?.logo_url ? (
+                            <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
+                        ) : (
+                            <ShoppingBag className="h-6 w-6" />
+                        )}
+                        <span className="hidden min-[370px]:inline">{settings?.site_name || 'TechDev'}</span>
                     </Link>
                     <SpotlightSearch />
                 </div>

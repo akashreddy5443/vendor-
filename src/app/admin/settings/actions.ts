@@ -10,6 +10,7 @@ export async function updateSettings(formData: FormData) {
     const description = formData.get('description') as string
     const contact_email = formData.get('contact_email') as string
     const maintenance_mode = formData.get('maintenance_mode') === 'on'
+    const logo_url = formData.get('logo_url') as string
 
     const { error } = await supabase
         .from('site_settings')
@@ -19,6 +20,7 @@ export async function updateSettings(formData: FormData) {
             description,
             contact_email,
             maintenance_mode,
+            logo_url,
             updated_at: new Date().toISOString()
         }, { onConflict: 'id' })
 

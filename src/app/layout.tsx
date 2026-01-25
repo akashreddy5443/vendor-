@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   description: "Premium Developer Gear",
 };
 
+import { MobileBottomNav } from "@/components/shop/MobileBottomNav";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,10 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased pb-16 md:pb-0`}
       >
         <Providers>
           {children}
+          <MobileBottomNav />
         </Providers>
       </body>
     </html>
