@@ -39,7 +39,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
             price: product.price,
             image: product.image,
             maxStock: product.stock
-        })
+        }, 1)
         setTimeout(() => setAdding(false), 500)
     }
 
