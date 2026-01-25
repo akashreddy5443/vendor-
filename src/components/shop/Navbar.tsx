@@ -89,7 +89,9 @@ export function Navbar() {
                         )}
                         <span className="hidden min-[370px]:inline">{settings?.site_name || 'TechDev'}</span>
                     </Link>
-                    <SpotlightSearch />
+                    <div className="hidden md:block">
+                        <SpotlightSearch />
+                    </div>
                 </div>
 
                 {/* Desktop Nav */}
@@ -133,8 +135,9 @@ export function Navbar() {
                     <ThemeToggle />
                 </div>
 
-                {/* Mobile Right Icons (Cart only, keep it accessible) */}
+                {/* Mobile Right Icons (Cart + Theme Toggle) */}
                 <div className="flex md:hidden items-center gap-4">
+                    <ThemeToggle />
                     <Link href="/cart" className="relative text-gray-400 hover:text-white">
                         <ShoppingCart className="h-5 w-5" />
                         {cartCount > 0 && (

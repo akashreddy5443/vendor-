@@ -52,7 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return (
         <>
             <div className="group relative flex flex-col overflow-hidden rounded-xl border border-blue-900/30 bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/20">
-                <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-0" />
+                <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
                 <div className="aspect-square bg-black/40 relative overflow-hidden flex items-center justify-center">
                     {/* Purple Glow Effect - Always visible (30%) -> Intense on Hover (100%) */}

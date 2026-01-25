@@ -87,9 +87,11 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         {/* Actions */}
                         <div className="flex flex-col sm:flex-row gap-4 mb-8 border-b border-border pb-8">
                             <AddToCartButton product={product} disabled={isOutOfStock} />
-                            <div className="flex items-center gap-0 bg-card border border-border rounded-lg p-1">
-                                <span className="px-3 text-sm font-medium text-muted-foreground mr-2">Save:</span>
-                                <WishlistToggle productId={product.id} className="text-foreground hover:text-red-500" />
+                            <div className="flex items-center justify-center min-w-[3rem]">
+                                <WishlistToggle
+                                    productId={product.id}
+                                    className="p-3 rounded-full bg-card border border-border text-foreground hover:text-red-500 hover:bg-muted transition-colors"
+                                />
                             </div>
                         </div>
 
