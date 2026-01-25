@@ -9,53 +9,50 @@ export function CyberpunkCar() {
 
     useEffect(() => {
         setWindowWidth(window.innerWidth)
-        const centerPos = window.innerWidth / 2 - 140 // Center - half car width
+        const centerPos = window.innerWidth / 2 - 140 // Center
 
         const sequence = async () => {
             while (true) {
                 // 1. Reset Position (Off-screen Left)
-                await controls.set({ x: -400, y: 50, rotate: 0, scaleX: 1, opacity: 1 }) // Start low
+                await controls.set({ x: -400, y: 100, rotate: 0, scale: 1, opacity: 0 })
 
-                // 2. Full Speed Entry (slide in to center)
+                // 2. Fly In Smoothly (Arc up)
                 await controls.start({
                     x: centerPos,
-                    y: 50,
-                    transition: { duration: 1.2, ease: "circOut" }
+                    y: 0,
+                    opacity: 1,
+                    transition: { duration: 1.5, ease: "easeOut" }
                 })
 
-                // 3. Fly Up (Hover Mode Engage)
-                await controls.start({
-                    y: -50,
-                    rotate: -10, // Tilt up
-                    transition: { duration: 0.8, ease: "easeInOut" }
-                })
+                // 3. Float/Hover Animation (Breathing)
+                await controls.start({ y: -20, transition: { duration: 1.5, ease: "easeInOut" } })
+                await controls.start({ y: 0, transition: { duration: 1.5, ease: "easeInOut" } })
 
-                // 4. Hover Up and Down (Float)
-                await controls.start({ y: -80, rotate: 0, transition: { duration: 1, ease: "easeInOut" } })
-                await controls.start({ y: -20, transition: { duration: 1, ease: "easeInOut" } })
-
-                // 5. 360 Spin (Barrel Roll / Backflip)
+                // 4. 360 Spin (Barrel Roll)
                 await controls.start({
                     rotate: 360,
-                    scale: 1.2, // Zoom slightly
-                    transition: { duration: 0.8, ease: "backInOut" }
+                    scale: 1.1,
+                    transition: { duration: 0.8, ease: "easeInOut" }
                 })
-                // Reset rotation to 0 (visually identical) instantly
+                // Instant reset to 0 rotation to avoid winding up next time
                 await controls.set({ rotate: 0, scale: 1 })
 
-                // 6. "Go Back" - Turn Around and Fly Away Left
-                // Flip image to face left
-                await controls.start({ scaleX: -1, transition: { duration: 0.3 } })
-
-                // Speed off to left
+                // 5. Rev Up (Tilt back slightly)
                 await controls.start({
-                    x: -500,
+                    x: centerPos - 50, // Pull back slightly like a spring
                     rotate: -5,
-                    transition: { duration: 1.0, ease: "backIn" }
+                    transition: { duration: 0.5, ease: "easeOut" }
                 })
 
-                // Wait before repeating
-                await new Promise(resolve => setTimeout(resolve, 2000))
+                // 6. Blast Off Right
+                await controls.start({
+                    x: window.innerWidth + 500,
+                    rotate: 5, // Nose down for speed or up depending on style, let's go slight tilt
+                    transition: { duration: 1.2, ease: "backIn" } // backIn gives it that "launch" snap
+                })
+
+                // Wait before next car
+                await new Promise(resolve => setTimeout(resolve, 1500))
             }
         }
 
@@ -63,49 +60,33 @@ export function CyberpunkCar() {
     }, [controls])
 
     return (
-        <div className="absolute bottom-0 left-0 right-0 h-64 pointer-events-none z-30 overflow-hidden flex items-end">
+        <div className="absolute bottom-10 left-0 right-0 h-48 pointer-events-none z-30 overflow-hidden flex items-end">
             <motion.div
                 animate={controls}
-                className="absolute bottom-10 left-0" // Using absolute positioning driven by controls.x
+                className="absolute bottom-10 left-0"
             >
-                {/* Car Container */}
-                <div className="relative w-[280px] h-[100px]">
-                    {/* The Image - V3 */}
-                    {/* Assuming white background, using blend mode to remove it on dark background */}
+                {/* Car Container - Increased size slightly */}
+                <div className="relative w-[320px] h-[110px]">
                     <img
                         src="/car-pixel-v3.png"
                         alt="Cyberpunk Car"
-                        className="w-full h-full object-contain mix-blend-screen" // Screen or Lighten usually keeps lights, drops blacks? 
-                        // Wait, if it has WHITE background and we are on DARK, we want Multiply to keep darks? 
-                        // No, removing WHITE background on DARK requires Multiply? No, Multiply keeps BLACK. 
-                        // We want to remove WHITE. Multiply: 1 * Color = Color. 0 * Color = 0. White is 1. Black is 0. 
-                        // So Multiply on Dark Background: The White pixels (1) will become transparent? 
-                        // No. White (1) * Dark (0.1) = 0.1. So White becomes Dark. Yes!
-                        // But the car is dark? If car is dark pixel art, Multiply works.
-                        // If car is neon (bright), Multiply might darken it.
-                        // Let's try MIX-BLEND-MULTIPLY. 
-                        // Ensure parent has z-index context right. 
-                        // Actually better to use a tight Clip Path if blend modes are risky.
+                        // Tweaking fit to ensure it looks good
+                        className="w-full h-full object-contain mix-blend-screen"
                         style={{
                             imageRendering: 'pixelated',
-                            // Tighter crop in case blend mode fails or artifacts appear
-                            // clipPath: 'inset(10% 5% 10% 5%)'
                         }}
                     />
-
-                    {/* Manual glow behind to separate from bg if multiply makes it too dark */}
-                    {/* If we use Multiply, the white bg becomes transparent (showing the black hero bg). Ideally. */}
                 </div>
 
-                {/* Thruster Flame (Dynamic based on direction? We flip scaleX, so this flips too!) */}
+                {/* Thruster Flame (Dynamic) */}
                 <motion.div
-                    className="absolute top-[55%] -left-6 w-12 h-6 bg-cyan-500 blur-md rounded-full"
-                    animate={{ opacity: [0.5, 1, 0.5], scale: [0.8, 1.2, 0.8] }}
-                    transition={{ duration: 0.2, repeat: Infinity }}
+                    className="absolute top-[55%] -left-8 w-20 h-8 bg-cyan-500 blur-lg rounded-full opacity-80"
+                    animate={{ scaleX: [0.8, 1.2, 0.8], opacity: [0.6, 1, 0.6] }}
+                    transition={{ duration: 0.1, repeat: Infinity }}
                 />
 
                 {/* Underglow */}
-                <div className="absolute -bottom-4 left-4 right-4 h-6 bg-purple-600/60 blur-xl rounded-full" />
+                <div className="absolute top-[80%] left-6 right-6 h-6 bg-purple-600/70 blur-xl rounded-full" />
             </motion.div>
         </div>
     )
