@@ -27,52 +27,70 @@
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #09090b;
-  /* Zinc 950 */
-  --card: #ffffff;
-  --card-foreground: #09090b;
-  --popover: #ffffff;
-  --popover-foreground: #09090b;
-  --primary: #ea580c;
-  /* Orange 600 */
-  --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
-  /* Zinc 100 */
-  --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
+  /* Premium Cream & Midnight Blue Scheme */
+  --background: #FDFBF7;
+  --foreground: #0B1026;
+
+  --card: #FFFFFF;
+  --card-foreground: #0B1026;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #0B1026;
+
+  --primary: #0B1026;
+  /* Midnight Blue for primary actions/icons */
+  --primary-foreground: #FDFBF7;
+
+  --secondary: #F2EFE5;
+  /* Darker Cream for secondary backgrounds */
+  --secondary-foreground: #0B1026;
+
+  --muted: #F2EFE5;
+  --muted-foreground: #5B6375;
+  /* Muted blue-gray */
+
+  --accent: #F2EFE5;
+  --accent-foreground: #0B1026;
+
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #ea580c;
+
+  --border: #E5E0D5;
+  /* Warm border */
+  --input: #E5E0D5;
+  --ring: #0B1026;
+
+  /* Retain Orange for specific "Call to Action" if needed, usually via utility classes or custom var */
+  --brand-orange: #ea580c;
 }
 
+/* Dark mode override - User requested Cream Theme specifically. 
+   For now, we make dark mode similar or slightly darker Blue but keep Cream essence 
+   OR we can just alias it to the same if they want "One Theme".
+   Let's keep a "Dark Blue" version for dark mode just in case. */
 .dark {
-  --background: #09090b;
-  /* Zinc 950 */
-  --foreground: #ededed;
-  --card: #09090b;
-  --card-foreground: #ededed;
-  --popover: #09090b;
-  --popover-foreground: #ededed;
-  --primary: #ea580c;
-  --primary-foreground: #ffffff;
-  --secondary: #27272a;
-  /* Zinc 800 */
-  --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
+  --background: #050814;
+  /* Very dark midnight blue */
+  --foreground: #FDFBF7;
+  /* Cream text */
+  --card: #0B1026;
+  --card-foreground: #FDFBF7;
+  --popover: #0B1026;
+  --popover-foreground: #FDFBF7;
+  --primary: #FDFBF7;
+  /* In dark mode, primary icon is Cream */
+  --primary-foreground: #0B1026;
+  --secondary: #1A2138;
+  --secondary-foreground: #FDFBF7;
+  --muted: #1A2138;
+  --muted-foreground: #94A3B8;
+  --accent: #1A2138;
+  --accent-foreground: #FDFBF7;
   --destructive: #7f1d1d;
   --destructive-foreground: #ffffff;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #ea580c;
+  --border: #1A2138;
+  --input: #1A2138;
+  --ring: #FDFBF7;
 }
 
 body {
