@@ -82,7 +82,7 @@ export function Navbar() {
                 <div className="hidden md:flex gap-6 text-sm font-medium items-center">
                     <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
                     <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
-                    <Link href="/pages/about" className="hover:text-primary transition-colors">About</Link>
+                    <Link href="/about" className="hover:text-primary transition-colors">About</Link>
 
                     {user ? (
                         <>
@@ -138,6 +138,7 @@ export function Navbar() {
                         <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Home</Link>
                         <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Products</Link>
                         <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Categories</Link>
+                        <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">About</Link>
                     </div>
 
                     <div className="border-t border-zinc-800 pt-6 flex flex-col gap-4">

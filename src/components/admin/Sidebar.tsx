@@ -14,6 +14,7 @@ const navItems = [
     { label: 'Pages', href: '/admin/pages', icon: FileText },
     { label: 'Site Layout', href: '/admin/layout-site', icon: LayoutDashboard },
     { label: 'Users', href: '/admin/users', icon: Users },
+    { label: 'About Page', href: '/admin/settings/about', icon: FileText },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]
 
