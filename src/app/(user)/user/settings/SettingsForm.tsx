@@ -5,10 +5,14 @@ import { Lock, Save, Loader2 } from 'lucide-react'
 
 export default function SettingsForm({
     initialFullName,
+    email,
+    hasPassword,
     updateProfile,
     updatePassword
 }: {
     initialFullName: string,
+    email: string,
+    hasPassword: boolean | undefined,
     updateProfile: any,
     updatePassword: any
 }) {
@@ -82,14 +86,36 @@ export default function SettingsForm({
                 </div>
 
                 <form id="password-form" action={handlePasswordUpdate} className="space-y-4">
+                    {!hasPassword ? (
+                        <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                            <p className="text-sm">
+                                You are currently signed in with <strong>Google</strong>. You don't have a password set.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-400 mb-2">Current Password</label>
+                            <input
+                                name="current_password" // Not used for update, just for autofill
+                                type={showPassword ? "text" : "password"}
+                                autoComplete="current-password"
+                                placeholder="Your browser may autofill this"
+                                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none"
+                            />
+                            <p className="text-xs text-gray-500 mt-2">
+                                If you saved your password in the browser, it may appear here. We cannot retrieve your password from the server.
+                            </p>
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-2">New Password</label>
-                            <input name="password" type={showPassword ? "text" : "password"} required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
+                            <input name="password" type={showPassword ? "text" : "password"} autoComplete="new-password" required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-2">Confirm Password</label>
-                            <input name="confirmPassword" type={showPassword ? "text" : "password"} required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
+                            <input name="confirmPassword" type={showPassword ? "text" : "password"} autoComplete="new-password" required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
                         </div>
                     </div>
                     <button disabled={loadingPass} type="submit" className="flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 font-bold text-white hover:bg-zinc-700 disabled:opacity-50">

@@ -43,6 +43,8 @@ export default async function SettingsPage() {
 
                     <SettingsForm
                         initialFullName={profile?.full_name || ''}
+                        email={user.email || ''}
+                        hasPassword={user?.app_metadata?.providers?.includes('email')}
                         updateProfile={updateProfile}
                         updatePassword={updatePassword}
                     />
