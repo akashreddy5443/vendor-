@@ -1,9 +1,14 @@
-import { useCart } from '@/context/CartContext'
-import { ShoppingCart } from 'lucide-react'
+'use client'
 
+import Link from 'next/link'
+import Image from 'next/image'
+import { formatPrice } from '@/lib/utils'
+import { WishlistToggle } from './WishlistToggle'
+import { Eye, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import { QuickViewModal } from './QuickViewModal'
 import { CompareToggle } from './CompareToggle'
+import { useCart } from '@/context/CartContext'
 
 interface ProductCardProps {
     product: {
@@ -11,8 +16,9 @@ interface ProductCardProps {
         title: string
         price: number
         slug?: string
-        description?: string
-        stock?: number
+        description?: string // Added for modal
+        stock?: number // Added for stock check
+        features?: any // JSONB
         product_images?: { cloudinary_url: string; is_primary: boolean }[]
     }
 }
@@ -21,7 +27,13 @@ export function ProductCard({ product }: ProductCardProps) {
     const [showQuickView, setShowQuickView] = useState(false)
     const { addItem } = useCart()
 
-    // ... (logic)
+    // Find primary image or default to first, or placeholder
+    const primaryImage = product.product_images?.find(img => img.is_primary) || product.product_images?.[0]
+    const imageUrl = primaryImage?.cloudinary_url
+
+    const stock = product.stock ?? 0
+    const isOutOfStock = stock === 0
+    const isLowStock = stock > 0 && stock <= 5
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -60,11 +72,18 @@ export function ProductCard({ product }: ProductCardProps) {
                         <span className="text-muted-foreground text-sm z-10">No Image</span>
                     )}
 
-                    {/* Stock Badges (Unchanged) */}
+                    {/* Stock Badges */}
                     {isOutOfStock && (
                         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
                             <span className="bg-red-600/90 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider border border-white/20 rounded shadow-lg transform -rotate-12">
                                 Out of Stock
+                            </span>
+                        </div>
+                    )}
+                    {isLowStock && (
+                        <div className="absolute top-2 left-2 z-10">
+                            <span className="bg-red-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded shadow-sm animate-pulse">
+                                Only {stock} Left
                             </span>
                         </div>
                     )}
