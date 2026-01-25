@@ -1,27 +1,63 @@
 'use client'
 
-import { motion, useAnimation } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { motion, useAnimation, useInView } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 
 export function CyberpunkCar() {
     const [windowWidth, setWindowWidth] = useState(1000)
     const [carState, setCarState] = useState<'idle' | 'hover' | 'rev' | 'blast'>('idle')
     const controls = useAnimation()
+    // Ref logic added below in main block
+
+    // ... (rest of logic handled by previous tool call, assuming sequential application if overlap)
+    // Actually previous tool call replaced LINES 11-63.
+    // This tool call modifies lines 3-6 to add imports and lines 66 to add ref.
+
+    // Logic:
+    // 1. imports
+    // 2. ref
+
+    // I will just replace the top imports block carefully.
+
+
+    const ref = React.useRef(null)
+    const isInView = useInView(ref)
+    const [shouldPlay, setShouldPlay] = useState(false)
+
 
     useEffect(() => {
-        setWindowWidth(window.innerWidth)
-        const centerPos = window.innerWidth / 2 - 160
+        let timer: NodeJS.Timeout
+        if (isInView) {
+            // Start 5s timer if in view
+            timer = setTimeout(() => {
+                setShouldPlay(true)
+            }, 5000)
+        } else {
+            // Reset if user leaves screen
+            setShouldPlay(false)
+            controls.stop()
+            controls.set({ x: -400, y: 100, rotate: 0, scale: 1, opacity: 0 })
+            setCarState('idle')
+        }
+        return () => clearTimeout(timer)
+    }, [isInView, controls])
 
+    useEffect(() => {
+        if (!shouldPlay) return
+
+        let isMounted = true
         const sequence = async () => {
-            while (true) {
+            while (isMounted && shouldPlay) {
                 // 1. Reset
                 setCarState('idle')
                 await controls.set({ x: -400, y: 100, rotate: 0, scale: 1, opacity: 0 })
 
+                if (!isMounted || !shouldPlay) break
+
                 // 2. Fly In
                 setCarState('hover')
                 await controls.start({
-                    x: centerPos,
+                    x: window.innerWidth / 2 - 160,
                     y: 0,
                     opacity: 1,
                     transition: { duration: 1.5, ease: "easeOut" }
@@ -42,7 +78,7 @@ export function CyberpunkCar() {
                 // 5. Rev Up
                 setCarState('rev')
                 await controls.start({
-                    x: centerPos - 50,
+                    x: (window.innerWidth / 2 - 160) - 50,
                     rotate: -5,
                     transition: { duration: 0.5, ease: "easeOut" }
                 })
@@ -60,10 +96,11 @@ export function CyberpunkCar() {
         }
 
         sequence()
-    }, [controls])
+        return () => { isMounted = false }
+    }, [shouldPlay, controls])
 
     return (
-        <div className="absolute bottom-2 md:bottom-2 left-0 right-0 h-48 pointer-events-none z-30 overflow-hidden flex items-end">
+        <div ref={ref} className="absolute bottom-2 md:bottom-2 left-0 right-0 h-48 pointer-events-none z-30 overflow-hidden flex items-end">
             <motion.div
                 animate={controls}
                 className="absolute bottom-10 left-0"
