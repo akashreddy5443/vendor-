@@ -27,11 +27,45 @@
 }
 
 :root {
-  /* Premium Dark Tech Theme (Midnight Blue & Electric Blue) */
+  /* Light Mode: Premium Cream & Midnight Blue Scheme */
+  --background: #FDFBF7;
+  --foreground: #0B1026;
+
+  --card: #FFFFFF;
+  --card-foreground: #0B1026;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #0B1026;
+
+  --primary: #0B1026;
+  /* Midnight Blue Text for Light Mode */
+  --primary-foreground: #FDFBF7;
+
+  --secondary: #F2EFE5;
+  --secondary-foreground: #0B1026;
+
+  --muted: #E5E0D5;
+  --muted-foreground: #5B6375;
+
+  --accent: #F2EFE5;
+  --accent-foreground: #0B1026;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #E5E0D5;
+  --input: #E5E0D5;
+  --ring: #0B1026;
+
+  --brand-orange: #ea580c;
+}
+
+/* Dark Mode: Premium Tech Theme (Midnight Blue & Electric Blue) */
+.dark {
   --background: #020617;
-  /* Slate 950 - Deep Space Blue */
+  /* Deep Space Blue */
   --foreground: #F8FAFC;
-  /* Slate 50 - Ice White */
+  /* Ice White */
 
   --card: #0F172A;
   /* Slate 900 */
@@ -41,16 +75,14 @@
   --popover-foreground: #F8FAFC;
 
   --primary: #3B82F6;
-  /* Blue 500 - Electric Blue */
+  /* Electric Blue Accents */
   --primary-foreground: #FFFFFF;
 
   --secondary: #1E293B;
-  /* Slate 800 */
   --secondary-foreground: #F8FAFC;
 
   --muted: #1E293B;
   --muted-foreground: #94A3B8;
-  /* Slate 400 */
 
   --accent: #1E293B;
   --accent-foreground: #F8FAFC;
@@ -58,33 +90,6 @@
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #1E293B;
-  /* Subtle dark border */
-  --input: #1E293B;
-  --ring: #3B82F6;
-
-  --brand-orange: #ea580c;
-  /* Kept for legacy compatibility if any */
-}
-
-/* Enforce Consistent Dark Theme */
-.dark {
-  --background: #020617;
-  --foreground: #F8FAFC;
-  --card: #0F172A;
-  --card-foreground: #F8FAFC;
-  --popover: #0F172A;
-  --popover-foreground: #F8FAFC;
-  --primary: #3B82F6;
-  --primary-foreground: #FFFFFF;
-  --secondary: #1E293B;
-  --secondary-foreground: #F8FAFC;
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  --accent: #1E293B;
-  --accent-foreground: #F8FAFC;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
   --border: #1E293B;
   --input: #1E293B;
   --ring: #3B82F6;

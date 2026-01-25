@@ -148,39 +148,39 @@ export function Navbar() {
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
-                <div className="md:hidden fixed inset-0 top-16 z-30 bg-black/95 backdrop-blur-xl border-t border-zinc-800 p-6 flex flex-col gap-6 animate-in slide-in-from-top-5">
-                    <div className="flex flex-col gap-4 text-lg font-medium text-gray-300">
-                        <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Home</Link>
-                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Products</Link>
+                <div className="md:hidden fixed inset-0 top-16 z-30 bg-background/95 backdrop-blur-xl border-t border-border p-6 flex flex-col gap-6 animate-in slide-in-from-top-5 pb-20 overflow-y-auto">
+                    <div className="flex flex-col gap-4 text-lg font-medium text-foreground/80">
+                        <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Home</Link>
+                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Products</Link>
 
-                        <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">Categories</Link>
-                        <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-white">About</Link>
+                        <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Categories</Link>
+                        <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">About</Link>
                     </div>
 
-                    <div className="border-t border-zinc-800 pt-6 flex flex-col gap-4">
+                    <div className="border-t border-border pt-6 flex flex-col gap-4">
                         {user ? (
                             <>
-                                <Link href="/user/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-gray-300 hover:text-white">
+                                <Link href="/user/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-foreground/80 hover:text-primary">
                                     <Heart className="h-5 w-5" /> My Wishlist
                                 </Link>
-                                <Link href="/user" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-gray-300 hover:text-white">
+                                <Link href="/user" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 text-foreground/80 hover:text-primary">
                                     <User className="h-5 w-5" /> My Account
                                 </Link>
                             </>
                         ) : (
                             <div className="flex flex-col gap-3">
-                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg border border-zinc-700 hover:bg-zinc-800 text-white">
+                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg border border-border hover:bg-muted text-foreground">
                                     Sign In
                                 </Link>
-                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold">
+                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
                                     Sign Up
                                 </Link>
                             </div>
                         )}
                     </div>
 
-                    <div className="mt-auto flex justify-between items-center border-t border-zinc-800 pt-4">
-                        <span className="text-sm text-gray-500">Theme</span>
+                    <div className="mt-auto flex justify-between items-center border-t border-border pt-4">
+                        <span className="text-sm text-muted-foreground">Theme</span>
                         <ThemeToggle />
                     </div>
                 </div>
