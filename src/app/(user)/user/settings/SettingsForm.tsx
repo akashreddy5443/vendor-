@@ -16,6 +16,8 @@ export default function SettingsForm({
     const [loadingPass, setLoadingPass] = useState(false)
     const [message, setMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null)
 
+    const [showPassword, setShowPassword] = useState(false)
+
     async function handleProfileUpdate(formData: FormData) {
         setLoadingProfile(true)
         setMessage(null)
@@ -66,19 +68,28 @@ export default function SettingsForm({
             </form>
 
             <div className="border-t border-zinc-800 pt-8 mt-8">
-                <h2 className="text-xl font-bold flex items-center gap-2 mb-6 text-orange-500">
-                    <Lock className="h-5 w-5" /> Security
-                </h2>
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-bold flex items-center gap-2 text-orange-500">
+                        <Lock className="h-5 w-5" /> Security
+                    </h2>
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-xs text-orange-500 hover:text-orange-400 font-medium"
+                    >
+                        {showPassword ? 'Hide Passwords' : 'Show Passwords'}
+                    </button>
+                </div>
 
                 <form id="password-form" action={handlePasswordUpdate} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-2">New Password</label>
-                            <input name="password" type="password" required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
+                            <input name="password" type={showPassword ? "text" : "password"} required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-400 mb-2">Confirm Password</label>
-                            <input name="confirmPassword" type="password" required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
+                            <input name="confirmPassword" type={showPassword ? "text" : "password"} required minLength={6} className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white focus:border-orange-500 focus:outline-none" />
                         </div>
                     </div>
                     <button disabled={loadingPass} type="submit" className="flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 font-bold text-white hover:bg-zinc-700 disabled:opacity-50">
