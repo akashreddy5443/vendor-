@@ -2,7 +2,8 @@ import { ProductForm } from '@/components/admin/ProductForm'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const supabase = await createClient()
 
     // Fetch Product with Images
@@ -10,7 +11,7 @@ export default async function EditProductPage({ params }: { params: { id: string
         .from('products')
         .select(`
             *,
-            product_images (cloudinary_url, media_type, is_primary)
+            product_images (cloudinary_url, media_type)
         `)
         .eq('id', params.id)
         .single()

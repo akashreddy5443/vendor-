@@ -8,14 +8,15 @@ import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
-export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+    const resolvedParams = await searchParams
     const supabase = createClient()
-    const query = searchParams.q as string || ''
-    const category = searchParams.category as string || 'all'
-    const sort = searchParams.sort as string || 'relevance'
-    const minPrice = searchParams.min_price ? Number(searchParams.min_price) : 0
+    const query = (resolvedParams.q as string) || ''
+    const category = (resolvedParams.category as string) || 'all'
+    const sort = (resolvedParams.sort as string) || 'relevance'
+    const minPrice = resolvedParams.min_price ? Number(resolvedParams.min_price) : 0
     // Fix: Don't set an arbitrary default max price, allow infinity if not set
-    const maxPrice = searchParams.max_price ? Number(searchParams.max_price) : null
+    const maxPrice = resolvedParams.max_price ? Number(resolvedParams.max_price) : null
 
     console.log('[Search] Params:', { query, category, minPrice, maxPrice })
 

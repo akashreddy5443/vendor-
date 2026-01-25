@@ -22,7 +22,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
 }
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+export default async function ProductDetailPage(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params
     const supabase = await createClient()
 
     console.log('[PDP] Params:', params)
