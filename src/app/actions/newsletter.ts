@@ -44,11 +44,13 @@ export async function subscribeToNewsletter(formData: FormData) {
     // Send Welcome Email
     try {
         if (process.env.RESEND_API_KEY) {
-            await resend.emails.send({
-                from: 'TechDev Store <onboarding@resend.dev>', // Default testing domain
-                to: email,
-                subject: 'Welcome to TechDev Store! 🚀',
-                html: `
+            try {
+                if (process.env.RESEND_API_KEY) {
+                    const { error: emailError } = await resend.emails.send({
+                        from: 'TechDev Store <onboarding@resend.dev>', // Default testing domain
+                        to: email,
+                        subject: 'Welcome to TechDev Store! 🚀',
+                        html: `
                     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
                         <h1 style="color: #ff4500;">Welcome to the Clan!</h1>
                         <p>Hey there,</p>
@@ -60,32 +62,38 @@ export async function subscribeToNewsletter(formData: FormData) {
                         <p>Happy Coding,<br/>The TechDev Team</p>
                     </div>
                 `
-            })
-            console.log(`Welcome email sent to ${email}`)
-        } else {
-            console.log(`[DEV] Email would be sent to ${email} (Missing RESEND_API_KEY)`)
+                    })
+
+                    if (emailError) {
+                        console.error('RESEND API ERROR:', emailError)
+                        return { success: true, message: `Subscribed, but email failed: ${emailError.message}` }
+                    }
+
+                    console.log(`Welcome email sent to ${email}`)
+                } else {
+                    console.log(`[DEV] Email would be sent to ${email} (Missing RESEND_API_KEY)`)
+                }
+            } catch (err: any) {
+                console.error('UNEXPECTED EMAIL ERROR:', err)
+                // Return success anyway to not block subscription, but maybe warn?
+            }
+
+            revalidatePath('/admin/subscribers')
+
+            return { success: true, message: 'Successfully subscribed! Check your inbox.' }
         }
-    } catch (emailError) {
-        console.error('Failed to send welcome email:', emailError)
-        // Don't fail the subscription just because email failed
-    }
 
-    revalidatePath('/admin/subscribers')
+        export async function deleteSubscriber(id: string) {
+            const supabase = await createClient()
+            const { error } = await supabase
+                .from('newsletter_subscribers')
+                .delete()
+                .eq('id', id)
 
-    return { success: true, message: 'Successfully subscribed! Check your inbox.' }
-}
+            if (error) {
+                return { error: 'Failed to delete subscriber' }
+            }
 
-export async function deleteSubscriber(id: string) {
-    const supabase = await createClient()
-    const { error } = await supabase
-        .from('newsletter_subscribers')
-        .delete()
-        .eq('id', id)
-
-    if (error) {
-        return { error: 'Failed to delete subscriber' }
-    }
-
-    revalidatePath('/admin/subscribers')
-    return { success: true }
-}
+            revalidatePath('/admin/subscribers')
+            return { success: true }
+        }
