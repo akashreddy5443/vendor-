@@ -1,13 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight, Check, Loader2 } from 'lucide-react'
 import { subscribeToNewsletter } from '@/app/actions/newsletter'
+import { createClient } from '@/lib/supabase/client'
 
 export function NewsletterForm() {
     const [email, setEmail] = useState('')
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
     const [message, setMessage] = useState('')
+    const [user, setUser] = useState<any>(null)
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const supabase = createClient()
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user?.email) {
+                setUser(user)
+                setEmail(user.email)
+            }
+        }
+        fetchUser()
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
