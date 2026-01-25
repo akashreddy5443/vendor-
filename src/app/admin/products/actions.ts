@@ -68,3 +68,56 @@ export async function deleteProduct(formData: FormData) {
 
     revalidatePath('/admin/products')
 }
+
+export async function updateProduct(formData: FormData) {
+    const supabase = await createClient()
+
+    const id = formData.get('id') as string
+    const title = formData.get('title') as string
+    const description = formData.get('description') as string
+    const price = parseFloat(formData.get('price') as string)
+    const stock = parseInt(formData.get('stock') as string)
+    const status = formData.get('status') as string
+    const category_id = formData.get('category_id') as string || null
+    const mediaString = formData.get('media') as string
+    const media = mediaString ? JSON.parse(mediaString) : []
+
+    // 1. Update Product
+    const { error: updateError } = await supabase
+        .from('products')
+        .update({
+            title,
+            description,
+            price,
+            stock,
+            status,
+            category_id,
+        })
+        .eq('id', id)
+
+    if (updateError) {
+        console.error('Error updating product:', updateError)
+        return { error: 'Failed to update product' }
+    }
+
+    // 2. Update Media (Strategy: Delete Non-Primary/All and Re-insert? 
+    // Or smarter diff? For simplicity, we delete all image entries for this product and re-add 
+    // to match the form state exactly. This preserves order.)
+
+    // First, delete existing
+    await supabase.from('product_images').delete().eq('product_id', id)
+
+    // Then insert new
+    if (media.length > 0) {
+        const imagesData = media.map((item: any, index: number) => ({
+            product_id: id,
+            cloudinary_url: item.url,
+            media_type: item.type,
+            is_primary: index === 0
+        }))
+        await supabase.from('product_images').insert(imagesData)
+    }
+
+    revalidatePath('/admin/products')
+    redirect('/admin/products')
+}

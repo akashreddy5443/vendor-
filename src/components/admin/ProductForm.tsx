@@ -1,16 +1,29 @@
-'use client'
-
-import { createProduct } from '@/app/admin/products/actions'
+import { createProduct, updateProduct } from '@/app/admin/products/actions'
 import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus, X } from 'lucide-react'
 import { useState } from 'react'
 
 interface ProductFormProps {
     categories?: { id: string, name: string }[]
+    initialData?: {
+        id: string
+        title: string
+        description?: string
+        price: number
+        stock: number
+        status: string
+        category_id?: string
+        product_images?: { cloudinary_url: string, media_type: string }[]
+    }
 }
 
-export function ProductForm({ categories = [] }: ProductFormProps) {
-    const [media, setMedia] = useState<{ url: string, type: 'image' | 'video' }[]>([])
+export function ProductForm({ categories = [], initialData }: ProductFormProps) {
+    const [media, setMedia] = useState<{ url: string, type: 'image' | 'video' }[]>(
+        initialData?.product_images?.map(img => ({
+            url: img.cloudinary_url,
+            type: (img.media_type === 'video' ? 'video' : 'image')
+        })) || []
+    )
 
     const addMedia = (url: string, type: string) => {
         // Cloudinary returns 'image' or 'video'. We map it to our type.
@@ -24,7 +37,12 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
     }
 
     const handleSubmit = async (formData: FormData) => {
-        await createProduct(formData)
+        if (initialData) {
+            formData.append('id', initialData.id)
+            await updateProduct(formData)
+        } else {
+            await createProduct(formData)
+        }
     }
 
     return (
@@ -38,6 +56,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                         id="title"
                         name="title"
                         required
+                        defaultValue={initialData?.title}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                         placeholder="e.g. LTT Screwdriver"
                     />
@@ -50,6 +69,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                     <select
                         id="category_id"
                         name="category_id"
+                        defaultValue={initialData?.category_id || ""}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                     >
                         <option value="">Select a Category</option>
@@ -68,6 +88,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                     id="description"
                     name="description"
                     rows={4}
+                    defaultValue={initialData?.description}
                     className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                     placeholder="Product details..."
                 />
@@ -84,6 +105,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                         type="number"
                         step="0.01"
                         required
+                        defaultValue={initialData?.price}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                         placeholder="0.00"
                     />
@@ -97,7 +119,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                         name="stock"
                         type="number"
                         required
-                        defaultValue={0}
+                        defaultValue={initialData?.stock ?? 0}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                     />
                 </div>
@@ -135,7 +157,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                     <CldUploadWidget
                         uploadPreset="ml_default"
                         options={{
-                            resourceType: 'auto',  // Allow images and videos
+                            resourceType: 'auto',
                             multiple: true,
                             maxFiles: 6
                         }}
@@ -168,6 +190,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                 <select
                     id="status"
                     name="status"
+                    defaultValue={initialData?.status || "active"}
                     className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                 >
                     <option value="draft">Draft</option>
@@ -180,7 +203,7 @@ export function ProductForm({ categories = [] }: ProductFormProps) {
                     type="submit"
                     className="w-full rounded-md bg-orange-600 py-2 font-bold text-white transition-colors hover:bg-orange-500"
                 >
-                    Create Product
+                    {initialData ? 'Update Product' : 'Create Product'}
                 </button>
             </div>
         </form>
