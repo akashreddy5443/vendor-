@@ -51,12 +51,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <div className="group relative flex flex-col overflow-hidden rounded-xl border border-blue-900/30 bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20">
+            <div className="group relative flex flex-col overflow-hidden rounded-xl border border-blue-900/30 bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/20">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-0" />
 
                 <div className="aspect-square bg-black/40 relative overflow-hidden flex items-center justify-center">
-                    {/* Electric Blue Glow Effect */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+                    {/* Purple Glow Effect - Always visible (30%) -> Intense on Hover (100%) */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-600/30 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {imageUrl ? (
                         <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10">
