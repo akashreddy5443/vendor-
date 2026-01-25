@@ -55,7 +55,7 @@ export async function subscribeToNewsletter(formData: FormData) {
                         <p>Thanks for subscribing to the <strong>TechDev Store</strong> newsletter.</p>
                         <p>You're now on the list for exclusive drops, dev gear discounts, and setup inspiration.</p>
                         <br/>
-                        <a href="${process.env.NEXT_PUBLIC_SITE_URL}" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit Store</a>
+                        <a href="${process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes('localhost') ? process.env.NEXT_PUBLIC_SITE_URL : 'https://vendortech17.vercel.app'}" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit Store</a>
                         <br/><br/>
                         <p>Happy Coding,<br/>The TechDev Team</p>
                     </div>
