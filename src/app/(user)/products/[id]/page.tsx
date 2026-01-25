@@ -54,6 +54,21 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     {/* Right Column: Info */}
                     <div className="space-y-8">
                         <div>
+                            {/* Stock Status Badge */}
+                            {product.stock === 0 ? (
+                                <span className="inline-block rounded bg-zinc-800 px-3 py-1 text-sm font-bold text-gray-400 mb-2 border border-zinc-700">
+                                    Out of Stock
+                                </span>
+                            ) : product.stock <= 5 ? (
+                                <span className="inline-block rounded bg-red-900/30 px-3 py-1 text-sm font-bold text-red-500 mb-2 border border-red-500/20 animate-pulse">
+                                    Only {product.stock} Left in Stock!
+                                </span>
+                            ) : (
+                                <span className="inline-block rounded bg-green-900/20 px-3 py-1 text-sm font-bold text-green-500 mb-2 border border-green-500/20">
+                                    In Stock
+                                </span>
+                            )}
+
                             <h1 className="text-4xl md:text-5xl font-bold font-serif leading-tight mb-2">
                                 {product.title}
                             </h1>
