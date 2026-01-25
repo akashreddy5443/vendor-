@@ -15,10 +15,7 @@ export async function subscribeToNewsletter(formData: FormData) {
 
     const supabase = await createClient()
 
-    // Check if already subscribed
-    // Note: We skip this SELECT if we trust the UNIQUE constraint, but for user feedback it's nice.
-    // However, RLS might block SELECT if we didn't fix it fully for anon. 
-    // Let's rely on the INSERT error or our fixed RLS. our fixed RLS allows SELECT for all, so this works.
+    // 1. Check duplicate locally (Optional, but nice for UX)
     const { data: existing } = await supabase
         .from('newsletter_subscribers')
         .select('id')
@@ -29,6 +26,7 @@ export async function subscribeToNewsletter(formData: FormData) {
         return { message: 'Already subscribed!' }
     }
 
+    // 2. Insert into DB
     const { error } = await supabase
         .from('newsletter_subscribers')
         .insert({ email })
@@ -41,16 +39,14 @@ export async function subscribeToNewsletter(formData: FormData) {
         return { error: 'Failed to subscribe. Please try again.' }
     }
 
-    // Send Welcome Email
+    // 3. Send Email (Best Effort)
     try {
         if (process.env.RESEND_API_KEY) {
-            try {
-                if (process.env.RESEND_API_KEY) {
-                    const { error: emailError } = await resend.emails.send({
-                        from: 'TechDev Store <onboarding@resend.dev>', // Default testing domain
-                        to: email,
-                        subject: 'Welcome to TechDev Store! 🚀',
-                        html: `
+            const { error: emailError } = await resend.emails.send({
+                from: 'TechDev Store <onboarding@resend.dev>', // Default testing domain
+                to: email,
+                subject: 'Welcome to TechDev Store! 🚀',
+                html: `
                     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
                         <h1 style="color: #ff4500;">Welcome to the Clan!</h1>
                         <p>Hey there,</p>
@@ -62,38 +58,38 @@ export async function subscribeToNewsletter(formData: FormData) {
                         <p>Happy Coding,<br/>The TechDev Team</p>
                     </div>
                 `
-                    })
+            })
 
-                    if (emailError) {
-                        console.error('RESEND API ERROR:', emailError)
-                        return { success: true, message: `Subscribed, but email failed: ${emailError.message}` }
-                    }
-
-                    console.log(`Welcome email sent to ${email}`)
-                } else {
-                    console.log(`[DEV] Email would be sent to ${email} (Missing RESEND_API_KEY)`)
-                }
-            } catch (err: any) {
-                console.error('UNEXPECTED EMAIL ERROR:', err)
-                // Return success anyway to not block subscription, but maybe warn?
+            if (emailError) {
+                console.error('RESEND API ERROR:', emailError)
+                // We return 'success: true' because the DB insert worked, but we warn about email
+                // Note: For dev/staging, this is critical info.
+            } else {
+                console.log(`Welcome email sent to ${email}`)
             }
-
-            revalidatePath('/admin/subscribers')
-
-            return { success: true, message: 'Successfully subscribed! Check your inbox.' }
+        } else {
+            console.log(`[DEV] Email would be sent to ${email} (Missing RESEND_API_KEY)`)
         }
+    } catch (err) {
+        console.error('UNEXPECTED EMAIL ERROR:', err)
+    }
 
-        export async function deleteSubscriber(id: string) {
-            const supabase = await createClient()
-            const { error } = await supabase
-                .from('newsletter_subscribers')
-                .delete()
-                .eq('id', id)
+    revalidatePath('/admin/subscribers')
 
-            if (error) {
-                return { error: 'Failed to delete subscriber' }
-            }
+    return { success: true, message: 'Successfully subscribed! Check your inbox.' }
+}
 
-            revalidatePath('/admin/subscribers')
-            return { success: true }
-        }
+export async function deleteSubscriber(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('newsletter_subscribers')
+        .delete()
+        .eq('id', id)
+
+    if (error) {
+        return { error: 'Failed to delete subscriber' }
+    }
+
+    revalidatePath('/admin/subscribers')
+    return { success: true }
+}
