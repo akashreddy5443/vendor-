@@ -21,12 +21,8 @@ const client = new Client({ connectionString });
 
 async function check() {
     await client.connect();
-    const res = await client.query(`
-        SELECT column_name, data_type 
-        FROM information_schema.columns 
-        WHERE table_name = 'products' AND column_name = 'price'
-    `);
-    console.log("PRICE TYPE:", res.rows[0]);
+    const res = await client.query("SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'products' AND column_name = 'price'");
+    console.log("Price Type:", res.rows);
     await client.end();
 }
 check();

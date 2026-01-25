@@ -19,22 +19,50 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
 
     console.log('[Search] Params:', { query, category, minPrice, maxPrice })
 
+    // Resolve Category Slug to ID
+    let categoryId = ''
+    if (category !== 'all') {
+        const { data: catData } = await supabase
+            .from('categories')
+            .select('id')
+            .eq('slug', category)
+            .single()
+
+        if (catData) {
+            categoryId = catData.id
+            console.log('[Search] Resolved Category:', category, '->', categoryId)
+        } else {
+            // If category provided but not found, maybe it's already an ID? or invalid. 
+            // Try valid UUID check or ignore. For now, assume slug.
+        }
+    }
+
     let dbQuery = supabase
         .from('products')
         .select('*, product_images(cloudinary_url)')
         .eq('status', 'active')
-        .gte('price', minPrice)
 
-    if (maxPrice !== null) {
+    // Price Filters
+    if (minPrice > 0) {
+        dbQuery = dbQuery.gte('price', minPrice)
+    }
+    if (maxPrice !== null && maxPrice > 0) {
         dbQuery = dbQuery.lte('price', maxPrice)
     }
 
+    // Text Search
     if (query) {
         dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
     }
 
-    if (category !== 'all') {
-        dbQuery = dbQuery.eq('category_id', category)
+    // Category Filter
+    if (categoryId) {
+        dbQuery = dbQuery.eq('category_id', categoryId)
+    } else if (category !== 'all') {
+        // Fallback: If param exists but lookup failed, maybe force 0 results or ignore?
+        // If we don't filter, we show ALL products which is confusing.
+        // Let's force a non-match if category was requested but invalid
+        dbQuery = dbQuery.eq('id', '00000000-0000-0000-0000-000000000000')
     }
 
     // Sorting
@@ -42,8 +70,10 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
         dbQuery = dbQuery.order('price', { ascending: true })
     } else if (sort === 'price_desc') {
         dbQuery = dbQuery.order('price', { ascending: false })
-    } else if (sort === 'newest') {
+    } else if (sort === 'newest') { // Fix "newest" sorting key
         dbQuery = dbQuery.order('created_at', { ascending: false })
+    } else {
+        // Default sort (relevance/none)
     }
 
     const { data: products } = await dbQuery
