@@ -11,7 +11,7 @@ import { useCart } from '@/context/CartContext'
 
 export default function ComparePage() {
     const { selectedIds, removeFromCompare, clearCompare } = useComparison()
-    const { addToCart } = useCart()
+    const { addItem } = useCart()
     const [products, setProducts] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
 
@@ -95,7 +95,15 @@ export default function ComparePage() {
                                     </Link>
                                     <div className="mt-2 text-xl font-bold text-orange-600">{formatPrice(product.price)}</div>
                                     <button
-                                        onClick={() => addToCart(product)}
+                                        onClick={() => {
+                                            addItem({
+                                                productId: product.id,
+                                                title: product.title,
+                                                price: product.price,
+                                                image: product.product_images?.find((i: any) => i.is_primary)?.cloudinary_url || product.product_images?.[0]?.cloudinary_url || '',
+                                                maxStock: product.stock
+                                            }, 1)
+                                        }}
                                         className="mt-4 w-full flex items-center justify-center gap-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black py-2 rounded-md font-bold hover:opacity-90 transition-opacity"
                                     >
                                         <ShoppingCart className="h-4 w-4" /> Add to Cart
