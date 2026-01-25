@@ -14,17 +14,21 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
     const category = searchParams.category as string || 'all'
     const sort = searchParams.sort as string || 'relevance'
     const minPrice = searchParams.min_price ? Number(searchParams.min_price) : 0
-    const maxPrice = searchParams.max_price ? Number(searchParams.max_price) : 100000
+    // Fix: Don't set an arbitrary default max price, allow infinity if not set
+    const maxPrice = searchParams.max_price ? Number(searchParams.max_price) : null
 
     let dbQuery = supabase
         .from('products')
         .select('*, product_images(cloudinary_url)')
         .eq('status', 'active')
         .gte('price', minPrice)
-        .lte('price', maxPrice)
+
+    if (maxPrice !== null) {
+        dbQuery = dbQuery.lte('price', maxPrice)
+    }
 
     if (query) {
-        dbQuery = dbQuery.ilike('title', `%${query}%`)
+        dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
     }
 
     if (category !== 'all') {

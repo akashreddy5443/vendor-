@@ -28,6 +28,11 @@ export async function subscribeToNewsletter(formData: FormData) {
         .insert({ email })
 
     if (error) {
+        // Handle unique constraint violation (code 23505) gracefully
+        if (error.code === '23505') {
+            return { message: 'Already subscribed!' }
+        }
+        console.error('Newsletter error:', error)
         return { error: 'Failed to subscribe. Please try again.' }
     }
 
