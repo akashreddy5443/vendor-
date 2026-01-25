@@ -7,6 +7,7 @@ import { WishlistToggle } from './WishlistToggle'
 import { Eye } from 'lucide-react'
 import { useState } from 'react'
 import { QuickViewModal } from './QuickViewModal'
+import { CompareToggle } from './CompareToggle'
 
 interface ProductCardProps {
     product: {
@@ -69,8 +70,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
                     {/* Quick actions */}
                     <div className="absolute top-2 right-2 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-black/50 backdrop-blur-sm rounded-full p-1 hover:bg-black/70 transition-colors">
+                        <div className="bg-black/50 backdrop-blur-sm rounded-full p-1 hover:bg-black/70 transition-colors pointer-events-auto">
                             <WishlistToggle productId={product.id} />
+                        </div>
+                        <div className="bg-black/50 backdrop-blur-sm rounded-full p-1 hover:bg-black/70 transition-colors pointer-events-auto">
+                            <CompareToggle productId={product.id} />
                         </div>
                         <button
                             onClick={(e) => {

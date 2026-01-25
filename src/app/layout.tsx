@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 import { MobileBottomNav } from "@/components/shop/MobileBottomNav";
+import { CompareFloatingBar } from "@/components/shop/CompareFloatingBar";
 
 export default function RootLayout({
   children,
@@ -37,6 +38,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
+          <CompareFloatingBar />
           <MobileBottomNav />
         </Providers>
       </body>

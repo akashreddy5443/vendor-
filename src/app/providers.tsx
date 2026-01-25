@@ -5,6 +5,8 @@ import { ThemeProvider } from 'next-themes'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { SpotlightCursor } from '@/components/ui/SpotlightCursor';
 
+import { ComparisonProvider } from '@/context/ComparisonContext';
+
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
@@ -16,7 +18,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
             />
             <SpotlightCursor />
             <CartProvider>
-                {children}
+                <ComparisonProvider>
+                    {children}
+                </ComparisonProvider>
             </CartProvider>
         </ThemeProvider>
     )
