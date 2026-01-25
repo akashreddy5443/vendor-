@@ -39,7 +39,7 @@ const STEPS = [
 export function BundleWizard({ products, categories }: BundleWizardProps) {
     const [currentStep, setCurrentStep] = useState(0)
     const [selectedItems, setSelectedItems] = useState<Product[]>([])
-    const { addToCart } = useCart()
+    const { addItem } = useCart()
     const router = useRouter()
 
     const handleSelect = (product: Product) => {
@@ -89,13 +89,13 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
 
     const handleAddToCart = () => {
         selectedItems.forEach(item => {
-            addToCart({
-                id: item.id,
+            addItem({
+                productId: item.id,
                 title: item.title,
                 price: item.price,
                 image: item.product_images?.[0]?.cloudinary_url || '/placeholder.png',
-                stock: 99 // Assumption
-            })
+                maxStock: 99 // Assumption
+            }, 1)
         })
         toast.success(`Added ${selectedItems.length} items to cart!`)
         router.push('/cart')
