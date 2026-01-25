@@ -68,11 +68,12 @@ export function CyberpunkCar() {
                 animate={controls}
                 className="absolute bottom-10 left-0"
             >
-                {/* Advanced Nitro Flame Container */}
-                <div className="absolute top-[45%] -left-4 z-0 w-32 h-20 origin-right pointer-events-none">
+                {/* Advanced Nitro Flame Container - Aligned to Rear Exhaust */}
+                {/* Moved down to 58% top to match low-slung exhaust, tucked in left 15% */}
+                <div className="absolute top-[58%] left-[15%] z-0 w-32 h-20 origin-right pointer-events-none -translate-y-1/2">
                     {/* 1. Core White Hot Flame */}
                     <motion.div
-                        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white blur-sm rounded-l-full"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white blur-[2px] rounded-l-full"
                         animate={
                             carState === 'blast' ? { width: [60, 180], height: [10, 20], opacity: 1 } :
                                 carState === 'rev' ? { width: [40, 60], height: 8, opacity: 0.9 } :
@@ -103,13 +104,13 @@ export function CyberpunkCar() {
                         transition={{ duration: 0.15, repeat: Infinity, repeatType: "reverse" }}
                     />
 
-                    {/* 4. Particles / Sparks (Only visible during Blast/Rev) */}
+                    {/* 4. Particles / Sparks */}
                     {(carState === 'blast' || carState === 'rev') && (
                         <>
                             {[...Array(5)].map((_, i) => (
                                 <motion.div
                                     key={i}
-                                    className="absolute right-10 top-1/2 w-1 h-1 bg-white rounded-full"
+                                    className="absolute right-4 top-1/2 w-1 h-1 bg-white rounded-full"
                                     initial={{ x: 0, y: 0, opacity: 1 }}
                                     animate={{
                                         x: -200 - Math.random() * 100,
@@ -135,8 +136,8 @@ export function CyberpunkCar() {
                     />
                 </div>
 
-                {/* Underglow */}
-                <div className="absolute top-[80%] left-6 right-6 h-6 bg-purple-600/70 blur-xl rounded-full z-0" />
+                {/* Underglow - Adjusted to be underneath everything */}
+                <div className="absolute top-[85%] left-10 right-10 h-6 bg-purple-600/70 blur-xl rounded-full z-0" />
             </motion.div>
         </div>
     )
