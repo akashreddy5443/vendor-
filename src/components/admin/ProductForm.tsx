@@ -109,8 +109,6 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         required
                         defaultValue={initialData?.price}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
-                        required
-                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                         placeholder="0.00"
                     />
                     <p className="text-xs text-gray-400 mt-1">
