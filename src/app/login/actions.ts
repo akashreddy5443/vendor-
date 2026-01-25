@@ -60,7 +60,8 @@ export async function signup(formData: FormData) {
 
 export async function signInWithGoogle() {
     const supabase = await createClient()
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://vencortech17.vercel.app'
+    const isDev = process.env.NODE_ENV === 'development'
+    const origin = isDev ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vencortech17.vercel.app')
 
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
