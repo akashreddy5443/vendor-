@@ -43,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 productId: product.id,
                 title: product.title,
                 price: product.price,
-                stock: stock,
+                maxStock: stock,
                 image: imageUrl
             }, 1)
         }
