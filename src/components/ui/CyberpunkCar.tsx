@@ -5,18 +5,21 @@ import { useEffect, useState } from 'react'
 
 export function CyberpunkCar() {
     const [windowWidth, setWindowWidth] = useState(1000)
+    const [carState, setCarState] = useState<'idle' | 'hover' | 'rev' | 'blast'>('idle')
     const controls = useAnimation()
 
     useEffect(() => {
         setWindowWidth(window.innerWidth)
-        const centerPos = window.innerWidth / 2 - 140 // Center
+        const centerPos = window.innerWidth / 2 - 160
 
         const sequence = async () => {
             while (true) {
-                // 1. Reset Position (Off-screen Left)
+                // 1. Reset
+                setCarState('idle')
                 await controls.set({ x: -400, y: 100, rotate: 0, scale: 1, opacity: 0 })
 
-                // 2. Fly In Smoothly (Arc up)
+                // 2. Fly In
+                setCarState('hover')
                 await controls.start({
                     x: centerPos,
                     y: 0,
@@ -24,34 +27,34 @@ export function CyberpunkCar() {
                     transition: { duration: 1.5, ease: "easeOut" }
                 })
 
-                // 3. Float/Hover Animation (Breathing)
+                // 3. Float/Hover
                 await controls.start({ y: -20, transition: { duration: 1.5, ease: "easeInOut" } })
                 await controls.start({ y: 0, transition: { duration: 1.5, ease: "easeInOut" } })
 
-                // 4. 360 Spin (Barrel Roll)
+                // 4. Spin
                 await controls.start({
                     rotate: 360,
                     scale: 1.1,
                     transition: { duration: 0.8, ease: "easeInOut" }
                 })
-                // Instant reset to 0 rotation to avoid winding up next time
                 await controls.set({ rotate: 0, scale: 1 })
 
-                // 5. Rev Up (Tilt back slightly)
+                // 5. Rev Up
+                setCarState('rev')
                 await controls.start({
-                    x: centerPos - 50, // Pull back slightly like a spring
+                    x: centerPos - 50,
                     rotate: -5,
                     transition: { duration: 0.5, ease: "easeOut" }
                 })
 
-                // 6. Blast Off Right
+                // 6. Blast Off
+                setCarState('blast')
                 await controls.start({
                     x: window.innerWidth + 500,
-                    rotate: 5, // Nose down for speed or up depending on style, let's go slight tilt
-                    transition: { duration: 1.2, ease: "backIn" } // backIn gives it that "launch" snap
+                    rotate: 5,
+                    transition: { duration: 1.0, ease: "backIn" }
                 })
 
-                // Wait before next car
                 await new Promise(resolve => setTimeout(resolve, 1500))
             }
         }
@@ -65,12 +68,66 @@ export function CyberpunkCar() {
                 animate={controls}
                 className="absolute bottom-10 left-0"
             >
-                {/* Car Container - Increased size slightly */}
-                <div className="relative w-[320px] h-[110px]">
+                {/* Advanced Nitro Flame Container */}
+                <div className="absolute top-[45%] -left-4 z-0 w-32 h-20 origin-right pointer-events-none">
+                    {/* 1. Core White Hot Flame */}
+                    <motion.div
+                        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white blur-sm rounded-l-full"
+                        animate={
+                            carState === 'blast' ? { width: [60, 180], height: [10, 20], opacity: 1 } :
+                                carState === 'rev' ? { width: [40, 60], height: 8, opacity: 0.9 } :
+                                    { width: [20, 25], height: 6, opacity: 0.8 }
+                        }
+                        transition={{ duration: 0.1, repeat: Infinity, repeatType: "reverse" }}
+                    />
+
+                    {/* 2. Inner Cyan Flame */}
+                    <motion.div
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-cyan-400 blur-md rounded-l-full"
+                        animate={
+                            carState === 'blast' ? { width: [100, 250], height: [20, 40], opacity: 0.8 } :
+                                carState === 'rev' ? { width: [60, 80], height: 15, opacity: 0.7 } :
+                                    { width: [30, 40], height: 12, opacity: 0.6 }
+                        }
+                        transition={{ duration: 0.1, delay: 0.05, repeat: Infinity, repeatType: "reverse" }}
+                    />
+
+                    {/* 3. Outer Purple/Gas Trail */}
+                    <motion.div
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-purple-600 blur-xl rounded-l-full mix-blend-screen"
+                        animate={
+                            carState === 'blast' ? { width: [150, 350], height: [40, 70], opacity: 0.6 } :
+                                carState === 'rev' ? { width: [80, 100], height: 30, opacity: 0.5 } :
+                                    { width: [40, 50], height: 20, opacity: 0.4 }
+                        }
+                        transition={{ duration: 0.15, repeat: Infinity, repeatType: "reverse" }}
+                    />
+
+                    {/* 4. Particles / Sparks (Only visible during Blast/Rev) */}
+                    {(carState === 'blast' || carState === 'rev') && (
+                        <>
+                            {[...Array(5)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute right-10 top-1/2 w-1 h-1 bg-white rounded-full"
+                                    initial={{ x: 0, y: 0, opacity: 1 }}
+                                    animate={{
+                                        x: -200 - Math.random() * 100,
+                                        y: (Math.random() - 0.5) * 50,
+                                        opacity: 0
+                                    }}
+                                    transition={{ duration: 0.4, repeat: Infinity, ease: "linear", delay: i * 0.1 }}
+                                />
+                            ))}
+                        </>
+                    )}
+                </div>
+
+                {/* Car Container - Relative Z-10 to stay ON TOP of flame */}
+                <div className="relative z-10 w-[320px] h-[110px]">
                     <img
                         src="/car-pixel-v3.png"
                         alt="Cyberpunk Car"
-                        // Tweaking fit to ensure it looks good
                         className="w-full h-full object-contain mix-blend-screen"
                         style={{
                             imageRendering: 'pixelated',
@@ -78,15 +135,8 @@ export function CyberpunkCar() {
                     />
                 </div>
 
-                {/* Thruster Flame (Dynamic) */}
-                <motion.div
-                    className="absolute top-[55%] -left-8 w-20 h-8 bg-cyan-500 blur-lg rounded-full opacity-80"
-                    animate={{ scaleX: [0.8, 1.2, 0.8], opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 0.1, repeat: Infinity }}
-                />
-
                 {/* Underglow */}
-                <div className="absolute top-[80%] left-6 right-6 h-6 bg-purple-600/70 blur-xl rounded-full" />
+                <div className="absolute top-[80%] left-6 right-6 h-6 bg-purple-600/70 blur-xl rounded-full z-0" />
             </motion.div>
         </div>
     )
