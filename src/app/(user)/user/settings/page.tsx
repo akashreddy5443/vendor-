@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server' // Server Component
 import { updateProfile, updatePassword } from './actions'
 import { User, Lock, Mail, Save } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import SettingsForm from './SettingsForm' // We will create this client component for interactivity
+import SettingsForm from '@/components/user/SettingsForm'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -44,6 +44,9 @@ export default async function SettingsPage() {
                     <SettingsForm
                         initialFullName={profile?.full_name || ''}
                         email={user.email || ''}
+                        phone={profile?.phone || ''}
+                        avatarUrl={profile?.avatar_url || ''}
+                        notifications={profile?.notification_preferences}
                         hasPassword={user?.app_metadata?.providers?.includes('email')}
                         updateProfile={updateProfile}
                         updatePassword={updatePassword}

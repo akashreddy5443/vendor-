@@ -12,15 +12,23 @@ export async function updateProfile(formData: FormData) {
     }
 
     const fullName = formData.get('fullName') as string
+    const phone = formData.get('phone') as string
+    const avatarUrl = formData.get('avatarUrl') as string
+    const notifications = formData.get('notifications') as string // JSON string
 
     if (!fullName) {
         return { error: 'Full Name is required' }
     }
 
     // Update public.users table
+    const updateData: any = { full_name: fullName }
+    if (phone) updateData.phone = phone
+    if (avatarUrl) updateData.avatar_url = avatarUrl
+    if (notifications) updateData.notification_preferences = JSON.parse(notifications)
+
     const { error } = await supabase
         .from('users')
-        .update({ full_name: fullName })
+        .update(updateData)
         .eq('id', user.id)
 
     if (error) {
