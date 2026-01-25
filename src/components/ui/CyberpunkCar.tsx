@@ -51,70 +51,28 @@ export function CyberpunkCar() {
                 animate={controls}
                 className="absolute bottom-4"
             >
-                {/* Advanced DeLorean-style SVG */}
-                <svg width="220" height="80" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#2a2a2a" />
-                            <stop offset="50%" stopColor="#1a1a1a" />
-                            <stop offset="100%" stopColor="#000" />
-                        </linearGradient>
-                        <linearGradient id="windowGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#ff00cc" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#330033" stopOpacity="0.8" />
-                        </linearGradient>
-                        <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                            <feMerge>
-                                <feMergeNode in="coloredBlur" />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                    </defs>
-
-                    {/* Thruster Flame (Only visible when flying? We'll transform it) */}
-                    <motion.path
-                        d="M0 45 L-20 40 L-40 45 L-20 50 Z"
-                        fill="#00f3ff"
-                        opacity="0.8"
-                        animate={{ scaleX: [1, 1.5, 1], opacity: [0.6, 0.9, 0.6] }}
-                        transition={{ duration: 0.1, repeat: Infinity }}
-                        filter="url(#neonGlow)"
+                {/* Crop Container for Pixel Art Car */}
+                <div className="relative w-[200px] h-[100px] overflow-hidden rounded-lg">
+                    {/* The Image is scaled and positioned to hide the footer text */}
+                    {/* Assuming image is roughly square/rectangular with text at bottom. 
+                        We scale it up slightly and shift it up. */}
+                    <img
+                        src="/car-pixel.png"
+                        alt="Cyberpunk Car"
+                        className="w-full h-full object-cover object-top scale-110 -translate-y-2 mix-blend-screen"
+                        style={{ imageRendering: 'pixelated' }}
                     />
 
-                    {/* Main Body Shape */}
-                    <path d="M10 50 L20 40 L50 38 L80 25 L140 25 L190 38 L210 50 H10 Z" fill="url(#bodyGrad)" stroke="#333" strokeWidth="1" />
+                    {/* Add a manual glow since the image background might be grey */}
+                    <div className="absolute inset-0 bg-blue-500/20 mix-blend-overlay rounded-lg" />
+                </div>
 
-                    {/* Retro Grid Accent on Side */}
-                    <path d="M20 50 L190 50" stroke="#ff00cc" strokeWidth="2" filter="url(#neonGlow)" />
-
-                    {/* Cabin / Windows */}
-                    <path d="M55 38 L82 27 L135 27 L155 38 H55 Z" fill="url(#windowGrad)" stroke="#00f3ff" strokeWidth="0.5" />
-
-                    {/* Rear Spoiler */}
-                    <path d="M10 40 L5 30 L20 30" stroke="#333" strokeWidth="2" />
-
-                    {/* Wheels (Detailed) */}
-                    <g className="origin-center">
-                        <circle cx="45" cy="50" r="14" fill="#000" stroke="#333" strokeWidth="2" />
-                        <circle cx="45" cy="50" r="10" fill="none" stroke="#00f3ff" strokeWidth="1.5" strokeDasharray="4 2" className="animate-spin-slow">
-                            {/* CSS spin matches parent motion speed roughly */}
-                            <animateTransform attributeName="transform" type="rotate" from="0 45 50" to="360 45 50" dur="0.5s" repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="45" cy="50" r="4" fill="#ff00cc" filter="url(#neonGlow)" />
-                    </g>
-
-                    <g className="origin-center">
-                        <circle cx="170" cy="50" r="14" fill="#000" stroke="#333" strokeWidth="2" />
-                        <circle cx="170" cy="50" r="10" fill="none" stroke="#00f3ff" strokeWidth="1.5" strokeDasharray="4 2">
-                            <animateTransform attributeName="transform" type="rotate" from="0 170 50" to="360 170 50" dur="0.5s" repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="170" cy="50" r="4" fill="#ff00cc" filter="url(#neonGlow)" />
-                    </g>
-
-                    {/* Underglow */}
-                    <ellipse cx="110" cy="62" rx="90" ry="4" fill="#ff00cc" opacity="0.3" filter="url(#neonGlow)" />
-                </svg>
+                {/* Thruster Flame (Simulated) */}
+                <motion.div
+                    className="absolute top-1/2 -left-8 w-12 h-6 bg-cyan-500/80 blur-md rounded-full"
+                    animate={{ scaleX: [1, 1.5, 1], opacity: [0.6, 0.9, 0.6] }}
+                    transition={{ duration: 0.1, repeat: Infinity }}
+                />
             </motion.div>
         </div>
     )
