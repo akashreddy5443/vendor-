@@ -74,3 +74,18 @@ export async function subscribeToNewsletter(formData: FormData) {
 
     return { success: true, message: 'Successfully subscribed! Check your inbox.' }
 }
+
+export async function deleteSubscriber(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('newsletter_subscribers')
+        .delete()
+        .eq('id', id)
+
+    if (error) {
+        return { error: 'Failed to delete subscriber' }
+    }
+
+    revalidatePath('/admin/subscribers')
+    return { success: true }
+}

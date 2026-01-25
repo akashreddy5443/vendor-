@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail, Calendar } from 'lucide-react'
+import { SubscriberActions } from '@/components/admin/SubscriberActions'
 
 export default async function SubscribersPage() {
     const supabase = await createClient()
@@ -44,7 +45,7 @@ export default async function SubscribersPage() {
                                             </p>
                                         </div>
                                     </div>
-                                    {/* Additional actions (delete, etc) could go here */}
+                                    <SubscriberActions id={sub.id} />
                                 </div>
                             ))
                         ) : (
