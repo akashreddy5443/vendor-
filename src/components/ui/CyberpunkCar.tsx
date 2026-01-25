@@ -69,8 +69,8 @@ export function CyberpunkCar() {
                 className="absolute bottom-10 left-0"
             >
                 {/* Advanced Nitro Flame Container - Aligned to Rear Exhaust */}
-                {/* Moved down to 58% top to match low-slung exhaust, tucked in left 15% */}
-                <div className="absolute top-[58%] left-[15%] z-0 w-32 h-20 origin-right pointer-events-none -translate-y-1/2">
+                {/* Moved to extreme left (2%) to align with rear bumper */}
+                <div className="absolute top-[58%] left-[2%] z-0 w-32 h-20 origin-right pointer-events-none -translate-y-1/2">
                     {/* 1. Core White Hot Flame */}
                     <motion.div
                         className="absolute right-0 top-1/2 -translate-y-1/2 bg-white blur-[2px] rounded-l-full"
