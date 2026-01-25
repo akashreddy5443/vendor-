@@ -52,29 +52,29 @@ export function CyberpunkCar() {
                 className="absolute bottom-4"
             >
                 {/* Crop Container for New Pixel Art Car */}
-                {/* Image has grey background and 'Wan' logo at bottom right. 
-                    We zoom in (scale) and clip sides/bottom. */}
-                <div className="relative w-[280px] h-[100px] overflow-hidden rounded-full shadow-[0_0_20px_rgba(168,85,247,0.4)] bg-transparent">
+                <div className="relative w-[300px] h-[100px] overflow-visible">
                     <img
                         src="/car-pixel-v2.jpg"
                         alt="Cyberpunk Car"
-                        className="w-full h-full object-cover object-[center_60%] scale-125"
-                        style={{ imageRendering: 'pixelated' }}
+                        className="w-full h-[120%] object-cover object-[center_55%] scale-100"
+                        style={{
+                            imageRendering: 'pixelated',
+                            // Polygon crop to hide background box, matching the car shape roughly
+                            // Points: Top-Left Hood, Roof start, Roof end, Trunk top, Trunk bot, Wheel Bot, Front Bot
+                            clipPath: 'polygon(5% 25%, 33% 20%, 60% 20%, 93% 40%, 95% 88%, 5% 88%)'
+                        }}
                     />
-
-                    {/* Overlay to tint the grey background to be more seamless if possible, or just look cool */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent mix-blend-multiply" />
                 </div>
 
                 {/* Thruster Flame */}
                 <motion.div
-                    className="absolute top-1/2 -left-4 w-16 h-8 bg-purple-500/80 blur-lg rounded-full mix-blend-screen"
-                    animate={{ scaleX: [1, 1.3, 1], opacity: [0.6, 0.9, 0.6] }}
+                    className="absolute top-[40%] left-[2%] w-10 h-6 bg-purple-500/80 blur-md rounded-full mix-blend-screen"
+                    animate={{ scaleX: [1, 2, 1], opacity: [0.6, 1, 0.6] }}
                     transition={{ duration: 0.1, repeat: Infinity }}
                 />
 
-                {/* Underglow (Purple for this car) */}
-                <div className="absolute -bottom-4 left-10 right-10 h-4 bg-purple-600/40 blur-xl rounded-full" />
+                {/* Underglow */}
+                <div className="absolute top-[78%] left-[10%] right-[10%] h-8 bg-purple-600/50 blur-xl rounded-full" />
             </motion.div>
         </div>
     )
