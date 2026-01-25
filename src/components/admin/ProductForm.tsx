@@ -35,6 +35,10 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
         setMedia(prev => [...prev, { url, type: mediaType }])
     }
 
+    const removeMedia = (index: number) => {
+        setMedia(prev => prev.filter((_, i) => i !== index))
+    }
+
     // Features State
     const [features, setFeatures] = useState<{ key: string, value: string }[]>(
         initialData?.features && Array.isArray(initialData.features)
