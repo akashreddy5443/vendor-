@@ -46,7 +46,7 @@ export function ProductTable({ products }: { products: any[] }) {
                                 </span>
                             </td>
                             <td className="px-4 py-3 text-white">
-                                ${product.price ? product.price.toFixed(2) : '0.00'}
+                                {product.price ? formatPrice(product.price) : formatPrice(0)}
                             </td>
                             <td className="px-4 py-3">{product.stock}</td>
                             <td className="px-4 py-3 text-right">
