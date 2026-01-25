@@ -29,14 +29,21 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 
     // Fetch Product + Images + Category
     const { data: product } = await supabase
-        .from('products')
-        .select(`
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug)
+
+    let queryBuilder = supabase.from('products').select(`
             *,
             product_images (*),
             categories (name, slug)
         `)
-        .or(`slug.ilike.${params.slug},id.eq.${params.slug}`) // Use ilike or eq
-        .single()
+
+    if (isUuid) {
+        queryBuilder = queryBuilder.eq('id', params.slug)
+    } else {
+        queryBuilder = queryBuilder.eq('slug', params.slug) // Use eq for slug
+    }
+
+    const { data: product } = await queryBuilder.single()
 
     console.log('[PDP] Product Result:', product ? product.title : 'Not Found')
 
