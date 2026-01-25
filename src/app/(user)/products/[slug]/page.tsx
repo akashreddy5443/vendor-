@@ -101,18 +101,30 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                             </p>
                         </div>
 
-                        {/* Specs / Details Placeholder */}
+                        {/* Specs / Details */}
                         <div className="mt-8 pt-8 border-t border-border">
                             <h3 className="text-lg font-bold mb-4">Specifications</h3>
                             <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                                {/* Static Params */}
                                 <div className="border-t border-zinc-800 pt-4">
                                     <dt className="font-medium text-gray-400">Stock Status</dt>
                                     <dd className="mt-2 text-sm text-white">{isOutOfStock ? 'Out of Stock' : 'In Stock'}</dd>
                                 </div>
-                                <div className="border-t border-zinc-800 pt-4">
-                                    <dt className="font-medium text-gray-400">Warranty</dt>
-                                    <dd className="mt-2 text-sm text-white">1 Year Manufacturer</dd>
-                                </div>
+
+                                {/* Dynamic Features */}
+                                {product.features && Array.isArray(product.features) && product.features.map((feature: any, index: number) => (
+                                    <div key={index} className="border-t border-zinc-800 pt-4">
+                                        <dt className="font-medium text-gray-400">{feature.key}</dt>
+                                        <dd className="mt-2 text-sm text-white">{feature.value}</dd>
+                                    </div>
+                                ))}
+
+                                {(!product.features || product.features.length === 0) && (
+                                    <div className="border-t border-zinc-800 pt-4">
+                                        <dt className="font-medium text-gray-400">Other</dt>
+                                        <dd className="mt-2 text-sm text-white">Standard Warranty</dd>
+                                    </div>
+                                )}
                             </dl>
                         </div>
                     </div>
