@@ -28,7 +28,6 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     console.log('[PDP] Params:', params)
 
     // Fetch Product + Images + Category
-    const { data: product } = await supabase
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug)
 
     let queryBuilder = supabase.from('products').select(`
