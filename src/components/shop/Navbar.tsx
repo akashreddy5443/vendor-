@@ -60,7 +60,7 @@ export function Navbar() {
     return (
         <div className="flex flex-col">
             {!loading && showAnnouncement && (
-                <div className="bg-orange-600 text-white text-xs font-bold py-2 text-center uppercase tracking-wider relative z-50">
+                <div className="bg-blue-600 text-white text-xs font-bold py-2 text-center uppercase tracking-wider relative z-50">
                     {link && link !== '#' ? (
                         <Link href={link} className="hover:underline">
                             {text}
@@ -81,7 +81,7 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-orange-500">
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-blue-500">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
@@ -113,7 +113,7 @@ export function Navbar() {
                     ) : (
                         <div className="flex items-center gap-4">
                             <Link href="/login" className="hover:text-primary transition-colors">Sign In</Link>
-                            <Link href="/register" className="px-4 py-2 rounded-full bg-orange-600 text-white hover:bg-orange-500 transition-colors">
+                            <Link href="/register" className="px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors">
                                 Sign Up
                             </Link>
                         </div>
@@ -124,7 +124,7 @@ export function Navbar() {
                         <div className="relative">
                             <ShoppingCart className="h-5 w-5" />
                             {cartCount > 0 && (
-                                <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white">
+                                <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white">
                                     {cartCount}
                                 </span>
                             )}
@@ -138,7 +138,7 @@ export function Navbar() {
                     <Link href="/cart" className="relative text-gray-400 hover:text-white">
                         <ShoppingCart className="h-5 w-5" />
                         {cartCount > 0 && (
-                            <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-orange-500 text-[8px] font-bold text-white">
+                            <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-[8px] font-bold text-white">
                                 {cartCount}
                             </span>
                         )}
@@ -172,7 +172,7 @@ export function Navbar() {
                                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg border border-zinc-700 hover:bg-zinc-800 text-white">
                                     Sign In
                                 </Link>
-                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold">
+                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold">
                                     Sign Up
                                 </Link>
                             </div>

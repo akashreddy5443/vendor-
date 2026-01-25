@@ -19,7 +19,7 @@ export default async function AdminProductsPage() {
                 </div>
                 <Link
                     href="/admin/products/new"
-                    className="flex items-center gap-2 rounded bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                    className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                 >
                     <Plus className="h-4 w-4" />
                     Add Product

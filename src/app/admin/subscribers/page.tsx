@@ -19,7 +19,7 @@ export default async function SubscribersPage() {
                     <p className="text-gray-400">View and manage newsletter subscriptions.</p>
                 </div>
                 <div className="bg-zinc-900 px-4 py-2 rounded-lg border border-zinc-800 text-white font-mono">
-                    Total: <span className="text-orange-500 font-bold">{subscribers?.length || 0}</span>
+                    Total: <span className="text-blue-500 font-bold">{subscribers?.length || 0}</span>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@ export default async function SubscribersPage() {
                             subscribers.map((sub: any) => (
                                 <div key={sub.id} className="flex items-center justify-between py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="h-10 w-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                                        <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
                                             <Mail className="h-5 w-5" />
                                         </div>
                                         <div>

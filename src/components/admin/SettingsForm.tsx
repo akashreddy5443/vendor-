@@ -43,7 +43,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                             name="site_name"
                             id="site_name"
                             defaultValue={settings?.site_name}
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-orange-500 outline-none"
+                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
                         />
                     </div>
                     <div className="space-y-2">
@@ -52,7 +52,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                             name="contact_email"
                             id="contact_email"
                             defaultValue={settings?.contact_email}
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-orange-500 outline-none"
+                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
                         />
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                         id="description"
                         defaultValue={settings?.description}
                         rows={3}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-orange-500 outline-none"
+                        className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
                     />
                 </div>
             </div>

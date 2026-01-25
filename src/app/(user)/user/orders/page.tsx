@@ -49,7 +49,7 @@ export default async function OrdersPage() {
 
                             <div className="flex items-center justify-between border-t border-gray-800 pt-4">
                                 <div className="font-medium text-white">
-                                    Total: <span className="text-orange-500">{formatPrice(order.total_amount)}</span>
+                                    Total: <span className="text-blue-500">{formatPrice(order.total_amount)}</span>
                                 </div>
                                 <Link
                                     href={`/user/orders/${order.id}`} // We will need to build this detail page next

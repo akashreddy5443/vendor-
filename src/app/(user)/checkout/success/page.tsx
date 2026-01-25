@@ -31,7 +31,7 @@ function SuccessContent() {
             <div className="space-y-3 pt-4">
                 <Link
                     href="/user/orders"
-                    className="block w-full rounded-xl bg-orange-600 py-3 font-bold text-white hover:bg-orange-500 transition-colors"
+                    className="block w-full rounded-xl bg-blue-600 py-3 font-bold text-white hover:bg-blue-500 transition-colors"
                 >
                     Track My Order
                 </Link>
@@ -51,7 +51,7 @@ export default function OrderSuccessPage() {
         <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
             <Suspense fallback={
                 <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+                    <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
                     <p className="text-gray-400">Loading order details...</p>
                 </div>
             }>

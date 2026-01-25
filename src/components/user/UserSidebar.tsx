@@ -41,7 +41,7 @@ export function UserSidebar() {
                             className={cn(
                                 "flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-all duration-200",
                                 isActive
-                                    ? "bg-orange-600 text-white shadow-lg shadow-orange-900/20"
+                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20"
                                     : "text-gray-400 hover:bg-zinc-800 hover:text-white"
                             )}
                         >

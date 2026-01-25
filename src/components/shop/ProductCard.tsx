@@ -102,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
                                 e.stopPropagation()
                                 setShowQuickView(true)
                             }}
-                            className="bg-black/40 backdrop-blur-md rounded-full p-2 text-white hover:bg-black/80 transition-colors hover:text-orange-400 border border-white/10"
+                            className="bg-black/40 backdrop-blur-md rounded-full p-2 text-white hover:bg-black/80 transition-colors hover:text-blue-400 border border-white/10"
                             title="Quick View"
                         >
                             <Eye className="h-5 w-5" />
@@ -123,7 +123,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         {product.title}
                     </h3>
                     <div className="mt-auto flex items-center justify-between pt-2">
-                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-orange-500'}`}>
+                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-500'}`}>
                             {formatPrice(product.price)}
                         </span>
                         {!isOutOfStock && (

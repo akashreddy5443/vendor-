@@ -82,7 +82,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                             <button
                                 type="button"
                                 onClick={() => setAnnouncementData({ ...announcementData, show: !announcementData.show })}
-                                className="text-orange-500 hover:text-orange-400"
+                                className="text-blue-500 hover:text-blue-400"
                             >
                                 {announcementData.show ? <ToggleRight className="h-8 w-8" /> : <ToggleLeft className="h-8 w-8 text-gray-600" />}
                             </button>
@@ -94,7 +94,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                                 name="text"
                                 value={announcementData.text}
                                 onChange={(e) => setAnnouncementData({ ...announcementData, text: e.target.value })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                                 placeholder="e.g., Free Shipping on orders over ₹2000"
                             />
                         </div>
@@ -105,7 +105,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                                 name="link"
                                 value={announcementData.link}
                                 onChange={(e) => setAnnouncementData({ ...announcementData, link: e.target.value })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                                 placeholder="#"
                             />
                         </div>
@@ -113,7 +113,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500 disabled:opacity-50"
+                            className="flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
                         >
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Save Announcement
@@ -135,7 +135,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                         <input
                             value={footerData.newsletterTitle}
                             onChange={(e) => setFooterData({ ...footerData, newsletterTitle: e.target.value })}
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
@@ -145,7 +145,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                             <input
                                 value={footerData.socialLinks?.twitter || ''}
                                 onChange={(e) => setFooterData({ ...footerData, socialLinks: { ...footerData.socialLinks, twitter: e.target.value } })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -153,7 +153,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                             <input
                                 value={footerData.socialLinks?.facebook || ''}
                                 onChange={(e) => setFooterData({ ...footerData, socialLinks: { ...footerData.socialLinks, facebook: e.target.value } })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -161,7 +161,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                             <input
                                 value={footerData.socialLinks?.instagram || ''}
                                 onChange={(e) => setFooterData({ ...footerData, socialLinks: { ...footerData.socialLinks, instagram: e.target.value } })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                             />
                         </div>
                         <div className="space-y-2">
@@ -169,7 +169,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                             <input
                                 value={footerData.socialLinks?.youtube || ''}
                                 onChange={(e) => setFooterData({ ...footerData, socialLinks: { ...footerData.socialLinks, youtube: e.target.value } })}
-                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                             />
                         </div>
                     </div>
@@ -193,13 +193,13 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                                             value={link.label}
                                             onChange={(e) => updateLink('infoLinks', i, 'label', e.target.value)}
                                             placeholder="Label"
-                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                                         />
                                         <input
                                             value={link.url}
                                             onChange={(e) => updateLink('infoLinks', i, 'url', e.target.value)}
                                             placeholder="URL"
-                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                                         />
                                         <button
                                             className="text-red-500 hover:text-red-400"
@@ -230,13 +230,13 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                                             value={link.label}
                                             onChange={(e) => updateLink('supportLinks', i, 'label', e.target.value)}
                                             placeholder="Label"
-                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                                         />
                                         <input
                                             value={link.url}
                                             onChange={(e) => updateLink('supportLinks', i, 'url', e.target.value)}
                                             placeholder="URL"
-                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                            className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                                         />
                                         <button
                                             className="text-red-500 hover:text-red-400"
@@ -253,7 +253,7 @@ export default function LayoutBuilder({ announcement, footer }: { announcement: 
                     <button
                         onClick={handleFooterSave}
                         disabled={loading}
-                        className="flex w-full items-center justify-center rounded-md bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500 disabled:opacity-50"
+                        className="flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
                     >
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Save Footer Settings

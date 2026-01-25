@@ -47,7 +47,7 @@ export default function CouponManagementPage() {
     return (
         <div className="space-y-8">
             <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                <Ticket className="text-orange-500" /> Coupon Management
+                <Ticket className="text-blue-500" /> Coupon Management
             </h1>
 
             {/* Create Form */}
@@ -76,7 +76,7 @@ export default function CouponManagementPage() {
                         <input name="minOrder" type="number" placeholder="0" className="w-full rounded bg-black border border-zinc-700 p-2 text-white" />
                     </div>
                     <div className="col-span-full md:col-span-1">
-                        <button disabled={isCreating} className="w-full rounded bg-orange-600 p-2 font-bold text-white hover:bg-orange-500 disabled:opacity-50">
+                        <button disabled={isCreating} className="w-full rounded bg-blue-600 p-2 font-bold text-white hover:bg-blue-500 disabled:opacity-50">
                             {isCreating ? <Loader2 className="animate-spin mx-auto" /> : 'Create Coupon'}
                         </button>
                     </div>
@@ -88,7 +88,7 @@ export default function CouponManagementPage() {
                 {coupons.length === 0 && <p className="text-gray-500 col-span-full">No active coupons found.</p>}
 
                 {coupons.map((coupon) => (
-                    <div key={coupon.id} className="relative rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 flex flex-col justify-between group hover:border-orange-500/50 transition-colors">
+                    <div key={coupon.id} className="relative rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 flex flex-col justify-between group hover:border-blue-500/50 transition-colors">
                         <div>
                             <div className="flex justify-between items-start mb-2">
                                 <h3 className="text-2xl font-mono font-bold text-white">{coupon.code}</h3>
@@ -96,7 +96,7 @@ export default function CouponManagementPage() {
                                     ACTIVE
                                 </div>
                             </div>
-                            <div className="text-3xl font-bold text-orange-500 mb-4">
+                            <div className="text-3xl font-bold text-blue-500 mb-4">
                                 {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% OFF` : `₹${coupon.discount_value} OFF`}
                             </div>
                             <div className="space-y-1 text-sm text-gray-400">

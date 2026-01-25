@@ -69,7 +69,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     {/* Product Info */}
                     <div>
                         {categories && (
-                            <span className="text-sm font-medium text-orange-500 mb-2 block tracking-wider uppercase">
+                            <span className="text-sm font-medium text-blue-500 mb-2 block tracking-wider uppercase">
                                 {categories.name}
                             </span>
                         )}

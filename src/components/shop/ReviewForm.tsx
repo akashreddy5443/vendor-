@@ -55,7 +55,7 @@ export function ReviewForm({ productId }: { productId: string }) {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="Tell us what you liked or didn't like..."
-                    className="w-full h-24 rounded-md border border-zinc-700 bg-zinc-950 p-3 text-white focus:border-orange-500 focus:outline-none resize-none"
+                    className="w-full h-24 rounded-md border border-zinc-700 bg-zinc-950 p-3 text-white focus:border-blue-500 focus:outline-none resize-none"
                     required
                 />
             </div>

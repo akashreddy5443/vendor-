@@ -25,7 +25,7 @@ export function CompareToggle({ productId, className }: { productId: string, cla
             onClick={toggle}
             className={cn(
                 "p-2 rounded-full transition-all",
-                isSelected ? 'bg-orange-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-gray-500 hover:text-orange-500',
+                isSelected ? 'bg-blue-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-gray-500 hover:text-blue-500',
                 className
             )}
             title={isSelected ? "Remove from Compare" : "Add to Compare"}

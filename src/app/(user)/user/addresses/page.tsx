@@ -28,7 +28,7 @@ export default async function AddressesPage() {
                         'use server'
                         await addAddress(formData)
                     }} className="w-full space-y-3 text-left">
-                        <h3 className="text-lg font-medium text-orange-500 mb-4 flex items-center gap-2">
+                        <h3 className="text-lg font-medium text-blue-500 mb-4 flex items-center gap-2">
                             <Plus className="h-5 w-5" /> Add New Address
                         </h3>
                         <input name="fullName" placeholder="Label (e.g. Home)" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" required />
@@ -59,10 +59,10 @@ export default async function AddressesPage() {
                             </form>
                         </div>
 
-                        <div className="flex items-center gap-3 mb-4 text-orange-500">
+                        <div className="flex items-center gap-3 mb-4 text-blue-500">
                             <MapPin className="h-5 w-5" />
                             <span className="font-bold">{addr.full_name}</span>
-                            {addr.is_default && <span className="text-xs bg-orange-500/10 px-2 py-0.5 rounded text-orange-500 border border-orange-500/20">Default</span>}
+                            {addr.is_default && <span className="text-xs bg-blue-500/10 px-2 py-0.5 rounded text-blue-500 border border-blue-500/20">Default</span>}
                         </div>
 
                         <div className="space-y-1 text-gray-400 text-sm">

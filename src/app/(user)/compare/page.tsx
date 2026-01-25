@@ -40,7 +40,7 @@ export default function ComparePage() {
     if (loading) {
         return (
             <div className="min-h-[60vh] flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
+                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
             </div>
         )
     }
@@ -50,7 +50,7 @@ export default function ComparePage() {
             <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 text-center px-4">
                 <h1 className="text-3xl font-bold">Compare Products</h1>
                 <p className="text-muted-foreground">No products selected for comparison.</p>
-                <Link href="/products" className="bg-orange-600 hover:bg-orange-500 text-white px-6 py-3 rounded-full font-bold transition-colors">
+                <Link href="/products" className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full font-bold transition-colors">
                     Browse Products
                 </Link>
             </div>
@@ -90,10 +90,10 @@ export default function ComparePage() {
                                             className="object-cover"
                                         />
                                     </div>
-                                    <Link href={`/products/${product.id}`} className="hover:text-orange-600 transition-colors">
+                                    <Link href={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
                                         <h3 className="text-lg font-bold line-clamp-2">{product.title}</h3>
                                     </Link>
-                                    <div className="mt-2 text-xl font-bold text-orange-600">{formatPrice(product.price)}</div>
+                                    <div className="mt-2 text-xl font-bold text-blue-600">{formatPrice(product.price)}</div>
                                     <button
                                         onClick={() => {
                                             addItem({

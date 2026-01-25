@@ -24,7 +24,7 @@ export default function NewCategoryPage() {
                             id="name"
                             name="name"
                             required
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                             placeholder="e.g. Keyboards"
                         />
                     </div>
@@ -32,7 +32,7 @@ export default function NewCategoryPage() {
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="w-full rounded-md bg-orange-600 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                            className="w-full rounded-md bg-blue-600 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                         >
                             Create Category
                         </button>

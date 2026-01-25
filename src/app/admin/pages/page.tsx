@@ -16,7 +16,7 @@ export default async function PagesAdminPage() {
                 </div>
                 <Link
                     href="/admin/pages/new"
-                    className="flex items-center rounded-md bg-orange-600 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-orange-500"
+                    className="flex items-center rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-500"
                 >
                     <Plus className="mr-2 h-4 w-4" /> Create Page
                 </Link>

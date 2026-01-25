@@ -30,7 +30,7 @@ export default async function BuilderPage() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold font-serif mb-4">
-                        Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">Dream Setup</span>
+                        Build Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-red-600">Dream Setup</span>
                     </h1>
                     <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
                         Select your core system, add premium peripherals, and complete your battlestation.

@@ -48,8 +48,8 @@ export default async function UserDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-6 rounded-xl bg-card border border-border shadow-sm">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-orange-100 rounded-lg">
-                            <Package className="h-6 w-6 text-orange-600" />
+                        <div className="p-3 bg-blue-100 rounded-lg">
+                            <Package className="h-6 w-6 text-blue-600" />
                         </div>
                         <div>
                             <p className="text-sm text-muted-foreground">Total Orders</p>
@@ -58,7 +58,7 @@ export default async function UserDashboard() {
                     </div>
                 </div>
 
-                <Link href="/user/wishlist" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-orange-200 block">
+                <Link href="/user/wishlist" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-blue-200 block">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-pink-100 rounded-lg">
                             <Heart className="h-6 w-6 text-pink-600" />
@@ -87,7 +87,7 @@ export default async function UserDashboard() {
             <div>
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-bold text-foreground">Recent Activity</h2>
-                    <Link href="/user/orders" className="text-sm text-orange-600 hover:text-orange-500 font-medium">View All Orders</Link>
+                    <Link href="/user/orders" className="text-sm text-blue-600 hover:text-blue-500 font-medium">View All Orders</Link>
                 </div>
 
                 {recentOrders && recentOrders.length > 0 ? (

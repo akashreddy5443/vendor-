@@ -105,7 +105,7 @@ export default function CheckoutPage() {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white space-y-4">
                 <h2 className="text-2xl font-bold">Your Cart is Empty</h2>
-                <Link href="/products" className="text-orange-500 hover:underline">Continue Shopping</Link>
+                <Link href="/products" className="text-blue-500 hover:underline">Continue Shopping</Link>
             </div>
         )
     }
@@ -120,14 +120,14 @@ export default function CheckoutPage() {
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-bold font-serif flex items-center gap-2">
-                                <MapPin className="text-orange-500" /> Shipping Address
+                                <MapPin className="text-blue-500" /> Shipping Address
                             </h2>
                             <Link href="/user/addresses" className="text-sm text-gray-400 hover:text-white">Manage Addresses</Link>
                         </div>
 
                         {addresses.length === 0 ? (
                             <Link href="/user/addresses" className="block p-6 rounded-xl border border-dashed border-zinc-700 hover:bg-zinc-900 text-center">
-                                <span className="text-orange-500">+ Add New Address</span>
+                                <span className="text-blue-500">+ Add New Address</span>
                             </Link>
                         ) : (
                             <div className="grid gap-4">
@@ -136,13 +136,13 @@ export default function CheckoutPage() {
                                         key={addr.id}
                                         onClick={() => setSelectedAddress(addr.id)}
                                         className={`p-4 rounded-xl border cursor-pointer transition-all ${selectedAddress === addr.id
-                                            ? 'border-orange-500 bg-orange-500/10'
+                                            ? 'border-blue-500 bg-blue-500/10'
                                             : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                                             }`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <span className="font-bold">{addr.full_name}</span>
-                                            {selectedAddress === addr.id && <CheckCircle className="h-5 w-5 text-orange-500" />}
+                                            {selectedAddress === addr.id && <CheckCircle className="h-5 w-5 text-blue-500" />}
                                         </div>
                                         <p className="text-sm text-gray-400 mt-1">{addr.street_address}, {addr.city}</p>
                                     </div>
@@ -158,7 +158,7 @@ export default function CheckoutPage() {
                         </h2>
                         <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900">
                             <div className="flex items-center gap-3">
-                                <input type="radio" checked readOnly className="h-4 w-4 text-orange-600 focus:ring-orange-500" />
+                                <input type="radio" checked readOnly className="h-4 w-4 text-blue-600 focus:ring-blue-500" />
                                 <span className="font-medium">Cash on Delivery / Pay on Arrival</span>
                             </div>
                             <p className="text-xs text-gray-500 ml-7 mt-1">Pay comfortably when your order arrives.</p>
@@ -193,7 +193,7 @@ export default function CheckoutPage() {
                                     value={couponCode}
                                     onChange={(e) => setCouponCode(e.target.value)}
                                     placeholder="Coupon Code"
-                                    className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none uppercase"
+                                    className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 p-2 text-sm text-white focus:border-blue-500 focus:outline-none uppercase"
                                 />
                                 <button
                                     onClick={handleApplyCoupon}
@@ -227,14 +227,14 @@ export default function CheckoutPage() {
                             )}
                             <div className="flex justify-between text-lg font-bold text-white pt-2 border-t border-zinc-800 mt-2">
                                 <span>Total</span>
-                                <span className="text-orange-500">{formatPrice(finalTotal)}</span>
+                                <span className="text-blue-500">{formatPrice(finalTotal)}</span>
                             </div>
                         </div>
 
                         <button
                             onClick={handlePlaceOrder}
                             disabled={submitting || !selectedAddress}
-                            className="w-full mt-8 rounded-full bg-orange-600 py-4 font-bold text-white shadow-lg shadow-orange-900/20 hover:bg-orange-500 hover:shadow-orange-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            className="w-full mt-8 rounded-full bg-blue-600 py-4 font-bold text-white shadow-lg shadow-blue-900/20 hover:bg-blue-500 hover:shadow-blue-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                             {submitting ? (
                                 <span className="flex items-center justify-center gap-2">

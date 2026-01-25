@@ -57,7 +57,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                 <button
                     onClick={() => setActiveTab('toggles')}
                     className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${activeTab === 'toggles'
-                        ? 'bg-gray-900 text-white border-b-2 border-orange-500'
+                        ? 'bg-gray-900 text-white border-b-2 border-blue-500'
                         : 'text-gray-400 hover:text-white'
                         }`}
                 >
@@ -69,7 +69,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                 <button
                     onClick={() => setActiveTab('templates')}
                     className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${activeTab === 'templates'
-                        ? 'bg-gray-900 text-white border-b-2 border-orange-500'
+                        ? 'bg-gray-900 text-white border-b-2 border-blue-500'
                         : 'text-gray-400 hover:text-white'
                         }`}
                 >
@@ -101,7 +101,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                                         type="text"
                                                         value={tempLabel}
                                                         onChange={(e) => setTempLabel(e.target.value)}
-                                                        className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white text-sm focus:border-orange-500 outline-none"
+                                                        className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white text-sm focus:border-blue-500 outline-none"
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
@@ -110,14 +110,14 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                                         type="text"
                                                         value={tempDesc}
                                                         onChange={(e) => setTempDesc(e.target.value)}
-                                                        className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white text-sm focus:border-orange-500 outline-none"
+                                                        className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white text-sm focus:border-blue-500 outline-none"
                                                     />
                                                 </div>
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => saveSetting(setting.key)}
                                                         disabled={isPending}
-                                                        className="px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded transition-colors disabled:opacity-50"
+                                                        className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded transition-colors disabled:opacity-50"
                                                     >
                                                         {isPending ? 'Saving...' : 'Save'}
                                                     </button>
@@ -148,7 +148,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                         <button
                                             onClick={() => handleToggle(setting.key, setting.is_active)}
                                             disabled={isPending}
-                                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${setting.is_active ? 'bg-orange-600' : 'bg-gray-700'
+                                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${setting.is_active ? 'bg-blue-600' : 'bg-gray-700'
                                                 }`}
                                         >
                                             <span
@@ -196,7 +196,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                                     type="text"
                                                     value={tempSubject}
                                                     onChange={(e) => setTempSubject(e.target.value)}
-                                                    className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:border-orange-500 outline-none"
+                                                    className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:border-blue-500 outline-none"
                                                 />
                                             </div>
                                             <div className="space-y-2">
@@ -205,7 +205,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                                     rows={10}
                                                     value={tempBody}
                                                     onChange={(e) => setTempBody(e.target.value)}
-                                                    className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white font-mono text-xs focus:border-orange-500 outline-none"
+                                                    className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white font-mono text-xs focus:border-blue-500 outline-none"
                                                 />
                                             </div>
                                             <div className="flex justify-end gap-3 pt-2">
@@ -218,7 +218,7 @@ export function NotificationSettingsForm({ settings, templates }: { settings: an
                                                 <button
                                                     onClick={() => saveTemplate(template.template_key)}
                                                     disabled={isPending}
-                                                    className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-md transition-colors disabled:opacity-50"
+                                                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-md transition-colors disabled:opacity-50"
                                                 >
                                                     <Save className="w-4 h-4" />
                                                     {isPending ? 'Saving...' : 'Save Template'}

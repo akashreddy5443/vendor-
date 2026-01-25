@@ -53,7 +53,7 @@ export default function PageEditor({ page }: { page?: any }) {
                         required
                         value={title}
                         onChange={handleTitleChange}
-                        className="w-full rounded-md border border-gray-700 bg-black p-3 text-white focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-black p-3 text-white focus:border-blue-500 focus:outline-none"
                         placeholder="e.g., Shipping Policy"
                     />
                 </div>
@@ -81,7 +81,7 @@ export default function PageEditor({ page }: { page?: any }) {
                         required
                         defaultValue={page?.content || ''}
                         rows={15}
-                        className="w-full rounded-md border border-gray-700 bg-black p-4 text-white font-mono text-sm focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-black p-4 text-white font-mono text-sm focus:border-blue-500 focus:outline-none"
                         placeholder="<h2>Shipping Policy</h2><p>We ship worldwide...</p>"
                     />
                 </div>
@@ -92,7 +92,7 @@ export default function PageEditor({ page }: { page?: any }) {
                         name="is_published"
                         id="is_published"
                         defaultChecked={page?.is_published ?? true}
-                        className="h-4 w-4 rounded border-gray-700 bg-black text-orange-600 focus:ring-orange-600"
+                        className="h-4 w-4 rounded border-gray-700 bg-black text-blue-600 focus:ring-blue-600"
                     />
                     <label htmlFor="is_published" className="text-sm text-white font-medium select-none cursor-pointer">
                         Publish immediately
@@ -103,7 +103,7 @@ export default function PageEditor({ page }: { page?: any }) {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex items-center justify-center rounded-md bg-orange-600 px-8 py-3 font-bold text-white transition-colors hover:bg-orange-500 disabled:opacity-50"
+                        className="flex items-center justify-center rounded-md bg-blue-600 px-8 py-3 font-bold text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
                     >
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         {page ? 'Save Changes' : 'Create Page'}

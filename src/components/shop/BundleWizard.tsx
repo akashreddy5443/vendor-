@@ -114,7 +114,7 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
                                 onClick={() => setCurrentStep(idx)}
                                 disabled={idx > currentStep + 1} // Can click back, or next if completed
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentStep === idx
-                                    ? 'bg-orange-600 text-white'
+                                    ? 'bg-blue-600 text-white'
                                     : idx < currentStep
                                         ? 'bg-zinc-800 text-green-500'
                                         : 'text-zinc-500'
@@ -137,7 +137,7 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
                                     <div
                                         key={product.id}
                                         onClick={() => handleSelect(product)}
-                                        className={`group relative border rounded-xl overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-orange-500 bg-orange-950/10' : 'border-zinc-800 bg-zinc-900 hover:border-zinc-600'}`}
+                                        className={`group relative border rounded-xl overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-blue-500 bg-blue-950/10' : 'border-zinc-800 bg-zinc-900 hover:border-zinc-600'}`}
                                     >
                                         <div className="aspect-video relative bg-zinc-950">
                                             {product.product_images?.[0] && (
@@ -149,8 +149,8 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
                                                 />
                                             )}
                                             {isSelected && (
-                                                <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center backdrop-blur-[1px]">
-                                                    <div className="bg-orange-500 text-white rounded-full p-2 shadow-lg">
+                                                <div className="absolute inset-0 bg-blue-500/20 flex items-center justify-center backdrop-blur-[1px]">
+                                                    <div className="bg-blue-500 text-white rounded-full p-2 shadow-lg">
                                                         <Check className="h-6 w-6" />
                                                     </div>
                                                 </div>
@@ -159,7 +159,7 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
                                         <div className="p-4">
                                             <div className="text-xs text-zinc-500 mb-1">{product.category?.name || 'Hardware'}</div>
                                             <h3 className="font-bold text-white line-clamp-1 mb-2">{product.title}</h3>
-                                            <div className="text-orange-500 font-bold">{formatPrice(product.price)}</div>
+                                            <div className="text-blue-500 font-bold">{formatPrice(product.price)}</div>
                                         </div>
                                     </div>
                                 )
@@ -221,7 +221,7 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
             <div className="w-full lg:w-80 flex-shrink-0">
                 <div className="sticky top-24 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                        <ShoppingCart className="h-5 w-5 text-orange-500" />
+                        <ShoppingCart className="h-5 w-5 text-blue-500" />
                         Bundle Summary
                     </h3>
 
@@ -249,7 +249,7 @@ export function BundleWizard({ products, categories }: BundleWizardProps) {
                     <button
                         onClick={handleAddToCart}
                         disabled={selectedItems.length === 0}
-                        className="w-full bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-orange-900/20"
+                        className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/20"
                     >
                         Add All to Cart
                     </button>

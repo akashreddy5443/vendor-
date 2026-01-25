@@ -29,7 +29,7 @@ export function SearchHeader({ query, total }: { query: string, total: number })
                     value={localQuery}
                     onChange={(e) => setLocalQuery(e.target.value)}
                     placeholder="Search again..."
-                    className="w-full rounded-full border border-zinc-700 bg-black/50 py-3 pl-12 pr-4 text-white focus:border-orange-500 focus:outline-none backdrop-blur-sm"
+                    className="w-full rounded-full border border-zinc-700 bg-black/50 py-3 pl-12 pr-4 text-white focus:border-blue-500 focus:outline-none backdrop-blur-sm"
                 />
                 <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-500" />
             </form>

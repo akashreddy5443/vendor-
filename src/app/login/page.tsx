@@ -7,7 +7,7 @@ export default function LoginPage(props: {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
             <div className="w-full max-w-md rounded-lg border border-gray-800 bg-black p-8 shadow-lg">
-                <h2 className="mb-6 text-center text-3xl font-bold text-orange-500">
+                <h2 className="mb-6 text-center text-3xl font-bold text-blue-500">
                     Sign In
                 </h2>
 
@@ -69,7 +69,7 @@ export default function LoginPage(props: {
                             name="email"
                             type="email"
                             required
-                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
                     <div>
@@ -81,12 +81,12 @@ export default function LoginPage(props: {
                             name="password"
                             type="password"
                             required
-                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
                     <button
                         formAction={login}
-                        className="mt-4 rounded bg-orange-600 px-4 py-2 font-bold text-white hover:bg-orange-500"
+                        className="mt-4 rounded bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-500"
                     >
                         Log in
                     </button>
@@ -94,7 +94,7 @@ export default function LoginPage(props: {
 
                 <p className="mt-6 text-center text-sm text-gray-500">
                     Don&apos;t have an account?{' '}
-                    <Link href="/register" className="text-orange-500 hover:underline">
+                    <Link href="/register" className="text-blue-500 hover:underline">
                         Sign up
                     </Link>
                 </p>

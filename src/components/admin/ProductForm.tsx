@@ -81,7 +81,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         name="title"
                         required
                         defaultValue={initialData?.title}
-                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                         placeholder="e.g. LTT Screwdriver"
                     />
                 </div>
@@ -94,7 +94,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         id="category_id"
                         name="category_id"
                         defaultValue={initialData?.category_id || ""}
-                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                     >
                         <option value="">Select a Category</option>
                         {categories.map((cat) => (
@@ -113,7 +113,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                     name="description"
                     rows={4}
                     defaultValue={initialData?.description}
-                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                     placeholder="Product details..."
                 />
             </div>
@@ -125,7 +125,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                     <button
                         type="button"
                         onClick={addFeature}
-                        className="text-xs text-orange-400 hover:text-orange-300 underline"
+                        className="text-xs text-blue-400 hover:text-blue-300 underline"
                     >
                         + Add Feature
                     </button>
@@ -144,14 +144,14 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                                 placeholder="Key (e.g. Color)"
                                 value={feature.key}
                                 onChange={(e) => updateFeature(index, 'key', e.target.value)}
-                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                             />
                             <input
                                 type="text"
                                 placeholder="Value (e.g. Black)"
                                 value={feature.value}
                                 onChange={(e) => updateFeature(index, 'value', e.target.value)}
-                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                             />
                             <button
                                 type="button"
@@ -177,7 +177,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         step="0.01"
                         required
                         defaultValue={initialData?.price}
-                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                         placeholder="0.00"
                     />
                     <p className="text-xs text-gray-400 mt-1">
@@ -194,7 +194,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         type="number"
                         required
                         defaultValue={initialData?.stock ?? 0}
-                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                     />
                 </div>
             </div>
@@ -245,7 +245,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                             <button
                                 type="button"
                                 onClick={() => open()}
-                                className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-700 hover:border-orange-500 hover:bg-gray-800/50 transition-colors"
+                                className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-700 hover:border-blue-500 hover:bg-gray-800/50 transition-colors"
                             >
                                 <ImagePlus className="h-8 w-8 text-gray-400" />
                                 <span className="text-xs text-center text-gray-400 font-medium p-2">
@@ -265,7 +265,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                     id="status"
                     name="status"
                     defaultValue={initialData?.status || "active"}
-                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                 >
                     <option value="draft">Draft</option>
                     <option value="active">Active</option>
@@ -275,7 +275,7 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
             <div className="pt-4">
                 <button
                     type="submit"
-                    className="w-full rounded-md bg-orange-600 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                    className="w-full rounded-md bg-blue-600 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                 >
                     {initialData ? 'Update Product' : 'Create Product'}
                 </button>

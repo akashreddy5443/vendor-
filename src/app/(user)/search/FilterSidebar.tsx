@@ -41,7 +41,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                 <div className="space-y-2">
                     <button
                         onClick={() => handleCategoryChange('all')}
-                        className={`block text-sm ${currentCategory === 'all' ? 'text-orange-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        className={`block text-sm ${currentCategory === 'all' ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
                     >
                         All Products
                     </button>
@@ -49,7 +49,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                         <button
                             key={cat.id}
                             onClick={() => handleCategoryChange(cat.id)}
-                            className={`block text-sm ${currentCategory === cat.id ? 'text-orange-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                            className={`block text-sm ${currentCategory === cat.id ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
                         >
                             {cat.name}
                         </button>
@@ -67,7 +67,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                             placeholder="Min"
                             value={minPrice}
                             onChange={(e) => setMinPrice(e.target.value)}
-                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                         />
                         <span className="text-gray-500">-</span>
                         <input
@@ -75,7 +75,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                             placeholder="Max"
                             value={maxPrice}
                             onChange={(e) => setMaxPrice(e.target.value)}
-                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
                     <button

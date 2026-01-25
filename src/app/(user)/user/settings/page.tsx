@@ -34,7 +34,7 @@ export default async function SettingsPage() {
             <div className="grid gap-8">
                 {/* Profile Section */}
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
-                    <h2 className="text-xl font-bold flex items-center gap-2 mb-6 text-orange-500">
+                    <h2 className="text-xl font-bold flex items-center gap-2 mb-6 text-blue-500">
                         <User className="h-5 w-5" /> Profile Details
                     </h2>
 

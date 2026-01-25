@@ -16,7 +16,7 @@ export default function CartPage() {
                 <p className="text-gray-400 mb-8">Looks like you haven't added anything yet.</p>
                 <Link
                     href="/products"
-                    className="rounded-full bg-orange-600 px-8 py-3 font-bold text-white transition-all hover:bg-orange-500"
+                    className="rounded-full bg-blue-600 px-8 py-3 font-bold text-white transition-all hover:bg-blue-500"
                 >
                     Start Shopping
                 </Link>
@@ -47,7 +47,7 @@ export default function CartPage() {
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <h3 className="font-bold text-lg">{item.title}</h3>
-                                            <p className="text-orange-500 font-medium">{formatPrice(item.price)}</p>
+                                            <p className="text-blue-500 font-medium">{formatPrice(item.price)}</p>
                                         </div>
                                         <button
                                             onClick={() => removeItem(item.productId)}
@@ -113,10 +113,10 @@ export default function CartPage() {
 
                             <div className="border-t border-gray-800 pt-4 flex justify-between items-center">
                                 <span className="text-lg font-bold">Total</span>
-                                <span className="text-xl font-bold text-orange-500">{formatPrice(cartTotal)}</span>
+                                <span className="text-xl font-bold text-blue-500">{formatPrice(cartTotal)}</span>
                             </div>
 
-                            <button className="w-full flex items-center justify-center gap-2 rounded-full bg-orange-600 py-3 font-bold text-white transition-all hover:bg-orange-500 mt-4">
+                            <button className="w-full flex items-center justify-center gap-2 rounded-full bg-blue-600 py-3 font-bold text-white transition-all hover:bg-blue-500 mt-4">
                                 Proceed to Checkout
                                 <ArrowRight className="h-4 w-4" />
                             </button>

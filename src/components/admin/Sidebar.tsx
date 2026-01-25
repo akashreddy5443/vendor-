@@ -27,7 +27,7 @@ export function AdminSidebar() {
     return (
         <aside className="w-64 flex-shrink-0 border-r border-gray-800 bg-black text-white">
             <div className="flex h-16 items-center border-b border-gray-800 px-6">
-                <h1 className="text-xl font-bold tracking-tight text-orange-500">TechDev Admin</h1>
+                <h1 className="text-xl font-bold tracking-tight text-blue-500">TechDev Admin</h1>
             </div>
             <nav className="space-y-1 p-4">
                 {navItems.map((item) => {
@@ -39,7 +39,7 @@ export function AdminSidebar() {
                             className={cn(
                                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                                 isActive
-                                    ? "bg-orange-600 text-white"
+                                    ? "bg-blue-600 text-white"
                                     : "text-gray-400 hover:bg-gray-900 hover:text-white"
                             )}
                         >

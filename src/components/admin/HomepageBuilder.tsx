@@ -52,7 +52,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
 
             {/* Hero Section Editor */}
             <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-orange-500">Hero Section</h3>
+                <h3 className="mb-4 text-xl font-bold text-blue-500">Hero Section</h3>
                 <form action={handleHeroSubmit} className="space-y-6">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-200">Main Headline</label>
@@ -60,7 +60,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                             name="title"
                             defaultValue={heroSection?.title}
                             placeholder="LEVEL UP YOUR SETUP"
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
@@ -71,7 +71,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                             defaultValue={heroSection?.subtitle}
                             rows={3}
                             placeholder="Premium gear for developers..."
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
@@ -103,7 +103,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                                     <button
                                         type="button"
                                         onClick={() => open()}
-                                        className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-700 hover:border-orange-500 hover:bg-gray-800/50"
+                                        className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-700 hover:border-blue-500 hover:bg-gray-800/50"
                                     >
                                         <ImagePlus className="h-8 w-8 text-gray-400" />
                                         <span className="text-sm text-gray-400">Upload Hero Image</span>
@@ -116,7 +116,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                         >
                             Update Hero
                         </button>
@@ -126,7 +126,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
 
             {/* Featured Products Editor */}
             <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-orange-500">Featured Products</h3>
+                <h3 className="mb-4 text-xl font-bold text-blue-500">Featured Products</h3>
                 <p className="mb-4 text-sm text-gray-400">Select products to display on the homepage (Max 3-6 recommended).</p>
 
                 <form action={handleFeaturedSubmit} className="space-y-6">
@@ -140,12 +140,12 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                                     key={product.id}
                                     onClick={() => toggleProduct(product.id)}
                                     className={`cursor-pointer rounded-lg border p-3 transition-colors flex items-center justify-between ${isSelected
-                                            ? 'border-orange-500 bg-orange-500/10'
+                                            ? 'border-blue-500 bg-blue-500/10'
                                             : 'border-gray-800 bg-gray-950 hover:border-gray-700'
                                         }`}
                                 >
                                     <span className="text-sm font-medium text-white truncate">{product.title}</span>
-                                    {isSelected && <Check className="h-4 w-4 text-orange-500" />}
+                                    {isSelected && <Check className="h-4 w-4 text-blue-500" />}
                                 </div>
                             )
                         })}
@@ -155,7 +155,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                         >
                             Update Featured
                         </button>

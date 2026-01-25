@@ -116,7 +116,7 @@ export function SpotlightSearch() {
                             initial={{ opacity: 0, scale: 0.95, y: -20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-gray-800 bg-black shadow-2xl shadow-orange-500/10 mx-4"
+                            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-gray-800 bg-black shadow-2xl shadow-blue-500/10 mx-4"
                         >
                             <div className="flex items-center border-b border-gray-800 px-4">
                                 <Search className="mr-2 h-5 w-5 shrink-0 text-gray-500" />
@@ -128,7 +128,7 @@ export function SpotlightSearch() {
                                     placeholder="Search products..."
                                     className="flex h-14 w-full bg-transparent py-3 text-lg text-white placeholder:text-gray-500 focus:outline-none"
                                 />
-                                {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin text-orange-500" />}
+                                {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin text-blue-500" />}
                                 <button onClick={() => setOpen(false)} className="ml-2 p-1 text-gray-500 hover:text-white">
                                     <X className="h-5 w-5" />
                                 </button>
@@ -167,7 +167,7 @@ export function SpotlightSearch() {
                                         </div>
                                         <div>
                                             <h3 className="font-medium text-gray-200 group-hover:text-white">{product.title}</h3>
-                                            <p className="text-xs text-orange-500 font-mono">₹{product.price}</p>
+                                            <p className="text-xs text-blue-500 font-mono">₹{product.price}</p>
                                         </div>
                                     </button>
                                 ))}
@@ -178,7 +178,7 @@ export function SpotlightSearch() {
                             <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2 flex items-center justify-between">
                                 <button
                                     onClick={handleSearchAll}
-                                    className="text-xs text-orange-500 hover:text-orange-400 font-medium"
+                                    className="text-xs text-blue-500 hover:text-blue-400 font-medium"
                                 >
                                     Press Enter to see all results
                                 </button>

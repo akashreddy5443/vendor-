@@ -80,7 +80,7 @@ export function ProductGallery({ images }: { images: ProductImage[] }) {
                             key={idx}
                             onClick={() => setSelectedIndex(idx)}
                             className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all ${selectedIndex === idx
-                                    ? 'border-orange-500 ring-2 ring-orange-500/20'
+                                    ? 'border-blue-500 ring-2 ring-blue-500/20'
                                     : 'border-transparent hover:border-gray-600'
                                 }`}
                         >

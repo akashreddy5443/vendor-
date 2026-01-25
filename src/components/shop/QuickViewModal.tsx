@@ -79,7 +79,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                     <div className="p-8 flex flex-col justify-between">
                         <div>
                             <h2 className="text-2xl font-bold font-serif text-white mb-2">{product.title}</h2>
-                            <p className="text-2xl font-medium text-orange-500 mb-6">{formatPrice(product.price)}</p>
+                            <p className="text-2xl font-medium text-blue-500 mb-6">{formatPrice(product.price)}</p>
 
                             <p className="text-gray-400 leading-relaxed max-h-40 overflow-y-auto mb-8 pr-2 custom-scrollbar">
                                 {product.description || "No description available."}

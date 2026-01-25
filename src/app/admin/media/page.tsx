@@ -28,7 +28,7 @@ export default function AdminMediaPage() {
                             <button
                                 type="button"
                                 onClick={() => open()}
-                                className="flex items-center gap-2 rounded bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-500"
+                                className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                             >
                                 <ImagePlus className="h-4 w-4" />
                                 Upload New Media

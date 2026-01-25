@@ -140,13 +140,13 @@ export function ProductQA({ productId }: ProductQAProps) {
                             <textarea
                                 value={newQuestion}
                                 onChange={(e) => setNewQuestion(e.target.value)}
-                                className="w-full bg-zinc-900 border border-zinc-800 rounded-md p-3 text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500 focus:outline-none min-h-[100px]"
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-md p-3 text-white placeholder-zinc-500 focus:ring-2 focus:ring-blue-500 focus:outline-none min-h-[100px]"
                                 placeholder="e.g., Does this support 4K 120Hz?"
                                 required
                                 minLength={10}
                             />
                             <div className="mt-2 flex justify-end">
-                                <button type="submit" className="bg-orange-600 hover:bg-orange-500 text-white px-6 py-2 rounded-md font-bold">
+                                <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-md font-bold">
                                     Post Question
                                 </button>
                             </div>
@@ -165,7 +165,7 @@ export function ProductQA({ productId }: ProductQAProps) {
                             </div>
                             <div className="flex-1">
                                 <h3 className="font-bold text-lg text-zinc-100 flex items-start gap-2">
-                                    <span className="text-orange-500 font-black">Q:</span>
+                                    <span className="text-blue-500 font-black">Q:</span>
                                     {q.question}
                                 </h3>
                                 <div className="text-xs text-zinc-500 mt-1 flex gap-2">
@@ -177,14 +177,14 @@ export function ProductQA({ productId }: ProductQAProps) {
                                 {/* Answers List */}
                                 <div className="mt-4 space-y-4">
                                     {q.answers?.map((a) => (
-                                        <div key={a.id} className={cn("pl-4 border-l-2", a.is_staff ? "border-orange-500/50 bg-orange-950/10 p-2 rounded-r-md" : "border-zinc-700")}>
+                                        <div key={a.id} className={cn("pl-4 border-l-2", a.is_staff ? "border-blue-500/50 bg-blue-950/10 p-2 rounded-r-md" : "border-zinc-700")}>
                                             <div className="text-zinc-300 flex items-start gap-2">
                                                 <span className="font-black text-zinc-500">A:</span>
                                                 <p className="leading-relaxed text-sm lg:text-base">{a.answer}</p>
                                             </div>
                                             <div className="mt-2 flex items-center gap-2 text-xs">
                                                 {a.is_staff ? (
-                                                    <span className="bg-orange-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                                                    <span className="bg-blue-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
                                                         TechDev Staff
                                                     </span>
                                                 ) : (
@@ -202,7 +202,7 @@ export function ProductQA({ productId }: ProductQAProps) {
                                     {!answeringId || answeringId !== q.id ? (
                                         <button
                                             onClick={() => setAnsweringId(q.id)}
-                                            className="text-sm text-zinc-400 hover:text-orange-500 font-medium transition-colors flex items-center gap-1"
+                                            className="text-sm text-zinc-400 hover:text-blue-500 font-medium transition-colors flex items-center gap-1"
                                         >
                                             <ChevronDown className="h-3 w-3" /> Answer this question
                                         </button>
@@ -212,7 +212,7 @@ export function ProductQA({ productId }: ProductQAProps) {
                                                 <textarea
                                                     value={newAnswer}
                                                     onChange={(e) => setNewAnswer(e.target.value)}
-                                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2 text-sm text-white focus:outline-none focus:border-orange-500 min-h-[80px]"
+                                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2 text-sm text-white focus:outline-none focus:border-blue-500 min-h-[80px]"
                                                     placeholder="Write your answer here..."
                                                     required
                                                 />

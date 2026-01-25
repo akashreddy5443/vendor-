@@ -44,7 +44,7 @@ export default function OrderConfirmationPage({ params }: { params: { id: string
                 <p className="text-gray-400">
                     Thank you for your purchase. Your order ID is:
                 </p>
-                <div className="bg-gray-900 border border-gray-800 rounded p-3 font-mono text-sm break-all text-orange-500">
+                <div className="bg-gray-900 border border-gray-800 rounded p-3 font-mono text-sm break-all text-blue-500">
                     {params.id}
                 </div>
 

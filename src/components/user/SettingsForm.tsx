@@ -183,7 +183,7 @@ export default function SettingsForm({
                     <button
                         type="submit"
                         disabled={loading}
-                        className="bg-brand-orange hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-lg flex items-center gap-2 transition-all shadow-md shadow-orange-900/10"
+                        className="bg-brand-orange hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg flex items-center gap-2 transition-all shadow-md shadow-blue-900/10"
                     >
                         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                         Save Changes

@@ -70,7 +70,7 @@ export function AddToCart({ productId, price, stock, title, image }: { productId
             <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-600 py-4 font-bold text-white transition-all hover:bg-orange-500 hover:shadow-lg hover:shadow-orange-900/20 disabled:opacity-70 active:scale-95"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 py-4 font-bold text-white transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-900/20 disabled:opacity-70 active:scale-95"
             >
                 <ShoppingCart className="h-5 w-5" />
                 {isAdding ? 'Adding...' : buttonText}
