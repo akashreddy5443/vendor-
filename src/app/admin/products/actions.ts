@@ -20,6 +20,8 @@ export async function createProduct(formData: FormData) {
     const media = mediaString ? JSON.parse(mediaString) : []
 
     // 1. Create Product
+    console.log('[Action] Creating Product:', { title, price, status })
+
     const { data: product, error } = await supabase
         .from('products')
         .insert({

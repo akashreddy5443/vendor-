@@ -42,17 +42,17 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
         .select('*, product_images(cloudinary_url)')
         .eq('status', 'active')
 
+    // Text Search (Apply first to ensure binding)
+    if (query) {
+        dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
+    }
+
     // Price Filters
     if (minPrice > 0) {
         dbQuery = dbQuery.gte('price', minPrice)
     }
     if (maxPrice !== null && maxPrice > 0) {
         dbQuery = dbQuery.lte('price', maxPrice)
-    }
-
-    // Text Search
-    if (query) {
-        dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`)
     }
 
     // Category Filter
