@@ -17,6 +17,8 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
     // Fix: Don't set an arbitrary default max price, allow infinity if not set
     const maxPrice = searchParams.max_price ? Number(searchParams.max_price) : null
 
+    console.log('[Search] Params:', { query, category, minPrice, maxPrice })
+
     let dbQuery = supabase
         .from('products')
         .select('*, product_images(cloudinary_url)')

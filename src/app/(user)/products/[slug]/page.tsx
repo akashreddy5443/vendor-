@@ -25,6 +25,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
     const supabase = await createClient()
 
+    console.log('[PDP] Params:', params)
+
     // Fetch Product + Images + Category
     const { data: product } = await supabase
         .from('products')
@@ -33,10 +35,15 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             product_images (*),
             categories (name, slug)
         `)
-        .or(`slug.eq.${params.slug},id.eq.${params.slug}`)
+        .or(`slug.ilike.${params.slug},id.eq.${params.slug}`) // Use ilike or eq
         .single()
 
+    console.log('[PDP] Product Result:', product ? product.title : 'Not Found')
+
     if (!product) {
+        // Fallback: try searching by title if slug failed (fuzzy legacy)
+        // Or just 404
+        console.error('[PDP] 404 - Product not found for slug:', params.slug)
         notFound()
     }
 

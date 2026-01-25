@@ -22,12 +22,15 @@ export default async function ProductsPage({ searchParams }: ProductPageProps) {
         .order('created_at', { ascending: false })
 
     if (searchParams.category && searchParams.category !== 'all') {
+        console.log('[Products] Category Filter Slug:', searchParams.category)
         // Resolve slug to ID
         const { data: categoryData } = await supabase
             .from('categories')
             .select('id')
             .eq('slug', searchParams.category)
             .single()
+
+        console.log('[Products] Resolved Category ID:', categoryData?.id)
 
         if (categoryData) {
             query = query.eq('category_id', categoryData.id)
