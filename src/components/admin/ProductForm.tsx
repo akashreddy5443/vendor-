@@ -109,8 +109,13 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         required
                         defaultValue={initialData?.price}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
+                        required
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                         placeholder="0.00"
                     />
+                    <p className="text-xs text-gray-400 mt-1">
+                        Format: {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(initialData?.price || 0)}
+                    </p>
                 </div>
                 <div className="space-y-2">
                     <label htmlFor="stock" className="text-sm font-medium text-gray-200">

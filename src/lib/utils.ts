@@ -5,9 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatPrice(price: number) {
+export function formatPrice(price: number | string) {
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-  }).format(price)
+    maximumFractionDigits: 0, // Remove decimals for cleaner look if preferred, or keep 2
+  }).format(numericPrice || 0)
 }
