@@ -63,7 +63,7 @@ export function CyberpunkCar() {
     }, [controls])
 
     return (
-        <div className="absolute bottom-10 left-0 right-0 h-48 pointer-events-none z-30 overflow-hidden flex items-end">
+        <div className="absolute bottom-2 md:bottom-10 left-0 right-0 h-48 pointer-events-none z-30 overflow-hidden flex items-end">
             <motion.div
                 animate={controls}
                 className="absolute bottom-10 left-0"
