@@ -21,8 +21,17 @@ export default async function ProductsPage({ searchParams }: ProductPageProps) {
         .eq('status', 'active')
         .order('created_at', { ascending: false })
 
-    if (searchParams.category) {
-        query = query.eq('category_id', searchParams.category)
+    if (searchParams.category && searchParams.category !== 'all') {
+        // Resolve slug to ID
+        const { data: categoryData } = await supabase
+            .from('categories')
+            .select('id')
+            .eq('slug', searchParams.category)
+            .single()
+
+        if (categoryData) {
+            query = query.eq('category_id', categoryData.id)
+        }
     }
 
     const { data: products } = await query

@@ -2,95 +2,104 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Play } from 'lucide-react'
 
-interface ProductGalleryProps {
-    images: {
-        id: string
-        cloudinary_url: string
-        is_primary: boolean
-        media_type?: 'image' | 'video'
-    }[]
+// Helper to determine if url is video if media_type is missing, though DB has media_type
+const isVideo = (url: string, type?: string) => {
+    if (type === 'video') return true
+    if (url.endsWith('.mp4') || url.endsWith('.webm')) return true
+    return false
 }
 
-export function ProductGallery({ images }: ProductGalleryProps) {
-    // Sort so primary is first or default
-    const sortedImages = [...images].sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0))
+interface ProductImage {
+    cloudinary_url: string
+    media_type?: 'image' | 'video'
+    is_primary?: boolean
+}
 
-    // Store selected media object (url + type)
-    const [selectedMedia, setSelectedMedia] = useState(
-        sortedImages[0]
-            ? { url: sortedImages[0].cloudinary_url, type: sortedImages[0].media_type || 'image' }
-            : null
-    )
+export function ProductGallery({ images }: { images: ProductImage[] }) {
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
-    if (!selectedMedia) {
+    // Sort so primary is first if index 0 logic is desired, but usually passed in order or primary flag
+    // We assume images[selectedIndex] is the target
+    const current = images[selectedIndex]
+
+    if (!images || images.length === 0) {
         return (
-            <div className="aspect-square w-full rounded-xl border border-gray-800 bg-gray-900 flex items-center justify-center text-gray-500">
-                No Media
+            <div className="aspect-square w-full rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-gray-500">
+                No Media Available
             </div>
         )
     }
 
+    const currentIsVideo = isVideo(current.cloudinary_url, current.media_type)
+
     return (
         <div className="flex flex-col gap-4">
-            {/* Main Media View */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
-                {selectedMedia.type === 'video' ? (
-                    <video
-                        src={selectedMedia.url}
-                        className="h-full w-full object-contain"
-                        controls
-                        autoPlay
-                        loop
-                        muted
-                    />
-                ) : (
-                    <Image
-                        src={selectedMedia.url}
-                        alt="Product Image"
-                        fill
-                        className="object-contain" // Changed to contain to ensure full product visibility
-                        priority
-                    />
-                )}
-            </div>
-
-            {/* Thumbnails */}
-            <div className="grid grid-cols-5 gap-2">
-                {sortedImages.map((image) => (
-                    <button
-                        key={image.id}
-                        onClick={() => setSelectedMedia({ url: image.cloudinary_url, type: image.media_type || 'image' })}
-                        className={cn(
-                            "relative aspect-square overflow-hidden rounded-lg border bg-gray-900 transition-all",
-                            selectedMedia.url === image.cloudinary_url
-                                ? "border-orange-500 ring-2 ring-orange-500/50"
-                                : "border-gray-800 hover:border-gray-600"
-                        )}
+            {/* Main Stage */}
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-black border border-zinc-800 shadow-2xl">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={selectedIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="h-full w-full relative"
                     >
-                        {image.media_type === 'video' ? (
-                            <div className="relative w-full h-full">
-                                <video src={image.cloudinary_url} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                    <div className="rounded-full bg-black/50 p-1">
-                                        <svg className="w-4 h-4 text-white fill-current" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
-                                    </div>
-                                </div>
+                        {currentIsVideo ? (
+                            <div className="h-full w-full flex items-center justify-center bg-black">
+                                <video
+                                    src={current.cloudinary_url}
+                                    controls
+                                    autoPlay
+                                    loop
+                                    className="h-full w-full object-contain"
+                                />
                             </div>
                         ) : (
                             <Image
-                                src={image.cloudinary_url}
-                                alt="Thumbnail"
+                                src={current.cloudinary_url}
+                                alt="Product View"
+                                fill
+                                className="object-contain"
+                                priority
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        )}
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+
+            {/* Thumbnails */}
+            {images.length > 1 && (
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                    {images.map((img, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setSelectedIndex(idx)}
+                            className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all ${selectedIndex === idx
+                                    ? 'border-orange-500 ring-2 ring-orange-500/20'
+                                    : 'border-transparent hover:border-gray-600'
+                                }`}
+                        >
+                            <Image
+                                src={img.media_type === 'video' ? '/video-placeholder.png' : img.cloudinary_url} // Fallback for video thumb if no poster
+                                alt={`Thumbnail ${idx}`}
                                 fill
                                 className="object-cover"
                             />
-                        )}
-                    </button>
-                ))}
-            </div>
+                            {/* Video Indicator Overlay */}
+                            {isVideo(img.cloudinary_url, img.media_type) && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                                    <Play className="h-6 w-6 text-white fill-current" />
+                                </div>
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
