@@ -16,9 +16,9 @@ export function Navbar() {
     const { cartCount } = useCart()
 
     useEffect(() => {
-        const init = async () => {
-            const supabase = createClient()
+        const supabase = createClient()
 
+        const init = async () => {
             // Fetch User
             const { data: { user } } = await supabase.auth.getUser()
             setUser(user)
@@ -34,6 +34,13 @@ export function Navbar() {
             setLoading(false)
         }
         init()
+
+        // Real-time Auth Listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null)
+        })
+
+        return () => subscription.unsubscribe()
     }, [])
 
     const showAnnouncement = announcement?.is_active && announcement?.content_json?.show !== false
