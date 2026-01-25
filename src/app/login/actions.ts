@@ -60,25 +60,33 @@ export async function signup(formData: FormData) {
 
 export async function signInWithGoogle() {
     const supabase = await createClient()
-    const isDev = process.env.NODE_ENV === 'development'
-    const origin = isDev ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'https://vencortech17.vercel.app')
+    import { headers } from 'next/headers'
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: `${origin}/auth/callback`,
-            queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
+    export async function signInWithGoogle() {
+        const supabase = await createClient()
+
+        // Dynamic Origin to fix "Bad OAuth State"
+        const headersList = await headers()
+        const host = headersList.get('host')
+        const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+        const origin = `${protocol}://${host}`
+
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${origin}/auth/callback`,
+                queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                },
             },
-        },
-    })
+        })
 
-    if (error) {
-        redirect('/login?error=Could not initiate Google Login')
-    }
+        if (error) {
+            redirect('/login?error=Could not initiate Google Login')
+        }
 
-    if (data.url) {
-        redirect(data.url)
+        if (data.url) {
+            redirect(data.url)
+        }
     }
-}
