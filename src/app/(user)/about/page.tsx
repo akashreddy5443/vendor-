@@ -86,7 +86,7 @@ export default async function AboutPage() {
                         <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
                         <div className="relative bg-zinc-950 border border-zinc-800 rounded-[2.5rem] p-10 text-center space-y-6 overflow-hidden">
 
-                            <div className="relative w-40 h-40 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500">
+                            <div className="relative w-40 h-40 mx-auto rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 transition-transform duration-700 ease-in-out hover:rotate-[360deg] cursor-pointer">
                                 <div className="w-full h-full rounded-full bg-black overflow-hidden relative">
                                     {data.profile?.imageUrl ? (
                                         <Image
