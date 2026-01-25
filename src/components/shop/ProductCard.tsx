@@ -51,12 +51,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <div className="group relative flex flex-col overflow-hidden rounded-xl border border-blue-900/30 bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-900/20">
+            <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-0" />
 
-                <div className="aspect-square bg-[#020617] relative overflow-hidden flex items-center justify-center">
-                    {/* Midnight Blue Glow Effect */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+                <div className="aspect-square bg-muted/20 relative overflow-hidden flex items-center justify-center">
+                    {/* Soft Primary Glow Effect */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                     {imageUrl ? (
                         <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10">
@@ -90,11 +90,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
                     {/* Quick actions - Visible on Mobile, Hover on Desktop */}
                     <div className="absolute top-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-black/40 backdrop-blur-md rounded-full p-1.5 hover:bg-black/80 transition-colors pointer-events-auto border border-white/10">
-                            <WishlistToggle productId={product.id} className="text-white hover:text-red-500" />
+                        <div className="bg-white/80 backdrop-blur-md rounded-full p-1.5 hover:bg-white transition-colors pointer-events-auto border border-border shadow-sm">
+                            <WishlistToggle productId={product.id} className="text-primary hover:text-red-500" />
                         </div>
-                        <div className="bg-black/40 backdrop-blur-md rounded-full p-1.5 hover:bg-black/80 transition-colors pointer-events-auto border border-white/10">
-                            <CompareToggle productId={product.id} className="text-white hover:text-blue-400" />
+                        <div className="bg-white/80 backdrop-blur-md rounded-full p-1.5 hover:bg-white transition-colors pointer-events-auto border border-border shadow-sm">
+                            <CompareToggle productId={product.id} className="text-primary hover:text-blue-600" />
                         </div>
                         <button
                             onClick={(e) => {
@@ -102,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
                                 e.stopPropagation()
                                 setShowQuickView(true)
                             }}
-                            className="bg-black/40 backdrop-blur-md rounded-full p-2 text-white hover:bg-black/80 transition-colors hover:text-blue-400 border border-white/10"
+                            className="bg-white/80 backdrop-blur-md rounded-full p-2 text-primary hover:bg-white transition-colors hover:text-orange-600 border border-border shadow-sm"
                             title="Quick View"
                         >
                             <Eye className="h-5 w-5" />
@@ -110,7 +110,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         <button
                             onClick={handleAddToCart}
                             disabled={isOutOfStock}
-                            className={`bg-black/40 backdrop-blur-md rounded-full p-2 text-white hover:bg-black/80 transition-colors hover:text-green-400 border border-white/10 ${isOutOfStock ? 'opacity-50 cursor-not-allowed hidden' : ''}`}
+                            className={`bg-white/80 backdrop-blur-md rounded-full p-2 text-primary hover:bg-white transition-colors hover:text-green-600 border border-border shadow-sm ${isOutOfStock ? 'opacity-50 cursor-not-allowed hidden' : ''}`}
                             title="Add to Cart"
                         >
                             <ShoppingCart className="h-5 w-5" />
