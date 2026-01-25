@@ -1,7 +1,22 @@
 import { useCart } from '@/context/CartContext'
 import { ShoppingCart } from 'lucide-react'
 
-// ... (inside component)
+import { useState } from 'react'
+import { QuickViewModal } from './QuickViewModal'
+import { CompareToggle } from './CompareToggle'
+
+interface ProductCardProps {
+    product: {
+        id: string
+        title: string
+        price: number
+        slug?: string
+        description?: string
+        stock?: number
+        product_images?: { cloudinary_url: string; is_primary: boolean }[]
+    }
+}
+
 export function ProductCard({ product }: ProductCardProps) {
     const [showQuickView, setShowQuickView] = useState(false)
     const { addItem } = useCart()
