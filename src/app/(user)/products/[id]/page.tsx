@@ -6,6 +6,7 @@ import { formatPrice } from '@/lib/utils'
 import { ReviewForm } from '@/components/shop/ReviewForm'
 import { ReviewsList } from '@/components/shop/ReviewsList'
 import { RelatedProducts } from '@/components/shop/RelatedProducts'
+import { ProductQA } from '@/components/shop/ProductQA'
 
 interface PageProps {
     params: {
@@ -111,6 +112,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     <div className="lg:col-span-2">
                         <ReviewsList productId={product.id} />
                     </div>
+                </div>
+            </div>
+
+            {/* Q&A Section */}
+            <div className="mt-20 border-t border-zinc-800 pt-12">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <ProductQA productId={product.id} />
                 </div>
             </div>
 
