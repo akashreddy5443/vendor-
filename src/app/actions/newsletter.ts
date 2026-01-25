@@ -2,9 +2,15 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD?.replace(/"/g, '') // Remove quotes if present
+    }
+})
 
 export async function subscribeToNewsletter(formData: FormData) {
     const email = formData.get('email') as string
@@ -15,7 +21,7 @@ export async function subscribeToNewsletter(formData: FormData) {
 
     const supabase = await createClient()
 
-    // 1. Check duplicate locally (Optional, but nice for UX)
+    // 1. Check duplicate locally
     const { data: existing } = await supabase
         .from('newsletter_subscribers')
         .select('id')
@@ -39,11 +45,11 @@ export async function subscribeToNewsletter(formData: FormData) {
         return { error: 'Failed to subscribe. Please try again.' }
     }
 
-    // 3. Send Email (Best Effort)
+    // 3. Send Email (Gmail)
     try {
-        if (process.env.RESEND_API_KEY) {
-            const { error: emailError } = await resend.emails.send({
-                from: 'TechDev Store <onboarding@resend.dev>', // Default testing domain
+        if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+            await transporter.sendMail({
+                from: '"TechDev Store" <' + process.env.GMAIL_USER + '>',
                 to: email,
                 subject: 'Welcome to TechDev Store! 🚀',
                 html: `
@@ -59,19 +65,13 @@ export async function subscribeToNewsletter(formData: FormData) {
                     </div>
                 `
             })
-
-            if (emailError) {
-                console.error('RESEND API ERROR:', emailError)
-                // We return 'success: true' because the DB insert worked, but we warn about email
-                // Note: For dev/staging, this is critical info.
-            } else {
-                console.log(`Welcome email sent to ${email}`)
-            }
+            console.log(`Welcome email sent to ${email} via Gmail`)
         } else {
-            console.log(`[DEV] Email would be sent to ${email} (Missing RESEND_API_KEY)`)
+            console.log(`[DEV] Email would be sent to ${email} (Missing Gmail Creds)`)
         }
     } catch (err) {
-        console.error('UNEXPECTED EMAIL ERROR:', err)
+        console.error('GMAIL ERROR:', err)
+        // Don't fail the subscription just because email failed
     }
 
     revalidatePath('/admin/subscribers')
