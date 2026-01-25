@@ -32,11 +32,15 @@ export default async function DynamicCMSPage({ params }: { params: { slug: strin
     }
 
     return (
-        <div className="min-h-screen bg-background text-foreground py-16 px-6">
-            <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold mb-8 font-serif">{page.title}</h1>
+        <div className="min-h-screen bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                {/* Only show title if it's NOT the About page (since About handles its own hero) */}
+                {page.slug !== 'about' && (
+                    <h1 className="text-4xl font-bold mb-8 font-serif text-center">{page.title}</h1>
+                )}
+
                 <div
-                    className="prose prose-invert prose-orange max-w-none"
+                    className="prose prose-invert prose-orange max-w-none dark:prose-p:text-gray-300 dark:prose-headings:text-white"
                     dangerouslySetInnerHTML={{ __html: page.content || '' }}
                 />
             </div>
