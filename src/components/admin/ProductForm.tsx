@@ -1,3 +1,5 @@
+'use client'
+
 import { createProduct, updateProduct } from '@/app/admin/products/actions'
 import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus, X } from 'lucide-react'
