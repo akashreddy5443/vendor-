@@ -19,6 +19,13 @@ export default async function SettingsPage() {
         .eq('id', user.id)
         .single()
 
+    // Fetch active notification toggles
+    const { data: notificationSettings } = await supabase
+        .from('notification_settings')
+        .select('*')
+        .eq('is_active', true)
+        .order('key')
+
     return (
         <div className="max-w-4xl">
             <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
@@ -47,6 +54,7 @@ export default async function SettingsPage() {
                         phone={profile?.phone || ''}
                         avatarUrl={profile?.avatar_url || ''}
                         notifications={profile?.notification_preferences}
+                        availableNotifications={notificationSettings || []}
                         hasPassword={user?.app_metadata?.providers?.includes('email')}
                         updateProfile={updateProfile}
                         updatePassword={updatePassword}

@@ -12,7 +12,8 @@ interface SettingsFormProps {
     hasPassword?: boolean
     phone?: string
     avatarUrl?: string
-    notifications?: { marketing: boolean, orders: boolean }
+    notifications?: any
+    availableNotifications?: any[]
     updateProfile: (formData: FormData) => Promise<{ error?: string, success?: string }>
     updatePassword: (formData: FormData) => Promise<{ error?: string, success?: string }>
 }
@@ -24,12 +25,22 @@ export default function SettingsForm({
     phone: initialPhone,
     avatarUrl: initialAvatar,
     notifications: initialNotifs,
+    availableNotifications = [],
     updateProfile,
     updatePassword
 }: SettingsFormProps) {
     const [loading, setLoading] = useState(false)
     const [avatar, setAvatar] = useState(initialAvatar || '')
-    const [notifs, setNotifs] = useState(initialNotifs || { marketing: false, orders: true })
+
+    // Initialize notifications state: use user's preference if set, otherwise default to true (opt-in by default)
+    const [notifs, setNotifs] = useState(() => {
+        const defaults: any = {}
+        availableNotifications.forEach((n: any) => {
+            // If user has a preference, use it. If not, default to true.
+            defaults[n.key] = initialNotifs?.[n.key] !== undefined ? initialNotifs[n.key] : true
+        })
+        return defaults
+    })
 
     const handleProfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -64,6 +75,14 @@ export default function SettingsForm({
             // clear inputs
             e.currentTarget.reset()
         }
+    }
+
+    // Toggle handler
+    const toggleNotification = (key: string) => {
+        setNotifs((prev: any) => ({
+            ...prev,
+            [key]: !prev[key]
+        }))
     }
 
     return (
@@ -136,26 +155,28 @@ export default function SettingsForm({
                     <h4 className="flex items-center gap-2 font-bold text-foreground text-sm">
                         <Bell className="h-4 w-4" /> Notification Preferences
                     </h4>
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Receive Order Updates (Email)</span>
-                        <button
-                            type="button"
-                            onClick={() => setNotifs({ ...notifs, orders: !notifs.orders })}
-                            className={`w-11 h-6 rounded-full transition-colors relative ${notifs.orders ? 'bg-primary' : 'bg-muted-foreground/30'}`}
-                        >
-                            <span className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${notifs.orders ? 'translate-x-5' : 'translate-x-0'}`} />
-                        </button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Receive Marketing Emails</span>
-                        <button
-                            type="button"
-                            onClick={() => setNotifs({ ...notifs, marketing: !notifs.marketing })}
-                            className={`w-11 h-6 rounded-full transition-colors relative ${notifs.marketing ? 'bg-primary' : 'bg-muted-foreground/30'}`}
-                        >
-                            <span className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${notifs.marketing ? 'translate-x-5' : 'translate-x-0'}`} />
-                        </button>
-                    </div>
+
+                    {availableNotifications.length > 0 ? (
+                        availableNotifications.map((notification) => (
+                            <div key={notification.key} className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <div className="text-sm text-foreground font-medium">{notification.label}</div>
+                                    {notification.description && (
+                                        <div className="text-xs text-muted-foreground">{notification.description}</div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => toggleNotification(notification.key)}
+                                    className={`w-11 h-6 rounded-full transition-colors relative ${notifs[notification.key] ? 'bg-primary' : 'bg-muted-foreground/30'}`}
+                                >
+                                    <span className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${notifs[notification.key] ? 'translate-x-5' : 'translate-x-0'}`} />
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-sm text-muted-foreground text-center py-2">No notification settings available.</div>
+                    )}
                 </div>
 
                 <div className="flex justify-end pt-4">

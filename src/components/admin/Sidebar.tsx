@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, Users, Settings, Image as ImageIcon, FileText, Palette, Mail, ShoppingCart, FolderTree, Home } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Settings, Image as ImageIcon, FileText, Palette, Mail, ShoppingCart, FolderTree, Home, Bell } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -16,6 +16,7 @@ const navItems = [
     { label: 'Users', href: '/admin/users', icon: Users },
     { label: 'About Page', href: '/admin/settings/about', icon: FileText },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
+    { label: 'Notifications', href: '/admin/settings/notifications', icon: Bell },
 ]
 
 import { ExternalLink } from 'lucide-react'

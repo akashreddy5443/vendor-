@@ -48,22 +48,38 @@ export async function subscribeToNewsletter(formData: FormData) {
     // 3. Send Email (Gmail)
     try {
         if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+            // Fetch template
+            const { data: template } = await supabase
+                .from('notification_templates')
+                .select('*')
+                .eq('template_key', 'welcome_email')
+                .single()
+
+            let subject = 'Welcome to TechDev Store! 🚀'
+            let htmlContent = `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1 style="color: #ff4500;">Welcome to the Clan!</h1>
+                    <p>Hey there,</p>
+                    <p>Thanks for subscribing to the <strong>TechDev Store</strong> newsletter.</p>
+                    <p>You're now on the list for exclusive drops, dev gear discounts, and setup inspiration.</p>
+                    <br/>
+                    <a href="${process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') ? 'http://localhost:3000' : 'https://vendortech17.vercel.app'}" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit Store</a>
+                    <br/><br/>
+                    <p>Happy Coding,<br/>The TechDev Team</p>
+                </div>
+            `
+
+            if (template) {
+                subject = template.subject
+                const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') ? 'http://localhost:3000' : 'https://vendortech17.vercel.app'
+                htmlContent = template.body_content.replace('{{site_url}}', siteUrl)
+            }
+
             await transporter.sendMail({
                 from: '"TechDev Store" <' + process.env.GMAIL_USER + '>',
                 to: email,
-                subject: 'Welcome to TechDev Store! 🚀',
-                html: `
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h1 style="color: #ff4500;">Welcome to the Clan!</h1>
-                        <p>Hey there,</p>
-                        <p>Thanks for subscribing to the <strong>TechDev Store</strong> newsletter.</p>
-                        <p>You're now on the list for exclusive drops, dev gear discounts, and setup inspiration.</p>
-                        <br/>
-                        <a href="${process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') ? 'http://localhost:3000' : 'https://vendortech17.vercel.app'}" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Visit Store</a>
-                        <br/><br/>
-                        <p>Happy Coding,<br/>The TechDev Team</p>
-                    </div>
-                `
+                subject: subject,
+                html: htmlContent
             })
             console.log(`Welcome email sent to ${email} via Gmail`)
         } else {
