@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { CldUploadWidget } from 'next-cloudinary'
-import { Camera, Save, Loader2, User, Phone, Bell, Mail, Lock } from 'lucide-react'
+
+import { Save, Loader2, User, Phone, Bell, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import Image from 'next/image'
 
@@ -72,36 +72,37 @@ export default function SettingsForm({
             <form onSubmit={handleProfileSubmit} className="space-y-6">
 
                 {/* Avatar Section */}
-                <div className="flex items-center gap-6">
-                    <div className="relative group">
-                        <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-border bg-muted flex items-center justify-center relative">
-                            {avatar ? (
-                                <Image src={avatar} alt="Profile" fill className="object-cover" />
-                            ) : (
-                                <User className="h-10 w-10 text-muted-foreground" />
-                            )}
-                        </div>
-                        <CldUploadWidget
-                            uploadPreset="techdev_uploads" // Ensure this preset exists or is unsigned
-                            onSuccess={(result: any) => {
-                                setAvatar(result.info.secure_url)
-                            }}
+                <div className="space-y-4">
+                    <h3 className="font-bold text-foreground">Profile Picture</h3>
+                    <div className="flex items-center gap-6">
+                        {/* Male Option */}
+                        <button
+                            type="button"
+                            onClick={() => setAvatar('/avatars/male.svg')}
+                            className={`relative group rounded-full p-1 border-2 transition-all ${avatar === '/avatars/male.svg' ? 'border-brand-orange scale-110' : 'border-transparent hover:border-border'}`}
                         >
-                            {({ open }) => (
-                                <button
-                                    type="button"
-                                    onClick={() => open()}
-                                    className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white rounded-full cursor-pointer"
-                                >
-                                    <Camera className="h-6 w-6" />
-                                </button>
+                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative">
+                                <Image src="/avatars/male.svg" alt="Male" fill className="object-cover" />
+                            </div>
+                            {avatar === '/avatars/male.svg' && (
+                                <div className="absolute -top-2 -right-2 bg-brand-orange text-white rounded-full p-1">
+                                    <div className="h-3 w-3 bg-white rounded-full" />
+                                </div>
                             )}
-                        </CldUploadWidget>
+                        </button>
+
+                        {/* Female Option */}
+                        <button
+                            type="button"
+                            onClick={() => setAvatar('/avatars/female.svg')}
+                            className={`relative group rounded-full p-1 border-2 transition-all ${avatar === '/avatars/female.svg' ? 'border-brand-orange scale-110' : 'border-transparent hover:border-border'}`}
+                        >
+                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative">
+                                <Image src="/avatars/female.svg" alt="Female" fill className="object-cover" />
+                            </div>
+                        </button>
                     </div>
-                    <div>
-                        <h3 className="font-bold text-foreground">Profile Picture</h3>
-                        <p className="text-sm text-muted-foreground">Click image to upload new photo.</p>
-                    </div>
+                    <p className="text-sm text-muted-foreground">Select a default avatar.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
