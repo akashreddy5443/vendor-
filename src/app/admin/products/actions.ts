@@ -18,6 +18,8 @@ export async function createProduct(formData: FormData) {
     const category_id = formData.get('category_id') as string || null
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
+    const featuresString = formData.get('features') as string
+    const features = featuresString ? JSON.parse(featuresString) : []
 
     // 1. Create Product
     console.log('[Action] Creating Product:', { title, price, status })
@@ -32,6 +34,7 @@ export async function createProduct(formData: FormData) {
             stock,
             status,
             category_id,
+            features
         })
         .select()
         .single()
@@ -83,6 +86,8 @@ export async function updateProduct(formData: FormData) {
     const category_id = formData.get('category_id') as string || null
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
+    const featuresString = formData.get('features') as string
+    const features = featuresString ? JSON.parse(featuresString) : []
 
     // 1. Update Product
     const { error: updateError } = await supabase
@@ -94,6 +99,7 @@ export async function updateProduct(formData: FormData) {
             stock,
             status,
             category_id,
+            features
         })
         .eq('id', id)
 

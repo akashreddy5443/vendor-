@@ -15,6 +15,7 @@ interface ProductFormProps {
         stock: number
         status: string
         category_id?: string
+        features?: any // JSONB
         product_images?: { cloudinary_url: string, media_type: string }[]
     }
 }
@@ -34,8 +35,25 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
         setMedia(prev => [...prev, { url, type: mediaType }])
     }
 
-    const removeMedia = (index: number) => {
-        setMedia(prev => prev.filter((_, i) => i !== index))
+    // Features State
+    const [features, setFeatures] = useState<{ key: string, value: string }[]>(
+        initialData?.features && Array.isArray(initialData.features)
+            ? initialData.features
+            : []
+    )
+
+    const addFeature = () => {
+        setFeatures([...features, { key: '', value: '' }])
+    }
+
+    const removeFeature = (index: number) => {
+        setFeatures(features.filter((_, i) => i !== index))
+    }
+
+    const updateFeature = (index: number, field: 'key' | 'value', text: string) => {
+        const newFeatures = [...features]
+        newFeatures[index][field] = text
+        setFeatures(newFeatures)
     }
 
     const handleSubmit = async (formData: FormData) => {
@@ -94,6 +112,53 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                     className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-orange-500 focus:outline-none"
                     placeholder="Product details..."
                 />
+            </div>
+
+            {/* Features / Specifications Editor */}
+            <div className="space-y-4 rounded-lg border border-gray-800 bg-black/20 p-4">
+                <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-200">Specifications / Features</label>
+                    <button
+                        type="button"
+                        onClick={addFeature}
+                        className="text-xs text-orange-400 hover:text-orange-300 underline"
+                    >
+                        + Add Feature
+                    </button>
+                </div>
+                <input type="hidden" name="features" value={JSON.stringify(features)} />
+
+                {features.length === 0 && (
+                    <p className="text-xs text-gray-500 italic">No features added (e.g. Processor, RAM, Material)</p>
+                )}
+
+                <div className="space-y-2">
+                    {features.map((feature, index) => (
+                        <div key={index} className="flex gap-2">
+                            <input
+                                type="text"
+                                placeholder="Key (e.g. Color)"
+                                value={feature.key}
+                                onChange={(e) => updateFeature(index, 'key', e.target.value)}
+                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                            />
+                            <input
+                                type="text"
+                                placeholder="Value (e.g. Black)"
+                                value={feature.value}
+                                onChange={(e) => updateFeature(index, 'value', e.target.value)}
+                                className="flex-1 rounded-md border border-gray-700 bg-gray-950 p-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => removeFeature(index)}
+                                className="p-2 text-red-500 hover:text-red-400"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
