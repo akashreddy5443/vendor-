@@ -6,8 +6,8 @@ import { formatPrice } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, CheckCircle, MapPin, CreditCard } from 'lucide-react'
-import { createOrder } from './actions'
+import { Loader2, CheckCircle, MapPin, CreditCard, Trash2 } from 'lucide-react'
+import { createOrder, validateCoupon } from './actions'
 
 export default function CheckoutPage() {
     const { items: cart, cartTotal: total, clearCart } = useCart()
@@ -15,7 +15,33 @@ export default function CheckoutPage() {
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)
     const [submitting, setSubmitting] = useState(false)
+
+    // Coupon State
+    const [couponCode, setCouponCode] = useState('')
+    const [appliedCoupon, setAppliedCoupon] = useState<{ id: string, code: string, discountAmount: number } | null>(null)
+    const [couponError, setCouponError] = useState('')
+    const [validatingCoupon, setValidatingCoupon] = useState(false)
+
     const router = useRouter()
+
+    async function handleApplyCoupon() {
+        if (!couponCode.trim()) return
+        setValidatingCoupon(true)
+        setCouponError('')
+
+        const res = await validateCoupon(couponCode, total)
+        setValidatingCoupon(false)
+
+        if (res.error) {
+            setCouponError(res.error)
+            setAppliedCoupon(null)
+        } else if (res.coupon) {
+            setAppliedCoupon(res.coupon)
+            setCouponError('')
+        }
+    }
+
+    const finalTotal = total - (appliedCoupon?.discountAmount || 0)
 
     useEffect(() => {
         const fetchAddresses = async () => {
@@ -57,8 +83,10 @@ export default function CheckoutPage() {
         const res = await createOrder({
             addressId: selectedAddress,
             paymentMethod: 'cod', // Placeholder
-            total: total,
-            items: cart
+            total: finalTotal,
+            items: cart,
+            couponId: appliedCoupon?.id,
+            discountAmount: appliedCoupon?.discountAmount
         })
 
         if (res?.error) {
@@ -158,18 +186,48 @@ export default function CheckoutPage() {
                             ))}
                         </div>
 
-                        <div className="border-t border-zinc-800 pt-4 space-y-2 text-sm">
-                            <div className="flex justify-between text-gray-400">
+                        <div className="space-y-4 mb-6">
+                            {/* Coupon Input */}
+                            <div className="flex gap-2">
+                                <input
+                                    value={couponCode}
+                                    onChange={(e) => setCouponCode(e.target.value)}
+                                    placeholder="Coupon Code"
+                                    className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 p-2 text-sm text-white focus:border-orange-500 focus:outline-none uppercase"
+                                />
+                                <button
+                                    onClick={handleApplyCoupon}
+                                    disabled={validatingCoupon || !couponCode || !!appliedCoupon}
+                                    className="rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-xs font-bold text-gray-300 hover:text-white hover:bg-zinc-700 disabled:opacity-50"
+                                >
+                                    {validatingCoupon ? <Loader2 className="h-3 w-3 animate-spin" /> : 'APPLY'}
+                                </button>
+                            </div>
+                            {couponError && <p className="text-xs text-red-500">{couponError}</p>}
+                            {appliedCoupon && (
+                                <div className="flex justify-between items-center text-xs text-green-500 bg-green-500/10 p-2 rounded border border-green-500/20">
+                                    <span>Coupon <strong>{appliedCoupon.code}</strong> applied!</span>
+                                    <button onClick={() => { setAppliedCoupon(null); setCouponCode('') }} className="hover:text-green-400"><Trash2 className="h-3 w-3" /></button>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between text-gray-400 text-sm">
                                 <span>Subtotal</span>
                                 <span>{formatPrice(total)}</span>
                             </div>
-                            <div className="flex justify-between text-gray-400">
+                            <div className="flex justify-between text-gray-400 text-sm">
                                 <span>Shipping</span>
                                 <span className="text-green-500">Free</span>
                             </div>
+                            {appliedCoupon && (
+                                <div className="flex justify-between text-green-500 text-sm">
+                                    <span>Discount</span>
+                                    <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between text-lg font-bold text-white pt-2 border-t border-zinc-800 mt-2">
                                 <span>Total</span>
-                                <span className="text-orange-500">{formatPrice(total)}</span>
+                                <span className="text-orange-500">{formatPrice(finalTotal)}</span>
                             </div>
                         </div>
 
@@ -183,7 +241,7 @@ export default function CheckoutPage() {
                                     <Loader2 className="animate-spin h-5 w-5" /> Processing...
                                 </span>
                             ) : (
-                                `Pay ${formatPrice(total)}`
+                                `Pay ${formatPrice(finalTotal)}`
                             )}
                         </button>
 

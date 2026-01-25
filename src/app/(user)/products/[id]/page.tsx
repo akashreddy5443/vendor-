@@ -5,6 +5,7 @@ import { AddToCart } from '@/components/shop/AddToCart'
 import { formatPrice } from '@/lib/utils'
 import { ReviewForm } from '@/components/shop/ReviewForm'
 import { ReviewsList } from '@/components/shop/ReviewsList'
+import { RelatedProducts } from '@/components/shop/RelatedProducts'
 
 interface PageProps {
     params: {
@@ -95,6 +96,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     <div className="lg:col-span-2">
                         <ReviewsList productId={product.id} />
                     </div>
+                </div>
+            </div>
+
+            {/* Related Products */}
+            <div className="mt-20 border-t border-zinc-800 pt-12">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-20">
+                    <RelatedProducts categoryId={product.category_id} currentId={product.id} />
                 </div>
             </div>
 
