@@ -29,8 +29,8 @@ export async function Footer() {
                             {/* Manual split for style, or dynamic if simple text */}
                             {config.newsletterTitle.includes('NEWSLETTER') ? (
                                 <>
-                                    <span className="text-blue-500">SUBSCRIBE</span> TO OUR <br />
-                                    <span className="text-white">NEWSLETTER</span>
+                                    <span className="text-blue-600">SUBSCRIBE</span> TO OUR <br />
+                                    <span className="text-[#0B1026]">NEWSLETTER</span>
                                 </>
                             ) : (config.newsletterTitle)}
                         </h2>
