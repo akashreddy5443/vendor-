@@ -137,6 +137,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* BigTech Phase 3: Promo Banners */}
+      <PromoBanner />
+
       {/* Featured Products Placeholder */}
       <section className="py-20 px-6">
         <motion.h2
