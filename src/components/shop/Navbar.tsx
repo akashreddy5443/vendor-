@@ -81,7 +81,7 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-[#0B1026] hover:text-primary transition-colors">
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
