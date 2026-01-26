@@ -68,10 +68,9 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
           transition={{ duration: 1.5 }}
-        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
-        ></div>
+        ></motion.div>
 
         {/* Overlays Removed as requested by user to remove 'white blue effect' */}
         <div className="absolute inset-0 bg-black/10"></div>
