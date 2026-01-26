@@ -5,6 +5,9 @@ import Link from 'next/link'
 // Trigger Deployment
 import { createClient } from '@/lib/supabase/client'
 import { formatPrice } from '@/lib/utils'
+
+export const dynamic = 'force-dynamic'
+
 import { ProductCard } from '@/components/shop/ProductCard'
 import { motion } from 'framer-motion'
 import { CyberpunkCar } from '@/components/ui/CyberpunkCar'
