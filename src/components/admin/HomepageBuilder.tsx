@@ -199,7 +199,6 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                         <p className="text-sm text-gray-400">Edit the circular category links on the homepage.</p>
                     </div>
                     <button
-                        type="button"
                         onClick={addCategory}
                         className="flex items-center gap-2 rounded-md bg-blue-600/10 px-3 py-1.5 text-sm font-medium text-blue-400 hover:bg-blue-600/20"
                     >
@@ -208,7 +207,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                 </div>
 
                 <form action={handleCategoriesSubmit} className="space-y-6">
-                    <input type="hidden" name="categories" value={JSON.stringify(categories)} />
+                    {/* Explicitly passing key to force re-render if categories change, though React should handle value update */}
+                    <input type="hidden" name="categories" value={JSON.stringify(categories)} key={JSON.stringify(categories)} />
 
                     <div className="space-y-4">
                         {categories.map((cat, index) => (
