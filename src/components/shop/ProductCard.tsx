@@ -51,12 +51,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-lg hover:border-blue-500/50 transition-all duration-300">
+            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-transparent border-transparent transition-all duration-300">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-square bg-gray-100 dark:bg-zinc-900/50 relative overflow-hidden flex items-center justify-center">
-                    {/* Hover Overlay for Light Mode Polish */}
-                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="aspect-square relative overflow-hidden flex items-center justify-center">
 
                     {imageUrl ? (
                         <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10 p-4">
@@ -88,16 +86,15 @@ export function ProductCard({ product }: ProductCardProps) {
                         </div>
                     )}
 
-                    {/* Quick actions - Visible on Mobile, Hover on Desktop */}
-                    <div className="absolute top-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-                        {/* Wishlist */}
-                        <div className="bg-white/90 dark:bg-zinc-900/80 backdrop-blur-md rounded-full p-2 hover:bg-blue-600 hover:text-white transition-all pointer-events-auto border border-gray-200 dark:border-blue-500/30 shadow-lg group/btn text-gray-700 dark:text-white">
+                    {/* Wishlist - Moved to Bottom Right */}
+                    <div className="absolute bottom-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition-colors shadow-lg group/btn">
                             <WishlistToggle productId={product.id} className="currentColor" />
                         </div>
                     </div>
                 </div>
 
-                <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none bg-card">
+                <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none">
                     <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
                         {product.title}
                     </h3>
