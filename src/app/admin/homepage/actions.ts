@@ -94,3 +94,44 @@ export async function updateFeatured(formData: FormData) {
     revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }
+
+export async function updateCategories(formData: FormData) {
+    const supabase = await createClient()
+
+    const categories = JSON.parse(formData.get('categories') as string)
+
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'categories')
+        .single()
+
+    const payload = {
+        section_type: 'categories',
+        title: 'Shop by Category',
+        content_json: { categories },
+        is_active: true,
+    }
+
+    let error;
+    if (existing) {
+        const { error: updateError } = await supabase
+            .from('homepage_sections')
+            .update(payload)
+            .eq('id', existing.id)
+        error = updateError
+    } else {
+        const { error: insertError } = await supabase
+            .from('homepage_sections')
+            .insert(payload)
+        error = insertError
+    }
+
+    if (error) {
+        console.error('Error updating categories:', error)
+        return { error: 'Failed to update categories' }
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}

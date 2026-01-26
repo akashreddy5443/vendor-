@@ -100,7 +100,7 @@ export default function SettingsForm({
                             onClick={() => setAvatar('/avatars/male.svg')}
                             className={`relative group rounded-full p-1 border-2 transition-all ${avatar === '/avatars/male.svg' ? 'border-brand-orange scale-110' : 'border-transparent hover:border-border'}`}
                         >
-                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative">
+                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative border border-border">
                                 <Image src="/avatars/male.svg" alt="Male" fill className="object-cover" />
                             </div>
                             {avatar === '/avatars/male.svg' && (
@@ -116,7 +116,7 @@ export default function SettingsForm({
                             onClick={() => setAvatar('/avatars/female.svg')}
                             className={`relative group rounded-full p-1 border-2 transition-all ${avatar === '/avatars/female.svg' ? 'border-brand-orange scale-110' : 'border-transparent hover:border-border'}`}
                         >
-                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative">
+                            <div className="h-20 w-20 rounded-full overflow-hidden bg-muted relative border border-border">
                                 <Image src="/avatars/female.svg" alt="Female" fill className="object-cover" />
                             </div>
                         </button>
@@ -133,7 +133,7 @@ export default function SettingsForm({
                             name="fullName"
                             defaultValue={initialFullName}
                             required
-                            className="w-full bg-input border-border text-foreground px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-muted-foreground/50"
+                            className="w-full bg-background border border-border text-foreground px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-muted-foreground"
                             placeholder="John Doe"
                         />
                     </div>
@@ -144,7 +144,7 @@ export default function SettingsForm({
                         <input
                             name="phone"
                             defaultValue={initialPhone}
-                            className="w-full bg-input border-border text-foreground px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-muted-foreground/50"
+                            className="w-full bg-background border border-border text-foreground px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-muted-foreground"
                             placeholder="+1 234 567 890"
                         />
                     </div>

@@ -21,24 +21,23 @@ export default async function AddressesPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Add New Card */}
-                <div className="rounded-xl border border-dashed border-zinc-700 bg-zinc-900/30 p-6 flex flex-col justify-center items-center text-center cursor-pointer hover:bg-zinc-900/50 transition-colors group">
-                    {/* Simple Form embedded for now, usually would be a modal or separate route */}
-                    {/* For simplicity in this iteration, keeping it as a form block */}
+                {/* Add New Card */}
+                <div className="rounded-xl border border-dashed border-border bg-muted/30 p-6 flex flex-col justify-center items-center text-center hover:bg-muted/50 transition-colors group">
                     <form action={async (formData) => {
                         'use server'
                         await addAddress(formData)
                     }} className="w-full space-y-3 text-left">
-                        <h3 className="text-lg font-medium text-blue-500 mb-4 flex items-center gap-2">
+                        <h3 className="text-lg font-medium text-blue-600 mb-4 flex items-center gap-2">
                             <Plus className="h-5 w-5" /> Add New Address
                         </h3>
-                        <input name="fullName" placeholder="Label (e.g. Home)" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" required />
-                        <input name="street" placeholder="Street Address" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" required />
+                        <input name="fullName" placeholder="Label (e.g. Home)" className="w-full rounded bg-background p-2 text-sm text-foreground border border-border placeholder:text-muted-foreground" required />
+                        <input name="street" placeholder="Street Address" className="w-full rounded bg-background p-2 text-sm text-foreground border border-border placeholder:text-muted-foreground" required />
                         <div className="grid grid-cols-2 gap-2">
-                            <input name="city" placeholder="City" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" required />
-                            <input name="zip" placeholder="Zip Code" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" required />
+                            <input name="city" placeholder="City" className="w-full rounded bg-background p-2 text-sm text-foreground border border-border placeholder:text-muted-foreground" required />
+                            <input name="zip" placeholder="Zip Code" className="w-full rounded bg-background p-2 text-sm text-foreground border border-border placeholder:text-muted-foreground" required />
                         </div>
-                        <input name="state" placeholder="State" className="w-full rounded bg-zinc-800 p-2 text-sm text-white border border-zinc-700" />
-                        <button className="w-full rounded bg-white py-2 text-sm font-bold text-black hover:bg-gray-200 mt-2">
+                        <input name="state" placeholder="State" className="w-full rounded bg-background p-2 text-sm text-foreground border border-border placeholder:text-muted-foreground" />
+                        <button className="w-full rounded bg-primary py-2 text-sm font-bold text-primary-foreground hover:bg-primary/90 mt-2">
                             Save Address
                         </button>
                     </form>
@@ -46,7 +45,7 @@ export default async function AddressesPage() {
 
                 {/* List Addresses */}
                 {addresses?.map((addr) => (
-                    <div key={addr.id} className="relative rounded-xl border border-zinc-800 bg-zinc-900 p-6 group">
+                    <div key={addr.id} className="relative rounded-xl border border-border bg-card p-6 group shadow-sm">
                         <div className="absoulte top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                             {/* Delete Button Form */}
                             <form action={async () => {
@@ -65,7 +64,7 @@ export default async function AddressesPage() {
                             {addr.is_default && <span className="text-xs bg-blue-500/10 px-2 py-0.5 rounded text-blue-500 border border-blue-500/20">Default</span>}
                         </div>
 
-                        <div className="space-y-1 text-gray-400 text-sm">
+                        <div className="space-y-1 text-muted-foreground text-sm">
                             <p>{addr.street_address}</p>
                             <p>{addr.city}, {addr.state} {addr.postal_code}</p>
                             <p>{addr.country}</p>

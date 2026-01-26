@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Loader2, Save } from 'lucide-react'
+import { Loader2, Save, ImagePlus, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { CldUploadWidget } from 'next-cloudinary'
 
 export default function AboutSettingsForm({ initialData }: { initialData: any }) {
     const [loading, setLoading] = useState(false)
@@ -198,14 +199,47 @@ export default function AboutSettingsForm({ initialData }: { initialData: any })
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-1">Profile Image URL</label>
-                        <input
-                            type="text"
-                            value={data.profile?.imageUrl || ''}
-                            onChange={(e) => handleProfileChange('imageUrl', e.target.value)}
-                            placeholder="https://..."
-                            className="w-full bg-black border border-zinc-700 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                        />
+                        <label className="block text-sm font-medium text-gray-400 mb-1">
+                            Profile Image <span className="text-gray-500 text-xs ml-2">(Recommended: 500x500px, 1:1 Aspect Ratio)</span>
+                        </label>
+
+                        {data.profile?.imageUrl ? (
+                            <div className="relative h-40 w-40 overflow-hidden rounded-lg border border-zinc-700 group">
+                                <img src={data.profile.imageUrl} alt="Profile" className="h-full w-full object-cover" />
+                                <button
+                                    type="button"
+                                    onClick={() => handleProfileChange('imageUrl', '')}
+                                    className="absolute right-2 top-2 rounded-full bg-black/50 p-1 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
+                                >
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                        ) : (
+                            <CldUploadWidget
+                                uploadPreset="ml_default"
+                                options={{
+                                    cropping: true,
+                                    croppingAspectRatio: 1,
+                                    validateMaxWidthHeight: true,
+                                }}
+                                onSuccess={(result: any) => {
+                                    if (result.info?.secure_url) {
+                                        handleProfileChange('imageUrl', result.info.secure_url)
+                                    }
+                                }}
+                            >
+                                {({ open }) => (
+                                    <button
+                                        type="button"
+                                        onClick={() => open()}
+                                        className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-zinc-700 bg-black hover:border-blue-500 hover:bg-zinc-900 transition-colors"
+                                    >
+                                        <ImagePlus className="h-6 w-6 text-gray-400" />
+                                        <span className="text-xs text-gray-400">Upload Image</span>
+                                    </button>
+                                )}
+                            </CldUploadWidget>
+                        )}
                     </div>
 
                     <div>

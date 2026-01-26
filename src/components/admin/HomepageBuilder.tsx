@@ -1,8 +1,8 @@
 'use client'
 
-import { updateHero, updateFeatured } from '@/app/admin/homepage/actions' // We'll add updateFeatured
+import { updateHero, updateFeatured, updateCategories } from '@/app/admin/homepage/actions'
 import { CldUploadWidget } from 'next-cloudinary'
-import { ImagePlus, X, Check } from 'lucide-react'
+import { ImagePlus, X, Check, Trash2, Plus, GripVertical } from 'lucide-react'
 import { useState } from 'react'
 
 type Product = {
@@ -16,11 +16,19 @@ type HomepageBuilderProps = {
     products: Product[]
     heroSection: any
     featuredSection: any
+    categoriesSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection }: HomepageBuilderProps) {
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
+
+    // Categories State
+    const [categories, setCategories] = useState<any[]>(categoriesSection?.content_json?.categories || [
+        { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
+        { name: 'Phones', icon: '📱', href: '/search?category=phones' },
+        { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
+    ])
 
     // Featured State
     const initialSelected = featuredSection?.content_json?.productIds || []
@@ -32,9 +40,27 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
 
     const handleFeaturedSubmit = async (formData: FormData) => {
         // We need to append the JSON product IDs manually or use a hidden input structure
-        // Better: use a bind or directly call server action with data, but form action is cleanest if we serialize
-        // Let's use hidden input for simplicity with formData
         await updateFeatured(formData)
+    }
+
+    const handleCategoriesSubmit = async (formData: FormData) => {
+        await updateCategories(formData)
+    }
+
+    const addCategory = () => {
+        setCategories([...categories, { name: 'New Category', icon: '📦', href: '/search?category=new' }])
+    }
+
+    const removeCategory = (index: number) => {
+        const newCats = [...categories]
+        newCats.splice(index, 1)
+        setCategories(newCats)
+    }
+
+    const updateCategory = (index: number, field: string, value: string) => {
+        const newCats = [...categories]
+        newCats[index] = { ...newCats[index], [field]: value }
+        setCategories(newCats)
     }
 
     const toggleProduct = (id: string) => {
@@ -140,8 +166,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                                     key={product.id}
                                     onClick={() => toggleProduct(product.id)}
                                     className={`cursor-pointer rounded-lg border p-3 transition-colors flex items-center justify-between ${isSelected
-                                            ? 'border-blue-500 bg-blue-500/10'
-                                            : 'border-gray-800 bg-gray-950 hover:border-gray-700'
+                                        ? 'border-blue-500 bg-blue-500/10'
+                                        : 'border-gray-800 bg-gray-950 hover:border-gray-700'
                                         }`}
                                 >
                                     <span className="text-sm font-medium text-white truncate">{product.title}</span>
@@ -158,6 +184,77 @@ export function HomepageBuilder({ products, heroSection, featuredSection }: Home
                             className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                         >
                             Update Featured
+                        </button>
+                    </div>
+                </form>
+            </section>
+            {/* Categories Editor */}
+            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+                <div className="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 className="text-xl font-bold text-blue-500">Shop by Category</h3>
+                        <p className="text-sm text-gray-400">Edit the circular category links on the homepage.</p>
+                    </div>
+                    <button
+                        onClick={addCategory}
+                        className="flex items-center gap-2 rounded-md bg-blue-600/10 px-3 py-1.5 text-sm font-medium text-blue-400 hover:bg-blue-600/20"
+                    >
+                        <Plus className="h-4 w-4" /> Add Category
+                    </button>
+                </div>
+
+                <form action={handleCategoriesSubmit} className="space-y-6">
+                    <input type="hidden" name="categories" value={JSON.stringify(categories)} />
+
+                    <div className="space-y-4">
+                        {categories.map((cat, index) => (
+                            <div key={index} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-950 p-4 rounded-lg border border-gray-800">
+                                <div className="flex-1 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 w-full">
+                                    <div className="space-y-1">
+                                        <label className="text-xs text-gray-500">Name</label>
+                                        <input
+                                            value={cat.name}
+                                            onChange={(e) => updateCategory(index, 'name', e.target.value)}
+                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            placeholder="Laptops"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs text-gray-500">Icon (Emoji)</label>
+                                        <input
+                                            value={cat.icon}
+                                            onChange={(e) => updateCategory(index, 'icon', e.target.value)}
+                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            placeholder="💻"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs text-gray-500">Link URL</label>
+                                        <input
+                                            value={cat.href}
+                                            onChange={(e) => updateCategory(index, 'href', e.target.value)}
+                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            placeholder="/search?category=..."
+                                        />
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => removeCategory(index)}
+                                    className="p-2 text-gray-500 hover:text-red-500 mt-4 sm:mt-0"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type="submit"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                        >
+                            Update Categories
                         </button>
                     </div>
                 </form>

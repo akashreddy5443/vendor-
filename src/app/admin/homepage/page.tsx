@@ -24,11 +24,18 @@ export default async function AdminHomepagePage() {
         .eq('section_type', 'featured')
         .single()
 
+    const { data: categoriesSection } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'categories')
+        .single()
+
     return (
         <HomepageBuilder
             products={products || []}
             heroSection={heroSection}
             featuredSection={featuredSection}
+            categoriesSection={categoriesSection}
         />
     )
 }

@@ -51,7 +51,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                             <button
                                 key={cat.id}
                                 onClick={() => handleCategoryChange(cat.slug || cat.id)}
-                                className={`block text-sm ${isActive ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                                className={`block text-sm ${isActive ? 'text-blue-500 font-medium' : 'text-muted-foreground hover:text-foreground'}`}
                             >
                                 {cat.name}
                             </button>
@@ -62,7 +62,7 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
 
             {/* Price Range */}
             <div>
-                <h3 className="font-bold text-white mb-4">Price Range</h3>
+                <h3 className="font-bold text-foreground mb-4">Price Range</h3>
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <input
@@ -70,20 +70,20 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                             placeholder="Min"
                             value={minPrice}
                             onChange={(e) => setMinPrice(e.target.value)}
-                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded bg-background border border-border p-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none"
                         />
-                        <span className="text-gray-500">-</span>
+                        <span className="text-muted-foreground">-</span>
                         <input
                             type="number"
                             placeholder="Max"
                             value={maxPrice}
                             onChange={(e) => setMaxPrice(e.target.value)}
-                            className="w-full rounded bg-zinc-900 border border-zinc-800 p-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded bg-background border border-border p-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none"
                         />
                     </div>
                     <button
                         onClick={applyPriceFilter}
-                        className="w-full rounded bg-zinc-800 py-2 text-xs font-bold text-white hover:bg-zinc-700"
+                        className="w-full rounded bg-primary py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90"
                     >
                         Apply Price
                     </button>

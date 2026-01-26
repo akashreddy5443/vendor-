@@ -16,6 +16,14 @@ import { PromoBanner } from '@/components/shop/PromoBanner'
 export default function HomePage() {
   const [heroSection, setHeroSection] = React.useState<any>(null)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
+  const [categories, setCategories] = React.useState<any[]>([
+    { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
+    { name: 'Phones', icon: '📱', href: '/search?category=phones' },
+    { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
+    { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
+    { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
+    { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
+  ])
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +43,17 @@ export default function HomePage() {
         .select('*')
         .eq('section_type', 'featured')
         .single()
+
+      // Fetch Categories
+      const { data: catSection } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'categories')
+        .single()
+
+      if (catSection?.content_json?.categories) {
+        setCategories(catSection.content_json.categories)
+      }
 
       if (featured?.content_json?.productIds?.length > 0) {
         const { data: products } = await supabase
@@ -118,14 +137,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h3 className="text-3xl font-bold text-[#0B1026] mb-12 drop-shadow-sm">Shop by Category</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-            {[
-              { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
-              { name: 'Phones', icon: '📱', href: '/search?category=phones' },
-              { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
-              { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
-              { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
-              { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
-            ].map((cat) => (
+            {categories.map((cat) => (
               <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-3">
                 <div className="h-20 w-20 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-3xl shadow-sm transition-all group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-md border border-gray-200 dark:border-zinc-700">
                   {cat.icon}
