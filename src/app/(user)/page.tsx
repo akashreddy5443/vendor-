@@ -68,13 +68,13 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
           transition={{ duration: 1.5 }}
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
-        ></motion.div>
+        ></div>
 
-        {/* Gradient Overlays - Adaptive */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-background/40 to-background/80 dark:from-blue-900/20 dark:via-black/40 dark:to-black"></div>
+        {/* Overlays Removed as requested by user to remove 'white blue effect' */}
+        <div className="absolute inset-0 bg-black/10"></div>
 
         <div className="relative z-10 space-y-4 p-4">
           <motion.h1
