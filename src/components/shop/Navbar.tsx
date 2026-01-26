@@ -71,11 +71,11 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center justify-between border-b border-white/10 bg-[#0B1026] px-6 text-white sticky top-0 z-40 shadow-lg">
+            <nav className="flex h-16 items-center justify-between border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm">
                 <div className="flex items-center gap-4 md:gap-8">
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden text-gray-400 hover:text-white"
+                        className="md:hidden text-muted-foreground hover:text-foreground"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         {isMobileMenuOpen ? <X /> : <Menu />}
@@ -96,32 +96,33 @@ export function Navbar() {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="text-gray-300 hover:text-white transition-colors">Products</Link>
+                    <Link href="/products" className="text-muted-foreground hover:text-blue-600 transition-colors">Products</Link>
 
-                    <Link href="/categories" className="text-gray-300 hover:text-white transition-colors">Categories</Link>
-                    <Link href="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
+                    <Link href="/categories" className="text-muted-foreground hover:text-blue-600 transition-colors">Categories</Link>
+                    <Link href="/about" className="text-muted-foreground hover:text-blue-600 transition-colors">About</Link>
 
                     {user ? (
                         <>
-                            <Link href="/user/wishlist" className="hover:text-primary transition-colors">
+                            <Link href="/user/wishlist" className="hover:text-blue-600 transition-colors">
                                 <span className="sr-only">Wishlist</span>
                                 <Heart className="h-5 w-5" />
                             </Link>
-                            <Link href="/user" className="hover:text-primary transition-colors">
+
+                            <Link href="/user" className="hover:text-blue-600 transition-colors">
                                 <span className="sr-only">Account</span>
                                 <User className="h-5 w-5" />
                             </Link>
                         </>
                     ) : (
                         <div className="flex items-center gap-4">
-                            <Link href="/login" className="hover:text-primary transition-colors">Sign In</Link>
+                            <Link href="/login" className="text-muted-foreground hover:text-blue-600 transition-colors font-medium">Sign In</Link>
                             <Link href="/register" className="px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors">
                                 Sign Up
                             </Link>
                         </div>
                     )}
 
-                    <Link href="/cart" className="hover:text-primary transition-colors relative group">
+                    <Link href="/cart" className="hover:text-blue-600 transition-colors relative group">
                         <span className="sr-only">Cart</span>
                         <div className="relative">
                             <ShoppingCart className="h-5 w-5" />
@@ -136,7 +137,7 @@ export function Navbar() {
 
                 {/* Mobile Right Icons (Cart + Theme Toggle) */}
                 <div className="flex md:hidden items-center gap-4">
-                    <Link href="/cart" className="relative text-gray-400 hover:text-white">
+                    <Link href="/cart" className="relative text-muted-foreground hover:text-blue-600">
                         <ShoppingCart className="h-5 w-5" />
                         {cartCount > 0 && (
                             <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-[8px] font-bold text-white">
