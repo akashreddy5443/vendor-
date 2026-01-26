@@ -110,8 +110,17 @@ export async function createOrder({
         return { error: "Failed to create order" }
     }
 
-    // 2. Clear Cart (Client side usually does this, but we can do it if cart is in DB)
-    // For local storage cart, client must clear it.
+    // 2. Clear Cart (Client side usually does this)
+
+    // 3. Send Confirmation Email (Async - don't block response)
+    // We import this dynamically or call it safely
+    try {
+        const { sendOrderConfirmationEmail } = await import('@/app/actions/orderEmail')
+        // Fire and forget (or await if critical)
+        sendOrderConfirmationEmail(order.id)
+    } catch (e) {
+        console.error("Email trigger failed", e)
+    }
 
     return { orderId: order.id }
 }
