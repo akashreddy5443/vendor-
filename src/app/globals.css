@@ -27,37 +27,37 @@
 }
 
 :root {
-  /* Light Mode: Premium Cream & Midnight Black Scheme */
+  /* Light Mode: Premium Cream & Midnight Blue Scheme */
   --background: #F5F5F0;
   /* Distinct Cream */
-  --foreground: #000000;
-  /* Pure Black for readability */
+  --foreground: #0B1026;
+  /* Midnight Blue */
 
   --card: #FFFFFF;
-  --card-foreground: #000000;
+  --card-foreground: #0B1026;
 
   --popover: #FFFFFF;
-  --popover-foreground: #000000;
+  --popover-foreground: #0B1026;
 
-  --primary: #000000;
-  /* Black Buttons */
+  --primary: #0B1026;
+  /* Midnight Blue Buttons */
   --primary-foreground: #FFFFFF;
 
   --secondary: #EBEBE0;
-  --secondary-foreground: #000000;
+  --secondary-foreground: #0B1026;
 
   --muted: #E0E0D0;
   --muted-foreground: #404040;
 
   --accent: #EBEBE0;
-  --accent-foreground: #000000;
+  --accent-foreground: #0B1026;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
   --border: #D6D6C2;
   --input: #D6D6C2;
-  --ring: #000000;
+  --ring: #0B1026;
 
   --brand-orange: #ea580c;
 }

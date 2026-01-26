@@ -37,11 +37,11 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
         <div className="space-y-8">
             {/* Categories */}
             <div>
-                <h3 className="font-bold text-white mb-4">Categories</h3>
+                <h3 className="font-bold text-foreground mb-4">Categories</h3>
                 <div className="space-y-2">
                     <button
                         onClick={() => handleCategoryChange('all')}
-                        className={`block text-sm ${currentCategory === 'all' ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                        className={`block text-sm ${currentCategory === 'all' ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
                     >
                         All Products
                     </button>

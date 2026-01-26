@@ -19,18 +19,18 @@ export async function Footer() {
     }
 
     return (
-        <footer className="border-t border-border bg-background pt-16 pb-8 text-foreground transition-colors duration-300">
+        <footer className="border-t border-white/10 bg-[#0B1026] pt-16 pb-8 text-white transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
 
                     {/* Newsletter Section */}
                     <div className="space-y-6">
-                        <h2 className="text-4xl font-extrabold tracking-tight text-foreground/90">
+                        <h2 className="text-4xl font-extrabold tracking-tight text-white">
                             {/* Manual split for style, or dynamic if simple text */}
                             {config.newsletterTitle.includes('NEWSLETTER') ? (
                                 <>
-                                    <span className="text-blue-700">SUBSCRIBE</span> TO OUR <br />
-                                    <span className="text-primary">NEWSLETTER</span>
+                                    <span className="text-blue-500">SUBSCRIBE</span> TO OUR <br />
+                                    <span className="text-white">NEWSLETTER</span>
                                 </>
                             ) : (config.newsletterTitle)}
                         </h2>
@@ -38,7 +38,7 @@ export async function Footer() {
                             <NewsletterForm />
                         </div>
 
-                        <div className="flex gap-4 pt-4 text-muted-foreground">
+                        <div className="flex gap-4 pt-4 text-gray-400">
                             {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-sky-500 transition-colors"><Twitter className="h-5 w-5" /></Link>}
                             {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-blue-600 transition-colors"><Facebook className="h-5 w-5" /></Link>}
                             {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-pink-600 transition-colors"><Instagram className="h-5 w-5" /></Link>}

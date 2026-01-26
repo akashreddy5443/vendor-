@@ -71,7 +71,7 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md px-6 text-foreground sticky top-0 z-40 transition-colors duration-300 shadow-sm support-[backdrop-filter]:bg-background/60">
+            <nav className="flex h-16 items-center justify-between border-b border-white/10 bg-[#0B1026] px-6 text-white sticky top-0 z-40 shadow-lg">
                 <div className="flex items-center gap-4 md:gap-8">
                     {/* Mobile Menu Button */}
                     <button
@@ -81,11 +81,11 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary">
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-white">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
-                            <ShoppingBag className="h-6 w-6" />
+                            <ShoppingBag className="h-6 w-6 text-yellow-500" />
                         )}
                         <span className="hidden min-[370px]:inline">{settings?.site_name || 'TechDev'}</span>
                     </Link>
@@ -96,10 +96,10 @@ export function Navbar() {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
+                    <Link href="/products" className="text-gray-300 hover:text-white transition-colors">Products</Link>
 
-                    <Link href="/categories" className="hover:text-primary transition-colors">Categories</Link>
-                    <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+                    <Link href="/categories" className="text-gray-300 hover:text-white transition-colors">Categories</Link>
+                    <Link href="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
 
                     {user ? (
                         <>
