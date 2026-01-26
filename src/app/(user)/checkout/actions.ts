@@ -107,7 +107,41 @@ export async function createOrder({
 
     if (orderError) {
         console.error("Order creation failed:", orderError)
-        return { error: "Failed to create order" }
+        return { error: `Order Failed: ${orderError.message}` }
+    }
+
+    // 2. Insert Order Items & Decrease Stock
+    // Note: ideally this should be a transaction or RPC, but for now doing it in loop or batch
+    const orderItems = items.map(item => ({
+        order_id: order.id,
+        product_id: item.productId,
+        quantity: item.quantity,
+        price: item.price
+    }))
+
+    const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems)
+
+    if (itemsError) {
+        console.error("Order items insertion failed:", itemsError)
+        // Optionally revert order here (delete order)
+        return { error: "Failed to add items to order" }
+    }
+
+    // 3. Decrease Stock
+    for (const item of items) {
+        // Fetch current stock first or use an atomic rpc if available. 
+        // Simple update for now:
+        const { error: stockError } = await supabase.rpc('decrement_stock', {
+            product_id: item.productId,
+            quantity: item.quantity
+        })
+
+        if (stockError) {
+            // Fallback if RPC doesn't exist (creating it next) or fails
+            console.error(`Failed to decrement stock for ${item.productId}`, stockError)
+        }
     }
 
     // 2. Clear Cart (Client side usually does this)
