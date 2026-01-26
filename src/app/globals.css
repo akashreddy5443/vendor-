@@ -28,8 +28,10 @@
 
 :root {
   /* Light Mode: Premium Cream & Midnight Blue Scheme */
-  --background: #FDFBF7;
+  --background: #FFFEFA;
+  /* Half White / Light Cream */
   --foreground: #0B1026;
+  /* Midnight Blue */
 
   --card: #FFFFFF;
   --card-foreground: #0B1026;
@@ -39,7 +41,7 @@
 
   --primary: #0B1026;
   /* Midnight Blue Text for Light Mode */
-  --primary-foreground: #FDFBF7;
+  --primary-foreground: #FFFFFF;
 
   --secondary: #F2EFE5;
   --secondary-foreground: #0B1026;
