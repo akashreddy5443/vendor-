@@ -6,6 +6,8 @@ export const metadata = {
     description: 'Browse our collection of premium developer gear.',
 }
 
+export const dynamic = 'force-dynamic'
+
 interface ProductPageProps {
     searchParams: {
         category?: string
