@@ -80,7 +80,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0B1026] dark:text-blue-500 mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0B1026] dark:text-white mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
           >
             {heroData.title}
           </motion.h1>

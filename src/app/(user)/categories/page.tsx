@@ -34,7 +34,7 @@ export default function CategoriesPage() {
                         {categories.map((cat) => (
                             <Link
                                 key={cat.id}
-                                href={`/products?category=${cat.id}`}
+                                href={`/search?category=${cat.slug || cat.id}`}
                                 className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/10"
                             >
                                 <div className="flex flex-col items-center text-center gap-4">

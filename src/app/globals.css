@@ -66,28 +66,28 @@
 .dark {
   --background: #020617;
   /* Deep Space Blue */
-  --foreground: #F8FAFC;
-  /* Ice White */
+  --foreground: #FFFFFF;
+  /* Pure White for maximum visibility */
 
   --card: #0F172A;
   /* Slate 900 */
-  --card-foreground: #F8FAFC;
+  --card-foreground: #FFFFFF;
 
   --popover: #0F172A;
-  --popover-foreground: #F8FAFC;
+  --popover-foreground: #FFFFFF;
 
   --primary: #3B82F6;
   /* Electric Blue Accents */
   --primary-foreground: #FFFFFF;
 
   --secondary: #1E293B;
-  --secondary-foreground: #F8FAFC;
+  --secondary-foreground: #FFFFFF;
 
   --muted: #1E293B;
-  --muted-foreground: #94A3B8;
+  --muted-foreground: #A1A1AA;
 
   --accent: #1E293B;
-  --accent-foreground: #F8FAFC;
+  --accent-foreground: #FFFFFF;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
