@@ -58,8 +58,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Hero Section (CMS Driven) - Always Dark for Premium Feel */}
-      <section className="relative flex h-[600px] flex-col items-center justify-center text-center bg-black overflow-hidden border-b border-blue-500/20">
+      {/* Hero Section (CMS Driven) - Theme Adaptive */}
+      <section className="relative flex h-[600px] flex-col items-center justify-center text-center bg-background overflow-hidden border-b border-blue-500/20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
@@ -67,15 +67,17 @@ export default function HomePage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
         ></motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black/40 to-black"></div>
+
+        {/* Gradient Overlays - Adaptive */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-background/40 to-background/80 dark:from-blue-900/20 dark:via-black/40 dark:to-black"></div>
 
         <div className="relative z-10 space-y-4 p-4">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-4 drop-shadow-[0_0_15px_rgba(234,88,12,0.5)]"
+            className="text-5xl md:text-7xl font-extrabold tracking-tight text-blue-700 dark:text-blue-500 mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
           >
             {heroData.title}
           </motion.h1>
@@ -83,7 +85,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-gray-300 max-w-2xl mx-auto drop-shadow-md font-light tracking-wide"
+            className="text-xl text-blue-900/80 dark:text-gray-300 max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
           >
             {heroData.subtitle}
           </motion.p>
