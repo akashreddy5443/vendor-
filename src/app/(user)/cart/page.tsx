@@ -11,9 +11,9 @@ export default function CartPage() {
 
     if (items.length === 0) {
         return (
-            <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 bg-black text-white">
+            <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 bg-background text-foreground">
                 <h2 className="text-2xl font-bold font-serif mb-4">Your cart is empty</h2>
-                <p className="text-gray-400 mb-8">Looks like you haven't added anything yet.</p>
+                <p className="text-muted-foreground mb-8">Looks like you haven't added anything yet.</p>
                 <Link
                     href="/products"
                     className="rounded-full bg-blue-600 px-8 py-3 font-bold text-white transition-all hover:bg-blue-500"
@@ -25,7 +25,7 @@ export default function CartPage() {
     }
 
     return (
-        <div className="bg-black text-white min-h-screen py-16">
+        <div className="bg-background text-foreground min-h-screen py-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <h1 className="text-3xl font-bold font-serif mb-8">Shopping Cart</h1>
 
@@ -34,12 +34,12 @@ export default function CartPage() {
                     {/* Cart Items List */}
                     <div className="lg:col-span-8 space-y-6">
                         {items.map((item) => (
-                            <div key={item.productId} className="flex gap-6 p-4 rounded-xl border border-gray-800 bg-gray-900/50">
-                                <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
+                            <div key={item.productId} className="flex gap-6 p-4 rounded-xl border border-border bg-card/50">
+                                <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
                                     {item.image ? (
                                         <Image src={item.image} alt={item.title} fill className="object-cover" />
                                     ) : (
-                                        <div className="flex h-full w-full items-center justify-center text-xs text-gray-500">No Image</div>
+                                        <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">No Image</div>
                                     )}
                                 </div>
 
@@ -51,14 +51,14 @@ export default function CartPage() {
                                         </div>
                                         <button
                                             onClick={() => removeItem(item.productId)}
-                                            className="text-gray-500 hover:text-red-500 transition-colors"
+                                            className="text-muted-foreground hover:text-red-500 transition-colors"
                                         >
                                             <Trash2 className="h-5 w-5" />
                                         </button>
                                     </div>
 
                                     <div className="flex items-center gap-4 mt-4">
-                                        <div className="flex items-center rounded-md border border-gray-700 bg-gray-950">
+                                        <div className="flex items-center rounded-md border border-border bg-background">
                                             <button
                                                 onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                                                 className="p-1 px-3 text-gray-400 hover:text-white"
@@ -75,8 +75,8 @@ export default function CartPage() {
                                                 <Plus className="h-3 w-3" />
                                             </button>
                                         </div>
-                                        <div className="text-sm text-gray-400">
-                                            Total: <span className="text-white font-medium">{formatPrice(item.price * item.quantity)}</span>
+                                        <div className="text-sm text-muted-foreground">
+                                            Total: <span className="text-foreground font-medium">{formatPrice(item.price * item.quantity)}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -93,13 +93,13 @@ export default function CartPage() {
 
                     {/* Order Summary */}
                     <div className="lg:col-span-4">
-                        <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 space-y-4 sticky top-24">
+                        <div className="rounded-xl border border-border bg-card p-6 space-y-4 sticky top-24">
                             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
-                            <div className="space-y-2 text-sm text-gray-400">
+                            <div className="space-y-2 text-sm text-muted-foreground">
                                 <div className="flex justify-between">
                                     <span>Subtotal</span>
-                                    <span className="text-white">{formatPrice(cartTotal)}</span>
+                                    <span className="text-foreground">{formatPrice(cartTotal)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span>Shipping</span>
@@ -107,11 +107,11 @@ export default function CartPage() {
                                 </div>
                                 <div className="flex justify-between">
                                     <span>Tax (Estimated)</span>
-                                    <span className="text-white">₹0.00</span>
+                                    <span className="text-foreground">₹0.00</span>
                                 </div>
                             </div>
 
-                            <div className="border-t border-gray-800 pt-4 flex justify-between items-center">
+                            <div className="border-t border-border pt-4 flex justify-between items-center">
                                 <span className="text-lg font-bold">Total</span>
                                 <span className="text-xl font-bold text-blue-500">{formatPrice(cartTotal)}</span>
                             </div>

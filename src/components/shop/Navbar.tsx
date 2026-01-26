@@ -81,11 +81,11 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-white">
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-blue-500">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
-                            <ShoppingBag className="h-6 w-6 text-yellow-500" />
+                            <ShoppingBag className="h-6 w-6 text-blue-500" />
                         )}
                         <span className="hidden min-[370px]:inline">{settings?.site_name || 'TechDev'}</span>
                     </Link>
@@ -132,12 +132,10 @@ export function Navbar() {
                             )}
                         </div>
                     </Link>
-                    <ThemeToggle />
                 </div>
 
                 {/* Mobile Right Icons (Cart + Theme Toggle) */}
                 <div className="flex md:hidden items-center gap-4">
-                    <ThemeToggle />
                     <Link href="/cart" className="relative text-gray-400 hover:text-white">
                         <ShoppingCart className="h-5 w-5" />
                         {cartCount > 0 && (
@@ -182,10 +180,6 @@ export function Navbar() {
                         )}
                     </div>
 
-                    <div className="mt-auto flex justify-between items-center border-t border-border pt-4">
-                        <span className="text-sm text-muted-foreground">Theme</span>
-                        <ThemeToggle />
-                    </div>
                 </div>
             )}
         </div>

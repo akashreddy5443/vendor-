@@ -83,7 +83,7 @@ export async function Footer() {
 
                     <div className="flex flex-col items-center gap-2 sm:items-end">
                         <div className="text-xl font-bold font-serif tracking-tight">
-                            TECH<span className="text-primary">DEV</span>
+                            TECH<span className="text-blue-500">DEV</span>
                         </div>
                         <div className="text-xs text-muted-foreground">
                             &copy; {new Date().getFullYear()} TechDev Store. Powered by Next.js
