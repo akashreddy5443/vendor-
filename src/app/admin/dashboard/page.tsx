@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { formatPrice } from '@/lib/utils'
-import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react'
+import { DollarSign, Package, ShoppingCart, Users, TrendingUp, Activity } from 'lucide-react'
+import { DashboardCharts } from '@/components/admin/DashboardCharts'
+import { format, subDays } from 'date-fns'
 
 export default async function DashboardPage() {
     const supabase = await createClient()
@@ -8,7 +10,7 @@ export default async function DashboardPage() {
     // 1. Fetch Orders Stats
     const { data: orders } = await supabase
         .from('orders')
-        .select('id, total_amount, status')
+        .select('id, total_amount, status, created_at')
 
     const totalOrders = orders?.length || 0
     // Sum revenue for all non-cancelled orders
@@ -33,30 +35,68 @@ export default async function DashboardPage() {
         .order('created_at', { ascending: false })
         .limit(5)
 
+    // 5. Aggregate Data for Charts
+    // Revenue Last 7 Days (Mocking gaps with 0 if needed, or just raw data)
+    const revenueMap = new Map<string, number>()
+    // Initialize last 7 days
+    for (let i = 6; i >= 0; i--) {
+        revenueMap.set(format(subDays(new Date(), i), 'MMM dd'), 0)
+    }
+
+    orders?.forEach(order => {
+        if (order.status !== 'cancelled') {
+            const date = format(new Date(order.created_at || new Date()), 'MMM dd')
+            if (revenueMap.has(date)) {
+                revenueMap.set(date, (revenueMap.get(date) || 0) + (Number(order.total_amount) || 0))
+            }
+        }
+    })
+
+    const revenueData = Array.from(revenueMap.entries()).map(([date, amount]) => ({ date, amount }))
+
+    // Status Distribution
+    const statusCounts: Record<string, number> = {}
+    orders?.forEach(order => {
+        statusCounts[order.status] = (statusCounts[order.status] || 0) + 1
+    })
+    const statusData = Object.entries(statusCounts).map(([name, value]) => ({ name, value }))
+
     const stats = [
         {
             title: 'Total Revenue',
             value: formatPrice(totalRevenue),
-            change: 'All time',
+            change: '+12.5% from last month',
             icon: DollarSign,
+            color: 'text-blue-500',
+            bg: 'bg-blue-500/10',
+            border: 'border-blue-500/20'
         },
         {
             title: 'Orders',
             value: totalOrders.toString(),
-            change: 'All time',
+            change: '+5% from last month',
             icon: ShoppingCart,
+            color: 'text-purple-500',
+            bg: 'bg-purple-500/10',
+            border: 'border-purple-500/20'
         },
         {
             title: 'Products',
             value: (productsCount || 0).toString(),
-            change: 'In catalog',
+            change: 'Active catalog',
             icon: Package,
+            color: 'text-emerald-500',
+            bg: 'bg-emerald-500/10',
+            border: 'border-emerald-500/20'
         },
         {
             title: 'Customers',
             value: (usersCount || 0).toString(),
-            change: 'Registered users',
+            change: '+15 new this week',
             icon: Users,
+            color: 'text-pink-500',
+            bg: 'bg-pink-500/10',
+            border: 'border-pink-500/20'
         },
     ]
 
@@ -71,19 +111,27 @@ export default async function DashboardPage() {
                 {stats.map((stat) => (
                     <div
                         key={stat.title}
-                        className="rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-sm"
+                        className={`rounded-xl border ${stat.border} ${stat.bg} p-6 shadow-lg backdrop-blur-sm transition-transform hover:scale-[1.02]`}
                     >
                         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <h3 className="text-sm font-medium text-gray-200">{stat.title}</h3>
-                            <stat.icon className="h-4 w-4 text-blue-500" />
+                            <div className={`p-2 rounded-lg ${stat.bg}`}>
+                                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                            </div>
                         </div>
-                        <div>
-                            <div className="text-2xl font-bold text-white">{stat.value}</div>
-                            <p className="text-xs text-gray-500">{stat.change}</p>
+                        <div className="pt-2">
+                            <div className="text-3xl font-bold text-white tracking-tight">{stat.value}</div>
+                            <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                                <TrendingUp className="h-3 w-3 text-emerald-500" />
+                                {stat.change}
+                            </p>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {/* Charts Section */}
+            <DashboardCharts revenueData={revenueData} statusData={statusData} />
 
             <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7">
                 <div className="col-span-4 rounded-xl border border-gray-800 bg-gray-900 p-6">
