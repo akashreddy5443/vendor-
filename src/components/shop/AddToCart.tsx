@@ -45,24 +45,24 @@ export function AddToCart({ productId, price, stock, title, image }: { productId
     return (
         <div className="space-y-4">
             <div className="flex items-center gap-4">
-                <div className="flex items-center rounded-md border border-gray-700 bg-gray-900">
+                <div className="flex items-center rounded-full border border-border bg-secondary/50">
                     <button
                         onClick={handleDecrease}
-                        className="p-3 text-gray-400 hover:text-white transition-colors"
+                        className="p-3 text-muted-foreground hover:text-foreground transition-colors"
                         disabled={quantity <= 1}
                     >
                         <Minus className="h-4 w-4" />
                     </button>
-                    <span className="w-12 text-center font-medium text-white">{quantity}</span>
+                    <span className="w-12 text-center font-medium text-foreground">{quantity}</span>
                     <button
                         onClick={handleIncrease}
-                        className="p-3 text-gray-400 hover:text-white transition-colors"
+                        className="p-3 text-muted-foreground hover:text-foreground transition-colors"
                         disabled={quantity >= stock}
                     >
                         <Plus className="h-4 w-4" />
                     </button>
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-muted-foreground font-medium">
                     {stock} available
                 </div>
             </div>

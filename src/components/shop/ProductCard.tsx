@@ -99,10 +99,11 @@ export function ProductCard({ product }: ProductCardProps) {
                         </span>
 
                         <div className="flex items-center gap-2">
-                            {/* Wishlist Button - Blue Circle Style */}
-                            {/* Wishlist Button - Minimal Style */}
-                            <div className="text-gray-400 hover:text-red-500 transition-colors p-1 active:scale-95">
-                                <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
+                            <div className="flex items-center gap-2 translate-y-[2px]">
+                                {/* Wishlist Button - Minimal Style */}
+                                <div className="text-gray-400 hover:text-red-500 transition-colors p-1 active:scale-95">
+                                    <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
+                                </div>
                             </div>
                         </div>
                     </div>
