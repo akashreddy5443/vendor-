@@ -94,31 +94,6 @@ export function ProductCard({ product }: ProductCardProps) {
                         <div className="bg-zinc-900/80 backdrop-blur-md rounded-full p-2 hover:bg-blue-600 transition-colors pointer-events-auto border border-blue-500/30 shadow-lg group/btn">
                             <WishlistToggle productId={product.id} className="text-white group-hover/btn:text-white" />
                         </div>
-                        {/* Compare */}
-                        <div className="bg-zinc-900/80 backdrop-blur-md rounded-full p-2 hover:bg-blue-600 transition-colors pointer-events-auto border border-blue-500/30 shadow-lg group/btn">
-                            <CompareToggle productId={product.id} className="text-white group-hover/btn:text-white" />
-                        </div>
-                        {/* Quick View */}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                setShowQuickView(true)
-                            }}
-                            className="bg-zinc-900/80 backdrop-blur-md rounded-full p-2 text-white hover:bg-blue-600 transition-colors border border-blue-500/30 shadow-lg"
-                            title="Quick View"
-                        >
-                            <Eye className="h-5 w-5" />
-                        </button>
-                        {/* Add to Cart */}
-                        <button
-                            onClick={handleAddToCart}
-                            disabled={isOutOfStock}
-                            className={`bg-zinc-900/80 backdrop-blur-md rounded-full p-2 text-white hover:bg-blue-600 transition-colors border border-blue-500/30 shadow-lg ${isOutOfStock ? 'opacity-50 cursor-not-allowed hidden' : ''}`}
-                            title="Add to Cart"
-                        >
-                            <ShoppingCart className="h-5 w-5" />
-                        </button>
                     </div>
                 </div>
 
