@@ -86,12 +86,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         </div>
                     )}
 
-                    {/* Wishlist - Moved to Bottom Right */}
-                    <div className="absolute bottom-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition-colors shadow-lg group/btn">
-                            <WishlistToggle productId={product.id} className="currentColor" />
-                        </div>
-                    </div>
+
                 </div>
 
                 <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none">
@@ -99,14 +94,16 @@ export function ProductCard({ product }: ProductCardProps) {
                         {product.title}
                     </h3>
                     <div className="mt-auto flex items-center justify-between pt-2">
-                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-500'}`}>
+                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-600'}`}>
                             {formatPrice(product.price)}
                         </span>
-                        {!isOutOfStock && (
-                            <span className="text-xs font-bold text-primary uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
-                                View Details
-                            </span>
-                        )}
+
+                        <div className="flex items-center gap-2">
+                            {/* Wishlist Button - Always Visible */}
+                            <div className="text-gray-400 hover:text-red-500 transition-colors">
+                                <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

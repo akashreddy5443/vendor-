@@ -80,8 +80,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-sm"
-            style={{ color: '#0B1026' }}
+            className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-sm text-blue-600"
+          // style={{ color: '#0B1026' }}
           >
             {heroData.title}
           </motion.h1>
