@@ -81,7 +81,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0B1026] dark:text-white mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+            className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-sm"
+            style={{ color: '#0B1026' }}
           >
             {heroData.title}
           </motion.h1>
@@ -89,7 +90,8 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-[#0B1026]/80 dark:text-gray-200 max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
+            className="text-xl max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
+            style={{ color: '#0B1026' }}
           >
             {heroData.subtitle}
           </motion.p>

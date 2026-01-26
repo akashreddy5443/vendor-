@@ -81,7 +81,7 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-foreground hover:text-primary transition-colors">
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-[#0B1026] hover:text-primary transition-colors">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
@@ -96,9 +96,9 @@ export function Navbar() {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="text-muted-foreground hover:text-foreground transition-colors">Products</Link>
-                    <Link href="/categories" className="text-muted-foreground hover:text-foreground transition-colors">Categories</Link>
-                    <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
+                    <Link href="/products" className="text-[#0B1026]/80 hover:text-[#0B1026] transition-colors">Products</Link>
+                    <Link href="/categories" className="text-[#0B1026]/80 hover:text-[#0B1026] transition-colors">Categories</Link>
+                    <Link href="/about" className="text-[#0B1026]/80 hover:text-[#0B1026] transition-colors">About</Link>
 
                     {user ? (
                         <>
