@@ -11,6 +11,7 @@ export const dynamic = 'force-dynamic'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { motion } from 'framer-motion'
 import { CyberpunkCar } from '@/components/ui/CyberpunkCar'
+import { PromoBanner } from '@/components/shop/PromoBanner'
 
 export default function HomePage() {
   const [heroSection, setHeroSection] = React.useState<any>(null)

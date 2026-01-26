@@ -16,15 +16,12 @@ export default async function DashboardPage() {
         ?.filter(o => o.status !== 'cancelled')
         .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0) || 0
 
-    // 2. Fetch Products Count
-    const { count: productsCount } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true })
-
-    // 3. Fetch Users Count
-    const { count: usersCount } = await supabase
-        .from('users')
-        .select('*', { count: 'exact', head: true })
+    // 4. Fetch Recent Orders with User info
+    const { data: recentOrders } = await supabase
+        .from('orders')
+        .select('*, users(email, full_name)')
+        .order('created_at', { ascending: false })
+        .limit(5)
 
     const stats = [
         {
@@ -78,19 +75,48 @@ export default async function DashboardPage() {
                 ))}
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+            <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7">
                 <div className="col-span-4 rounded-xl border border-gray-800 bg-gray-900 p-6">
                     <h3 className="mb-4 text-lg font-medium text-white">Recent Activity</h3>
-                    <div className="text-sm text-gray-400">
-                        {/* Placeholder for now, could be recent orders list */}
-                        Recent orders will appear here.
+                    <div className="space-y-4">
+                        {recentOrders && recentOrders.length > 0 ? (
+                            recentOrders.map((order) => (
+                                <div key={order.id} className="flex items-center justify-between border-b border-gray-800 pb-4 last:border-0 last:pb-0">
+                                    <div className="space-y-1">
+                                        <p className="text-sm font-medium text-white">
+                                            {order.users?.full_name || order.users?.email || 'Guest User'}
+                                        </p>
+                                        <p className="text-xs text-gray-400">
+                                            {new Date(order.created_at).toLocaleDateString()}
+                                        </p>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-sm font-bold text-white">{formatPrice(order.total_amount)}</div>
+                                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${order.status === 'completed' ? 'bg-green-500/10 text-green-500' :
+                                                order.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
+                                                    'bg-gray-500/10 text-gray-500'
+                                            }`}>
+                                            {order.status}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-sm text-gray-400">No recent orders found.</p>
+                        )}
                     </div>
                 </div>
                 <div className="col-span-3 rounded-xl border border-gray-800 bg-gray-900 p-6">
-                    <h3 className="mb-4 text-lg font-medium text-white">Recent Sales</h3>
-                    <div className="text-sm text-gray-400">
-                        {/* Placeholder */}
-                        Sales analytics coming soon.
+                    <h3 className="mb-4 text-lg font-medium text-white">Quick Actions</h3>
+                    <div className="space-y-4">
+                        <p className="text-sm text-gray-400">Manage your store efficiently.</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            {['Products', 'Orders', 'Users', 'Settings'].map((action) => (
+                                <a href={`/admin/${action.toLowerCase()}`} key={action} className="flex flex-col items-center justify-center rounded-lg border border-gray-800 bg-gray-800/50 p-4 hover:bg-gray-800 transition-colors">
+                                    <span className="text-sm font-medium text-white">{action}</span>
+                                </a>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
