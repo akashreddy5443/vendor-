@@ -45,15 +45,18 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                     >
                         All Products
                     </button>
-                    {categories.map((cat) => (
-                        <button
-                            key={cat.id}
-                            onClick={() => handleCategoryChange(cat.id)}
-                            className={`block text-sm ${currentCategory === cat.id ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
-                        >
-                            {cat.name}
-                        </button>
-                    ))}
+                    {categories.map((cat) => {
+                        const isActive = currentCategory === cat.slug || currentCategory === cat.id
+                        return (
+                            <button
+                                key={cat.id}
+                                onClick={() => handleCategoryChange(cat.slug || cat.id)}
+                                className={`block text-sm ${isActive ? 'text-blue-500 font-medium' : 'text-gray-400 hover:text-white'}`}
+                            >
+                                {cat.name}
+                            </button>
+                        )
+                    })}
                 </div>
             </div>
 

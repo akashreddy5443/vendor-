@@ -20,22 +20,25 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
     console.log('[Search] Params:', { query, category, minPrice, maxPrice })
 
-    // Resolve Category Slug to ID
+    // Resolve Category Slug or ID
     let categoryId = ''
     if (category !== 'all') {
-        const { data: catData } = await supabase
-            .from('categories')
-            .select('id')
-            .eq('slug', category)
-            .single()
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(category)
 
-        if (catData) {
-            categoryId = catData.id
-            console.log('[Search] Resolved Category:', category, '->', categoryId)
+        if (isUuid) {
+            categoryId = category
         } else {
-            // If category provided but not found, maybe it's already an ID? or invalid. 
-            // Try valid UUID check or ignore. For now, assume slug.
+            const { data: catData } = await supabase
+                .from('categories')
+                .select('id')
+                .eq('slug', category)
+                .single()
+
+            if (catData) {
+                categoryId = catData.id
+            }
         }
+        console.log('[Search] Resolved Category:', category, '->', categoryId)
     }
 
     let dbQuery = supabase
@@ -80,7 +83,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     const { data: products } = await dbQuery
 
     // Fetch Categories for Filter
-    const { data: categories } = await supabase.from('categories').select('id, name').order('name')
+    const { data: categories } = await supabase.from('categories').select('id, name, slug').order('name')
 
     return (
         <div className="min-h-screen bg-background text-foreground pb-20">
