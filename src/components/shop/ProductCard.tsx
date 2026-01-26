@@ -51,83 +51,81 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <>
-                <div className="group relative flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-lg hover:border-blue-500/50 transition-all duration-300">
-                    <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
+            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-lg hover:border-blue-500/50 transition-all duration-300">
+                <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                    <div className="aspect-square bg-gray-100 dark:bg-zinc-900/50 relative overflow-hidden flex items-center justify-center">
-                        {/* Hover Overlay for Light Mode Polish */}
-                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="aspect-square bg-gray-100 dark:bg-zinc-900/50 relative overflow-hidden flex items-center justify-center">
+                    {/* Hover Overlay for Light Mode Polish */}
+                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                        {imageUrl ? (
-                            <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10 p-4">
-                                <Image
-                                    src={imageUrl}
-                                    alt={product.title}
-                                    fill
-                                    className={`object-contain ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                />
-                            </div>
-                        ) : (
-                            <span className="text-muted-foreground text-sm z-10">No Image</span>
-                        )}
-
-                        {/* Stock Badges */}
-                        {isOutOfStock && (
-                            <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
-                                <span className="bg-red-600/90 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider border border-white/20 rounded shadow-lg transform -rotate-12">
-                                    Out of Stock
-                                </span>
-                            </div>
-                        )}
-                        {isLowStock && (
-                            <div className="absolute top-2 left-2 z-10">
-                                <span className="bg-red-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded shadow-sm animate-pulse">
-                                    Only {stock} Left
-                                </span>
-                            </div>
-                        )}
-
-                        {/* Quick actions - Visible on Mobile, Hover on Desktop */}
-                        <div className="absolute top-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-                            {/* Wishlist */}
-                            <div className="bg-white/90 dark:bg-zinc-900/80 backdrop-blur-md rounded-full p-2 hover:bg-blue-600 hover:text-white transition-all pointer-events-auto border border-gray-200 dark:border-blue-500/30 shadow-lg group/btn text-gray-700 dark:text-white">
-                                <WishlistToggle productId={product.id} className="currentColor" />
-                            </div>
+                    {imageUrl ? (
+                        <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10 p-4">
+                            <Image
+                                src={imageUrl}
+                                alt={product.title}
+                                fill
+                                className={`object-contain ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
                         </div>
-                    </div>
+                    ) : (
+                        <span className="text-muted-foreground text-sm z-10">No Image</span>
+                    )}
 
-                    <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none bg-card">
-                        <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
-                            {product.title}
-                        </h3>
-                        <div className="mt-auto flex items-center justify-between pt-2">
-                            <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-500'}`}>
-                                {formatPrice(product.price)}
+                    {/* Stock Badges */}
+                    {isOutOfStock && (
+                        <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
+                            <span className="bg-red-600/90 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider border border-white/20 rounded shadow-lg transform -rotate-12">
+                                Out of Stock
                             </span>
-                            {!isOutOfStock && (
-                                <span className="text-xs font-bold text-primary uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
-                                    View Details
-                                </span>
-                            )}
+                        </div>
+                    )}
+                    {isLowStock && (
+                        <div className="absolute top-2 left-2 z-10">
+                            <span className="bg-red-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded shadow-sm animate-pulse">
+                                Only {stock} Left
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Quick actions - Visible on Mobile, Hover on Desktop */}
+                    <div className="absolute top-2 right-2 z-30 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
+                        {/* Wishlist */}
+                        <div className="bg-white/90 dark:bg-zinc-900/80 backdrop-blur-md rounded-full p-2 hover:bg-blue-600 hover:text-white transition-all pointer-events-auto border border-gray-200 dark:border-blue-500/30 shadow-lg group/btn text-gray-700 dark:text-white">
+                            <WishlistToggle productId={product.id} className="currentColor" />
                         </div>
                     </div>
                 </div>
 
-                <QuickViewModal
-                    isOpen={showQuickView}
-                    onClose={() => setShowQuickView(false)}
-                    product={{
-                        id: product.id,
-                        title: product.title,
-                        price: product.price,
-                        description: product.description || '',
-                        image: imageUrl || '',
-                        stock: stock
-                    }}
-                />
+                <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none bg-card">
+                    <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
+                        {product.title}
+                    </h3>
+                    <div className="mt-auto flex items-center justify-between pt-2">
+                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-500'}`}>
+                            {formatPrice(product.price)}
+                        </span>
+                        {!isOutOfStock && (
+                            <span className="text-xs font-bold text-primary uppercase tracking-wider opacity-0 transform translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0">
+                                View Details
+                            </span>
+                        )}
+                    </div>
+                </div>
             </div>
+
+            <QuickViewModal
+                isOpen={showQuickView}
+                onClose={() => setShowQuickView(false)}
+                product={{
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    description: product.description || '',
+                    image: imageUrl || '',
+                    stock: stock
+                }}
+            />
         </>
     )
 }
