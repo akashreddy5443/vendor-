@@ -27,7 +27,6 @@ export function UserSidebar() {
     }
 
     return (
-    return (
         <aside className="w-full lg:w-64 flex-shrink-0 bg-card border border-border rounded-xl p-4 h-fit shadow-sm">
             <div className="mb-6 px-4">
                 <h2 className="text-lg font-bold text-foreground">My Account</h2>
@@ -63,6 +62,5 @@ export function UserSidebar() {
                 </button>
             </div>
         </aside>
-    )
     )
 }
