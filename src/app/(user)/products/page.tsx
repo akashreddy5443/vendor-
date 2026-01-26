@@ -42,16 +42,15 @@ export default async function ProductsPage({ searchParams }: ProductPageProps) {
     const { data: products } = await query
 
     return (
-        <div className="bg-black text-white min-h-screen">
+        <div className="bg-background text-foreground min-h-screen transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4">
                     <div>
                         <h1 className="text-4xl font-bold font-serif mb-4">All Products</h1>
-                        <p className="text-gray-400 max-w-xl">
+                        <p className="text-muted-foreground max-w-xl">
                             Explore our curated collection of high-quality gear designed for your setup.
                         </p>
                     </div>
-                    {/* Future: Sort/Filter Controls */}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

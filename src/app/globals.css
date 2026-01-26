@@ -27,37 +27,37 @@
 }
 
 :root {
-  /* Light Mode: Premium Cream & Midnight Blue Scheme */
-  --background: #FFFEFA;
-  /* Half White / Light Cream */
-  --foreground: #0B1026;
-  /* Midnight Blue */
+  /* Light Mode: Premium Cream & Midnight Black Scheme */
+  --background: #F5F5F0;
+  /* Distinct Cream */
+  --foreground: #000000;
+  /* Pure Black for readability */
 
   --card: #FFFFFF;
-  --card-foreground: #0B1026;
+  --card-foreground: #000000;
 
   --popover: #FFFFFF;
-  --popover-foreground: #0B1026;
+  --popover-foreground: #000000;
 
-  --primary: #0B1026;
-  /* Midnight Blue Text for Light Mode */
+  --primary: #000000;
+  /* Black Buttons */
   --primary-foreground: #FFFFFF;
 
-  --secondary: #F2EFE5;
-  --secondary-foreground: #0B1026;
+  --secondary: #EBEBE0;
+  --secondary-foreground: #000000;
 
-  --muted: #E5E0D5;
-  --muted-foreground: #5B6375;
+  --muted: #E0E0D0;
+  --muted-foreground: #404040;
 
-  --accent: #F2EFE5;
-  --accent-foreground: #0B1026;
+  --accent: #EBEBE0;
+  --accent-foreground: #000000;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #E5E0D5;
-  --input: #E5E0D5;
-  --ring: #0B1026;
+  --border: #D6D6C2;
+  --input: #D6D6C2;
+  --ring: #000000;
 
   --brand-orange: #ea580c;
 }

@@ -100,7 +100,7 @@ export default function HomePage() {
           >
             <Link
               href="/products"
-              className="rounded-full bg-gradient-to-r from-blue-600 to-red-600 px-10 py-4 font-bold text-white transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(234,88,12,0.6)]"
+              className="rounded-full bg-gradient-to-r from-gray-900 to-black px-10 py-4 font-bold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl dark:from-blue-600 dark:to-blue-800"
             >
               SHOP NOW
             </Link>
