@@ -89,7 +89,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
                 </div>
 
-                <div className="p-4 flex flex-col flex-grow relative z-10 pointer-events-none">
+                <div className="p-4 flex flex-col flex-grow relative z-30 pointer-events-none">
                     <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
                         {product.title}
                     </h3>

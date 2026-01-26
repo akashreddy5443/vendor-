@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* BigTech Phase 2: Category Circles */}
       <section className="py-12 border-b border-gray-100/10">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <h3 className="text-xl font-bold text-[#0B1026] dark:text-white mb-8">Shop by Category</h3>
+          <h3 className="text-3xl font-bold text-[#0B1026] mb-12 drop-shadow-sm">Shop by Category</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
             {[
               { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },

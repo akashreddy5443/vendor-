@@ -75,24 +75,27 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         )}
                         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 font-serif">{title}</h1>
 
-                        <div className="flex items-end gap-4 mb-6">
-                            <p className="text-3xl font-bold text-primary">{formatPrice(price)}</p>
-                            {stock > 0 && stock < 10 && (
-                                <span className="text-sm font-medium text-red-500 mb-1 animate-pulse">
-                                    Only {stock} left!
-                                </span>
-                            )}
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-end gap-4">
+                                <p className="text-3xl font-bold text-primary">{formatPrice(price)}</p>
+                                {stock > 0 && stock < 10 && (
+                                    <span className="text-sm font-medium text-red-500 mb-1 animate-pulse">
+                                        Only {stock} left!
+                                    </span>
+                                )}
+                            </div>
+                            {/* Wishlist Button - Beside Price */}
+                            <div className="flex items-center">
+                                <WishlistToggle
+                                    productId={product.id}
+                                    className="p-3 rounded-full bg-card border border-border text-foreground hover:text-red-500 hover:bg-muted transition-colors shadow-sm"
+                                />
+                            </div>
                         </div>
 
                         {/* Actions */}
-                        <div className="flex flex-col sm:flex-row gap-4 mb-8 border-b border-border pb-8">
+                        <div className="mb-8 border-b border-border pb-8">
                             <AddToCartButton product={product} disabled={isOutOfStock} />
-                            <div className="flex items-center justify-center min-w-[3rem]">
-                                <WishlistToggle
-                                    productId={product.id}
-                                    className="p-3 rounded-full bg-card border border-border text-foreground hover:text-red-500 hover:bg-muted transition-colors"
-                                />
-                            </div>
                         </div>
 
                         {/* Description */}
