@@ -81,6 +81,15 @@ export async function createOrder({
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return { error: 'Not authenticated' }
 
+    // 1. Fetch Address Snapshot
+    const { data: addressData } = await supabase
+        .from('addresses')
+        .select('*')
+        .eq('id', addressId)
+        .single()
+
+    if (!addressData) return { error: 'Invalid shipping address' }
+
     // Create Order
     const { data: order, error: orderError } = await supabase
         .from('orders')
@@ -88,7 +97,7 @@ export async function createOrder({
             user_id: user.id,
             total_amount: total, // Logic: This should match the final total after discount
             status: 'pending',
-            shipping_address: addressId, // Using JSONB or ID depending on your schema. Assuming ID based on conversation.
+            shipping_address: addressData, // Store full snapshot
             payment_method: paymentMethod,
             coupon_id: couponId,
             discount_amount: discountAmount || 0

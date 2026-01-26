@@ -116,13 +116,10 @@ export default function CartPage() {
                                 <span className="text-xl font-bold text-blue-500">{formatPrice(cartTotal)}</span>
                             </div>
 
-                            <button className="w-full flex items-center justify-center gap-2 rounded-full bg-blue-600 py-3 font-bold text-white transition-all hover:bg-blue-500 mt-4">
+                            <Link href="/checkout" className="w-full flex items-center justify-center gap-2 rounded-full bg-blue-600 py-3 font-bold text-white transition-all hover:bg-blue-500 mt-4">
                                 Proceed to Checkout
                                 <ArrowRight className="h-4 w-4" />
-                            </button>
-                            <p className="text-xs text-gray-500 text-center mt-2">
-                                Checkout is not available in development mode yet.
-                            </p>
+                            </Link>
                         </div>
                     </div>
                 </div>
