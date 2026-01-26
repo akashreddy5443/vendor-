@@ -99,9 +99,9 @@ export function ProductCard({ product }: ProductCardProps) {
                         </span>
 
                         <div className="flex items-center gap-2">
-                            {/* Wishlist Button - Always Visible */}
-                            <div className="text-gray-400 hover:text-red-500 transition-colors">
-                                <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
+                            {/* Wishlist Button - Blue Circle Style */}
+                            <div className="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 active:scale-95">
+                                <WishlistToggle productId={product.id} className="w-4 h-4 currentColor" />
                             </div>
                         </div>
                     </div>
