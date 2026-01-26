@@ -9,7 +9,7 @@ import { ComparisonProvider } from '@/context/ComparisonContext';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
+        <ThemeProvider attribute="class" forcedTheme="light" disableTransitionOnChange>
             <ProgressBar
                 height="3px"
                 color="#ea580c"
