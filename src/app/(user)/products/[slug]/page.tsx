@@ -97,34 +97,34 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
                         {/* Description */}
                         <div className="prose prose-invert max-w-none">
-                            <h3 className="text-lg font-bold mb-3">Overview</h3>
-                            <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                            <h3 className="text-lg font-bold mb-3 text-foreground">Overview</h3>
+                            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                                 {description || "No description available for this product."}
                             </p>
                         </div>
 
                         {/* Specs / Details */}
                         <div className="mt-8 pt-8 border-t border-border">
-                            <h3 className="text-lg font-bold mb-4">Specifications</h3>
+                            <h3 className="text-lg font-bold mb-4 text-foreground">Specifications</h3>
                             <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
                                 {/* Static Params */}
-                                <div className="border-t border-zinc-800 pt-4">
-                                    <dt className="font-medium text-gray-400">Stock Status</dt>
-                                    <dd className="mt-2 text-sm text-white">{isOutOfStock ? 'Out of Stock' : 'In Stock'}</dd>
+                                <div className="border-t border-border pt-4">
+                                    <dt className="font-medium text-muted-foreground">Stock Status</dt>
+                                    <dd className="mt-2 text-sm text-foreground">{isOutOfStock ? 'Out of Stock' : 'In Stock'}</dd>
                                 </div>
 
                                 {/* Dynamic Features */}
                                 {product.features && Array.isArray(product.features) && product.features.map((feature: any, index: number) => (
-                                    <div key={index} className="border-t border-zinc-800 pt-4">
-                                        <dt className="font-medium text-gray-400">{feature.key}</dt>
-                                        <dd className="mt-2 text-sm text-white">{feature.value}</dd>
+                                    <div key={index} className="border-t border-border pt-4">
+                                        <dt className="font-medium text-muted-foreground">{feature.key}</dt>
+                                        <dd className="mt-2 text-sm text-foreground">{feature.value}</dd>
                                     </div>
                                 ))}
 
                                 {(!product.features || product.features.length === 0) && (
-                                    <div className="border-t border-zinc-800 pt-4">
-                                        <dt className="font-medium text-gray-400">Other</dt>
-                                        <dd className="mt-2 text-sm text-white">Standard Warranty</dd>
+                                    <div className="border-t border-border pt-4">
+                                        <dt className="font-medium text-muted-foreground">Other</dt>
+                                        <dd className="mt-2 text-sm text-foreground">Standard Warranty</dd>
                                     </div>
                                 )}
                             </dl>
