@@ -2,6 +2,15 @@ import { createClient } from '@/lib/supabase/server'
 import { formatPrice } from '@/lib/utils'
 import { Eye, MapPin } from 'lucide-react'
 import Link from 'next/link'
+import { StatusSelector } from './StatusSelector'
+
+// Define Address Interface for type safety
+interface Address {
+    full_name: string;
+    city: string;
+    state: string;
+    postal_code: string;
+}
 
 export default async function AdminOrdersPage() {
     const supabase = await createClient()
@@ -19,23 +28,16 @@ export default async function AdminOrdersPage() {
     `)
         .order('created_at', { ascending: false })
 
-    // 2. Extract Address IDs (assuming shipping_address is atomic value ID or {id: ...})
-    // Based on previous code, we stored just the ID string in the jsonb column.
-    const addressIds = orders?.map(o => o.shipping_address).filter(id => typeof id === 'string') || []
+    // 2. Extract Address IDs (Legacy check)
+    const addressIds = orders?.map(o => o.shipping_address).filter(addr => typeof addr === 'string') || []
 
-    // 3. Fetch Addresses
+    // 3. Fetch Legacy Addresses
     let addressMap: Record<string, any> = {}
     if (addressIds.length > 0) {
-        const { data: addresses } = await supabase
-            .from('addresses')
-            .select('*')
-            .in('id', addressIds)
-
+        // ... (existing logic) ...
+        const { data: addresses } = await supabase.from('addresses').select('*').in('id', addressIds)
         if (addresses) {
-            addressMap = addresses.reduce((acc, addr) => {
-                acc[addr.id] = addr
-                return acc
-            }, {} as Record<string, any>)
+            addressMap = addresses.reduce((acc, addr) => { acc[addr.id] = addr; return acc }, {} as Record<string, any>)
         }
     }
 
@@ -47,7 +49,7 @@ export default async function AdminOrdersPage() {
             </div>
 
             <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto min-h-[400px]">
                     <table className="w-full text-left text-sm text-gray-400">
                         <thead className="border-b border-gray-800 text-xs uppercase text-gray-500">
                             <tr>
@@ -62,10 +64,21 @@ export default async function AdminOrdersPage() {
                         </thead>
                         <tbody className="divide-y divide-gray-800">
                             {orders?.map((order) => {
-                                const addr = typeof order.shipping_address === 'string' ? addressMap[order.shipping_address] : null
+                                // Address Logic: Handle JSONB (Object) or ID (String)
+                                let addr: Address | null = null
+                                const sa = order.shipping_address as any
+
+                                if (sa && typeof sa === 'object' && sa.full_name) {
+                                    // New Format: Inline JSON
+                                    addr = sa
+                                } else if (typeof sa === 'string') {
+                                    // Legacy Format: ID Lookup
+                                    addr = addressMap[sa]
+                                }
+
                                 return (
                                     <tr key={order.id} className="hover:bg-gray-800/50">
-                                        <td className="px-4 py-3 font-mono text-xs">{order.id.slice(0, 8)}...</td>
+                                        <td className="px-4 py-3 font-mono text-xs text-zinc-500">{order.id.slice(0, 8)}...</td>
                                         <td className="px-4 py-3 text-white">
                                             {(order.users as any)?.email || 'Guest'}
                                         </td>
@@ -84,27 +97,13 @@ export default async function AdminOrdersPage() {
                                             {formatPrice(order.total_amount)}
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span
-                                                className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${order.status === 'paid'
-                                                    ? 'bg-green-400/10 text-green-400 ring-green-400/20'
-                                                    : order.status === 'shipped'
-                                                        ? 'bg-blue-400/10 text-blue-400 ring-blue-400/20'
-                                                        : 'bg-yellow-400/10 text-yellow-400 ring-yellow-400/20'
-                                                    }`}
-                                            >
-                                                {order.status}
-                                            </span>
+                                            <StatusSelector orderId={order.id} currentStatus={order.status} />
                                         </td>
                                         <td className="px-4 py-3">
                                             {new Date(order.created_at).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-3 text-right">
-                                            <Link
-                                                href={`/admin/orders/${order.id}`} // We'll implement detail view later
-                                                className="inline-block rounded p-1 hover:bg-gray-800 hover:text-white"
-                                            >
-                                                <Eye className="h-4 w-4" />
-                                            </Link>
+                                            {/* Action buttons... */}
                                         </td>
                                     </tr>
                                 )
