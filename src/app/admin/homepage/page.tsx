@@ -30,12 +30,19 @@ export default async function AdminHomepagePage() {
         .eq('section_type', 'categories')
         .single()
 
+    const { data: footerSection } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'footer')
+        .single()
+
     return (
         <HomepageBuilder
             products={products || []}
             heroSection={heroSection}
             featuredSection={featuredSection}
             categoriesSection={categoriesSection}
+            footerSection={footerSection}
         />
     )
 }

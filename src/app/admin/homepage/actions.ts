@@ -10,11 +10,6 @@ export async function updateHero(formData: FormData) {
     const subtitle = formData.get('subtitle') as string
     const imageUrl = formData.get('imageUrl') as string
 
-    // Upsert Hero Section (Assuming we fix it to a specific ID or Section Type)
-    // For simplicity, we'll assume there's one hero row.
-    // Actually, schema has 'section_type'. Let's check if one exists, else insert.
-
-    // We'll use a transaction or just simple logic:
     // Find section with type 'hero'.
     const { data: existing } = await supabase
         .from('homepage_sections')
@@ -26,7 +21,7 @@ export async function updateHero(formData: FormData) {
         section_type: 'hero',
         title,
         subtitle,
-        content_json: { imageUrl }, // Storing image in the JSON blob
+        content_json: { imageUrl },
         is_active: true,
     }
 
@@ -67,7 +62,7 @@ export async function updateFeatured(formData: FormData) {
 
     const payload = {
         section_type: 'featured',
-        title: 'FEATURED GEAR', // Default title, could be made editable
+        title: 'FEATURED GEAR',
         content_json: { productIds },
         is_active: true,
     }
@@ -99,8 +94,8 @@ export async function updateCategories(formData: FormData) {
     const supabase = await createClient()
 
     const categories = JSON.parse(formData.get('categories') as string)
-    console.log('Received Categories update:', categories)
 
+    // Find section with type 'categories'.
     const { data: existing } = await supabase
         .from('homepage_sections')
         .select('id')
@@ -109,7 +104,7 @@ export async function updateCategories(formData: FormData) {
 
     const payload = {
         section_type: 'categories',
-        title: 'Shop by Category',
+        title: 'SHOP BY CATEGORY',
         content_json: { categories },
         is_active: true,
     }
@@ -131,8 +126,52 @@ export async function updateCategories(formData: FormData) {
     if (error) {
         console.error('Error updating categories:', error)
         return { error: 'Failed to update categories' }
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}
+
+export async function updateFooter(formData: FormData) {
+    const supabase = await createClient()
+
+    const copyrightText = formData.get('copyrightText') as string
+    const creditsText = formData.get('creditsText') as string
+
+    // Find section with type 'footer'.
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'footer')
+        .single()
+
+    const payload = {
+        section_type: 'footer',
+        title: 'Footer',
+        content_json: {
+            copyrightText,
+            creditsText
+        },
+        is_active: true,
+    }
+
+    let error;
+    if (existing) {
+        const { error: updateError } = await supabase
+            .from('homepage_sections')
+            .update(payload)
+            .eq('id', existing.id)
+        error = updateError
     } else {
-        console.log('Categories updated successfully')
+        const { error: insertError } = await supabase
+            .from('homepage_sections')
+            .insert(payload)
+        error = insertError
+    }
+
+    if (error) {
+        console.error('Error updating footer:', error)
+        return { error: 'Failed to update footer' }
     }
 
     revalidatePath('/admin/homepage')

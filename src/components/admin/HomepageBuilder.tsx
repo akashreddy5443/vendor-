@@ -1,6 +1,6 @@
 'use client'
 
-import { updateHero, updateFeatured, updateCategories } from '@/app/admin/homepage/actions'
+import { updateHero, updateFeatured, updateCategories, updateFooter } from '@/app/admin/homepage/actions'
 import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus, X, Check, Trash2, Plus, GripVertical } from 'lucide-react'
 import { useState } from 'react'
@@ -17,9 +17,10 @@ type HomepageBuilderProps = {
     heroSection: any
     featuredSection: any
     categoriesSection: any
+    footerSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection }: HomepageBuilderProps) {
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
 
@@ -48,6 +49,10 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
     const handleCategoriesSubmit = async (formData: FormData) => {
         await updateCategories(formData)
+    }
+
+    const handleFooterSubmit = async (formData: FormData) => {
+        await updateFooter(formData)
     }
 
     const addCategory = () => {
@@ -259,6 +264,44 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                             className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
                         >
                             Update Categories
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            {/* Footer Settings Editor */}
+            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+                <h3 className="mb-4 text-xl font-bold text-blue-500">Footer Settings</h3>
+                <p className="mb-4 text-sm text-gray-400">Manage your footer copyright and credits.</p>
+
+                <form action={handleFooterSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-200">Copyright Text (Brand Name)</label>
+                        <input
+                            name="copyrightText"
+                            defaultValue={footerSection?.content_json?.copyrightText || 'TECHDEV'}
+                            placeholder="TECHDEV"
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                        />
+                        <p className="text-xs text-gray-500">The "DEV" part is often styled blue in code, but here just enter the text.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-200">Credits Text</label>
+                        <input
+                            name="creditsText"
+                            defaultValue={footerSection?.content_json?.creditsText || 'Designed and Developed by Akash'}
+                            placeholder="Designed and Developed by..."
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type="submit"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                        >
+                            Update Footer
                         </button>
                     </div>
                 </form>
