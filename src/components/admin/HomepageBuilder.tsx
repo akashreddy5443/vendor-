@@ -28,6 +28,9 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
         { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
         { name: 'Phones', icon: '📱', href: '/search?category=phones' },
         { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
+        { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
+        { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
+        { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
     ])
 
     // Featured State
