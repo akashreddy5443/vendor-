@@ -199,6 +199,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                         <p className="text-sm text-gray-400">Edit the circular category links on the homepage.</p>
                     </div>
                     <button
+                        type="button"
                         onClick={addCategory}
                         className="flex items-center gap-2 rounded-md bg-blue-600/10 px-3 py-1.5 text-sm font-medium text-blue-400 hover:bg-blue-600/20"
                     >

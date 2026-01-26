@@ -100,11 +100,11 @@ export async function updateCategories(formData: FormData) {
 
     const categories = JSON.parse(formData.get('categories') as string)
 
-    const { data: existing } = await supabase
+    // Check for existing section(s)
+    const { data: existingSections } = await supabase
         .from('homepage_sections')
         .select('id')
         .eq('section_type', 'categories')
-        .single()
 
     const payload = {
         section_type: 'categories',
@@ -114,13 +114,23 @@ export async function updateCategories(formData: FormData) {
     }
 
     let error;
-    if (existing) {
+
+    // If one or more exist, update the first one
+    if (existingSections && existingSections.length > 0) {
+        const targetId = existingSections[0].id
         const { error: updateError } = await supabase
             .from('homepage_sections')
             .update(payload)
-            .eq('id', existing.id)
+            .eq('id', targetId)
         error = updateError
+
+        // Optional: Clean up duplicates if any
+        if (existingSections.length > 1) {
+            const duplicates = existingSections.slice(1).map(s => s.id)
+            await supabase.from('homepage_sections').delete().in('id', duplicates)
+        }
     } else {
+        // If none exist, insert new
         const { error: insertError } = await supabase
             .from('homepage_sections')
             .insert(payload)
