@@ -1,4 +1,7 @@
-import { createClient as createServerClient } from '@/lib/supabase/server'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { PromoBannerClient } from './PromoBannerClient'
 
 const DEFAULT_PROMOS = [
@@ -44,19 +47,24 @@ const DEFAULT_PROMOS = [
     }
 ]
 
-export async function PromoBanner() {
-    const supabase = await createServerClient()
-    const { data } = await supabase
-        .from('homepage_sections')
-        .select('content_json')
-        .eq('section_type', 'promo_grid')
-        .single()
+export function PromoBanner() {
+    const [promos, setPromos] = useState(DEFAULT_PROMOS)
 
-    // Check if data.content_json exists and has cards, otherwise use default
-    // Also handle case where content_json might be an empty object
-    const promos = data?.content_json && Array.isArray(data.content_json.cards)
-        ? data.content_json.cards
-        : DEFAULT_PROMOS
+    useEffect(() => {
+        const fetchPromos = async () => {
+            const supabase = createClient()
+            const { data } = await supabase
+                .from('homepage_sections')
+                .select('content_json')
+                .eq('section_type', 'promo_grid')
+                .single()
+
+            if (data?.content_json && Array.isArray(data.content_json.cards)) {
+                setPromos(data.content_json.cards)
+            }
+        }
+        fetchPromos()
+    }, [])
 
     return <PromoBannerClient promos={promos} />
 }

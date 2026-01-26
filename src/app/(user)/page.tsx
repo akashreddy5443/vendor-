@@ -153,7 +153,7 @@ export default function HomePage() {
         >
           FEATURED GEAR
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-6xl mx-auto">
           {featuredProducts.length > 0 ? (
             featuredProducts.map((product, index) => (
               <motion.div
