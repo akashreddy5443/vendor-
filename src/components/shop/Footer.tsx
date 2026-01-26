@@ -19,13 +19,13 @@ export async function Footer() {
     }
 
     return (
-        <footer className="border-t border-white/10 bg-[#0B1026] pt-16 pb-8 text-white transition-colors duration-300">
+        <footer className="border-t border-border bg-background pt-16 pb-8 text-foreground transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
 
                     {/* Newsletter Section */}
                     <div className="space-y-6">
-                        <h2 className="text-4xl font-extrabold tracking-tight text-white">
+                        <h2 className="text-4xl font-extrabold tracking-tight text-foreground">
                             {/* Manual split for style, or dynamic if simple text */}
                             {config.newsletterTitle.includes('NEWSLETTER') ? (
                                 <>
