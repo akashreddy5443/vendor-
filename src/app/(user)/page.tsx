@@ -80,7 +80,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-blue-700 dark:text-blue-500 mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0B1026] dark:text-blue-500 mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
           >
             {heroData.title}
           </motion.h1>
@@ -88,7 +88,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-blue-900/80 dark:text-gray-300 max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
+            className="text-xl text-[#0B1026]/80 dark:text-gray-300 max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
           >
             {heroData.subtitle}
           </motion.p>
@@ -109,6 +109,32 @@ export default function HomePage() {
 
         {/* Cyberpunk Car Animation */}
         <CyberpunkCar />
+      </section>
+
+      {/* BigTech Phase 2: Category Circles */}
+      <section className="py-12 bg-white dark:bg-zinc-900/50 border-b border-gray-100 dark:border-white/5">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h3 className="text-xl font-bold text-[#0B1026] dark:text-white mb-8">Shop by Category</h3>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+            {[
+              { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
+              { name: 'Phones', icon: '📱', href: '/search?category=phones' },
+              { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
+              { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
+              { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
+              { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
+            ].map((cat) => (
+              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-3">
+                <div className="h-20 w-20 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-3xl shadow-sm transition-all group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-md border border-gray-200 dark:border-zinc-700">
+                  {cat.icon}
+                </div>
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-[#0B1026] dark:group-hover:text-white transition-colors">
+                  {cat.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Featured Products Placeholder */}
