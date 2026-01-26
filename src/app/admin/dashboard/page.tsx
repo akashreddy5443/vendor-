@@ -1,35 +1,58 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { createClient } from '@/lib/supabase/server'
+import { formatPrice } from '@/lib/utils'
 import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react'
 
-// Placeholder stats for now
-const stats = [
-    {
-        title: 'Total Revenue',
-        value: '₹0.00',
-        change: 'No revenue yet',
-        icon: DollarSign,
-    },
-    {
-        title: 'Orders',
-        value: '0',
-        change: 'No orders yet',
-        icon: ShoppingCart,
-    },
-    {
-        title: 'Products',
-        value: '0',
-        change: 'Start adding products',
-        icon: Package,
-    },
-    {
-        title: 'Active Users',
-        value: '0',
-        change: 'No active users',
-        icon: Users,
-    },
-]
+export default async function DashboardPage() {
+    const supabase = await createClient()
 
-export default function DashboardPage() {
+    // 1. Fetch Orders Stats
+    const { data: orders } = await supabase
+        .from('orders')
+        .select('id, total_amount, status')
+
+    const totalOrders = orders?.length || 0
+    // Sum revenue for all non-cancelled orders
+    const totalRevenue = orders
+        ?.filter(o => o.status !== 'cancelled')
+        .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0) || 0
+
+    // 2. Fetch Products Count
+    const { count: productsCount } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+
+    // 3. Fetch Users Count
+    const { count: usersCount } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+
+    const stats = [
+        {
+            title: 'Total Revenue',
+            value: formatPrice(totalRevenue),
+            change: 'All time',
+            icon: DollarSign,
+        },
+        {
+            title: 'Orders',
+            value: totalOrders.toString(),
+            change: 'All time',
+            icon: ShoppingCart,
+        },
+        {
+            title: 'Products',
+            value: (productsCount || 0).toString(),
+            change: 'In catalog',
+            icon: Package,
+        },
+        {
+            title: 'Customers',
+            value: (usersCount || 0).toString(),
+            change: 'Registered users',
+            icon: Users,
+        },
+    ]
+
     return (
         <div className="space-y-8">
             <div>
@@ -58,11 +81,17 @@ export default function DashboardPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <div className="col-span-4 rounded-xl border border-gray-800 bg-gray-900 p-6">
                     <h3 className="mb-4 text-lg font-medium text-white">Recent Activity</h3>
-                    <div className="text-sm text-gray-400">No recent activity.</div>
+                    <div className="text-sm text-gray-400">
+                        {/* Placeholder for now, could be recent orders list */}
+                        Recent orders will appear here.
+                    </div>
                 </div>
                 <div className="col-span-3 rounded-xl border border-gray-800 bg-gray-900 p-6">
                     <h3 className="mb-4 text-lg font-medium text-white">Recent Sales</h3>
-                    <div className="text-sm text-gray-400">No recent sales.</div>
+                    <div className="text-sm text-gray-400">
+                        {/* Placeholder */}
+                        Sales analytics coming soon.
+                    </div>
                 </div>
             </div>
         </div>
