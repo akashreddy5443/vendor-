@@ -114,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* BigTech Phase 2: Category Circles */}
-      <section className="py-12 bg-white dark:bg-zinc-900/50 border-b border-gray-100 dark:border-white/5">
+      <section className="py-12 border-b border-gray-100/10">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h3 className="text-xl font-bold text-[#0B1026] dark:text-white mb-8">Shop by Category</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
