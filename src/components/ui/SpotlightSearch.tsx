@@ -82,11 +82,11 @@ export function SpotlightSearch() {
             {/* Trigger Button (Visible on Desktop Navbar usually, or hidden if pure shortcut) */}
             <button
                 onClick={() => setOpen(true)}
-                className="hidden md:flex items-center gap-2 rounded-full border border-gray-800 bg-gray-900 px-4 py-1.5 text-sm text-gray-400 hover:border-gray-700 hover:text-white transition-colors"
+                className="hidden md:flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-sm text-muted-foreground hover:border-gray-400 hover:text-foreground transition-colors"
             >
                 <Search className="h-4 w-4" />
                 <span className="hidden lg:inline-flex">Search...</span>
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-700 bg-gray-800 px-1.5 font-mono text-[10px] font-medium text-gray-400 opacity-100">
+                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-500 opacity-100">
                     <span className="text-xs">⌘</span>K
                 </kbd>
             </button>
@@ -116,7 +116,7 @@ export function SpotlightSearch() {
                             initial={{ opacity: 0, scale: 0.95, y: -20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-gray-800 bg-black shadow-2xl shadow-blue-500/10 mx-4"
+                            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-border bg-white shadow-2xl shadow-blue-500/10 mx-4 text-foreground"
                         >
                             <div className="flex items-center border-b border-gray-800 px-4">
                                 <Search className="mr-2 h-5 w-5 shrink-0 text-gray-500" />
@@ -126,7 +126,7 @@ export function SpotlightSearch() {
                                     onChange={(e) => setQuery(e.target.value)}
                                     onKeyDown={onKeyDown}
                                     placeholder="Search products..."
-                                    className="flex h-14 w-full bg-transparent py-3 text-lg text-white placeholder:text-gray-500 focus:outline-none"
+                                    className="flex h-14 w-full bg-transparent py-3 text-lg text-foreground placeholder:text-muted-foreground focus:outline-none"
                                 />
                                 {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin text-blue-500" />}
                                 <button onClick={() => setOpen(false)} className="ml-2 p-1 text-gray-500 hover:text-white">
@@ -149,9 +149,9 @@ export function SpotlightSearch() {
                                     <button
                                         key={product.id}
                                         onClick={() => handleSelect(product.id)}
-                                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left hover:bg-gray-900 transition-colors group"
+                                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left hover:bg-muted transition-colors group"
                                     >
-                                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-md border border-gray-800 bg-gray-900">
+                                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-md border border-border bg-secondary">
                                             {product.product_images?.[0]?.cloudinary_url ? (
                                                 <Image
                                                     src={product.product_images[0].cloudinary_url}
@@ -166,7 +166,7 @@ export function SpotlightSearch() {
                                             )}
                                         </div>
                                         <div>
-                                            <h3 className="font-medium text-gray-200 group-hover:text-white">{product.title}</h3>
+                                            <h3 className="font-medium text-foreground group-hover:text-blue-600 transition-colors">{product.title}</h3>
                                             <p className="text-xs text-blue-500 font-mono">₹{product.price}</p>
                                         </div>
                                     </button>
@@ -175,7 +175,7 @@ export function SpotlightSearch() {
 
 
 
-                            <div className="border-t border-gray-800 bg-gray-900/50 px-4 py-2 flex items-center justify-between">
+                            <div className="border-t border-border bg-muted/50 px-4 py-2 flex items-center justify-between">
                                 <button
                                     onClick={handleSearchAll}
                                     className="text-xs text-blue-500 hover:text-blue-400 font-medium"

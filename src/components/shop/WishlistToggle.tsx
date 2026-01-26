@@ -43,7 +43,7 @@ export function WishlistToggle({ productId, className }: { productId: string, cl
             onClick={handleToggle}
             className={cn(
                 "rounded-full p-2 transition-transform hover:scale-110 focus:outline-none",
-                isWishlisted ? "text-red-500 bg-red-500/10" : "text-gray-400 bg-gray-900/50 hover:text-white",
+                isWishlisted ? "text-red-500 fill-current" : "text-gray-400 hover:text-red-500",
                 className
             )}
         >
