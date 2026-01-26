@@ -98,12 +98,10 @@ export function ProductCard({ product }: ProductCardProps) {
                             {formatPrice(product.price)}
                         </span>
 
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-2 translate-y-[2px]">
-                                {/* Wishlist Button - Minimal Style */}
-                                <div className="text-gray-400 hover:text-red-500 transition-colors p-1 active:scale-95">
-                                    <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
-                                </div>
+                        <div className="flex items-center gap-2 pointer-events-auto z-20">
+                            {/* Wishlist Button - Minimal Style */}
+                            <div className="text-gray-400 hover:text-red-500 transition-colors p-1 active:scale-95 flex items-center justify-center">
+                                <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
                             </div>
                         </div>
                     </div>
