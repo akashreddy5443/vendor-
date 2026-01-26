@@ -16,6 +16,16 @@ export default async function DashboardPage() {
         ?.filter(o => o.status !== 'cancelled')
         .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0) || 0
 
+    // 2. Fetch Products Count
+    const { count: productsCount } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+
+    // 3. Fetch Users Count
+    const { count: usersCount } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+
     // 4. Fetch Recent Orders with User info
     const { data: recentOrders } = await supabase
         .from('orders')
@@ -93,8 +103,8 @@ export default async function DashboardPage() {
                                     <div className="text-right">
                                         <div className="text-sm font-bold text-white">{formatPrice(order.total_amount)}</div>
                                         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${order.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                                                order.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
-                                                    'bg-gray-500/10 text-gray-500'
+                                            order.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
+                                                'bg-gray-500/10 text-gray-500'
                                             }`}>
                                             {order.status}
                                         </span>

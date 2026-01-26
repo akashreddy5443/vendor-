@@ -6,7 +6,6 @@ import { ShoppingBag, ShoppingCart, Heart, User, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export function Navbar() {
     const [announcement, setAnnouncement] = useState<any>(null)
@@ -132,12 +131,10 @@ export function Navbar() {
                             )}
                         </div>
                     </Link>
-                    <ThemeToggle />
                 </div>
 
                 {/* Mobile Right Icons (Cart + Theme Toggle) */}
                 <div className="flex md:hidden items-center gap-4">
-                    <ThemeToggle />
                     <Link href="/cart" className="relative text-gray-400 hover:text-white">
                         <ShoppingCart className="h-5 w-5" />
                         {cartCount > 0 && (
@@ -183,8 +180,7 @@ export function Navbar() {
                     </div>
 
                     <div className="mt-auto flex justify-between items-center border-t border-border pt-4">
-                        <span className="text-sm text-muted-foreground">Theme</span>
-                        <ThemeToggle />
+                        {/* Theme Toggle Removed */}
                     </div>
                 </div>
             )}
