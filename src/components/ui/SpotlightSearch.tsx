@@ -82,7 +82,7 @@ export function SpotlightSearch() {
             {/* Trigger Button (Visible on Desktop Navbar usually, or hidden if pure shortcut) */}
             <button
                 onClick={() => setOpen(true)}
-                className="hidden md:flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-500 hover:border-primary hover:ring-1 hover:ring-primary transition-all w-[300px] shadow-sm"
+                className="hidden md:flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-500 hover:border-primary hover:ring-1 hover:ring-primary transition-all w-[480px] shadow-sm"
             >
                 <Search className="h-4 w-4 text-primary" />
                 <span className="flex-grow text-left">Search products...</span>

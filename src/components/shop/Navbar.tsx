@@ -92,8 +92,8 @@ export function Navbar() {
                     </Link>
                 </div>
 
-                {/* Center: Navigation Links (Desktop) */}
-                <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-sm font-medium uppercase tracking-wide">
+                {/* Center: Navigation Links (Desktop) - Shifted left */}
+                <div className="hidden md:flex absolute left-[42%] -translate-x-1/2 items-center gap-8 text-sm font-medium uppercase tracking-wide">
                     <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
                     <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
                     <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
@@ -114,10 +114,9 @@ export function Navbar() {
                                 <User className="h-5 w-5 mb-0.5 text-primary" />
                             </Link>
                         ) : (
-                            <Link href="/login" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
-                                <div className="flex flex-col items-center gap-0.5">
-                                    <User className="h-5 w-5 text-primary" />
-                                </div>
+                            <Link href="/login" className="flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1.5 rounded-full">
+                                <User className="h-4 w-4" />
+                                <span>Sign In / Join</span>
                             </Link>
                         )}
 

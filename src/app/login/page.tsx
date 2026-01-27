@@ -5,20 +5,20 @@ export default function LoginPage(props: {
     searchParams: { error?: string; message?: string }
 }) {
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
-            <div className="w-full max-w-md rounded-lg border border-gray-800 bg-black p-8 shadow-lg">
-                <h2 className="mb-6 text-center text-3xl font-bold text-blue-500">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 text-gray-900">
+            <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-xl">
+                <h2 className="mb-6 text-center text-3xl font-bold text-primary">
                     Sign In
                 </h2>
 
                 {props.searchParams.error && (
-                    <div className="mb-4 rounded bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/20">
+                    <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600 border border-red-200">
                         {props.searchParams.error}
                     </div>
                 )}
 
                 {props.searchParams.message && (
-                    <div className="mb-4 rounded bg-green-500/10 p-3 text-sm text-green-500 border border-green-500/20">
+                    <div className="mb-4 rounded bg-green-50 p-3 text-sm text-green-600 border border-green-200">
                         {props.searchParams.message}
                     </div>
                 )}
@@ -27,7 +27,7 @@ export default function LoginPage(props: {
                     'use server'
                     await signInWithGoogle()
                 }} className="mb-6">
-                    <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-white p-3 font-medium text-black hover:bg-gray-200 transition-colors">
+                    <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white p-3 font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
                         <svg className="h-5 w-5" viewBox="0 0 24 24">
                             <path
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -52,16 +52,16 @@ export default function LoginPage(props: {
 
                 <div className="relative mb-6">
                     <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-zinc-800" />
+                        <span className="w-full border-t border-gray-200" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-black px-2 text-zinc-500">Or continue with email</span>
+                        <span className="bg-white px-2 text-gray-500">Or continue with email</span>
                     </div>
                 </div>
 
                 <form className="flex flex-col gap-4">
                     <div>
-                        <label htmlFor="email" className="mb-2 block text-sm font-medium">
+                        <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
                             Email
                         </label>
                         <input
@@ -69,11 +69,12 @@ export default function LoginPage(props: {
                             name="email"
                             type="email"
                             required
-                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded border border-gray-300 bg-white p-2 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                            placeholder="name@example.com"
                         />
                     </div>
                     <div>
-                        <label htmlFor="password" className="mb-2 block text-sm font-medium">
+                        <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
                             Password
                         </label>
                         <input
@@ -81,12 +82,13 @@ export default function LoginPage(props: {
                             name="password"
                             type="password"
                             required
-                            className="w-full rounded border border-gray-700 bg-gray-900 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded border border-gray-300 bg-white p-2 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+                            placeholder="••••••••"
                         />
                     </div>
                     <button
                         formAction={login}
-                        className="mt-4 rounded bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-500"
+                        className="mt-4 rounded bg-primary px-4 py-2 font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-md"
                     >
                         Log in
                     </button>
@@ -94,7 +96,7 @@ export default function LoginPage(props: {
 
                 <p className="mt-6 text-center text-sm text-gray-500">
                     Don&apos;t have an account?{' '}
-                    <Link href="/register" className="text-blue-500 hover:underline">
+                    <Link href="/register" className="text-primary font-medium hover:underline">
                         Sign up
                     </Link>
                 </p>

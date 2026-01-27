@@ -53,7 +53,8 @@ export default function HomePage() {
         .single()
 
       if (catSection?.content_json?.categories) {
-        setCategories(catSection.content_json.categories)
+        // setCategories(catSection.content_json.categories) 
+        // Forced to use hardcoded list per user request for "4 items + All Categories"
       }
 
       if (featured?.content_json?.productIds?.length > 0) {
