@@ -27,7 +27,7 @@
 }
 
 :root {
-  /* Electro-Green Light Mode */
+  /* Dark Blue Theme */
   --background: #ffffff;
   --foreground: #333333;
 
@@ -37,17 +37,20 @@
   --popover: #ffffff;
   --popover-foreground: #333333;
 
-  --primary: #10B981;  /* Electro Green (Emerald 500) */
+  --primary: #1e3a8a;
+  /* Dark Blue (Blue 900) */
   --primary-foreground: #ffffff;
 
-  --secondary: #F3F4F6; /* Light Grey for backgrounds */
+  --secondary: #F3F4F6;
+  /* Light Grey for backgrounds */
   --secondary-foreground: #111827;
 
   --muted: #E5E7EB;
   --muted-foreground: #6B7280;
 
-  --accent: #ECFDF5; /* Light Green Tint */
-  --accent-foreground: #065F46;
+  --accent: #EFF6FF;
+  /* Light Blue Tint */
+  --accent-foreground: #1e3a8a;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
@@ -56,7 +59,8 @@
   --input: #E5E7EB;
   --ring: #10B981;
 
-  --brand-orange: #F59E0B; /* Keeping an accent color if needed */
+  --brand-orange: #F59E0B;
+  /* Keeping an accent color if needed */
 }
 
 /* Dark Mode: Premium Tech Theme (Midnight Blue & Electric Blue) */

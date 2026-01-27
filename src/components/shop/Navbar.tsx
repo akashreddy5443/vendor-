@@ -110,13 +110,13 @@ export function Navbar() {
                     {/* User Actions */}
                     <div className="flex items-center gap-3 pl-2 border-l border-border/50">
                         {user ? (
-                            <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-blue-600 transition-colors">
-                                <User className="h-5 w-5 mb-0.5 text-blue-600" />
+                            <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                                <User className="h-5 w-5 mb-0.5 text-primary" />
                             </Link>
                         ) : (
-                            <Link href="/login" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-blue-600 transition-colors">
+                            <Link href="/login" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
                                 <div className="flex flex-col items-center gap-0.5">
-                                    <User className="h-5 w-5 text-blue-600" />
+                                    <User className="h-5 w-5 text-primary" />
                                 </div>
                             </Link>
                         )}
