@@ -23,7 +23,10 @@ export async function sendOrderEmail(orderId: string, type: 'confirmation' | 'sh
             items:order_items(
                 quantity,
                 price,
-                product:products(title)
+                product:products(
+                    title,
+                    product_images(cloudinary_url, is_primary)
+                )
             ),
             user:users(email, full_name)
         `)
@@ -67,17 +70,31 @@ export async function sendOrderEmail(orderId: string, type: 'confirmation' | 'sh
             .replace('{{order_id}}', order.id.slice(0, 8).toUpperCase())
             .replace('{{site_url}}', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000')
 
-        // Simple item list injection if needed (hacky but works for now)
+        // Enhanced item list with images
         if (body.includes('{{order_details}}')) {
             const itemsHtml = `
-                <ul style="padding-left: 20px;">
-                    ${order.items.map((item: any) => `
-                        <li style="margin-bottom: 5px;">
-                            ${item.product?.title} (x${item.quantity}) - ${formatPrice(item.price)}
-                        </li>
-                    `).join('')}
-                </ul>
-                <p><strong>Total: ${formatPrice(order.total_amount)}</strong></p>
+                <div style="margin-top: 20px;">
+                    ${order.items.map((item: any) => {
+                // Find primary image or first image
+                const img = item.product?.product_images?.find((i: any) => i.is_primary) || item.product?.product_images?.[0]
+                const imgUrl = img?.cloudinary_url || 'https://via.placeholder.com/60?text=IMG'
+
+                return `
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                            <img src="${imgUrl}" alt="${item.product?.title}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;" />
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; font-size: 14px; color: #333;">${item.product?.title}</h4>
+                                <p style="margin: 0; font-size: 13px; color: #666;">
+                                    Qty: ${item.quantity} | Price: ${formatPrice(item.price)}
+                                </p>
+                            </div>
+                        </div>
+                        `
+            }).join('')}
+                    <div style="text-align: right; margin-top: 10px;">
+                        <p style="font-size: 16px; font-weight: bold; margin: 0;">Total: ${formatPrice(order.total_amount)}</p>
+                    </div>
+                </div>
             `
             body = body.replace('{{order_details}}', itemsHtml)
         }

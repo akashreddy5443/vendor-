@@ -3,6 +3,7 @@ import { formatPrice } from '@/lib/utils'
 import { Eye, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { StatusSelector } from './StatusSelector'
+import { OrderDeleteButton } from '@/components/admin/OrderDeleteButton'
 
 // Define Address Interface for type safety
 interface Address {
@@ -103,7 +104,9 @@ export default async function AdminOrdersPage() {
                                             {new Date(order.created_at).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-3 text-right">
-                                            {/* Action buttons... */}
+                                            <div className="flex justify-end gap-2">
+                                                <OrderDeleteButton orderId={order.id} />
+                                            </div>
                                         </td>
                                     </tr>
                                 )
