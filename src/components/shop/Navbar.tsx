@@ -70,9 +70,9 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center justify-between border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm relative">
+            <nav className="flex h-16 items-center border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm relative gap-8">
                 {/* Left: Logo & Navigation */}
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-8 shrink-0">
                     <div className="flex items-center gap-4">
                         <button
                             className="md:hidden text-muted-foreground hover:text-foreground"
@@ -93,7 +93,7 @@ export function Navbar() {
                         </Link>
                     </div>
 
-                    {/* Navigation Links (Desktop) - Now part of left flex flow */}
+                    {/* Navigation Links (Desktop) */}
                     <div className="hidden md:flex items-center gap-6 text-sm font-medium uppercase tracking-wide">
                         <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
                         <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
@@ -102,10 +102,15 @@ export function Navbar() {
                     </div>
                 </div>
 
+                {/* Middle: Expanding Search Bar */}
+                <div className="hidden md:flex flex-1 max-w-2xl mx-auto">
+                    <SpotlightSearch />
+                </div>
+
                 {/* Right: Actions */}
-                <div className="flex items-center gap-4">
-                    {/* Search - Pushed slightly right by structure */}
-                    <div className="hidden md:block">
+                <div className="flex items-center gap-4 shrink-0 ml-auto md:ml-0">
+                    {/* Mobile Search Icon (visible only on mobile) */}
+                    <div className="md:hidden">
                         <SpotlightSearch />
                     </div>
 

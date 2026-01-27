@@ -51,75 +51,74 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
+            <div className="group relative flex flex-col bg-transparent hover:bg-transparent transition-none">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-square relative overflow-hidden flex items-center justify-center">
+                <div className="aspect-[1.15/1] relative overflow-hidden flex items-center justify-center bg-[#F7F7F7] mb-3">
 
                     {imageUrl ? (
-                        <div className="relative h-full w-full bg-white flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain mix-blend-multiply ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
                     ) : (
-                        <div className="h-full w-full bg-secondary/20 flex items-center justify-center text-muted-foreground text-sm z-10">
+                        <div className="h-full w-full bg-[#F7F7F7] flex items-center justify-center text-muted-foreground text-sm z-10">
                             No Image
                         </div>
                     )}
 
-                    {/* Stock Badges */}
+                    {/* Stock & Promo Badges */}
                     {isOutOfStock && (
                         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
-                            <span className="bg-red-600/90 text-white px-4 py-2 text-sm font-bold uppercase tracking-wider border border-white/20 rounded shadow-lg transform -rotate-12">
+                            <span className="bg-white text-black px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-sm transform -rotate-2">
                                 Out of Stock
                             </span>
                         </div>
                     )}
-                    {isLowStock && (
-                        <div className="absolute top-2 left-2 z-10">
-                            <span className="bg-red-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded shadow-sm animate-pulse">
-                                Only {stock} Left
-                            </span>
-                        </div>
-                    )}
-
+                    {/* Add sale badge if needed here */}
 
                 </div>
 
-                <div className="p-4 flex flex-col flex-grow relative z-30 pointer-events-none">
-                    <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors line-clamp-2">
-                        {product.title}
-                    </h3>
-                    <div className="mt-auto flex items-center justify-between pt-2">
-                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-primary'}`}>
-                            {formatPrice(product.price)}
-                        </span>
+                <div className="flex flex-col relative z-30 pointer-events-none px-1">
+                    {/* Placeholder for Color variants count */}
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-medium mb-1">
+                        1 Color
+                    </div>
 
-                        <div className="flex items-center gap-2 pointer-events-auto z-20">
-                            {/* Wishlist Button - Minimal Style */}
-                            <div className="text-gray-400 hover:text-red-500 transition-colors p-1 active:scale-95 flex items-center justify-center">
-                                <WishlistToggle productId={product.id} className="w-5 h-5 currentColor" />
-                            </div>
+                    <div className="flex justify-between items-start gap-4">
+                        <h3 className="text-base font-bold text-black leading-tight group-hover:underline decoration-2 decoration-black underline-offset-4 line-clamp-2 flex-grow">
+                            {product.title}
+                        </h3>
+                        <div className="flex flex-col items-end">
+                            <span className={`font-bold text-sm ${isOutOfStock ? 'text-gray-400' : 'text-[#BA2B2B]'}`}>
+                                {formatPrice(product.price)}
+                            </span>
+                            {/* Assuming we might have an original price later, placeholder logic */}
+                            {/* <span className="text-[10px] text-gray-500 line-through">₹25,999</span> */}
                         </div>
                     </div>
                 </div>
+
+                {/* Hidden interactive elements that could overlay or appear on hover if requested later */}
+                <div className="absolute top-2 right-2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto">
+                    <WishlistToggle productId={product.id} className="bg-white/90 hover:bg-white text-black rounded-full p-2 shadow-sm" />
+                </div>
             </div>
 
+            {/* Modals */}
             <QuickViewModal
                 isOpen={showQuickView}
                 onClose={() => setShowQuickView(false)}
                 product={{
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    description: product.description || '',
-                    image: imageUrl || '',
-                    stock: stock
+                    ...product,
+                    stock,
+                    description: product.description || '', // Ensure valid string
+                    image: imageUrl || ''
                 }}
             />
         </>
