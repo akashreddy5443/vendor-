@@ -98,7 +98,7 @@ export default function HomePage() {
       < CyberpunkCar />
 
       {/* BigTech Phase 2: Category Circles */}
-      < section className="py-12 border-b border-100/10" >
+      <section className="py-12 border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h3 className="text-3xl font-bold text-[#0B1026] mb-12 drop-shadow-sm">Shop by Category</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
