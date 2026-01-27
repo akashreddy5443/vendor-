@@ -82,13 +82,16 @@ export function SpotlightSearch() {
             {/* Trigger Button (Visible on Desktop Navbar usually, or hidden if pure shortcut) */}
             <button
                 onClick={() => setOpen(true)}
-                className="hidden md:flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-sm text-muted-foreground hover:border-gray-400 hover:text-foreground transition-colors"
+                className="hidden md:flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-500 hover:border-primary hover:ring-1 hover:ring-primary transition-all w-[300px] shadow-sm"
             >
-                <Search className="h-4 w-4" />
-                <span className="hidden lg:inline-flex">Search...</span>
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-500 opacity-100">
-                    <span className="text-xs">⌘</span>K
-                </kbd>
+                <Search className="h-4 w-4 text-primary" />
+                <span className="flex-grow text-left">Search products...</span>
+                <div className="flex items-center gap-1 border-l border-gray-200 pl-2">
+                    <span className="text-xs text-gray-400">All Categories</span>
+                    <div className="bg-gray-100 rounded px-1.5 py-0.5">
+                        <span className="text-[10px] text-gray-500">⌘K</span>
+                    </div>
+                </div>
             </button>
 
             {/* Mobile Search Icon */}

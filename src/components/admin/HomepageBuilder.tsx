@@ -1,8 +1,8 @@
 'use client'
 
-import { updateHero, updateFeatured, updateCategories, updateFooter } from '@/app/admin/homepage/actions'
+import { updateHero, updateFeatured, updateCategories, updateFooter, updateHeroSlider } from '@/app/admin/homepage/actions'
 import { CldUploadWidget } from 'next-cloudinary'
-import { ImagePlus, X, Check, Trash2, Plus, GripVertical } from 'lucide-react'
+import { ImagePlus, X, Check, Trash2, Plus, GripVertical, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 
 type Product = {
@@ -12,17 +12,32 @@ type Product = {
     status: string
 }
 
+type Slide = {
+    id: string
+    title: string
+    subtitle: string
+    imageUrl: string
+    buttonText: string
+    link: string
+}
+
 type HomepageBuilderProps = {
     products: Product[]
     heroSection: any
     featuredSection: any
     categoriesSection: any
     footerSection: any
+    sliderSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection }: HomepageBuilderProps) {
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
+
+    // Slider State
+    const [slides, setSlides] = useState<Slide[]>(sliderSection?.content_json?.slides || [
+        { id: '1', title: 'Level Up Your Setup', subtitle: 'Premium Gear', imageUrl: '', buttonText: 'Shop Now', link: '/products' }
+    ])
 
     // Categories State
     const [categories, setCategories] = useState<any[]>(categoriesSection?.content_json?.categories || [
@@ -42,6 +57,12 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
         await updateHero(formData)
     }
 
+    const handleSliderSubmit = async (formData: FormData) => {
+        // Append slides JSON to formData
+        formData.append('slides', JSON.stringify(slides))
+        await updateHeroSlider(formData)
+    }
+
     const handleFeaturedSubmit = async (formData: FormData) => {
         // We need to append the JSON product IDs manually or use a hidden input structure
         await updateFeatured(formData)
@@ -57,6 +78,31 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
     const addCategory = () => {
         setCategories([...categories, { name: 'New Category', icon: '📦', href: '/search?category=new' }])
+    }
+
+    // Slider Helpers
+    const addSlide = () => {
+        const newSlide: Slide = {
+            id: Date.now().toString(),
+            title: 'New Headline',
+            subtitle: 'Subtitle',
+            imageUrl: '',
+            buttonText: 'Shop Now',
+            link: '/products'
+        }
+        setSlides([...slides, newSlide])
+    }
+
+    const updateSlide = (index: number, field: keyof Slide, value: string) => {
+        const newSlides = [...slides]
+        newSlides[index] = { ...newSlides[index], [field]: value }
+        setSlides(newSlides)
+    }
+
+    const removeSlide = (index: number) => {
+        const newSlides = [...slides]
+        newSlides.splice(index, 1)
+        setSlides(newSlides)
     }
 
     const removeCategory = (index: number) => {
@@ -84,9 +130,107 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                 <p className="text-gray-400">Manage your homepage content.</p>
             </div>
 
-            {/* Hero Section Editor */}
+            {/* Hero Slider Editor */}
             <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-blue-500">Hero Section</h3>
+                <h3 className="mb-4 text-xl font-bold text-green-500 flex items-center gap-2">
+                    <ImagePlus className="w-5 h-5" /> Hero Slider (Promo)
+                </h3>
+                <form action={handleSliderSubmit} className="space-y-6">
+                    <div className="space-y-4">
+                        {slides.map((slide, index) => (
+                            <div key={slide.id} className="p-4 rounded-lg border border-gray-700 bg-gray-950/50">
+                                <div className="flex justify-between items-start mb-4">
+                                    <h4 className="text-sm font-bold text-gray-300">Slide #{index + 1}</h4>
+                                    <button
+                                        type="button"
+                                        onClick={() => removeSlide(index)}
+                                        className="text-red-500 hover:text-red-400"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-3">
+                                        <input
+                                            value={slide.title}
+                                            onChange={(e) => updateSlide(index, 'title', e.target.value)}
+                                            placeholder="Headline"
+                                            className="w-full rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                        />
+                                        <input
+                                            value={slide.subtitle}
+                                            onChange={(e) => updateSlide(index, 'subtitle', e.target.value)}
+                                            placeholder="Subtitle"
+                                            className="w-full rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                        />
+                                        <div className="flex gap-2">
+                                            <input
+                                                value={slide.buttonText}
+                                                onChange={(e) => updateSlide(index, 'buttonText', e.target.value)}
+                                                placeholder="Button Text"
+                                                className="w-1/2 rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                            />
+                                            <input
+                                                value={slide.link}
+                                                onChange={(e) => updateSlide(index, 'link', e.target.value)}
+                                                placeholder="Link"
+                                                className="w-1/2 rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Image Upload */}
+                                    <div className="relative aspect-video bg-gray-900 rounded border border-gray-700 overflow-hidden flex items-center justify-center group">
+                                        {slide.imageUrl ? (
+                                            <>
+                                                <img src={slide.imageUrl} alt="Slide" className="w-full h-full object-contain" />
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <CldUploadWidget
+                                                        uploadPreset="ml_default"
+                                                        onSuccess={(result: any) => updateSlide(index, 'imageUrl', result.info.secure_url)}
+                                                    >
+                                                        {({ open }) => (
+                                                            <button type="button" onClick={() => open()} className="bg-white text-black px-3 py-1 rounded text-xs font-bold">
+                                                                Change
+                                                            </button>
+                                                        )}
+                                                    </CldUploadWidget>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <CldUploadWidget
+                                                uploadPreset="ml_default"
+                                                onSuccess={(result: any) => updateSlide(index, 'imageUrl', result.info.secure_url)}
+                                            >
+                                                {({ open }) => (
+                                                    <button type="button" onClick={() => open()} className="flex flex-col items-center text-gray-500 hover:text-white">
+                                                        <ImagePlus className="w-8 h-8 mb-2" />
+                                                        <span className="text-xs">Upload Image</span>
+                                                    </button>
+                                                )}
+                                            </CldUploadWidget>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex justify-between">
+                        <button type="button" onClick={addSlide} className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300">
+                            <Plus className="w-4 h-4" /> Add Slide
+                        </button>
+                        <button type="submit" className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm">
+                            Save Slider
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            {/* Old Hero Section Editor (Collapsed or Deprecated visual) */}
+            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6 opacity-60 hover:opacity-100 transition-opacity">
+                <h3 className="mb-4 text-xl font-bold text-gray-500">Static Hero (Legacy)</h3>
                 <form action={handleHeroSubmit} className="space-y-6">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-200">Main Headline</label>

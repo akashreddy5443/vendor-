@@ -175,5 +175,48 @@ export async function updateFooter(formData: FormData) {
     }
 
     revalidatePath('/admin/homepage')
+    revalidatePath('/')
+}
+
+export async function updateHeroSlider(formData: FormData) {
+    const supabase = await createClient()
+
+    const slidesStr = formData.get('slides') as string
+    const slides = JSON.parse(slidesStr)
+
+    // Find section with type 'hero_slider'.
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'hero_slider')
+        .single()
+
+    const payload = {
+        section_type: 'hero_slider',
+        title: 'Hero Slider',
+        content_json: { slides },
+        is_active: true,
+    }
+
+    let error;
+    if (existing) {
+        const { error: updateError } = await supabase
+            .from('homepage_sections')
+            .update(payload)
+            .eq('id', existing.id)
+        error = updateError
+    } else {
+        const { error: insertError } = await supabase
+            .from('homepage_sections')
+            .insert(payload)
+        error = insertError
+    }
+
+    if (error) {
+        console.error('Error updating hero slider:', error)
+        return { error: 'Failed to update user slider' }
+    }
+
+    revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }

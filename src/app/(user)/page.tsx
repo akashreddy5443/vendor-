@@ -11,10 +11,12 @@ export const dynamic = 'force-dynamic'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { motion } from 'framer-motion'
 import { CyberpunkCar } from '@/components/ui/CyberpunkCar'
+import { HeroSlider } from '@/components/shop/HeroSlider'
 import { PromoBanner } from '@/components/shop/PromoBanner'
 
 export default function HomePage() {
-  const [heroSection, setHeroSection] = React.useState<any>(null)
+  // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
+  const [sliderSection, setSliderSection] = React.useState<any>(null)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
@@ -29,13 +31,13 @@ export default function HomePage() {
     const fetchData = async () => {
       const supabase = createClient()
 
-      // Fetch Hero
-      const { data: hero } = await supabase
+      // Fetch Hero Slider
+      const { data: slider } = await supabase
         .from('homepage_sections')
         .select('*')
-        .eq('section_type', 'hero')
+        .eq('section_type', 'hero_slider')
         .single()
-      setHeroSection(hero)
+      setSliderSection(slider)
 
       // Fetch Featured
       const { data: featured } = await supabase
@@ -67,11 +69,17 @@ export default function HomePage() {
     fetchData()
   }, [])
 
-  const heroData = {
-    title: heroSection?.title || 'LEVEL UP YOUR SETUP',
-    subtitle: heroSection?.subtitle || 'Premium gear for developers and tech enthusiasts. High quality, industrial design, and built to last.',
-    imageUrl: heroSection?.content_json?.imageUrl || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f',
-  }
+  // Prepare slides from DB or use defaults
+  const slides = sliderSection?.content_json?.slides || [
+    {
+      id: 'default',
+      title: 'LEVEL UP YOUR SETUP',
+      subtitle: 'Premium Gear',
+      imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f',
+      buttonText: 'Shop Now',
+      link: '/products'
+    }
+  ]
 
   // Animation variants
   const fadeIn = {
@@ -81,59 +89,16 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Hero Section (CMS Driven) - Theme Adaptive */}
-      <section className="relative flex h-[600px] flex-col items-center justify-center text-center bg-background overflow-hidden border-b border-blue-500/20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${heroData.imageUrl}')` }}
-        ></motion.div>
+      {/* Hero Slider */}
+      <section className="relative bg-background border-b border-gray-100">
+        <HeroSlider slides={slides} />
+      </section >
 
-        {/* Overlays Removed as requested by user to remove 'white blue effect' */}
-        <div className="absolute inset-0 bg-black/10"></div>
-
-        <div className="relative z-10 space-y-4 p-4">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-sm text-blue-600"
-          // style={{ color: '#0B1026' }}
-          >
-            {heroData.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl max-w-2xl mx-auto drop-shadow-sm font-medium tracking-wide"
-            style={{ color: '#0B1026' }}
-          >
-            {heroData.subtitle}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="pt-8"
-          >
-            <Link
-              href="/products"
-              className="rounded-full bg-gradient-to-r from-gray-900 to-black px-10 py-4 font-bold text-white shadow-xl transition-all hover:scale-105 hover:shadow-2xl dark:from-blue-600 dark:to-blue-800"
-            >
-              SHOP NOW
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Cyberpunk Car Animation */}
-        <CyberpunkCar />
-      </section>
+      {/* Cyberpunk Car Animation */}
+      < CyberpunkCar />
 
       {/* BigTech Phase 2: Category Circles */}
-      <section className="py-12 border-b border-gray-100/10">
+      < section className="py-12 border-b border-100/10" >
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h3 className="text-3xl font-bold text-[#0B1026] mb-12 drop-shadow-sm">Shop by Category</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
@@ -149,13 +114,13 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* BigTech Phase 3: Promo Banners */}
-      <PromoBanner />
+      < PromoBanner />
 
       {/* Featured Products Placeholder */}
-      <section className="py-20 px-6">
+      < section className="py-20 px-6" >
         <motion.h2
           initial="hidden"
           whileInView="visible"
@@ -184,7 +149,7 @@ export default function HomePage() {
             </div>
           )}
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   )
 }
