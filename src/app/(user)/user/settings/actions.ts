@@ -7,63 +7,26 @@ export async function updateProfile(formData: FormData) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user) {
-        return { error: 'Not authenticated' }
-    }
+    if (!user) return
 
     const fullName = formData.get('fullName') as string
     const phone = formData.get('phone') as string
-    const avatarUrl = formData.get('avatarUrl') as string
-    const notifications = formData.get('notifications') as string // JSON string
-
-    if (!fullName) {
-        return { error: 'Full Name is required' }
-    }
-
-    // Update public.users table
-    const updateData: any = { full_name: fullName }
-    if (phone) updateData.phone = phone
-    if (avatarUrl) updateData.avatar_url = avatarUrl
-    if (notifications) updateData.notification_preferences = JSON.parse(notifications)
 
     const { error } = await supabase
         .from('users')
-        .update(updateData)
+        .update({
+            full_name: fullName,
+            phone_number: phone
+            // Email updates usually require re-verification flow, skipping for simple profile edit
+        })
         .eq('id', user.id)
 
     if (error) {
-        return { error: error.message }
+        console.error('Error updating profile:', error)
+        return { error: 'Failed to update profile' }
     }
 
-    // Also update auth metadata if you want, but local table is usually enough for app logic
-    // await supabase.auth.updateUser({ data: { full_name: fullName } })
-
-    revalidatePath('/user')
     revalidatePath('/user/settings')
-    return { success: 'Profile updated successfully' }
-}
-
-export async function updatePassword(formData: FormData) {
-    const supabase = await createClient()
-
-    const password = formData.get('password') as string
-    const confirmPassword = formData.get('confirmPassword') as string
-
-    if (!password || password.length < 6) {
-        return { error: 'Password must be at least 6 characters' }
-    }
-
-    if (password !== confirmPassword) {
-        return { error: 'Passwords do not match' }
-    }
-
-    const { error } = await supabase.auth.updateUser({
-        password: password
-    })
-
-    if (error) {
-        return { error: error.message }
-    }
-
-    return { success: 'Password updated successfully' }
+    revalidatePath('/user')
+    return { success: true }
 }

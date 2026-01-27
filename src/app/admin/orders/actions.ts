@@ -30,6 +30,21 @@ export async function updateOrderStatus(orderId: string, status: string) {
         return { error: error.message }
     }
 
+    // Trigger Email if Cancelled
+    if (status === 'cancelled') {
+        const { sendOrderEmail } = await import('@/app/actions/orderEmail')
+        await sendOrderEmail(orderId, 'cancelled')
+    }
+    // Also trigger for shipped/delivered if needed later
+    if (status === 'shipped') {
+        const { sendOrderEmail } = await import('@/app/actions/orderEmail')
+        await sendOrderEmail(orderId, 'shipped')
+    }
+    if (status === 'delivered') {
+        const { sendOrderEmail } = await import('@/app/actions/orderEmail')
+        await sendOrderEmail(orderId, 'delivered')
+    }
+
     revalidatePath('/admin/orders')
     return { success: true }
 }

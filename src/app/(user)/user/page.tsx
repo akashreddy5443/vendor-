@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Package, Heart, CreditCard, User } from 'lucide-react'
+import { Package, Heart, CreditCard, User, MapPin, Settings } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function UserDashboard() {
@@ -70,6 +70,23 @@ export default async function UserDashboard() {
                     </div>
                 </Link>
 
+                {/* Address Book Card */}
+                <Link href="/user/addresses" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-blue-200 block">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-green-100 rounded-lg">
+                            <MapPin className="h-6 w-6 text-green-600" />
+                        </div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">Address Book</p>
+                            <p className="text-lg font-bold text-foreground">Manage Addresses</p>
+                        </div>
+                    </div>
+                </Link>
+            </div>
+
+            {/* Secondary Grid for Settings */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Account Status */}
                 <div className="p-6 rounded-xl bg-card border border-border shadow-sm">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-blue-100 rounded-lg">
@@ -81,6 +98,22 @@ export default async function UserDashboard() {
                         </div>
                     </div>
                 </div>
+
+                {/* Settings Link */}
+                <Link href="/user/settings" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-blue-200 block md:col-span-2">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-gray-100 rounded-lg">
+                                <Settings className="h-6 w-6 text-gray-600" />
+                            </div>
+                            <div>
+                                <p className="text-lg font-bold text-foreground">Account Settings</p>
+                                <p className="text-sm text-muted-foreground">Update your profile information and phone number.</p>
+                            </div>
+                        </div>
+                        <div className="text-blue-600 font-medium">Edit Profile &rarr;</div>
+                    </div>
+                </Link>
             </div>
 
             {/* Recent Section */}

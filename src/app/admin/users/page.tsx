@@ -1,6 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
 import { Shield } from 'lucide-react'
 
+// We need to make this a Client Component to use onClick handlers/state for UI
+// Better approach for existing file:
+// Import a new client component <UserDeleteButton userId={user.id} />
+import { UserDeleteButton } from '@/components/admin/UserDeleteButton'
+
 export default async function AdminUsersPage() {
     const supabase = await createClient()
     const { data: users } = await supabase
@@ -23,6 +28,7 @@ export default async function AdminUsersPage() {
                                 <th className="px-4 py-3">Email</th>
                                 <th className="px-4 py-3">Role</th>
                                 <th className="px-4 py-3">Joined Date</th>
+                                <th className="px-4 py-3 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-800">
@@ -32,8 +38,8 @@ export default async function AdminUsersPage() {
                                     <td className="px-4 py-3">
                                         <span
                                             className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${user.role === 'admin'
-                                                    ? 'bg-purple-400/10 text-purple-400 ring-purple-400/20'
-                                                    : 'bg-gray-400/10 text-gray-400 ring-gray-400/20'
+                                                ? 'bg-purple-400/10 text-purple-400 ring-purple-400/20'
+                                                : 'bg-gray-400/10 text-gray-400 ring-gray-400/20'
                                                 }`}
                                         >
                                             {user.role === 'admin' && <Shield className="h-3 w-3" />}
@@ -43,11 +49,14 @@ export default async function AdminUsersPage() {
                                     <td className="px-4 py-3">
                                         {new Date(user.created_at).toLocaleDateString()}
                                     </td>
+                                    <td className="px-4 py-3 text-right">
+                                        <UserDeleteButton userId={user.id} userRole={user.role} />
+                                    </td>
                                 </tr>
                             ))}
                             {(!users || users.length === 0) && (
                                 <tr>
-                                    <td colSpan={3} className="px-4 py-8 text-center text-gray-500">
+                                    <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
                                         No users found.
                                     </td>
                                 </tr>
