@@ -51,23 +51,25 @@ export function ProductCard({ product }: ProductCardProps) {
 
     return (
         <>
-            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-transparent border-transparent transition-all duration-300">
+            <div className="group relative flex flex-col overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
                 <div className="aspect-square relative overflow-hidden flex items-center justify-center">
 
                     {imageUrl ? (
-                        <div className="relative h-full w-full transition-transform duration-500 group-hover:scale-105 z-10 p-4">
+                        <div className="relative h-full w-full bg-white flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain mix-blend-multiply ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
                     ) : (
-                        <span className="text-muted-foreground text-sm z-10">No Image</span>
+                        <div className="h-full w-full bg-secondary/20 flex items-center justify-center text-muted-foreground text-sm z-10">
+                            No Image
+                        </div>
                     )}
 
                     {/* Stock Badges */}
