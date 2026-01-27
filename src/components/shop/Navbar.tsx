@@ -71,33 +71,35 @@ export function Navbar() {
             )}
 
             <nav className="flex h-16 items-center justify-between border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm relative">
-                {/* Left: Logo */}
-                <div className="flex items-center gap-4">
-                    <button
-                        className="md:hidden text-muted-foreground hover:text-foreground"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? <X /> : <Menu />}
-                    </button>
+                {/* Left: Logo & Navigation */}
+                <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-4">
+                        <button
+                            className="md:hidden text-muted-foreground hover:text-foreground"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? <X /> : <Menu />}
+                        </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-foreground group">
-                        {settings?.logo_url ? (
-                            <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
-                        ) : (
-                            <div className="bg-primary text-primary-foreground p-1.5 rounded-md">
-                                <ShoppingBag className="h-6 w-6" />
-                            </div>
-                        )}
-                        <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors">{settings?.site_name || 'TechDev'}</span>
-                    </Link>
-                </div>
+                        <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-foreground group">
+                            {settings?.logo_url ? (
+                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
+                            ) : (
+                                <div className="bg-primary text-primary-foreground p-1.5 rounded-md">
+                                    <ShoppingBag className="h-6 w-6" />
+                                </div>
+                            )}
+                            <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors">{settings?.site_name || 'TechDev'}</span>
+                        </Link>
+                    </div>
 
-                {/* Center: Navigation Links (Desktop) - Shifted left */}
-                <div className="hidden md:flex absolute left-[42%] -translate-x-1/2 items-center gap-8 text-sm font-medium uppercase tracking-wide">
-                    <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
-                    <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
-                    <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
-                    <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
+                    {/* Navigation Links (Desktop) - Now part of left flex flow */}
+                    <div className="hidden md:flex items-center gap-6 text-sm font-medium uppercase tracking-wide">
+                        <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
+                        <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
+                        <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
+                        <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
+                    </div>
                 </div>
 
                 {/* Right: Actions */}
