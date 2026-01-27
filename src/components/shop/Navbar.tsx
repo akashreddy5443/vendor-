@@ -60,7 +60,7 @@ export function Navbar() {
     return (
         <div className="flex flex-col">
             {!loading && showAnnouncement && (
-                <div className="bg-blue-600 text-white text-xs font-bold py-2 text-center uppercase tracking-wider relative z-50">
+                <div className="bg-primary text-primary-foreground text-xs font-bold py-2 text-center uppercase tracking-wider relative z-50">
                     {link && link !== '#' ? (
                         <Link href={link} className="hover:underline">
                             {text}
@@ -81,70 +81,62 @@ export function Navbar() {
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
 
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-blue-500">
+                    <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-foreground group">
                         {settings?.logo_url ? (
                             <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                         ) : (
-                            <ShoppingBag className="h-6 w-6 text-blue-500" />
+                            <div className="bg-primary text-primary-foreground p-1.5 rounded-md">
+                                <ShoppingBag className="h-6 w-6" />
+                            </div>
                         )}
-                        <span className="hidden min-[370px]:inline">{settings?.site_name || 'TechDev'}</span>
+                        <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors">{settings?.site_name || 'TechDev'}</span>
                     </Link>
                     <div className="hidden md:block">
                         <SpotlightSearch />
                     </div>
                 </div>
 
-                {/* Desktop Nav */}
-                <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-                    <Link href="/products" className="text-muted-foreground hover:text-blue-600 transition-colors">Products</Link>
-
-                    <Link href="/categories" className="text-muted-foreground hover:text-blue-600 transition-colors">Categories</Link>
-                    <Link href="/about" className="text-muted-foreground hover:text-blue-600 transition-colors">About</Link>
-
-                    {user ? (
-                        <>
-                            <Link href="/user/wishlist" className="hover:text-blue-600 transition-colors">
-                                <span className="sr-only">Wishlist</span>
-                                <Heart className="h-5 w-5" />
-                            </Link>
-
-                            <Link href="/user" className="hover:text-blue-600 transition-colors">
-                                <span className="sr-only">Account</span>
-                                <User className="h-5 w-5" />
-                            </Link>
-                        </>
-                    ) : (
-                        <div className="flex items-center gap-4">
-                            <Link href="/login" className="text-muted-foreground hover:text-blue-600 transition-colors font-medium">Sign In</Link>
-                            <Link href="/register" className="px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors">
-                                Sign Up
-                            </Link>
-                        </div>
-                    )}
-
-                    <Link href="/cart" className="hover:text-blue-600 transition-colors relative group">
-                        <span className="sr-only">Cart</span>
-                        <div className="relative">
-                            <ShoppingCart className="h-5 w-5" />
-                            {cartCount > 0 && (
-                                <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white">
-                                    {cartCount}
-                                </span>
-                            )}
-                        </div>
-                    </Link>
+                {/* Electro-Style Desktop Menu */}
+                <div className="hidden md:flex gap-6 text-sm font-bold items-center uppercase tracking-wide">
+                    <Link href="/products" className="text-foreground hover:text-primary transition-colors">All Products</Link>
+                    <Link href="/search?category=laptops" className="text-foreground hover:text-primary transition-colors">Laptops</Link>
+                    <Link href="/search?category=phones" className="text-foreground hover:text-primary transition-colors">Smartphones</Link>
                 </div>
 
-                {/* Mobile Right Icons (Cart + Theme Toggle) */}
-                <div className="flex md:hidden items-center gap-4">
-                    <Link href="/cart" className="relative text-muted-foreground hover:text-blue-600">
-                        <ShoppingCart className="h-5 w-5" />
-                        {cartCount > 0 && (
-                            <span className="absolute -top-2 -right-2 flex h-3 w-3 items-center justify-center rounded-full bg-blue-500 text-[8px] font-bold text-white">
-                                {cartCount}
-                            </span>
+                <div className="flex items-center gap-4">
+                    <ThemeToggle />
+
+                    {/* User Actions */}
+                    <div className="flex items-center gap-3">
+                        {user ? (
+                            <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                                <User className="h-6 w-6 mb-0.5" />
+                                <span>Account</span>
+                            </Link>
+                        ) : (
+                            <Link href="/login" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                                <User className="h-6 w-6 mb-0.5" />
+                                <span>Login</span>
+                            </Link>
                         )}
-                    </Link>
+
+                        <Link href="/user/wishlist" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                            <Heart className="h-6 w-6 mb-0.5" />
+                            <span>Wishlist</span>
+                        </Link>
+
+                        <Link href="/cart" className="relative flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors group">
+                            <div className="relative">
+                                <ShoppingCart className="h-6 w-6 mb-0.5" />
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                                        {cartCount}
+                                    </span>
+                                )}
+                            </div>
+                            <span className="group-hover:text-primary">Cart</span>
+                        </Link>
+                    </div>
                 </div>
             </nav>
 
@@ -154,7 +146,6 @@ export function Navbar() {
                     <div className="flex flex-col gap-4 text-lg font-medium text-foreground/80">
                         <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Home</Link>
                         <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Products</Link>
-
                         <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">Categories</Link>
                         <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-primary">About</Link>
                     </div>
@@ -180,7 +171,6 @@ export function Navbar() {
                             </div>
                         )}
                     </div>
-
                 </div>
             )}
         </div>

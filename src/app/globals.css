@@ -27,39 +27,36 @@
 }
 
 :root {
-  /* Light Mode: Premium Cream & Midnight Blue Scheme */
-  --background: #F5F5F0;
-  /* Distinct Cream */
-  --foreground: #0B1026;
-  /* Midnight Blue */
+  /* Electro-Green Light Mode */
+  --background: #ffffff;
+  --foreground: #333333;
 
-  --card: #FFFFFF;
-  --card-foreground: #0B1026;
+  --card: #ffffff;
+  --card-foreground: #333333;
 
-  --popover: #FFFFFF;
-  --popover-foreground: #0B1026;
+  --popover: #ffffff;
+  --popover-foreground: #333333;
 
-  --primary: #0B1026;
-  /* Midnight Blue Buttons */
-  --primary-foreground: #FFFFFF;
+  --primary: #10B981;  /* Electro Green (Emerald 500) */
+  --primary-foreground: #ffffff;
 
-  --secondary: #EBEBE0;
-  --secondary-foreground: #0B1026;
+  --secondary: #F3F4F6; /* Light Grey for backgrounds */
+  --secondary-foreground: #111827;
 
-  --muted: #E0E0D0;
-  --muted-foreground: #404040;
+  --muted: #E5E7EB;
+  --muted-foreground: #6B7280;
 
-  --accent: #EBEBE0;
-  --accent-foreground: #0B1026;
+  --accent: #ECFDF5; /* Light Green Tint */
+  --accent-foreground: #065F46;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #D6D6C2;
-  --input: #D6D6C2;
-  --ring: #0B1026;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #10B981;
 
-  --brand-orange: #ea580c;
+  --brand-orange: #F59E0B; /* Keeping an accent color if needed */
 }
 
 /* Dark Mode: Premium Tech Theme (Midnight Blue & Electric Blue) */

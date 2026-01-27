@@ -92,11 +92,11 @@ export function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 <div className="p-4 flex flex-col flex-grow relative z-30 pointer-events-none">
-                    <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold mb-1 group-hover:text-primary transition-colors line-clamp-2">
                         {product.title}
                     </h3>
                     <div className="mt-auto flex items-center justify-between pt-2">
-                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-blue-600'}`}>
+                        <span className={`font-medium text-lg ${isOutOfStock ? 'text-gray-500 line-through' : 'text-primary'}`}>
                             {formatPrice(product.price)}
                         </span>
 
