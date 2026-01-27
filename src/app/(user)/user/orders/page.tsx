@@ -14,6 +14,7 @@ export default async function OrdersPage() {
         .from('orders')
         .select('*')
         .eq('user_id', user.id)
+        .neq('status', 'cancelled') // Hide cancelled orders from user view
         .order('created_at', { ascending: false })
 
     return (

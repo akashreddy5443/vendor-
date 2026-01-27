@@ -23,6 +23,7 @@ export default async function UserDashboard() {
         .from('orders')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id)
+        .neq('status', 'cancelled')
 
     const { count: wishlistCount } = await supabase
         .from('wishlist')
@@ -34,6 +35,7 @@ export default async function UserDashboard() {
         .from('orders')
         .select('*')
         .eq('user_id', user.id)
+        .neq('status', 'cancelled')
         .order('created_at', { ascending: false })
         .limit(3)
 
