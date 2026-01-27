@@ -11,7 +11,7 @@ const DEFAULT_PROMOS = [
         subtitle: 'Online Only!',
         description: 'Get free shipping on all orders over ₹2000.',
         icon: 'Clock',
-        color: 'bg-orange-500',
+        color: 'bg-white border border-gray-100',
         href: '/products?sort=newest',
         delay: 0
     },
@@ -21,7 +21,7 @@ const DEFAULT_PROMOS = [
         subtitle: '10% OFF',
         description: 'On all electronics this weekend.',
         icon: 'Tag',
-        color: 'bg-blue-600',
+        color: 'bg-white border border-gray-100',
         href: '/products?category=electronics',
         delay: 0.1
     },
@@ -31,7 +31,7 @@ const DEFAULT_PROMOS = [
         subtitle: 'Cameras',
         description: 'Protect your home with smart tech.',
         icon: 'ShieldCheck',
-        color: 'bg-red-600',
+        color: 'bg-white border border-gray-100',
         href: '/search?category=security',
         delay: 0.2
     },
@@ -41,7 +41,7 @@ const DEFAULT_PROMOS = [
         subtitle: 'Earbuds',
         description: 'Premium sound at half the price.',
         icon: 'Zap',
-        color: 'bg-yellow-500',
+        color: 'bg-white border border-gray-100',
         href: '/search?category=audio',
         delay: 0.3
     }

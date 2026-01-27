@@ -29,7 +29,7 @@ export async function Footer() {
                             {/* Manual split for style, or dynamic if simple text */}
                             {config.newsletterTitle.includes('NEWSLETTER') ? (
                                 <>
-                                    <span className="text-blue-600">SUBSCRIBE</span> TO OUR <br />
+                                    <span className="text-primary">SUBSCRIBE</span> TO OUR <br />
                                     <span className="text-[#0B1026]">NEWSLETTER</span>
                                 </>
                             ) : (config.newsletterTitle)}
@@ -40,7 +40,7 @@ export async function Footer() {
 
                         <div className="flex gap-4 pt-4 text-gray-400">
                             {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-sky-500 transition-colors"><Twitter className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-blue-600 transition-colors"><Facebook className="h-5 w-5" /></Link>}
+                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-primary transition-colors"><Facebook className="h-5 w-5" /></Link>}
                             {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-pink-600 transition-colors"><Instagram className="h-5 w-5" /></Link>}
                             {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-red-600 transition-colors"><Youtube className="h-5 w-5" /></Link>}
                         </div>
@@ -84,7 +84,7 @@ export async function Footer() {
                     <div className="flex flex-col items-center gap-2 sm:items-end">
                         <div className="text-xl font-bold font-serif tracking-tight">
                             {config.copyrightText || (
-                                <>TECH<span className="text-blue-500">DEV</span></>
+                                <>TECH<span className="text-primary">DEV</span></>
                             )}
                         </div>
                         <div className="text-xs text-muted-foreground text-center sm:text-right">

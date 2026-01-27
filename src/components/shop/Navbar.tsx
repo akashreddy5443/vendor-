@@ -6,7 +6,6 @@ import { ShoppingBag, ShoppingCart, Heart, User, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export function Navbar() {
     const [announcement, setAnnouncement] = useState<any>(null)
@@ -71,9 +70,9 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center justify-between border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm">
-                <div className="flex items-center gap-4 md:gap-8">
-                    {/* Mobile Menu Button */}
+            <nav className="flex h-16 items-center justify-between border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm relative">
+                {/* Left: Logo */}
+                <div className="flex items-center gap-4">
                     <button
                         className="md:hidden text-muted-foreground hover:text-foreground"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -91,50 +90,48 @@ export function Navbar() {
                         )}
                         <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors">{settings?.site_name || 'TechDev'}</span>
                     </Link>
+                </div>
+
+                {/* Center: Navigation Links (Desktop) */}
+                <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-sm font-medium uppercase tracking-wide">
+                    <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
+                    <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
+                    <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
+                    <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
+                </div>
+
+                {/* Right: Actions */}
+                <div className="flex items-center gap-4">
+                    {/* Search - Pushed slightly right by structure */}
                     <div className="hidden md:block">
                         <SpotlightSearch />
                     </div>
-                </div>
-
-                {/* Electro-Style Desktop Menu */}
-                <div className="hidden md:flex gap-6 text-sm font-bold items-center uppercase tracking-wide">
-                    <Link href="/products" className="text-foreground hover:text-primary transition-colors">All Products</Link>
-                    <Link href="/search?category=laptops" className="text-foreground hover:text-primary transition-colors">Laptops</Link>
-                    <Link href="/search?category=phones" className="text-foreground hover:text-primary transition-colors">Smartphones</Link>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <ThemeToggle />
 
                     {/* User Actions */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 pl-2 border-l border-border/50">
                         {user ? (
                             <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
-                                <User className="h-6 w-6 mb-0.5" />
-                                <span>Account</span>
+                                <User className="h-5 w-5 mb-0.5" />
                             </Link>
                         ) : (
                             <Link href="/login" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
-                                <User className="h-6 w-6 mb-0.5" />
-                                <span>Login</span>
+                                <User className="h-5 w-5 mb-0.5" />
                             </Link>
                         )}
 
                         <Link href="/user/wishlist" className="hidden md:flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
-                            <Heart className="h-6 w-6 mb-0.5" />
-                            <span>Wishlist</span>
+                            <Heart className="h-5 w-5 mb-0.5" />
                         </Link>
 
                         <Link href="/cart" className="relative flex flex-col items-center text-xs font-medium text-muted-foreground hover:text-primary transition-colors group">
                             <div className="relative">
-                                <ShoppingCart className="h-6 w-6 mb-0.5" />
+                                <ShoppingCart className="h-5 w-5 mb-0.5" />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                                         {cartCount}
                                     </span>
                                 )}
                             </div>
-                            <span className="group-hover:text-primary">Cart</span>
                         </Link>
                     </div>
                 </div>
