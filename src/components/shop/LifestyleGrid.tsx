@@ -31,24 +31,28 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
                     Made For Every Moment
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {gridItems.map((item) => (
-                        <Link href={item.link} key={item.title} className="group relative block overflow-hidden aspect-[4/5] bg-gray-100 dark:bg-zinc-800">
-                            <Image
-                                src={item.image}
-                                alt={item.title}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-70" />
+                        <Link
+                            href={item.link}
+                            key={item.title}
+                            className="group block relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300"
+                        >
+                            <div className="aspect-[4/5] relative overflow-hidden">
+                                <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-                            <div className="absolute bottom-8 left-8">
-                                <h3 className="text-xl md:text-2xl font-bold text-white mb-2 uppercase tracking-wide">
-                                    {item.title}
-                                </h3>
-                                <span className="inline-flex items-center text-sm font-semibold text-white/90 group-hover:text-white group-hover:translate-x-1 transition-all">
-                                    Shop Now <ArrowRight className="ml-2 h-4 w-4" />
-                                </span>
+                                <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                    <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight">{item.title}</h3>
+                                    <div className="flex items-center text-white/80 text-sm font-bold uppercase tracking-widest gap-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
+                                        Shop Now <ArrowRight className="h-4 w-4" />
+                                    </div>
+                                </div>
                             </div>
                         </Link>
                     ))}

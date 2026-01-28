@@ -33,12 +33,25 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                 src={content.hero.image}
                                 alt="Pro Gaming Layout"
                                 fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-colors" />
-                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm">
+
+                            {/* Video on Hover */}
+                            <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
+                                <video
+                                    src="https://res.cloudinary.com/demo/video/upload/v1690566735/gaming_setup_video.mp4"
+                                    autoPlay
+                                    muted
+                                    loop
+                                    playsInline
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+
+                            <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm z-30">
                                 <span className="text-white/90 text-xs font-bold uppercase tracking-widest mb-2 block">{content.hero.tag}</span>
-                                <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase leading-none shadow-sm">
+                                <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase leading-none shadow-sm drop-shadow-lg">
                                     {content.hero.title}
                                 </h3>
                                 <Link href={content.hero.link} className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm rounded-full hover:bg-gray-100 transition-colors shadow-lg">

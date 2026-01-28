@@ -36,7 +36,7 @@ export default async function AdminOrdersPage() {
     if (orderIds.length > 0) {
         const { data: allItems } = await supabase
             .from('order_items')
-            .select('id, order_id, quantity, price, product:products(title)')
+            .select('id, order_id, quantity, price, product_id, product:products(title)')
             .in('order_id', orderIds)
 
         if (allItems) {
@@ -110,11 +110,15 @@ export default async function AdminOrdersPage() {
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="space-y-1">
-                                                {(order as any).order_items?.map((item: any) => (
-                                                    <div key={item.id} className="text-xs text-gray-300">
-                                                        <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title || 'Unknown Product'}
-                                                    </div>
-                                                ))}
+                                                {!(order as any).order_items || (order as any).order_items.length === 0 ? (
+                                                    <span className="text-xs text-red-400 italic">No items data</span>
+                                                ) : (
+                                                    (order as any).order_items.map((item: any) => (
+                                                        <div key={item.id} className="text-xs text-gray-300">
+                                                            <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title ||
+                                                                <span className="text-gray-500">Item #{item.product_id?.slice(0, 4)}...</span>}
+                                                        </div>
+                                                    )))}
                                             </div>
                                         </td>
                                         <td className="px-4 py-3">
