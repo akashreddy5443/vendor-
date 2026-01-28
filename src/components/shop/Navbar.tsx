@@ -62,13 +62,13 @@ export function Navbar() {
                 <div className="bg-primary text-primary-foreground text-xs font-bold py-2 overflow-hidden relative z-50">
                     <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] w-max">
                         {[...Array(10)].map((_, i) => (
-                            <span key={i} className="mx-8 inline-block uppercase tracking-wider">
+                            <span key={i} className="mx-8 inline-block uppercase tracking-wider select-none">
                                 {link && link !== '#' ? (
-                                    <Link href={link} className="hover:underline">
+                                    <Link href={link} className="hover:underline bg-transparent text-primary-foreground">
                                         {text}
                                     </Link>
                                 ) : (
-                                    <span>{text}</span>
+                                    <span className="text-primary-foreground">{text}</span>
                                 )}
                             </span>
                         ))}
