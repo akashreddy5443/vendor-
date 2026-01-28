@@ -85,7 +85,13 @@ export async function fixDatabasePermissions() {
             );
         `)
 
-        return { success: 'Database permissions repaired (Permissive Mode).' }
+        const res = await client.query('SELECT count(*) as order_count FROM public.orders; SELECT count(*) as item_count FROM public.order_items;')
+        // Note: client.query doesn't support multiple statements well for return values in all drivers, so better to run separate or parse carefully.
+        // Assuming simple execution:
+        const orderCount = await client.query('SELECT count(*) FROM public.orders')
+        const itemCount = await client.query('SELECT count(*) FROM public.order_items')
+
+        return { success: `Permissions Fixed. DB Stats - Orders: ${orderCount.rows[0].count}, Items: ${itemCount.rows[0].count}` }
     } catch (e: any) {
         console.error('DB Fix Error:', e)
         return { error: 'Failed to fix database: ' + e.message }
