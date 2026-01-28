@@ -115,6 +115,37 @@ export function SettingsForm({ settings }: { settings: any }) {
                 </div>
             </div>
 
+            {/* Pricing & Tax */}
+            <div className="space-y-4">
+                <h3 className="text-lg font-medium text-white border-b border-gray-800 pb-2">Pricing & Tax</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Global Discount (%) - Applied to ALL products</label>
+                        <input
+                            type="number"
+                            name="global_discount_percentage"
+                            defaultValue={settings?.global_discount_percentage ?? 0}
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-400">Default GST Rate (%)</label>
+                        <input
+                            type="number"
+                            name="default_gst_percentage"
+                            defaultValue={settings?.default_gst_percentage ?? 18}
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                        />
+                    </div>
+                </div>
+            </div>
+
             {/* Danger Zone */}
             <div className="space-y-4 pt-4">
                 <h3 className="text-lg font-medium text-red-400 flex items-center gap-2 border-b border-red-900/30 pb-2">

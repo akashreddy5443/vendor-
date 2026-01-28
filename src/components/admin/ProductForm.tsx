@@ -13,6 +13,8 @@ interface ProductFormProps {
         description?: string
         price: number
         stock: number
+        discount_percentage?: number | null
+        gst_percentage?: number | null
         status: string
         category_id?: string
         features?: any // JSONB
@@ -195,6 +197,41 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         required
                         defaultValue={initialData?.stock ?? 0}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                    />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <label htmlFor="discount_percentage" className="text-sm font-medium text-gray-200">
+                        Discount (%) <span className="text-xs text-gray-500">(Optional override)</span>
+                    </label>
+                    <input
+                        id="discount_percentage"
+                        name="discount_percentage"
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                        defaultValue={initialData?.discount_percentage ?? ''}
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                        placeholder="Leave empty to use Global"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label htmlFor="gst_percentage" className="text-sm font-medium text-gray-200">
+                        GST Rate (%) <span className="text-xs text-gray-500">(Optional override)</span>
+                    </label>
+                    <input
+                        id="gst_percentage"
+                        name="gst_percentage"
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                        defaultValue={initialData?.gst_percentage ?? ''}
+                        className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                        placeholder="Leave empty to use Global (18%)"
                     />
                 </div>
             </div>

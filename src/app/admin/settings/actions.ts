@@ -11,6 +11,8 @@ export async function updateSettings(formData: FormData) {
     const contact_email = formData.get('contact_email') as string
     const maintenance_mode = formData.get('maintenance_mode') === 'on'
     const logo_url = formData.get('logo_url') as string
+    const global_discount_percentage = parseFloat(formData.get('global_discount_percentage') as string || '0')
+    const default_gst_percentage = parseFloat(formData.get('default_gst_percentage') as string || '18')
 
     const { error } = await supabase
         .from('site_settings')
@@ -21,6 +23,8 @@ export async function updateSettings(formData: FormData) {
             contact_email,
             maintenance_mode,
             logo_url,
+            global_discount_percentage,
+            default_gst_percentage,
             updated_at: new Date().toISOString()
         }, { onConflict: 'id' })
 

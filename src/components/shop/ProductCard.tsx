@@ -16,24 +16,34 @@ interface ProductCardProps {
         title: string
         price: number
         slug?: string
-        description?: string // Added for modal
-        stock?: number // Added for stock check
-        features?: any // JSONB
+        description?: string
+        stock?: number
+        discount_percentage?: number | null // DB field
+        features?: any
         product_images?: { cloudinary_url: string; is_primary: boolean }[]
     }
+    globalDiscount?: number
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, globalDiscount = 0 }: ProductCardProps) {
     const [showQuickView, setShowQuickView] = useState(false)
     const { addItem } = useCart()
 
-    // Find primary image or default to first, or placeholder
+    // Find primary image
     const primaryImage = product.product_images?.find(img => img.is_primary) || product.product_images?.[0]
     const imageUrl = primaryImage?.cloudinary_url
 
     const stock = product.stock ?? 0
     const isOutOfStock = stock === 0
-    const isLowStock = stock > 0 && stock <= 5
+
+    // Discount Logic
+    // Product override takes precedence. If null, use global.
+    const effectiveDiscount = product.discount_percentage !== null && product.discount_percentage !== undefined
+        ? product.discount_percentage
+        : globalDiscount
+
+    const hasDiscount = effectiveDiscount > 0
+    const finalPrice = hasDiscount ? product.price * (1 - effectiveDiscount / 100) : product.price
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -42,7 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
             addItem({
                 productId: product.id,
                 title: product.title,
-                price: product.price,
+                price: finalPrice, // Use discounted price
                 maxStock: stock,
                 image: imageUrl
             }, 1)
@@ -80,11 +90,13 @@ export function ProductCard({ product }: ProductCardProps) {
                             </span>
                         </div>
                     ) : (
-                        <div className="absolute bottom-2 left-2 z-20">
-                            <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-                                -10%
-                            </span>
-                        </div>
+                        hasDiscount && (
+                            <div className="absolute bottom-2 left-2 z-20">
+                                <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
+                                    -{effectiveDiscount}%
+                                </span>
+                            </div>
+                        )
                     )}
 
                 </div>
@@ -101,11 +113,13 @@ export function ProductCard({ product }: ProductCardProps) {
                         </h3>
                         <div className="flex flex-col items-end">
                             <span className={`font-bold text-sm ${isOutOfStock ? 'text-gray-400' : 'text-[#BA2B2B]'}`}>
-                                {formatPrice(product.price * 0.9)}
+                                {formatPrice(finalPrice)}
                             </span>
-                            <span className="text-[11px] text-gray-500 line-through decoration-gray-400">
-                                {formatPrice(product.price)}
-                            </span>
+                            {hasDiscount && (
+                                <span className="text-[11px] text-gray-500 line-through decoration-gray-400">
+                                    {formatPrice(product.price)}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>

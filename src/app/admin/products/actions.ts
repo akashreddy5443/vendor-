@@ -14,6 +14,8 @@ export async function createProduct(formData: FormData) {
     const description = formData.get('description') as string
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
+    const discount_percentage = formData.get('discount_percentage') ? parseFloat(formData.get('discount_percentage') as string) : null
+    const gst_percentage = formData.get('gst_percentage') ? parseFloat(formData.get('gst_percentage') as string) : null
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
     const mediaString = formData.get('media') as string
@@ -32,6 +34,8 @@ export async function createProduct(formData: FormData) {
             description,
             price,
             stock,
+            discount_percentage,
+            gst_percentage,
             status,
             category_id,
             features
@@ -82,6 +86,8 @@ export async function updateProduct(formData: FormData) {
     const description = formData.get('description') as string
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
+    const discount_percentage = formData.get('discount_percentage') ? parseFloat(formData.get('discount_percentage') as string) : null
+    const gst_percentage = formData.get('gst_percentage') ? parseFloat(formData.get('gst_percentage') as string) : null
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
     const mediaString = formData.get('media') as string
@@ -97,6 +103,8 @@ export async function updateProduct(formData: FormData) {
             description,
             price,
             stock,
+            discount_percentage,
+            gst_percentage,
             status,
             category_id,
             features

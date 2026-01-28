@@ -17,6 +17,7 @@ import { PromoBanner } from '@/components/shop/PromoBanner'
 export default function HomePage() {
   // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
   const [sliderSection, setSliderSection] = React.useState<any>(null)
+  const [globalDiscount, setGlobalDiscount] = React.useState(0)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
@@ -29,6 +30,12 @@ export default function HomePage() {
   React.useEffect(() => {
     const fetchData = async () => {
       const supabase = createClient()
+
+      // Fetch Global Settings
+      const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage').single()
+      if (settings?.global_discount_percentage) {
+        setGlobalDiscount(settings.global_discount_percentage)
+      }
 
       // Fetch Hero Slider
       const { data: slider } = await supabase
@@ -140,7 +147,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} globalDiscount={globalDiscount} />
               </motion.div>
             ))
           ) : (
