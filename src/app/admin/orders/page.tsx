@@ -26,14 +26,6 @@ export default async function AdminOrdersPage() {
       created_at,
       shipping_address,
       users ( email )
-      /*
-      order_items (
-        id,
-        quantity,
-        price,
-        product:products ( title )
-      )
-      */
     `)
         .order('created_at', { ascending: false })
 
