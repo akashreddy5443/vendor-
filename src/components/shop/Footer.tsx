@@ -19,89 +19,88 @@ export async function Footer() {
     }
 
     return (
-        <footer className="border-t border-border bg-background pt-16 pb-8 text-foreground transition-colors duration-300">
+        <footer className="border-t border-[#191970]/10 bg-[#191970] pt-20 pb-10 text-white transition-colors duration-300 font-sans">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
 
                     {/* Newsletter Section */}
-                    <div className="space-y-6">
-                        <h2 className="text-4xl font-extrabold tracking-tight text-foreground">
+                    <div className="lg:col-span-5 space-y-8">
+                        <h2 className="text-4xl lg:text-5xl font-extrabold tracking-incredibly-tight leading-none text-white uppercase">
                             {/* Manual split for style, or dynamic if simple text */}
-                            {config.newsletterTitle.includes('NEWSLETTER') ? (
-                                <>
-                                    <span className="text-primary">SUBSCRIBE</span> TO OUR <br />
-                                    <span className="text-[#0B1026]">NEWSLETTER</span>
-                                </>
-                            ) : (config.newsletterTitle)}
+                            <span className="block text-white/50 mb-2 text-2xl font-bold tracking-widest">Stay Ahead</span>
+                            SUBSCRIBE TO OUR <br /><span className="text-blue-200">NEWSLETTER</span>
                         </h2>
-                        <div className="relative max-w-md">
+                        <div className="relative max-w-sm">
                             <NewsletterForm />
                         </div>
 
-                        <div className="flex gap-4 pt-4 text-gray-400">
-                            {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-sky-500 transition-colors"><Twitter className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-primary transition-colors"><Facebook className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-pink-600 transition-colors"><Instagram className="h-5 w-5" /></Link>}
-                            {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-red-600 transition-colors"><Youtube className="h-5 w-5" /></Link>}
+                        <div className="flex gap-6 pt-6 text-white/60">
+                            {config.socialLinks?.twitter && <Link href={config.socialLinks.twitter} className="hover:text-blue-400 hover:scale-110 transition-all"><Twitter className="h-6 w-6" /></Link>}
+                            {config.socialLinks?.facebook && <Link href={config.socialLinks.facebook} className="hover:text-blue-500 hover:scale-110 transition-all"><Facebook className="h-6 w-6" /></Link>}
+                            {config.socialLinks?.instagram && <Link href={config.socialLinks.instagram} className="hover:text-pink-500 hover:scale-110 transition-all"><Instagram className="h-6 w-6" /></Link>}
+                            {config.socialLinks?.youtube && <Link href={config.socialLinks.youtube} className="hover:text-red-500 hover:scale-110 transition-all"><Youtube className="h-6 w-6" /></Link>}
                         </div>
                     </div>
 
                     {/* Links Section */}
-                    <div className="grid grid-cols-2 gap-8 sm:grid-cols-2">
+                    <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 pt-4">
                         <div>
-                            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-foreground">Info</h3>
-                            <ul className="space-y-3 text-sm text-muted-foreground">
+                            <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-white/40">Info</h3>
+                            <ul className="space-y-4 text-sm font-medium text-white/80">
                                 {config.infoLinks?.map((link: any, i: number) => (
-                                    <li key={i}><Link href={link.url} className="hover:text-primary transition-colors">{link.label}</Link></li>
+                                    <li key={i}><Link href={link.url} className="hover:text-white hover:translate-x-1 transition-all inline-block">{link.label}</Link></li>
                                 ))}
                             </ul>
                         </div>
                         <div>
-                            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-foreground">Support</h3>
-                            <ul className="space-y-3 text-sm text-muted-foreground">
+                            <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-white/40">Support</h3>
+                            <ul className="space-y-4 text-sm font-medium text-white/80">
                                 {config.supportLinks?.map((link: any, i: number) => (
-                                    <li key={i}><Link href={link.url} className="hover:text-primary transition-colors">{link.label}</Link></li>
+                                    <li key={i}><Link href={link.url} className="hover:text-white hover:translate-x-1 transition-all inline-block">{link.label}</Link></li>
                                 ))}
+                            </ul>
+                        </div>
+                        {/* Extra Links Column for 'Professional' feel */}
+                        <div>
+                            <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-white/40">Legal</h3>
+                            <ul className="space-y-4 text-sm font-medium text-white/80">
+                                <li><Link href="/terms" className="hover:text-white hover:translate-x-1 transition-all inline-block">Terms of Service</Link></li>
+                                <li><Link href="/privacy" className="hover:text-white hover:translate-x-1 transition-all inline-block">Privacy Policy</Link></li>
+                                <li><Link href="/cookies" className="hover:text-white hover:translate-x-1 transition-all inline-block">Cookie Policy</Link></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-border pt-8 sm:flex-row">
+                <div className="mt-20 flex flex-col items-center justify-between gap-8 border-t border-white/10 pt-10 sm:flex-row">
 
                     {/* Pickers */}
                     <div className="flex gap-4">
-                        <div className="flex items-center gap-2 rounded border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:border-foreground/20 cursor-pointer">
+                        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold tracking-wide text-white/70 hover:bg-white/10 cursor-pointer transition-colors">
                             <Globe className="h-3 w-3" />
                             Global
                         </div>
-                        <div className="flex items-center gap-2 rounded border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:border-foreground/20 cursor-pointer">
+                        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold tracking-wide text-white/70 hover:bg-white/10 cursor-pointer transition-colors">
                             English
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center gap-2 sm:items-end">
-                        <div className="text-xl font-bold font-serif tracking-tight">
+                        <div className="text-2xl font-black font-sans tracking-tight text-white">
                             {config.copyrightText || (
-                                <>TECH<span className="text-primary">DEV</span></>
+                                <>TECH<span className="text-blue-300">DEV</span></>
                             )}
                         </div>
-                        <div className="text-xs text-muted-foreground text-center sm:text-right">
-                            {/* Line 1: Copyright */}
-                            <p>&copy; {new Date().getFullYear()} {config.copyrightText || 'TechDev Store'}. Powered by Next.js</p>
-
-                            {/* Line 2: Credits (New Request) */}
-                            {config.creditsText && (
-                                <p className="mt-1 font-medium text-foreground/80">{config.creditsText}</p>
-                            )}
+                        <div className="text-xs text-white/40 text-center sm:text-right font-medium">
+                            <p>&copy; {new Date().getFullYear()} {config.copyrightText || 'TechDev Store'}. All rights reserved.</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Admin Link (Hidden/Subtle) */}
-                <div className="mt-8 text-center">
-                    <Link href="/login" className="text-[10px] text-muted-foreground hover:text-foreground">
+                <div className="mt-10 text-center">
+                    <Link href="/login" className="text-[10px] text-white/10 hover:text-white/30 uppercase tracking-widest font-bold">
                         Admin Access
                     </Link>
                 </div>
