@@ -15,19 +15,46 @@ export default function CartPage() {
     const [promoStatus, setPromoStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const [promoMessage, setPromoMessage] = useState('')
 
-    const handleApplyPromo = () => {
+    const [discountAmount, setDiscountAmount] = useState(0)
+
+    const handleApplyPromo = async () => {
         if (!promoCode.trim()) {
             setPromoStatus('error')
             setPromoMessage('Please enter a code.')
             return
         }
-        // Mock validation for UI demonstration
-        if (promoCode.toUpperCase() === 'WELCOME10') {
-            setPromoStatus('success')
-            setPromoMessage('Code applied! 10% Discount.')
-        } else {
+
+        try {
+            const { validateCoupon } = await import('./actions')
+            const result = await validateCoupon(promoCode, subtotal)
+
+            if (result.success) {
+                setPromoStatus('success')
+                // Calculate discount
+                let discount = 0
+                if (result.discountType === 'percent') {
+                    discount = (subtotal * (result.discountValue || 0)) / 100
+                } else {
+                    discount = result.discountValue || 0
+                }
+
+                // Ensure discount doesn't exceed total (or subtotal?)
+                // Let's cap at subtotal + tax
+                const maxDiscount = subtotal + taxTotal
+                discount = Math.min(discount, maxDiscount)
+
+                setDiscountAmount(discount)
+                setPromoMessage(`${result.code} Applied! Saved ${formatPrice(discount)}`)
+            } else {
+                setPromoStatus('error')
+                setPromoMessage(result.message || 'Invalid code')
+                setDiscountAmount(0)
+            }
+        } catch (e) {
+            console.error(e)
             setPromoStatus('error')
-            setPromoMessage('Invalid code. Try "WELCOME10".')
+            setPromoMessage('Error applying coupon')
+            setDiscountAmount(0)
         }
     }
 
@@ -52,7 +79,9 @@ export default function CartPage() {
     }
 
     const shippingCost = cartTotal > 5000 ? 0 : 500
-    const finalTotal = subtotal + taxTotal + shippingCost
+    // Re-calculate based on local state (since CartContext logic is simpler/mocked) 
+    // Ideally we should push this to Context, but for this task we handle it here locally as requested.
+    const finalTotal = Math.max(0, subtotal + taxTotal + shippingCost - discountAmount)
 
     return (
         <div className="bg-[#f8f9fa] min-h-screen py-12 md:py-20 text-[#191970] font-sans">
@@ -187,6 +216,12 @@ export default function CartPage() {
                                     <span className="font-medium text-[#191970]/70">Tax (Est. 18%)</span>
                                     <span className="font-bold text-xl">{formatPrice(taxTotal)}</span>
                                 </div>
+                                {discountAmount > 0 && (
+                                    <div className="flex justify-between items-center text-green-600 animate-in fade-in slide-in-from-right-4">
+                                        <span className="font-bold">Discount</span>
+                                        <span className="font-bold text-xl">-{formatPrice(discountAmount)}</span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Promo Code Section */}

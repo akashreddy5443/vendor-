@@ -6,41 +6,56 @@ import { revalidatePath } from 'next/cache'
 export async function createCoupon(formData: FormData) {
     const supabase = await createClient()
 
-    // Auth Check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { error: 'Not authenticated' }
+    const rawFormData = {
+        code: formData.get('code') as string,
+        discount_type: formData.get('discount_type') as string,
+        discount_value: parseFloat(formData.get('discount_value') as string),
+        min_order_value: parseFloat(formData.get('min_order_value') as string) || 0,
+        expires_at: formData.get('expires_at') as string || null,
+        is_active: formData.get('is_active') === 'on'
+    }
 
-    // Role check (optional but good)
-    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
-    if (profile?.role !== 'admin') return { error: 'Unauthorized' }
+    const { error } = await supabase
+        .from('coupons')
+        .insert([rawFormData])
 
-    const code = (formData.get('code') as string).toUpperCase()
-    const discountType = formData.get('discountType') as string
-    const discountValue = parseFloat(formData.get('discountValue') as string)
-    const minOrder = parseFloat(formData.get('minOrder') as string || '0')
-    const endDate = formData.get('endDate') as string
-
-    if (!code || !discountValue) return { error: 'Missing required fields' }
-
-    const { error } = await supabase.from('coupons').insert({
-        code,
-        discount_type: discountType,
-        discount_value: discountValue,
-        min_order_amount: minOrder,
-        end_date: endDate || null,
-        is_active: true
-    })
-
-    if (error) return { error: error.message }
+    if (error) {
+        console.error('Error creating coupon:', error)
+        return { success: false, error: error.message }
+    }
 
     revalidatePath('/admin/coupons')
     return { success: true }
 }
 
-export async function deleteCoupon(couponId: string) {
+export async function deleteCoupon(id: string) {
     const supabase = await createClient()
-    const { error } = await supabase.from('coupons').delete().eq('id', couponId)
-    if (error) return { error: error.message }
+
+    const { error } = await supabase
+        .from('coupons')
+        .delete()
+        .eq('id', id)
+
+    if (error) {
+        return { success: false, error: error.message }
+    }
+
+    revalidatePath('/admin/coupons')
+    return { success: true }
+}
+
+export async function toggleCouponStatus(id: string, currentStatus: boolean) {
+    const supabase = await createClient()
+
+    const { error } = await supabase
+        .from('coupons')
+        .update({ is_active: !currentStatus })
+        .eq('id', id)
+
+    if (error) {
+        return { success: false, error: error.message }
+    }
+
     revalidatePath('/admin/coupons')
     return { success: true }
 }
