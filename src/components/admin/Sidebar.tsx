@@ -21,11 +21,11 @@ const navItems = [
 
 import { ExternalLink } from 'lucide-react'
 
-export function AdminSidebar() {
+export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname()
 
     return (
-        <aside className="w-64 flex-shrink-0 border-r border-gray-800 bg-black text-white">
+        <aside className="w-64 flex-shrink-0 border-r border-gray-800 bg-black text-white h-full">
             <div className="flex h-16 items-center border-b border-gray-800 px-6">
                 <h1 className="text-xl font-bold tracking-tight text-blue-500">TechDev Admin</h1>
             </div>
@@ -36,6 +36,7 @@ export function AdminSidebar() {
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={onNavigate}
                             className={cn(
                                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                                 isActive
@@ -52,6 +53,7 @@ export function AdminSidebar() {
             <div className="mt-auto border-t border-gray-800 p-4">
                 <Link
                     href="/admin/subscribers"
+                    onClick={onNavigate}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/subscribers' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
                 >
                     <Mail className="h-5 w-5" />

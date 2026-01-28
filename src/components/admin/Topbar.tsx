@@ -1,10 +1,12 @@
-'use client'
-
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { LogOut } from 'lucide-react'
+import { LogOut, Menu } from 'lucide-react'
 
-export function AdminTopbar() {
+interface AdminTopbarProps {
+    onSidebarToggle?: () => void
+}
+
+export function AdminTopbar({ onSidebarToggle }: AdminTopbarProps) {
     const router = useRouter()
     const supabase = createClient()
 
@@ -15,8 +17,16 @@ export function AdminTopbar() {
 
     return (
         <header className="flex h-16 items-center justify-between border-b border-gray-800 bg-black px-6">
-            <div className="text-sm text-gray-400">
-                Welcome back, <span className="text-white">Admin</span>
+            <div className="flex items-center gap-4">
+                <button
+                    onClick={onSidebarToggle}
+                    className="md:hidden text-gray-400 hover:text-white"
+                >
+                    <Menu className="h-6 w-6" />
+                </button>
+                <div className="text-sm text-gray-400">
+                    Welcome back, <span className="text-white">Admin</span>
+                </div>
             </div>
             <button
                 onClick={handleSignOut}
