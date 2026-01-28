@@ -53,12 +53,12 @@ export function NewsletterForm() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     disabled={status === 'loading' || status === 'success'}
-                    className="w-full border-b border-muted-foreground/30 bg-transparent py-2 text-foreground placeholder-muted-foreground focus:border-primary focus:outline-none disabled:opacity-50"
+                    className="w-full border-b border-white/30 bg-transparent py-2 text-white placeholder-white/50 focus:border-white focus:outline-none disabled:opacity-50"
                 />
                 <button
                     type="submit"
                     disabled={status === 'loading' || status === 'success'}
-                    className="absolute right-0 top-2 text-muted-foreground hover:text-foreground disabled:opacity-50"
+                    className="absolute right-0 top-2 text-white/70 hover:text-white disabled:opacity-50"
                 >
                     {status === 'loading' ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
