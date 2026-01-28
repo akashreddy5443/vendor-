@@ -73,14 +73,19 @@ export function ProductCard({ product }: ProductCardProps) {
                     )}
 
                     {/* Stock & Promo Badges */}
-                    {isOutOfStock && (
+                    {isOutOfStock ? (
                         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
                             <span className="bg-white text-black px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-sm transform -rotate-2">
                                 Out of Stock
                             </span>
                         </div>
+                    ) : (
+                        <div className="absolute bottom-2 left-2 z-20">
+                            <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
+                                -10%
+                            </span>
+                        </div>
                     )}
-                    {/* Add sale badge if needed here */}
 
                 </div>
 
@@ -96,10 +101,11 @@ export function ProductCard({ product }: ProductCardProps) {
                         </h3>
                         <div className="flex flex-col items-end">
                             <span className={`font-bold text-sm ${isOutOfStock ? 'text-gray-400' : 'text-[#BA2B2B]'}`}>
+                                {formatPrice(product.price * 0.9)}
+                            </span>
+                            <span className="text-[11px] text-gray-500 line-through decoration-gray-400">
                                 {formatPrice(product.price)}
                             </span>
-                            {/* Assuming we might have an original price later, placeholder logic */}
-                            {/* <span className="text-[10px] text-gray-500 line-through">₹25,999</span> */}
                         </div>
                     </div>
                 </div>
