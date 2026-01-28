@@ -18,7 +18,7 @@ export default function CheckoutPage() {
 
     // Coupon State
     const [couponCode, setCouponCode] = useState('')
-    const [appliedCoupon, setAppliedCoupon] = useState<{ id: string, code: string, discountAmount: number } | null>(null)
+    const [appliedCoupon, setAppliedCoupon] = useState<{ id: string, code: string, discountAmount: number, discountType?: string, discountValue?: number } | null>(null)
     const [couponError, setCouponError] = useState('')
     const [validatingCoupon, setValidatingCoupon] = useState(false)
 
@@ -37,8 +37,26 @@ export default function CheckoutPage() {
             setAppliedCoupon(null)
         } else if (res.coupon) {
             setAppliedCoupon(res.coupon)
+            setCouponCode('') // Optional: clear code input on success? or keep it
             setCouponError('')
         }
+    }
+    // ... (rest of file)
+
+    {
+        appliedCoupon && (
+            <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
+                <span>
+                    Discount
+                    {appliedCoupon.discountType === 'percent' && (
+                        <span className="ml-1 text-xs bg-green-100 px-1 rounded">
+                            {appliedCoupon.discountValue}%
+                        </span>
+                    )}
+                </span>
+                <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
+            </div>
+        )
     }
 
     const finalTotal = total - (appliedCoupon?.discountAmount || 0)
@@ -221,7 +239,14 @@ export default function CheckoutPage() {
                             </div>
                             {appliedCoupon && (
                                 <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
-                                    <span>Discount</span>
+                                    <span>
+                                        Discount
+                                        {appliedCoupon.discountType === 'percent' && (
+                                            <span className="ml-1 text-xs bg-green-100 px-1 rounded">
+                                                {appliedCoupon.discountValue}%
+                                            </span>
+                                        )}
+                                    </span>
                                     <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
                                 </div>
                             )}

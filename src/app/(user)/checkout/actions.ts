@@ -54,7 +54,9 @@ export async function validateCoupon(code: string, cartTotal: number) {
         coupon: {
             id: coupon.id,
             code: coupon.code,
-            discountAmount: discountAmount
+            discountAmount: discountAmount,
+            discountType: coupon.discount_type,
+            discountValue: coupon.discount_value
         }
     }
 }
