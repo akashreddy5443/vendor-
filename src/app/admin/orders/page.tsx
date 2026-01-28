@@ -75,11 +75,11 @@ export default async function AdminOrdersPage() {
                 <div className="mt-2 p-2 bg-gray-900 border border-gray-700 rounded text-xs text-gray-400 font-mono">
                     DEBUG: Found {orders?.length || 0} orders.
                     Order IDs: {orders?.map(o => o.id.slice(0, 4)).join(', ')}.
-                    Total Items Fetched: {
-                        Object.values(orders?.reduce((acc, o) => {
-                            // @ts-ignore
-                            return acc + (o.order_items?.length || 0)
-                        }, 0) || {}).toString()
+                    Total Item Objects: {
+                        orders?.reduce((sum, o) => {
+                            const items = (o as any).order_items;
+                            return sum + (Array.isArray(items) ? items.length : 0);
+                        }, 0)
                     }
                 </div>
             </div>
