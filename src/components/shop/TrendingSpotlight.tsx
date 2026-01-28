@@ -5,9 +5,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-export function TrendingSpotlight() {
+export function TrendingSpotlight({ data }: { data?: any }) {
+    // Default fallback if no data
+    const content = data || {
+        hero: { image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops' },
+        sub1: { image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=2072&auto=format&fit=crop', title: 'CONSOLE READY', link: '/search?category=gaming' },
+        sub2: { image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop', title: 'AUDIOPHILE GRADE', link: '/search?category=audio' }
+    }
+
     return (
-        <section className="py-20 bg-[#F8F9FA] dark:bg-zinc-900/50">
+        <section className="py-20 bg-white text-foreground">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12">
                     <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-[#0B1026] dark:text-white">
@@ -22,18 +29,18 @@ export function TrendingSpotlight() {
                     {/* Large Featured Item */}
                     <div className="relative aspect-[16/9] md:aspect-auto md:h-[500px] overflow-hidden group rounded-sm">
                         <Image
-                            src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" // Gaming/Esports
+                            src={content.hero.image}
                             alt="Pro Gaming Layout"
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
                         <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm">
-                            <span className="text-white/80 text-xs font-bold uppercase tracking-widest mb-2 block">New Arrival</span>
+                            <span className="text-white/80 text-xs font-bold uppercase tracking-widest mb-2 block">{content.hero.tag}</span>
                             <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase leading-none">
-                                The Pro Gamer Edit
+                                {content.hero.title}
                             </h3>
-                            <Link href="/search?category=laptops" className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm hover:bg-gray-100 transition-colors">
+                            <Link href={content.hero.link} className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm hover:bg-gray-100 transition-colors">
                                 Explore
                             </Link>
                         </div>
@@ -43,28 +50,28 @@ export function TrendingSpotlight() {
                     <div className="grid grid-rows-2 gap-8 h-[500px]">
                         <div className="relative overflow-hidden group rounded-sm">
                             <Image
-                                src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=2072&auto=format&fit=crop" // PS5/Console
+                                src={content.sub1.image}
                                 alt="Console Gaming"
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
                             <div className="absolute bottom-6 left-6">
-                                <h3 className="text-xl font-bold text-white uppercase mb-1">Console Ready</h3>
-                                <Link href="/search?category=gaming" className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
+                                <h3 className="text-xl font-bold text-white uppercase mb-1">{content.sub1.title}</h3>
+                                <Link href={content.sub1.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                             </div>
                         </div>
                         <div className="relative overflow-hidden group rounded-sm">
                             <Image
-                                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop" // Headphones
+                                src={content.sub2.image}
                                 alt="Audio Gear"
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
                             <div className="absolute bottom-6 left-6">
-                                <h3 className="text-xl font-bold text-white uppercase mb-1">Audiophile Grade</h3>
-                                <Link href="/search?category=audio" className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
+                                <h3 className="text-xl font-bold text-white uppercase mb-1">{content.sub2.title}</h3>
+                                <Link href={content.sub2.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                             </div>
                         </div>
                     </div>

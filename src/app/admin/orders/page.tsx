@@ -25,7 +25,13 @@ export default async function AdminOrdersPage() {
       status,
       created_at,
       shipping_address,
-      users ( email )
+      users ( email ),
+      order_items (
+        id,
+        quantity,
+        price,
+        product:products ( title )
+      )
     `)
         .order('created_at', { ascending: false })
 
@@ -56,6 +62,7 @@ export default async function AdminOrdersPage() {
                             <tr>
                                 <th className="px-4 py-3">Order ID</th>
                                 <th className="px-4 py-3">Customer</th>
+                                <th className="px-4 py-3">Products</th>
                                 <th className="px-4 py-3">Shipping To</th>
                                 <th className="px-4 py-3">Total</th>
                                 <th className="px-4 py-3">Status</th>
@@ -82,6 +89,15 @@ export default async function AdminOrdersPage() {
                                         <td className="px-4 py-3 font-mono text-xs text-zinc-500">{order.id.slice(0, 8)}...</td>
                                         <td className="px-4 py-3 text-white">
                                             {(order.users as any)?.email || 'Guest'}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            <div className="space-y-1">
+                                                {(order.order_items as any[])?.map((item: any) => (
+                                                    <div key={item.id} className="text-xs text-gray-300">
+                                                        <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title || 'Unknown Product'}
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </td>
                                         <td className="px-4 py-3">
                                             {addr ? (
@@ -113,7 +129,7 @@ export default async function AdminOrdersPage() {
                             })}
                             {(!orders || orders.length === 0) && (
                                 <tr>
-                                    <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                                    <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
                                         No orders found.
                                     </td>
                                 </tr>

@@ -4,6 +4,8 @@ import { updateHero, updateFeatured, updateCategories, updateFooter, updateHeroS
 import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus, X, Check, Trash2, Plus, GripVertical, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
+import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
+import { TrendingEditor } from '@/components/admin/TrendingEditor'
 
 type Product = {
     id: string
@@ -28,9 +30,12 @@ type HomepageBuilderProps = {
     categoriesSection: any
     footerSection: any
     sliderSection: any
+    lifestyleSection: any
+    trendingSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection }: HomepageBuilderProps) {
+    // ... Existing state logic ...
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
 
@@ -450,6 +455,12 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     </div>
                 </form>
             </section>
+            {/* Lifestyle Grid Editor */}
+            <LifestyleEditor initialItems={lifestyleSection?.content_json?.items} />
+
+            {/* Trending Spotlight Editor */}
+            <TrendingEditor initialData={trendingSection?.content_json} />
+
         </div>
     )
 }

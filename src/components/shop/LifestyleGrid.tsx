@@ -5,25 +5,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-const items = [
-    {
-        title: 'WORK ESSENTIALS',
-        image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop', // Office/Desk
-        link: '/search?category=laptops'
-    },
-    {
-        title: 'AFTER HOURS',
-        image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop', // Monitor/Gaming
-        link: '/search?category=audio'
-    },
-    {
-        title: 'EVERYDAY CARRY',
-        image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop', // Watch/Phone
-        link: '/search?category=wearables'
-    }
-]
+export function LifestyleGrid({ items }: { items?: any[] }) {
+    const gridItems = items || [
+        {
+            title: 'WORK ESSENTIALS',
+            image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop', // Office/Desk
+            link: '/search?category=laptops'
+        },
+        {
+            title: 'AFTER HOURS',
+            image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop', // Monitor/Gaming
+            link: '/search?category=audio'
+        },
+        {
+            title: 'EVERYDAY CARRY',
+            image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop', // Watch/Phone
+            link: '/search?category=wearables'
+        }
+    ]
 
-export function LifestyleGrid() {
     return (
         <section className="py-20 bg-background text-foreground">
             <div className="max-w-7xl mx-auto px-6">
@@ -32,7 +32,7 @@ export function LifestyleGrid() {
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {items.map((item) => (
+                    {gridItems.map((item) => (
                         <Link href={item.link} key={item.title} className="group relative block overflow-hidden aspect-[4/5] bg-gray-100 dark:bg-zinc-800">
                             <Image
                                 src={item.image}

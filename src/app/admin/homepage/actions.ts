@@ -220,3 +220,59 @@ export async function updateHeroSlider(formData: FormData) {
     revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }
+
+export async function updateLifestyle(formData: FormData) {
+    const supabase = await createClient()
+
+    const items = JSON.parse(formData.get('items') as string)
+
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'lifestyle_grid')
+        .single()
+
+    const payload = {
+        section_type: 'lifestyle_grid',
+        title: 'Made For Every Moment',
+        content_json: { items },
+        is_active: true,
+    }
+
+    if (existing) {
+        await supabase.from('homepage_sections').update(payload).eq('id', existing.id)
+    } else {
+        await supabase.from('homepage_sections').insert(payload)
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}
+
+export async function updateTrending(formData: FormData) {
+    const supabase = await createClient()
+
+    const data = JSON.parse(formData.get('data') as string)
+
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'trending_spotlight')
+        .single()
+
+    const payload = {
+        section_type: 'trending_spotlight',
+        title: 'In The Spotlight',
+        content_json: data,
+        is_active: true,
+    }
+
+    if (existing) {
+        await supabase.from('homepage_sections').update(payload).eq('id', existing.id)
+    } else {
+        await supabase.from('homepage_sections').insert(payload)
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}

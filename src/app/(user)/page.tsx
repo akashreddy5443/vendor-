@@ -22,6 +22,9 @@ export default function HomePage() {
   const [globalDiscount, setGlobalDiscount] = React.useState(0)
   const [globalGst, setGlobalGst] = React.useState(18)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
+  const [lifestyleItems, setLifestyleItems] = React.useState<any>(null)
+  const [trendingData, setTrendingData] = React.useState<any>(null)
+
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
     { name: 'Phones', icon: '📱', href: '/search?category=phones' },
@@ -67,6 +70,13 @@ export default function HomePage() {
         // setCategories(catSection.content_json.categories) 
         // Forced to use hardcoded list per user request for "4 items + All Categories"
       }
+
+      // Fetch New Sections
+      const { data: lifestyle } = await supabase.from('homepage_sections').select('*').eq('section_type', 'lifestyle_grid').single()
+      const { data: trending } = await supabase.from('homepage_sections').select('*').eq('section_type', 'trending_spotlight').single()
+
+      setLifestyleItems(lifestyle?.content_json?.items)
+      setTrendingData(trending?.content_json)
 
       if (featured?.content_json?.productIds?.length > 0) {
         const { data: products } = await supabase
@@ -125,13 +135,13 @@ export default function HomePage() {
       </section >
 
       {/* Made For Every Moment (Lifestyle Grid) */}
-      <LifestyleGrid />
+      <LifestyleGrid items={lifestyleItems} />
 
       {/* BigTech Phase 3: Promo Banners */}
       < PromoBanner />
 
       {/* In The Spotlight (Trending/Editorial) */}
-      <TrendingSpotlight />
+      <TrendingSpotlight data={trendingData} />
 
       {/* Featured Products Placeholder */}
       < section className="py-20 px-6" >
