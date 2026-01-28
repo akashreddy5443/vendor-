@@ -7,7 +7,7 @@ export async function createCoupon(formData: FormData) {
     const supabase = await createClient()
 
     const rawFormData = {
-        code: formData.get('code') as string,
+        code: (formData.get('code') as string).trim().toUpperCase(),
         discount_type: formData.get('discount_type') as string,
         discount_value: parseFloat(formData.get('discount_value') as string),
         min_order_value: parseFloat(formData.get('min_order_value') as string) || 0,

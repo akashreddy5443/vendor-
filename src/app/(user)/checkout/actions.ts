@@ -20,21 +20,19 @@ export async function validateCoupon(code: string, cartTotal: number) {
 
     // Check dates
     const now = new Date()
-    if (coupon.start_date && new Date(coupon.start_date) > now) {
-        return { error: 'Coupon is not active yet' }
-    }
-    if (coupon.end_date && new Date(coupon.end_date) < now) {
+    // No start_date in schema currently, removing or ignoring.
+    // if (coupon.start_date && new Date(coupon.start_date) > now) { ... }
+
+    if (coupon.expires_at && new Date(coupon.expires_at) < now) {
         return { error: 'Coupon has expired' }
     }
 
-    // Check usage limits
-    if (coupon.usage_limit && coupon.usage_count >= coupon.usage_limit) {
-        return { error: 'Coupon usage limit reached' }
-    }
+    // Check usage limits (Not in schema yet, ignoring)
+    // if (coupon.usage_limit && coupon.usage_count >= coupon.usage_limit) { ... }
 
     // Check min order amount
-    if (coupon.min_order_amount > cartTotal) {
-        return { error: `Minimum order amount of ₹${coupon.min_order_amount} required` }
+    if (coupon.min_order_value && coupon.min_order_value > cartTotal) {
+        return { error: `Minimum order amount of ₹${coupon.min_order_value} required` }
     }
 
     // Calculate discount
