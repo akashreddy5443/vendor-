@@ -37,7 +37,7 @@ export async function validateCoupon(code: string, cartTotal: number) {
 
     // Calculate discount
     let discountAmount = 0
-    if (coupon.discount_type === 'percentage') {
+    if (coupon.discount_type === 'percent') {
         discountAmount = (cartTotal * coupon.discount_value) / 100
         if (coupon.max_discount_amount) {
             discountAmount = Math.min(discountAmount, coupon.max_discount_amount)
