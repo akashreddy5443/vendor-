@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function CartPage() {
-    const { items, removeItem, updateQuantity, cartTotal, clearCart } = useCart()
+    const { items, removeItem, updateQuantity, cartTotal, taxTotal, clearCart } = useCart()
 
     if (items.length === 0) {
         return (
@@ -107,7 +107,7 @@ export default function CartPage() {
                                 </div>
                                 <div className="flex justify-between">
                                     <span>Tax (Estimated)</span>
-                                    <span className="text-foreground">₹0.00</span>
+                                    <span className="text-foreground">{formatPrice(taxTotal)}</span>
                                 </div>
                             </div>
 

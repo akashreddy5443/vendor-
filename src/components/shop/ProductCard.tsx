@@ -19,13 +19,15 @@ interface ProductCardProps {
         description?: string
         stock?: number
         discount_percentage?: number | null // DB field
+        gst_percentage?: number | null // DB field
         features?: any
         product_images?: { cloudinary_url: string; is_primary: boolean }[]
     }
     globalDiscount?: number
+    globalGst?: number
 }
 
-export function ProductCard({ product, globalDiscount = 0 }: ProductCardProps) {
+export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: ProductCardProps) {
     const [showQuickView, setShowQuickView] = useState(false)
     const { addItem } = useCart()
 
@@ -45,6 +47,12 @@ export function ProductCard({ product, globalDiscount = 0 }: ProductCardProps) {
     const hasDiscount = effectiveDiscount > 0
     const finalPrice = hasDiscount ? product.price * (1 - effectiveDiscount / 100) : product.price
 
+    // GST Logic (Product priority > Global default)
+    // We assume global GST is passed prop, or fallback 18
+    const effectiveGst = product.gst_percentage !== null && product.gst_percentage !== undefined
+        ? product.gst_percentage
+        : (globalGst || 18)
+
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
@@ -54,7 +62,8 @@ export function ProductCard({ product, globalDiscount = 0 }: ProductCardProps) {
                 title: product.title,
                 price: finalPrice, // Use discounted price
                 maxStock: stock,
-                image: imageUrl
+                image: imageUrl,
+                gstPercentage: effectiveGst
             }, 1)
         }
     }

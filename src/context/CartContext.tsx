@@ -9,6 +9,7 @@ export interface CartItem {
     image?: string
     quantity: number
     maxStock: number
+    gstPercentage?: number
 }
 
 interface CartContextType {
@@ -20,6 +21,7 @@ interface CartContextType {
     cartCount: number
     cartTotal: number
     subtotal: number
+    taxTotal: number
     coupon: { id: string, code: string, discountAmount: number } | null
     applyCoupon: (data: { id: string, code: string, discountAmount: number }) => void
     removeCoupon: () => void
@@ -109,10 +111,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const cartCount = items.reduce((total, item) => total + item.quantity, 0)
     const subtotal = items.reduce((total, item) => total + (item.price * item.quantity), 0)
 
+    // Calculate Tax per item
+    const taxTotal = items.reduce((total, item) => {
+        // GST is typically exclusive of share price in this context, or inclusive? 
+        // User asked to "add gst rate... 18%". Usually add-on.
+        // Assuming Price is Base, Tax is extra.
+        const itemTax = (item.price * (item.gstPercentage || 18) / 100) * item.quantity
+        return total + itemTax
+    }, 0)
+
     // Recalculate discount if subtotal changes (optional: strictly usually we should re-validate with server, but for UI we assume valid for now)
     // Note: If discount is fixed, it's fine. If percentage, we might need to store the raw coupon data. 
     // For simplicity, we just trust the passed amount or clear it if 0.
-    const cartTotal = Math.max(0, subtotal - (coupon?.discountAmount || 0))
+    const cartTotal = Math.max(0, subtotal + taxTotal - (coupon?.discountAmount || 0))
 
     return (
         <CartContext.Provider value={{
@@ -124,6 +135,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             cartCount,
             cartTotal,
             subtotal,
+            taxTotal,
             coupon,
             applyCoupon,
             removeCoupon,
