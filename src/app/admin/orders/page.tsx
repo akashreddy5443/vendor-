@@ -25,7 +25,13 @@ export default async function AdminOrdersPage() {
       status,
       created_at,
       shipping_address,
-      users ( email )
+      users ( email ),
+      order_items (
+        id,
+        quantity,
+        price,
+        product:products ( title )
+      )
     `)
         .order('created_at', { ascending: false })
 
@@ -86,12 +92,11 @@ export default async function AdminOrdersPage() {
                                         </td>
                                         <td className="px-4 py-3">
                                             <div className="space-y-1">
-                                                {/* {(order as any).order_items?.map((item: any) => (
+                                                {(order as any).order_items?.map((item: any) => (
                                                     <div key={item.id} className="text-xs text-gray-300">
                                                         <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title || 'Unknown Product'}
                                                     </div>
-                                                ))} */}
-                                                <span className="text-xs text-gray-500">View details</span>
+                                                ))}
                                             </div>
                                         </td>
                                         <td className="px-4 py-3">
