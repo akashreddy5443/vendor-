@@ -37,16 +37,18 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             />
 
                             {/* Video on Hover */}
-                            <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
-                                <video
-                                    src="https://res.cloudinary.com/demo/video/upload/v1690566735/gaming_setup_video.mp4"
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    className="h-full w-full object-cover"
-                                />
-                            </div>
+                            {(content.hero as any).video && (
+                                <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
+                                    <video
+                                        src={(content.hero as any).video}
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        className="h-full w-full object-cover"
+                                    />
+                                </div>
+                            )}
 
                             <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
                             <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm z-30">
