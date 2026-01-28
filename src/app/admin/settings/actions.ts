@@ -36,3 +36,48 @@ export async function updateSettings(formData: FormData) {
     revalidatePath('/', 'layout') // Revalidate everything
     return { success: 'Settings updated successfully' }
 }
+
+// @ts-ignore
+import { Client } from 'pg'
+
+export async function fixDatabasePermissions() {
+    // Only allow for admins - handled by authentication middleware on the route usually, 
+    // but here we trust the admin panel context.
+
+    if (!process.env.DATABASE_URL) {
+        return { error: 'DATABASE_URL is not set' }
+    }
+
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+    })
+
+    try {
+        await client.connect()
+
+        // Fix Orders RLS
+        await client.query(`
+            ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+            ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
+
+            DROP POLICY IF EXISTS "Admins can view all orders" ON public.orders;
+            DROP POLICY IF EXISTS "Users can view own orders" ON public.orders;
+            DROP POLICY IF EXISTS "Admins can view all order items" ON public.order_items;
+            DROP POLICY IF EXISTS "Users can view own order items" ON public.order_items;
+
+            CREATE POLICY "Admins can view all orders" ON public.orders FOR ALL USING ( (SELECT role FROM public.users WHERE id = auth.uid()) = 'admin' );
+            CREATE POLICY "Users can view own orders" ON public.orders FOR ALL USING ( auth.uid() = user_id );
+
+            CREATE POLICY "Admins can view all order items" ON public.order_items FOR ALL USING ( (SELECT role FROM public.users WHERE id = auth.uid()) = 'admin' );
+            CREATE POLICY "Users can view own order items" ON public.order_items FOR ALL USING ( EXISTS ( SELECT 1 FROM public.orders WHERE orders.id = order_items.order_id AND orders.user_id = auth.uid() ) );
+        `)
+
+        return { success: 'Database permissions repaired successfully.' }
+    } catch (e: any) {
+        console.error('DB Fix Error:', e)
+        return { error: 'Failed to fix database: ' + e.message }
+    } finally {
+        await client.end()
+    }
+}

@@ -1,8 +1,8 @@
 'use client'
 
-import { updateSettings } from '@/app/admin/settings/actions'
+import { updateSettings, fixDatabasePermissions } from '@/app/admin/settings/actions'
 import { useState, useTransition } from 'react'
-import { Save, AlertTriangle, ImagePlus, X } from 'lucide-react'
+import { Save, AlertTriangle, ImagePlus, X, Database } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
 export function SettingsForm({ settings }: { settings: any }) {
@@ -170,7 +170,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                 </div>
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 flex justify-between items-center">
                 <button
                     type="submit"
                     disabled={isPending}
@@ -179,6 +179,23 @@ export function SettingsForm({ settings }: { settings: any }) {
                     <Save className="h-4 w-4" />
                     {isPending ? 'Saving...' : 'Save Changes'}
                 </button>
+
+                <div className="text-right">
+                    <button
+                        type="button"
+                        onClick={async () => {
+                            if (!confirm('Run database repair? This will reset order permissions.')) return
+                            startTransition(async () => {
+                                const res = await import('@/app/admin/settings/actions').then(m => m.fixDatabasePermissions())
+                                if (res.error) setMessage(res.error)
+                                else setMessage(res.success || 'Fixed!')
+                            })
+                        }}
+                        className="text-xs text-gray-500 hover:text-gray-300 underline"
+                    >
+                        Repair Database Permissions
+                    </button>
+                </div>
             </div>
         </form>
     )
