@@ -1,3 +1,5 @@
+'use client'
+
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/utils'
 import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck } from 'lucide-react'
