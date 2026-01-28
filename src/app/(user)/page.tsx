@@ -13,6 +13,8 @@ import { motion } from 'framer-motion'
 import { CyberpunkCar } from '@/components/ui/CyberpunkCar'
 import { HeroSlider } from '@/components/shop/HeroSlider'
 import { PromoBanner } from '@/components/shop/PromoBanner'
+import { LifestyleGrid } from '@/components/shop/LifestyleGrid'
+import { TrendingSpotlight } from '@/components/shop/TrendingSpotlight'
 
 export default function HomePage() {
   // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
@@ -122,8 +124,14 @@ export default function HomePage() {
         </div>
       </section >
 
+      {/* Made For Every Moment (Lifestyle Grid) */}
+      <LifestyleGrid />
+
       {/* BigTech Phase 3: Promo Banners */}
       < PromoBanner />
+
+      {/* In The Spotlight (Trending/Editorial) */}
+      <TrendingSpotlight />
 
       {/* Featured Products Placeholder */}
       < section className="py-20 px-6" >
