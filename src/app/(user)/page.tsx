@@ -18,6 +18,7 @@ export default function HomePage() {
   // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
   const [sliderSection, setSliderSection] = React.useState<any>(null)
   const [globalDiscount, setGlobalDiscount] = React.useState(0)
+  const [globalGst, setGlobalGst] = React.useState(18)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
@@ -32,9 +33,10 @@ export default function HomePage() {
       const supabase = createClient()
 
       // Fetch Global Settings
-      const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage').single()
-      if (settings?.global_discount_percentage) {
-        setGlobalDiscount(settings.global_discount_percentage)
+      const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').single()
+      if (settings) {
+        setGlobalDiscount(settings.global_discount_percentage || 0)
+        setGlobalGst(settings.default_gst_percentage || 18)
       }
 
       // Fetch Hero Slider
@@ -147,7 +149,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ProductCard product={product} globalDiscount={globalDiscount} />
+                <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
               </motion.div>
             ))
           ) : (

@@ -42,8 +42,9 @@ export default async function ProductsPage({ searchParams }: ProductPageProps) {
     const { data: products } = await query
 
     // Fetch Global Settings
-    const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage').single()
+    const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').single()
     const globalDiscount = settings?.global_discount_percentage || 0
+    const globalGst = settings?.default_gst_percentage || 18
 
     return (
         <div className="bg-background text-foreground min-h-screen transition-colors duration-300">
@@ -60,7 +61,7 @@ export default async function ProductsPage({ searchParams }: ProductPageProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {products && products.length > 0 ? (
                         products.map((product) => (
-                            <ProductCard key={product.id} product={product} globalDiscount={globalDiscount} />
+                            <ProductCard key={product.id} product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
                         ))
                     ) : (
                         <div className="col-span-full py-20 text-center">
