@@ -103,9 +103,6 @@ export default function HomePage() {
         <HeroSlider slides={slides} />
       </section >
 
-      {/* Cyberpunk Car Animation */}
-      < CyberpunkCar />
-
       {/* BigTech Phase 2: Category Circles */}
       <section className="py-12 border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-6 text-center">

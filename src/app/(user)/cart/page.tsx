@@ -87,9 +87,9 @@ export default function CartPage() {
         <div className="bg-[#f8f9fa] min-h-screen py-12 md:py-20 text-[#191970] font-sans">
             <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b-2 border-[#191970]/10 pb-6">
-                    <h1 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-[#191970]">
+                    <h1 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-[#191970]">
                         Shopping Cart
-                        <span className="ml-4 text-2xl text-[#191970]/50 font-medium align-middle">
+                        <span className="ml-4 text-xl md:text-2xl text-[#191970]/50 font-medium align-middle">
                             {items.reduce((a, b) => a + b.quantity, 0)} Items
                         </span>
                     </h1>
