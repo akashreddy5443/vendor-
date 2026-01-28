@@ -69,10 +69,22 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     src={content.sub1.image}
                                     alt="Console Gaming"
                                     fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors" />
-                                <div className="absolute bottom-6 left-6">
+                                {(content.sub1 as any).video && (
+                                    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
+                                        <video
+                                            src={(content.sub1 as any).video}
+                                            autoPlay
+                                            muted
+                                            loop
+                                            playsInline
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
+                                <div className="absolute bottom-6 left-6 z-30">
                                     <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub1.title}</h3>
                                     <Link href={content.sub1.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                                 </div>
@@ -84,10 +96,22 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     src={content.sub2.image}
                                     alt="Audio Gear"
                                     fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors" />
-                                <div className="absolute bottom-6 left-6">
+                                {(content.sub2 as any).video && (
+                                    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
+                                        <video
+                                            src={(content.sub2 as any).video}
+                                            autoPlay
+                                            muted
+                                            loop
+                                            playsInline
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
+                                <div className="absolute bottom-6 left-6 z-30">
                                     <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub2.title}</h3>
                                     <Link href={content.sub2.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                                 </div>

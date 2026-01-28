@@ -71,6 +71,17 @@ export default async function AdminOrdersPage() {
             <div>
                 <h2 className="text-3xl font-bold tracking-tight text-white">Orders</h2>
                 <p className="text-gray-400">Manage customer orders.</p>
+                {/* Debug Info */}
+                <div className="mt-2 p-2 bg-gray-900 border border-gray-700 rounded text-xs text-gray-400 font-mono">
+                    DEBUG: Found {orders?.length || 0} orders.
+                    Order IDs: {orders?.map(o => o.id.slice(0, 4)).join(', ')}.
+                    Total Items Fetched: {
+                        Object.values(orders?.reduce((acc, o) => {
+                            // @ts-ignore
+                            return acc + (o.order_items?.length || 0)
+                        }, 0) || {}).toString()
+                    }
+                </div>
             </div>
 
             <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">

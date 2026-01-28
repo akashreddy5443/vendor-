@@ -118,6 +118,33 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                         </div>
                         <input value={data.sub1.title} onChange={(e) => updateSub1('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2" />
                         <input value={data.sub1.link} onChange={(e) => updateSub1('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+
+                        <div className="pt-2 border-t border-gray-800 mt-2">
+                            <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
+                            <div className="flex gap-2">
+                                <input
+                                    value={(data.sub1 as any).video || ''}
+                                    onChange={(e) => updateSub1('video', e.target.value)}
+                                    placeholder="https://...mp4"
+                                    className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
+                                />
+                                <CldUploadWidget
+                                    uploadPreset="ml_default"
+                                    options={{ resourceType: 'video' }}
+                                    onSuccess={(result: any) => updateSub1('video', result.info.secure_url)}
+                                >
+                                    {({ open }) => (
+                                        <button
+                                            type="button"
+                                            onClick={() => open()}
+                                            className="bg-gray-800 hover:bg-gray-700 text-white px-3 text-xs rounded border border-gray-700"
+                                        >
+                                            Upload
+                                        </button>
+                                    )}
+                                </CldUploadWidget>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Sub Item 2 */}
@@ -136,6 +163,33 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                         </div>
                         <input value={data.sub2.title} onChange={(e) => updateSub2('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2" />
                         <input value={data.sub2.link} onChange={(e) => updateSub2('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+
+                        <div className="pt-2 border-t border-gray-800 mt-2">
+                            <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
+                            <div className="flex gap-2">
+                                <input
+                                    value={(data.sub2 as any).video || ''}
+                                    onChange={(e) => updateSub2('video', e.target.value)}
+                                    placeholder="https://...mp4"
+                                    className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
+                                />
+                                <CldUploadWidget
+                                    uploadPreset="ml_default"
+                                    options={{ resourceType: 'video' }}
+                                    onSuccess={(result: any) => updateSub2('video', result.info.secure_url)}
+                                >
+                                    {({ open }) => (
+                                        <button
+                                            type="button"
+                                            onClick={() => open()}
+                                            className="bg-gray-800 hover:bg-gray-700 text-white px-3 text-xs rounded border border-gray-700"
+                                        >
+                                            Upload
+                                        </button>
+                                    )}
+                                </CldUploadWidget>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
