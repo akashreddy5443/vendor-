@@ -33,17 +33,36 @@ export default async function AdminOrdersPage() {
     const orderIds = ordersData?.map(o => o.id) || []
     let orderItemsMap: Record<string, any[]> = {}
 
+    let debugError: any = null;
+    let debugRawItems: any = null;
+
     if (orderIds.length > 0) {
-        const { data: allItems } = await supabase
+        // Attempt 1: Full Fetch with Product Relation
+        const { data: allItems, error } = await supabase
             .from('order_items')
             .select('id, order_id, quantity, price, product_id, product:products(title)')
             .in('order_id', orderIds)
+
+        if (error) {
+            console.error('Fetch Items Error:', error)
+            debugError = error
+        }
 
         if (allItems) {
             allItems.forEach(item => {
                 if (!orderItemsMap[item.order_id]) orderItemsMap[item.order_id] = []
                 orderItemsMap[item.order_id].push(item)
             })
+        }
+
+        // Debug Attempt 2: Simple Fetch (No Join) - to check if RLS on Products is the issue
+        if (!allItems || allItems.length === 0) {
+            const { data: rawItems, error: rawError } = await supabase
+                .from('order_items')
+                .select('*') // No join
+                .in('order_id', orderIds)
+            debugRawItems = rawItems
+            if (rawError) debugError = rawError
         }
     }
 
@@ -81,6 +100,10 @@ export default async function AdminOrdersPage() {
                             return sum + (Array.isArray(items) ? items.length : 0);
                         }, 0)
                     }
+                    {' | '}
+                    Last Error: {debugError ? JSON.stringify(debugError) : 'None'}
+                    {' | '}
+                    Raw Fallback Items: {debugRawItems?.length || 'N/A'}
                 </div>
             </div>
 
