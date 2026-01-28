@@ -6,6 +6,7 @@ import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck, Lock, CheckCircle, A
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { CartRecommendations } from '@/components/shop/CartRecommendations'
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal } = useCart()
@@ -257,6 +258,8 @@ export default function CartPage() {
                     </div>
 
                 </div>
+
+                <CartRecommendations />
             </div>
         </div>
     )
