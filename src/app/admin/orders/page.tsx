@@ -17,7 +17,7 @@ export default async function AdminOrdersPage() {
     const supabase = await createClient()
 
     // 1. Fetch Orders
-    const { data: orders } = await supabase
+    const { data: ordersData } = await supabase
         .from('orders')
         .select(`
       id,
@@ -25,15 +25,33 @@ export default async function AdminOrdersPage() {
       status,
       created_at,
       shipping_address,
-      users ( email ),
-      order_items (
-        id,
-        quantity,
-        price,
-        product:products ( title )
-      )
+      users ( email )
     `)
         .order('created_at', { ascending: false })
+
+    // 2. Fetch Order Items Separately (to avoid RLS filtering the entire order)
+    const orderIds = ordersData?.map(o => o.id) || []
+    let orderItemsMap: Record<string, any[]> = {}
+
+    if (orderIds.length > 0) {
+        const { data: allItems } = await supabase
+            .from('order_items')
+            .select('id, order_id, quantity, price, product:products(title)')
+            .in('order_id', orderIds)
+
+        if (allItems) {
+            allItems.forEach(item => {
+                if (!orderItemsMap[item.order_id]) orderItemsMap[item.order_id] = []
+                orderItemsMap[item.order_id].push(item)
+            })
+        }
+    }
+
+    // Merge logic
+    const orders = ordersData?.map(o => ({
+        ...o,
+        order_items: orderItemsMap[o.id] || []
+    }))
 
     // 2. Extract Address IDs (Legacy check)
     const addressIds = orders?.map(o => o.shipping_address).filter(addr => typeof addr === 'string') || []
