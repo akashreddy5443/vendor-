@@ -2,12 +2,33 @@
 
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/utils'
-import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck, Lock } from 'lucide-react'
+import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck, Lock, CheckCircle, AlertCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
 export default function CartPage() {
-    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, clearCart } = useCart()
+    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal } = useCart()
+    const [isPromoOpen, setIsPromoOpen] = useState(false)
+    const [promoCode, setPromoCode] = useState('')
+    const [promoStatus, setPromoStatus] = useState<'idle' | 'success' | 'error'>('idle')
+    const [promoMessage, setPromoMessage] = useState('')
+
+    const handleApplyPromo = () => {
+        if (!promoCode.trim()) {
+            setPromoStatus('error')
+            setPromoMessage('Please enter a code.')
+            return
+        }
+        // Mock validation for UI demonstration
+        if (promoCode.toUpperCase() === 'WELCOME10') {
+            setPromoStatus('success')
+            setPromoMessage('Code applied! 10% Discount.')
+        } else {
+            setPromoStatus('error')
+            setPromoMessage('Invalid code. Try "WELCOME10".')
+        }
+    }
 
     if (items.length === 0) {
         return (
@@ -103,7 +124,6 @@ export default function CartPage() {
 
                                             <div className="text-right">
                                                 <p className="font-extrabold text-2xl md:text-3xl text-[#191970] tracking-tight">{formatPrice(item.price)}</p>
-                                                {/* <p className="text-sm text-[#191970]/40 line-through mt-1">₹3,00,000</p> Example original price */}
                                             </div>
                                         </div>
 
@@ -168,14 +188,51 @@ export default function CartPage() {
                                 </div>
                             </div>
 
-                            {/* Promo Code */}
+                            {/* Promo Code Section */}
                             <div className="py-5 border-t border-[#191970]/10 border-b mb-8">
-                                <div className="flex items-center justify-between cursor-pointer group text-[#191970] hover:text-[#191970]/80 transition-colors">
+                                <button
+                                    onClick={() => setIsPromoOpen(!isPromoOpen)}
+                                    className="w-full flex items-center justify-between cursor-pointer group text-[#191970] hover:text-[#191970]/80 transition-colors"
+                                >
                                     <span className="font-bold text-sm uppercase flex items-center gap-2 tracking-wide">
                                         <Tag className="h-4 w-4" /> Have a Promo Code?
                                     </span>
-                                    <Plus className="h-4 w-4 group-hover:rotate-90 transition-transform duration-300" />
-                                </div>
+                                    <Plus className={`h-4 w-4 transition-transform duration-300 ${isPromoOpen ? 'rotate-45' : 'group-hover:rotate-90'}`} />
+                                </button>
+
+                                {isPromoOpen && (
+                                    <div className="mt-4 animate-in slide-in-from-top-2 fade-in duration-300">
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                placeholder="Enter code"
+                                                value={promoCode}
+                                                onChange={(e) => {
+                                                    setPromoCode(e.target.value)
+                                                    setPromoStatus('idle')
+                                                    setPromoMessage('')
+                                                }}
+                                                className="flex-1 border border-[#191970]/20 p-2 text-sm uppercase font-semibold focus:outline-none focus:border-[#191970]"
+                                            />
+                                            <button
+                                                onClick={handleApplyPromo}
+                                                className="bg-[#191970] text-white px-4 py-2 text-sm font-bold hover:bg-[#131355]"
+                                            >
+                                                APPLY
+                                            </button>
+                                        </div>
+                                        {promoStatus === 'success' && (
+                                            <p className="text-green-600 text-xs mt-2 flex items-center gap-1 font-bold">
+                                                <CheckCircle className="h-3 w-3" /> {promoMessage}
+                                            </p>
+                                        )}
+                                        {promoStatus === 'error' && (
+                                            <p className="text-red-500 text-xs mt-2 flex items-center gap-1 font-bold">
+                                                <AlertCircle className="h-3 w-3" /> {promoMessage}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex justify-between items-end mb-4 pt-4">
