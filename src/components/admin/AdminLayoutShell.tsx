@@ -33,8 +33,8 @@ export function AdminLayoutShell({ children }: { children: React.ReactNode }) {
 
             <div className="flex flex-1 flex-col overflow-hidden">
                 <AdminTopbar onSidebarToggle={() => setIsSidebarOpen(true)} />
-                <main className="flex-1 overflow-y-auto p-8 text-black bg-white">
-                    <div className="text-black h-full">{children}</div>
+                <main className="flex-1 overflow-y-auto p-8 text-white bg-black">
+                    <div className="text-white h-full">{children}</div>
                 </main>
             </div>
         </div>
