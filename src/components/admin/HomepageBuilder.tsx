@@ -54,6 +54,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
         { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
         { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
         { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
+        { name: 'All Categories', icon: 'GRID', href: '/products' },
     ])
 
     // Featured State
@@ -380,7 +381,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs text-gray-500">Icon (Emoji)</label>
+                                        <label className="text-xs text-gray-500">Icon (Emoji or 'GRID')</label>
                                         <input
                                             value={cat.icon}
                                             onChange={(e) => updateCategory(index, 'icon', e.target.value)}

@@ -15,6 +15,7 @@ import { HeroSlider } from '@/components/shop/HeroSlider'
 import { PromoBanner } from '@/components/shop/PromoBanner'
 import { LifestyleGrid } from '@/components/shop/LifestyleGrid'
 import { TrendingSpotlight } from '@/components/shop/TrendingSpotlight'
+import { LayoutGrid } from 'lucide-react'
 
 export default function HomePage() {
   // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
@@ -30,7 +31,7 @@ export default function HomePage() {
     { name: 'Phones', icon: '📱', href: '/search?category=phones' },
     { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
     { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
-    { name: 'All Categories', icon: '⚡', href: '/products' },
+    { name: 'All Categories', icon: 'GRID', href: '/products' },
   ])
 
   React.useEffect(() => {
@@ -67,8 +68,7 @@ export default function HomePage() {
         .single()
 
       if (catSection?.content_json?.categories) {
-        // setCategories(catSection.content_json.categories) 
-        // Forced to use hardcoded list per user request for "4 items + All Categories"
+        setCategories(catSection.content_json.categories)
       }
 
       // Fetch New Sections
@@ -146,7 +146,7 @@ export default function HomePage() {
                   transition={{ delay: idx * 0.1 }}
                   className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-4xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-xl border border-gray-100"
                 >
-                  {cat.icon}
+                  {cat.icon === 'GRID' ? <LayoutGrid className="w-10 h-10" /> : cat.icon}
                 </motion.div>
                 <span className="text-sm font-bold uppercase tracking-wider text-gray-500 group-hover:text-[#0B1026] transition-colors">
                   {cat.name}
