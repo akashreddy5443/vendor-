@@ -6,6 +6,7 @@ import { WishlistToggle } from '@/components/shop/WishlistToggle'
 import { AddToCartButton } from '@/components/shop/AddToCartButton'
 import { ProductGallery } from '@/components/shop/ProductGallery'
 import { ProductViewTracker } from '@/components/shop/ProductViewTracker'
+import { SimilarProducts } from '@/components/shop/SimilarProducts'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
@@ -36,7 +37,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     let queryBuilder = supabase.from('products').select(`
             *,
             product_images (*),
-            categories (name, slug)
+            categories (id, name, slug)
         `)
 
     if (isUuid) {
@@ -145,6 +146,17 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     </div>
                 </div>
             </div>
-        </div>
+
+
+            {/* Similar Products Section */}
+            {
+                categories && (
+                    <SimilarProducts
+                        categoryId={categories.id}
+                        currentProductId={product.id}
+                    />
+                )
+            }
+        </div >
     )
 }
