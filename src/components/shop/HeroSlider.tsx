@@ -23,15 +23,18 @@ interface HeroSliderProps {
 
 export function HeroSlider({ slides }: HeroSliderProps) {
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [isHovered, setIsHovered] = useState(false)
 
     // Auto-advance
     useEffect(() => {
-        if (slides.length <= 1) return
+        if (slides.length <= 1 || isHovered) return
+
         const timer = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % slides.length)
-        }, 5000)
+        }, 10000)
+
         return () => clearInterval(timer)
-    }, [slides.length])
+    }, [currentIndex, isHovered, slides.length])
 
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % slides.length)
@@ -46,7 +49,11 @@ export function HeroSlider({ slides }: HeroSliderProps) {
     const currentSlide = slides[currentIndex]
 
     return (
-        <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden bg-black group">
+        <div
+            className="relative w-full h-[500px] md:h-[600px] overflow-hidden bg-black group"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentSlide.id}
