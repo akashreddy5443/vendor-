@@ -94,25 +94,6 @@ export default async function AdminOrdersPage() {
             <div>
                 <h2 className="text-3xl font-bold tracking-tight text-white">Orders</h2>
                 <p className="text-gray-400">Manage customer orders.</p>
-                {/* Debug Info */}
-                <div className="mt-2 p-2 bg-gray-900 border border-gray-700 rounded text-xs text-gray-400 font-mono">
-                    DEBUG: Found {orders?.length || 0} orders.
-                    Order IDs: {orders?.map(o => o.id.slice(0, 4)).join(', ')}.
-                    Total Item Objects: {
-                        orders?.reduce((sum, o) => {
-                            const items = (o as any).order_items;
-                            return sum + (Array.isArray(items) ? items.length : 0);
-                        }, 0)
-                    }
-                    {' | '}
-                    Last Error: {debugError ? JSON.stringify(debugError) : 'None'}
-                    {' | '}
-                    Raw Fallback Items: {debugRawItems ? debugRawItems.length : 'N/A'}
-                    {' | '}
-                    User: {currentUser?.email} (Role: {currentUser?.role})
-                    {' | '}
-                    Global Check: {anyItems?.length || 0} items visible in DB.
-                </div>
             </div>
 
             <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
