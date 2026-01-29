@@ -41,9 +41,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const saved = localStorage.getItem('techdev_cart')
         if (saved) {
             try {
-                setItems(JSON.parse(saved))
+                const parsed = JSON.parse(saved)
+                // Filter out invalid items (self-healing for previous bugs)
+                const validItems = parsed.filter((i: CartItem) =>
+                    i.productId &&
+                    !isNaN(i.quantity) &&
+                    i.quantity > 0 &&
+                    !isNaN(i.price)
+                )
+                setItems(validItems)
             } catch (e) {
                 console.error('Failed to parse cart', e)
+                setItems([])
             }
         }
         setIsLoaded(true)
