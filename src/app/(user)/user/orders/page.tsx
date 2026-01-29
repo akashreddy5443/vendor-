@@ -12,16 +12,22 @@ export default async function OrdersPage() {
 
     const { data: orders } = await supabase
         .from('orders')
-        .select('*')
+        .select(`
+            *,
+            items:order_items(
+                *,
+                product:products(
+                    title,
+                    images
+                )
+            )
+        `)
         .eq('user_id', user.id)
-        .neq('status', 'cancelled') // Hide cancelled orders from user view
         .order('created_at', { ascending: false })
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">My Orders</h2>
-            </div>
+        <div className="space-y-6 max-w-2xl mx-auto">
+            <h2 className="text-xl font-bold px-1">My Orders</h2>
 
             {!orders || orders.length === 0 ? (
                 <div className="rounded-xl border border-border bg-card p-12 text-center shadow-sm">
@@ -34,33 +40,86 @@ export default async function OrdersPage() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {orders.map((order) => (
-                        <div key={order.id} className="rounded-xl border border-border bg-card p-6 transition-all hover:border-blue-500/50 shadow-sm">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                                <div>
-                                    <div className="text-sm text-muted-foreground">Order #{order.id.slice(0, 8)}...</div>
-                                    <div className="text-sm text-muted-foreground">{new Date(order.created_at).toLocaleDateString()}</div>
-                                </div>
-                                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-muted w-fit">
-                                    {order.status === 'pending' && <Clock className="h-3 w-3 text-yellow-500" />}
-                                    {order.status === 'paid' && <CheckCircle className="h-3 w-3 text-green-500" />}
-                                    <span className="text-xs font-medium uppercase text-foreground">{order.status}</span>
-                                </div>
-                            </div>
+                    {orders.map((order) => {
+                        // Get the first product to display as the main thumbnail
+                        const firstItem = order.items?.[0]
+                        const product = firstItem?.product
+                        const image = product?.images?.[0]
 
-                            <div className="flex items-center justify-between border-t border-border pt-4">
-                                <div className="font-medium text-foreground">
-                                    Total: <span className="text-blue-600">{formatPrice(order.total_amount)}</span>
+                        // Status Config
+                        let statusColor = "text-blue-600"
+                        let statusText = "Processing"
+                        let statusBg = "bg-blue-50"
+
+                        if (order.status === 'delivered') {
+                            statusColor = "text-green-600"
+                            statusText = "Delivered"
+                            statusBg = "bg-green-50"
+                        } else if (order.status === 'cancelled') {
+                            statusColor = "text-red-600"
+                            statusText = "Order Cancelled"
+                            statusBg = "bg-red-50"
+                        } else if (order.status === 'shipped') {
+                            statusColor = "text-indigo-600"
+                            statusText = "Shipped"
+                            statusBg = "bg-indigo-50"
+                        }
+
+                        // Date Format
+                        const dateObj = new Date(order.created_at)
+                        const dateStr = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })
+
+                        return (
+                            <Link href={`/user/orders/${order.id}`} key={order.id} className="block">
+                                <div className="rounded-lg border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                                    <div className="flex gap-4">
+                                        {/* Image */}
+                                        <div className="h-20 w-20 shrink-0 bg-gray-100 rounded-md overflow-hidden border border-gray-200">
+                                            {image ? (
+                                                <img
+                                                    src={image}
+                                                    alt={product?.title || "Product"}
+                                                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                            ) : (
+                                                <div className="h-full w-full flex items-center justify-center text-gray-400">
+                                                    <Package className="h-6 w-6" />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                            <div className="flex items-start justify-between">
+                                                <div>
+                                                    <h3 className={cn("font-medium text-base mb-1", statusColor)}>
+                                                        {statusText}
+                                                    </h3>
+                                                    <p className="text-sm text-gray-500 line-clamp-1">
+                                                        {product?.title || "Order #" + order.id.slice(0, 6)}
+                                                        {order.items.length > 1 && ` + ${order.items.length - 1} more`}
+                                                    </p>
+                                                    {order.status === 'delivered' && (
+                                                        <p className="text-xs text-gray-400 mt-1">Delivered on {dateStr}</p>
+                                                    )}
+                                                    {order.status !== 'delivered' && (
+                                                        <p className="text-xs text-gray-400 mt-1">Order Date: {dateStr}</p>
+                                                    )}
+                                                </div>
+                                                <div className="text-gray-400">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Optional "Review" prompting if needed, usually meesho prompts for rating */}
                                 </div>
-                                <Link
-                                    href={`/user/orders/${order.id}`} // We will need to build this detail page next
-                                    className="text-sm font-medium text-blue-600 hover:underline"
-                                >
-                                    View Details
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
+                            </Link>
+                        )
+                    })}
                 </div>
             )}
         </div>
