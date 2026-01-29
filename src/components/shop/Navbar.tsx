@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, ShoppingCart, Heart, User, Menu, X } from 'lucide-react'
+import { ShoppingBag, ShoppingCart, Heart, User, Menu, X, ChevronDown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -112,8 +112,8 @@ export function Navbar() {
 
                         {/* Mega Menu Trigger */}
                         <div className="group relative h-16 flex items-center">
-                            <Link href="/categories" className="text-foreground/70 hover:text-primary transition-colors py-6 font-heading flex items-center gap-1">
-                                Categories <span className="text-[10px] opacity-50">▼</span>
+                            <Link href="/categories" className="text-foreground/70 hover:text-primary transition-colors py-6 font-heading flex items-center gap-1 group-hover:text-primary">
+                                Categories <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
                             </Link>
 
                             {/* Premium Dropdown */}
@@ -122,7 +122,7 @@ export function Navbar() {
                                     {/* Column 1: Categories Grid */}
                                     <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50">
                                         <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 dark:text-white/40 mb-2">Shop by Category</h3>
-                                        {categories.map(cat => (
+                                        {categories.length > 0 ? categories.map(cat => (
                                             <Link
                                                 key={cat.id}
                                                 href={`/search?category=${cat.slug || cat.id}`}
@@ -133,7 +133,9 @@ export function Navbar() {
                                                 </div>
                                                 <span className="font-heading font-semibold text-sm text-foreground group-hover/item:translate-x-1 transition-transform">{cat.name}</span>
                                             </Link>
-                                        ))}
+                                        )) : (
+                                            <div className="col-span-2 text-sm text-muted-foreground py-4">No categories found.</div>
+                                        )}
                                         <Link href="/categories" className="col-span-2 mt-4 flex items-center justify-center gap-2 text-sm font-bold text-blue-600 hover:underline">
                                             View All Categories →
                                         </Link>
@@ -149,7 +151,7 @@ export function Navbar() {
                                             <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">New Arrival</span>
                                             <h3 className="text-2xl font-heading font-bold leading-tight mb-2">ProDev Gear 2026</h3>
                                             <p className="text-white/70 text-sm mb-6">Upgrade your setup with the latest mechanical keyboards and ergonomic mice.</p>
-                                            <Link href="/products" className="inline-block px-6 py-2 bg-white text-[#191970] rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg">
+                                            <Link href="/products" className="inline-block px-6 py-2 bg-white text-[#191970] rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg shadow-black/20">
                                                 Shop Now
                                             </Link>
                                         </div>
