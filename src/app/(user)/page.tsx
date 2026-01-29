@@ -116,16 +116,39 @@ export default function HomePage() {
       </section >
 
       {/* BigTech Phase 2: Category Circles */}
-      <section className="py-12 border-b border-gray-100">
+      <section className="py-16 border-b border-gray-100 bg-gray-50/50">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <h3 className="text-3xl font-bold text-[#0B1026] mb-12 drop-shadow-sm">Shop by Category</h3>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-            {categories.map((cat) => (
-              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-3">
-                <div className="h-20 w-20 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-3xl shadow-sm transition-all group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-md border border-gray-200 dark:border-zinc-700">
+          <motion.h3
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg font-bold text-blue-600 mb-2 uppercase tracking-widest"
+          >
+            Explore
+          </motion.h3>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-4xl font-black text-[#0B1026] mb-12 uppercase tracking-tight"
+          >
+            Shop by Category
+          </motion.h2>
+
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+            {categories.map((cat, idx) => (
+              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-4xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-xl border border-gray-100"
+                >
                   {cat.icon}
-                </div>
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-[#0B1026] dark:group-hover:text-white transition-colors">
+                </motion.div>
+                <span className="text-sm font-bold uppercase tracking-wider text-gray-500 group-hover:text-[#0B1026] transition-colors">
                   {cat.name}
                 </span>
               </Link>
@@ -144,16 +167,26 @@ export default function HomePage() {
       <TrendingSpotlight data={trendingData} />
 
       {/* Featured Products Placeholder */}
-      < section className="py-20 px-6" >
-        <motion.h2
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-          className="text-3xl font-bold text-center mb-12"
-        >
-          FEATURED GEAR
-        </motion.h2>
+      < section className="py-24 px-6 bg-white" >
+        <div className="text-center mb-16">
+          <motion.h3
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-lg font-bold text-blue-600 mb-2 uppercase tracking-widest"
+          >
+            Curated Selection
+          </motion.h3>
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            className="text-3xl md:text-4xl font-black text-[#0B1026] uppercase tracking-tight"
+          >
+            Featured Gear
+          </motion.h2>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-6xl mx-auto">
           {featuredProducts.length > 0 ? (
             featuredProducts.map((product, index) => (

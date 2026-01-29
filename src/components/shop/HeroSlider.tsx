@@ -46,7 +46,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
     const currentSlide = slides[currentIndex]
 
     return (
-        <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden bg-white shadow-sm border-b border-gray-100 group">
+        <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden bg-white group">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentSlide.id}
@@ -56,13 +56,13 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                     transition={{ duration: 0.5 }}
                     className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 h-full"
                 >
-                    {/* Left: Text Content */}
-                    <div className="flex flex-col justify-center items-start px-8 md:px-16 lg:px-24 bg-white z-10">
+                    {/* Left: Text Content - Centered better */}
+                    <div className="flex flex-col justify-center items-start px-8 md:px-20 lg:px-32 bg-white z-10">
                         <motion.h3
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-lg font-bold text-primary mb-2 uppercase tracking-wider"
+                            className="text-sm md:text-base font-bold text-blue-600 mb-4 uppercase tracking-[0.2em]"
                         >
                             {currentSlide.subtitle}
                         </motion.h3>
@@ -71,7 +71,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 leading-tight"
+                            className="text-5xl md:text-6xl lg:text-7xl font-black text-[#0B1026] mb-8 leading-[0.9] tracking-tight uppercase max-w-xl"
                             style={{ color: currentSlide.color }}
                         >
                             {currentSlide.title}
@@ -84,25 +84,33 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                         >
                             <Link
                                 href={currentSlide.link}
-                                className="inline-flex items-center justify-center px-8 py-3 text-base font-bold text-white bg-primary hover:bg-emerald-600 rounded-full transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                className="inline-flex items-center justify-center px-10 py-4 text-sm font-bold text-white bg-[#0B1026] hover:bg-blue-600 rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105 uppercase tracking-wider"
                             >
                                 {currentSlide.buttonText}
                             </Link>
                         </motion.div>
                     </div>
 
-                    {/* Right: Image Content */}
-                    <div className="relative w-full h-full bg-secondary/30 hidden md:block">
-                        <Image
-                            src={currentSlide.imageUrl}
-                            alt={currentSlide.title}
-                            fill
-                            className="object-contain p-8 mix-blend-multiply"
-                            priority
-                        />
+                    {/* Right: Image Content - More dynamic background */}
+                    <div className="relative w-full h-full bg-gray-50 flex items-center justify-center hidden md:flex">
+                        {/* Decorative Circle */}
+                        <div className="absolute w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-3xl -z-10" />
+
+                        <div className="relative w-3/4 h-3/4">
+                            <Image
+                                src={currentSlide.imageUrl}
+                                alt={currentSlide.title}
+                                fill
+                                className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700"
+                                priority
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </div>
                     </div>
-                    {/* Mobile Image (Background) - Fallback if needed, or simple stack */}
-                    <div className="md:hidden absolute inset-0 -z-10 opacity-10">
+
+                    {/* Mobile Image Overlay (Background) */}
+                    <div className="md:hidden absolute inset-0 -z-10">
+                        <div className="absolute inset-0 bg-white/90 z-10" />
                         <Image
                             src={currentSlide.imageUrl}
                             alt={currentSlide.title}
@@ -113,29 +121,29 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                 </motion.div>
             </AnimatePresence>
 
-            {/* Navigation Buttons */}
+            {/* Navigation Buttons - Cleaner Style */}
             {slides.length > 1 && (
                 <>
                     <button
                         onClick={prevSlide}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-gray-100 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-900 shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20 hover:scale-110"
                     >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                         onClick={nextSlide}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-gray-100 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-900 shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20 hover:scale-110"
                     >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-5 h-5" />
                     </button>
 
                     {/* Indicators */}
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                    <div className="absolute bottom-8 left-8 md:left-32 flex gap-3 z-20">
                         {slides.map((_, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setCurrentIndex(idx)}
-                                className={`w-2.5 h-2.5 rounded-full transition-all ${idx === currentIndex ? 'bg-primary w-8' : 'bg-gray-300'
+                                className={`h-1 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-[#0B1026] w-8' : 'bg-gray-200 w-4 hover:bg-gray-300'
                                     }`}
                             />
                         ))}
