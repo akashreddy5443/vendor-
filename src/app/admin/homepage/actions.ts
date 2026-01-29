@@ -276,3 +276,31 @@ export async function updateTrending(formData: FormData) {
     revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }
+
+export async function updatePromoGrid(formData: FormData) {
+    const supabase = await createClient()
+
+    const cards = JSON.parse(formData.get('cards') as string)
+
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'promo_grid')
+        .single()
+
+    const payload = {
+        section_type: 'promo_grid',
+        title: 'Promo Banners',
+        content_json: { cards },
+        is_active: true,
+    }
+
+    if (existing) {
+        await supabase.from('homepage_sections').update(payload).eq('id', existing.id)
+    } else {
+        await supabase.from('homepage_sections').insert(payload)
+    }
+
+    revalidatePath('/admin/homepage')
+    revalidatePath('/', 'layout')
+}

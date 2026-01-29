@@ -6,6 +6,7 @@ import { ImagePlus, X, Check, Trash2, Plus, GripVertical, ChevronDown, ChevronUp
 import { useState } from 'react'
 import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
+import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
 
 type Product = {
     id: string
@@ -32,9 +33,10 @@ type HomepageBuilderProps = {
     sliderSection: any
     lifestyleSection: any
     trendingSection: any
+    promoSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection }: HomepageBuilderProps) {
     // ... Existing state logic ...
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
@@ -461,6 +463,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             {/* Trending Spotlight Editor */}
             <TrendingEditor initialData={trendingSection?.content_json} />
 
+            {/* Promo Grid Editor */}
+            <PromoGridEditor initialCards={promoSection?.content_json?.cards} />
         </div>
     )
 }

@@ -11,24 +11,30 @@ type TrendingData = {
         title: string
         tag: string
         link: string
+        description?: string
+        video?: string
     }
     sub1: {
         image: string
         title: string
         link: string
+        description?: string
+        video?: string
     }
     sub2: {
         image: string
         title: string
         link: string
+        description?: string
+        video?: string
     }
 }
 
 export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
     const [data, setData] = useState<TrendingData>(initialData || {
-        hero: { image: '', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops' },
-        sub1: { image: '', title: 'CONSOLE READY', link: '/search?category=gaming' },
-        sub2: { image: '', title: 'AUDIOPHILE GRADE', link: '/search?category=audio' }
+        hero: { image: '', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops', description: '' },
+        sub1: { image: '', title: 'CONSOLE READY', link: '/search?category=gaming', description: '' },
+        sub2: { image: '', title: 'AUDIOPHILE GRADE', link: '/search?category=audio', description: '' }
     })
 
     const updateHero = (field: string, value: string) => {
@@ -69,13 +75,14 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                         <div className="space-y-2">
                             <input value={data.hero.tag} onChange={(e) => updateHero('tag', e.target.value)} placeholder="Tag (e.g. New Arrival)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
                             <input value={data.hero.title} onChange={(e) => updateHero('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+                            <textarea value={data.hero.description || ''} onChange={(e) => updateHero('description', e.target.value)} placeholder="Description (reveals on hover)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm h-20" />
                             <input value={data.hero.link} onChange={(e) => updateHero('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
                             <div className="pt-2 border-t border-gray-800">
                                 <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
                                 <div className="flex gap-2">
                                     <input
-                                        value={(data.hero as any).video || ''}
+                                        value={data.hero.video || ''}
                                         onChange={(e) => updateHero('video', e.target.value)}
                                         placeholder="https://...mp4"
                                         className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
@@ -117,13 +124,14 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                             )}
                         </div>
                         <input value={data.sub1.title} onChange={(e) => updateSub1('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2" />
+                        <textarea value={data.sub1.description || ''} onChange={(e) => updateSub1('description', e.target.value)} placeholder="Description (reveals on hover)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2 h-20" />
                         <input value={data.sub1.link} onChange={(e) => updateSub1('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
                         <div className="pt-2 border-t border-gray-800 mt-2">
                             <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
                             <div className="flex gap-2">
                                 <input
-                                    value={(data.sub1 as any).video || ''}
+                                    value={data.sub1.video || ''}
                                     onChange={(e) => updateSub1('video', e.target.value)}
                                     placeholder="https://...mp4"
                                     className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
@@ -162,13 +170,14 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                             )}
                         </div>
                         <input value={data.sub2.title} onChange={(e) => updateSub2('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2" />
+                        <textarea value={data.sub2.description || ''} onChange={(e) => updateSub2('description', e.target.value)} placeholder="Description (reveals on hover)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm mb-2 h-20" />
                         <input value={data.sub2.link} onChange={(e) => updateSub2('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
                         <div className="pt-2 border-t border-gray-800 mt-2">
                             <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
                             <div className="flex gap-2">
                                 <input
-                                    value={(data.sub2 as any).video || ''}
+                                    value={data.sub2.video || ''}
                                     onChange={(e) => updateSub2('video', e.target.value)}
                                     placeholder="https://...mp4"
                                     className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
