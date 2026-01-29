@@ -10,7 +10,7 @@ export default async function OrdersPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) redirect('/login')
 
-    const { data: orders } = await supabase
+    const { data: orders, error: ordersError } = await supabase
         .from('orders')
         .select(`
             *,
@@ -25,8 +25,22 @@ export default async function OrdersPage() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
+    // DEBUGGING BLOCK
+    if (ordersError || !orders) {
+        console.error("Orders Fetch Error:", ordersError)
+    }
+
     return (
         <div className="space-y-6 max-w-2xl mx-auto">
+            {/* TEMPORARY DEBUG INFO */}
+            <div className="p-4 bg-gray-100 border border-red-200 rounded text-xs font-mono text-red-600 mb-4 break-all">
+                <p>DEBUG MODE ACTIVE</p>
+                <p>User ID: {user.id}</p>
+                <p>Orders Found: {orders?.length ?? 0}</p>
+                <p>Error: {JSON.stringify(ordersError)}</p>
+                <p>First Order: {JSON.stringify(orders?.[0] || 'None')}</p>
+            </div>
+
             <h2 className="text-xl font-bold px-1">My Orders</h2>
 
             {!orders || orders.length === 0 ? (
