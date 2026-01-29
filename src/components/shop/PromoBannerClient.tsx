@@ -39,7 +39,7 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                                             <h3 className="text-2xl font-extrabold leading-tight mb-1 text-foreground">
                                                 {promo.subtitle}
                                             </h3>
-                                            <p className="text-muted-foreground text-sm font-medium leading-snug">
+                                            <p className="text-muted-foreground text-sm font-medium leading-snug max-h-0 opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
                                                 {promo.description}
                                             </p>
                                         </div>

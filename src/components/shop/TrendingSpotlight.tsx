@@ -51,7 +51,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             )}
 
                             <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm z-30">
+                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
                                 <span className="text-white/90 text-xs font-bold uppercase tracking-widest mb-2 block">{content.hero.tag}</span>
                                 <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase leading-none shadow-sm drop-shadow-lg">
                                     {content.hero.title}
@@ -86,7 +86,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     </div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 z-30">
+                                <div className="absolute bottom-6 left-6 z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
                                     <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub1.title}</h3>
                                     <Link href={content.sub1.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                                 </div>
@@ -113,7 +113,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     </div>
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 z-30">
+                                <div className="absolute bottom-6 left-6 z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
                                     <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub2.title}</h3>
                                     <Link href={content.sub2.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
                                 </div>
