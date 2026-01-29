@@ -183,6 +183,5 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                 )
             }
         </div>
-    </div >
     )
 }
