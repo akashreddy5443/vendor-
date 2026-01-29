@@ -103,26 +103,26 @@ export default async function DashboardPage() {
     return (
         <div className="space-y-8">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">Dashboard</h2>
-                <p className="text-gray-400">Overview of your store's performance.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h2>
+                <p className="text-gray-500">Overview of your store's performance.</p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {stats.map((stat) => (
                     <div
                         key={stat.title}
-                        className={`rounded-xl border ${stat.border} ${stat.bg} p-6 shadow-lg backdrop-blur-sm transition-transform hover:scale-[1.02]`}
+                        className={`rounded-xl border ${stat.border} bg-white p-6 shadow-sm transition-transform hover:scale-[1.02]`}
                     >
                         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <h3 className="text-sm font-medium text-gray-200">{stat.title}</h3>
+                            <h3 className="text-sm font-medium text-gray-500">{stat.title}</h3>
                             <div className={`p-2 rounded-lg ${stat.bg}`}>
                                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
                             </div>
                         </div>
                         <div className="pt-2">
-                            <div className="text-3xl font-bold text-white tracking-tight">{stat.value}</div>
-                            <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-                                <TrendingUp className="h-3 w-3 text-emerald-500" />
+                            <div className="text-3xl font-bold text-gray-900 tracking-tight">{stat.value}</div>
+                            <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                <TrendingUp className="h-3 w-3 text-emerald-600" />
                                 {stat.change}
                             </p>
                         </div>
@@ -134,25 +134,25 @@ export default async function DashboardPage() {
             <DashboardCharts revenueData={revenueData} statusData={statusData} />
 
             <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7">
-                <div className="col-span-4 rounded-xl border border-gray-800 bg-gray-900 p-6">
-                    <h3 className="mb-4 text-lg font-medium text-white">Recent Activity</h3>
+                <div className="col-span-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 className="mb-4 text-lg font-medium text-gray-900">Recent Activity</h3>
                     <div className="space-y-4">
                         {recentOrders && recentOrders.length > 0 ? (
                             recentOrders.map((order) => (
-                                <div key={order.id} className="flex items-center justify-between border-b border-gray-800 pb-4 last:border-0 last:pb-0">
+                                <div key={order.id} className="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                                     <div className="space-y-1">
-                                        <p className="text-sm font-medium text-white">
+                                        <p className="text-sm font-medium text-gray-900">
                                             {order.users?.full_name || order.users?.email || 'Guest User'}
                                         </p>
-                                        <p className="text-xs text-gray-400">
+                                        <p className="text-xs text-gray-500">
                                             {new Date(order.created_at).toLocaleDateString()}
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <div className="text-sm font-bold text-white">{formatPrice(order.total_amount)}</div>
-                                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${order.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                                            order.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
-                                                'bg-gray-500/10 text-gray-500'
+                                        <div className="text-sm font-bold text-gray-900">{formatPrice(order.total_amount)}</div>
+                                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${order.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                                'bg-gray-100 text-gray-600'
                                             }`}>
                                             {order.status}
                                         </span>
@@ -160,18 +160,18 @@ export default async function DashboardPage() {
                                 </div>
                             ))
                         ) : (
-                            <p className="text-sm text-gray-400">No recent orders found.</p>
+                            <p className="text-sm text-gray-500">No recent orders found.</p>
                         )}
                     </div>
                 </div>
-                <div className="col-span-3 rounded-xl border border-gray-800 bg-gray-900 p-6">
-                    <h3 className="mb-4 text-lg font-medium text-white">Quick Actions</h3>
+                <div className="col-span-3 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <h3 className="mb-4 text-lg font-medium text-gray-900">Quick Actions</h3>
                     <div className="space-y-4">
-                        <p className="text-sm text-gray-400">Manage your store efficiently.</p>
+                        <p className="text-sm text-gray-500">Manage your store efficiently.</p>
                         <div className="grid grid-cols-2 gap-4">
                             {['Products', 'Orders', 'Users', 'Settings'].map((action) => (
-                                <a href={`/admin/${action.toLowerCase()}`} key={action} className="flex flex-col items-center justify-center rounded-lg border border-gray-800 bg-gray-800/50 p-4 hover:bg-gray-800 transition-colors">
-                                    <span className="text-sm font-medium text-white">{action}</span>
+                                <a href={`/admin/${action.toLowerCase()}`} key={action} className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-4 hover:bg-gray-100 transition-colors">
+                                    <span className="text-sm font-medium text-gray-700">{action}</span>
                                 </a>
                             ))}
                         </div>

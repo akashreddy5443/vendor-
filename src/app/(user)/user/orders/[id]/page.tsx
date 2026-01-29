@@ -5,6 +5,7 @@ import { ArrowLeft, MapPin, CreditCard, Package, Download, ChevronRight, Truck }
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
+import { RecentlyViewed } from '@/components/shop/RecentlyViewed'
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
@@ -200,6 +201,23 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            {/* Recently Viewed Section */}
+            <div className="md:p-0 pt-0 space-y-4">
+                <RecentlyViewed />
+            </div>
+
+            {/* Bottom Bar Mobile (Optional) */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-between items-center z-20">
+                <div>
+                    <p className="text-xs text-gray-500">Total Amount</p>
+                    <p className="font-bold text-gray-900">{formatPrice(order.total_amount)}</p>
+                </div>
+                <div className="text-xs font-medium text-gray-500 flex items-center gap-1">
+                    <CreditCard className="w-3 h-3" />
+                    {order.payment_method === 'cod' ? 'Cash On Delivery' : 'Paid Online'}
                 </div>
             </div>
         </div>

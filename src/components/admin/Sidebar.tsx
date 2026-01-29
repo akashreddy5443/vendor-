@@ -26,9 +26,10 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname()
 
     return (
-        <aside className="w-64 flex-shrink-0 border-r border-gray-800 bg-black text-white h-full">
-            <div className="flex h-16 items-center border-b border-gray-800 px-6">
-                <h1 className="text-xl font-bold tracking-tight text-blue-500">TechDev Admin</h1>
+    return (
+        <aside className="w-64 flex-shrink-0 border-r border-gray-200 bg-white text-gray-900 h-full">
+            <div className="flex h-16 items-center border-b border-gray-200 px-6">
+                <h1 className="text-xl font-bold tracking-tight text-blue-600">TechDev Admin</h1>
             </div>
             <nav className="space-y-1 p-4">
                 {navItems.map((item) => {
@@ -41,21 +42,21 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
                             className={cn(
                                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                                 isActive
-                                    ? "bg-blue-600 text-white"
-                                    : "text-gray-400 hover:bg-gray-900 hover:text-white"
+                                    ? "bg-blue-50 text-blue-700"
+                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                             )}
                         >
-                            <item.icon className="h-5 w-5" />
+                            <item.icon className={cn("h-5 w-5", isActive ? "text-blue-600" : "text-gray-400")} />
                             {item.label}
                         </Link>
                     )
                 })}
             </nav>
-            <div className="mt-auto border-t border-gray-800 p-4">
+            <div className="mt-auto border-t border-gray-200 p-4">
                 <Link
                     href="/admin/subscribers"
                     onClick={onNavigate}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-white ${pathname === '/admin/subscribers' ? 'bg-zinc-800 text-white' : 'text-gray-400'}`}
+                    className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900 ${pathname === '/admin/subscribers' ? 'bg-zinc-100 text-gray-900' : 'text-gray-500'}`}
                 >
                     <Mail className="h-5 w-5" />
                     Subscribers
@@ -63,7 +64,7 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
                 <Link
                     href="/"
                     target="_blank"
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-900 hover:text-white transition-colors"
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
                 >
                     <ExternalLink className="h-5 w-5" />
                     Open Live Site

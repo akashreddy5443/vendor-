@@ -3,15 +3,17 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { formatPrice } from '@/lib/utils'
 import { WishlistToggle } from '@/components/shop/WishlistToggle'
-import { AddToCartButton } from '@/components/shop/AddToCartButton' // Will create/verify this next
-import { ProductGallery } from '@/components/shop/ProductGallery' // Will create this component
+import { AddToCartButton } from '@/components/shop/AddToCartButton'
+import { ProductGallery } from '@/components/shop/ProductGallery'
+import { ProductViewTracker } from '@/components/shop/ProductViewTracker'
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params
     const supabase = await createClient()
     const { data: product } = await supabase
         .from('products')
         .select('title, description')
-        .or(`slug.eq.${params.slug},id.eq.${params.slug}`)
+        .or(`slug.eq.${slug},id.eq.${slug}`)
         .single()
 
     if (!product) return { title: 'Product Not Found' }
@@ -48,17 +50,25 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     console.log('[PDP] Product Result:', product ? product.title : 'Not Found')
 
     if (!product) {
-        // Fallback: try searching by title if slug failed (fuzzy legacy)
-        // Or just 404
         console.error('[PDP] 404 - Product not found for slug:', params.slug)
         notFound()
     }
 
     const { title, price, description, stock, product_images, categories } = product
     const isOutOfStock = stock === 0
+    const primaryImage = product_images?.find((i: any) => i.is_primary)?.cloudinary_url || product_images?.[0]?.cloudinary_url
 
     return (
         <div className="bg-background min-h-screen text-foreground">
+            <ProductViewTracker
+                product={{
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: primaryImage,
+                    slug: product.slug
+                }}
+            />
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                     {/* Media Gallery */}
