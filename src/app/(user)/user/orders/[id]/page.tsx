@@ -35,11 +35,13 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
         .single()
 
     if (error || !order) {
-        console.error("Order Details Error:", error)
         return (
             <div className="p-8 text-center space-y-4">
                 <h3 className="text-xl font-bold text-red-500">Order Not Found</h3>
                 <p className="text-muted-foreground">Unable to load order details.</p>
+                <div className="p-2 bg-gray-100 rounded text-xs text-gray-500 max-w-xs mx-auto">
+                    ID: {id}
+                </div>
                 {error && (
                     <div className="p-4 bg-gray-100 rounded text-left overflow-auto max-w-lg mx-auto">
                         <code className="text-xs text-red-600 break-all">{JSON.stringify(error, null, 2)}</code>
