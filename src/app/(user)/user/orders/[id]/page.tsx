@@ -23,6 +23,8 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                 price,
                 product_id,
                 product:products(
+                    id,
+                    slug,
                     title,
                     product_images(
                         cloudinary_url,
@@ -124,7 +126,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <Link href={`/products/${product?.id}`} className="font-semibold text-gray-900 hover:text-blue-600 line-clamp-2 text-lg">
+                                                    <Link href={`/products/${product?.slug || product?.id}`} className="font-semibold text-gray-900 hover:text-blue-600 line-clamp-2 text-lg">
                                                         {product?.title || "Unknown Product"}
                                                     </Link>
                                                     <p className="text-sm text-gray-500 mt-1">Quantity: {item.quantity}</p>

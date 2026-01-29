@@ -32,9 +32,9 @@ export function DashboardCharts({ revenueData, statusData }: DashboardChartsProp
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm shadow-xl"
+                className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
             >
-                <h3 className="mb-6 text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="mb-6 text-lg font-bold text-gray-900 flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-blue-500" />
                     Revenue Trends
                 </h3>
@@ -47,24 +47,24 @@ export function DashboardCharts({ revenueData, statusData }: DashboardChartsProp
                                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                             <XAxis
                                 dataKey="date"
                                 stroke="#9ca3af"
-                                tick={{ fontSize: 12 }}
+                                tick={{ fontSize: 12, fill: '#6b7280' }}
                                 tickLine={false}
                                 axisLine={false}
                             />
                             <YAxis
                                 stroke="#9ca3af"
-                                tick={{ fontSize: 12 }}
+                                tick={{ fontSize: 12, fill: '#6b7280' }}
                                 tickLine={false}
                                 axisLine={false}
                                 tickFormatter={(value) => `$${value}`}
                             />
                             <Tooltip
-                                contentStyle={{ backgroundColor: '#111827', borderColor: '#374151', borderRadius: '8px' }}
-                                itemStyle={{ color: '#fff' }}
+                                contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb', borderRadius: '8px', color: '#111827' }}
+                                itemStyle={{ color: '#111827' }}
                             />
                             <Area
                                 type="monotone"
@@ -84,9 +84,9 @@ export function DashboardCharts({ revenueData, statusData }: DashboardChartsProp
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm shadow-xl"
+                className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
             >
-                <h3 className="mb-6 text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="mb-6 text-lg font-bold text-gray-900 flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-purple-500" />
                     Order Distribution
                 </h3>
@@ -107,10 +107,10 @@ export function DashboardCharts({ revenueData, statusData }: DashboardChartsProp
                                 ))}
                             </Pie>
                             <Tooltip
-                                contentStyle={{ backgroundColor: '#111827', borderColor: '#374151', borderRadius: '8px' }}
-                                itemStyle={{ color: '#fff' }}
+                                contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb', borderRadius: '8px', color: '#111827' }}
+                                itemStyle={{ color: '#111827' }}
                             />
-                            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                            <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ color: '#374151' }} />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>

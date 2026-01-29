@@ -92,14 +92,14 @@ export default async function AdminOrdersPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">Orders</h2>
-                <p className="text-gray-400">Manage customer orders.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">Orders</h2>
+                <p className="text-gray-500">Manage customer orders.</p>
             </div>
 
-            <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="overflow-x-auto min-h-[400px]">
-                    <table className="w-full text-left text-sm text-gray-400">
-                        <thead className="border-b border-gray-800 text-xs uppercase text-gray-500">
+                    <table className="w-full text-left text-sm text-gray-500">
+                        <thead className="border-b border-gray-200 text-xs uppercase text-gray-500 bg-gray-50">
                             <tr>
                                 <th className="px-4 py-3">Order ID</th>
                                 <th className="px-4 py-3">Customer</th>
@@ -111,7 +111,7 @@ export default async function AdminOrdersPage() {
                                 <th className="px-4 py-3 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-800">
+                        <tbody className="divide-y divide-gray-200">
                             {orders?.map((order) => {
                                 // Address Logic: Handle JSONB (Object) or ID (String)
                                 let addr: Address | null = null
@@ -126,9 +126,9 @@ export default async function AdminOrdersPage() {
                                 }
 
                                 return (
-                                    <tr key={order.id} className="hover:bg-gray-800/50">
-                                        <td className="px-4 py-3 font-mono text-xs text-zinc-500">{order.id.slice(0, 8)}...</td>
-                                        <td className="px-4 py-3 text-white">
+                                    <tr key={order.id} className="hover:bg-gray-50">
+                                        <td className="px-4 py-3 font-mono text-xs text-gray-500">{order.id.slice(0, 8)}...</td>
+                                        <td className="px-4 py-3 text-gray-900">
                                             {(order.users as any)?.email || 'Guest'}
                                         </td>
                                         <td className="px-4 py-3">
@@ -137,31 +137,31 @@ export default async function AdminOrdersPage() {
                                                     <span className="text-xs text-red-400 italic">No items data</span>
                                                 ) : (
                                                     (order as any).order_items.map((item: any) => (
-                                                        <div key={item.product_id} className="text-xs text-gray-300">
-                                                            <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title ||
-                                                                <span className="text-gray-500">Item #{item.product_id?.slice(0, 4)}...</span>}
+                                                        <div key={item.product_id} className="text-xs text-gray-600">
+                                                            <span className="font-bold text-gray-900">{item.quantity}x</span> {item.product?.title ||
+                                                                <span className="text-gray-400">Item #{item.product_id?.slice(0, 4)}...</span>}
                                                         </div>
                                                     )))}
                                             </div>
                                         </td>
                                         <td className="px-4 py-3">
                                             {addr ? (
-                                                <div className="flex flex-col text-xs">
-                                                    <span className="text-white font-medium">{addr.full_name}</span>
+                                                <div className="flex flex-col text-xs text-gray-600">
+                                                    <span className="text-gray-900 font-medium">{addr.full_name}</span>
                                                     <span>{addr.city}, {addr.state}</span>
                                                     <span className="text-gray-500">{addr.postal_code}</span>
                                                 </div>
                                             ) : (
-                                                <span className="text-gray-600 italic">No Address</span>
+                                                <span className="text-gray-400 italic">No Address</span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3 text-white">
+                                        <td className="px-4 py-3 text-gray-900 font-medium">
                                             {formatPrice(order.total_amount)}
                                         </td>
                                         <td className="px-4 py-3">
                                             <StatusSelector orderId={order.id} currentStatus={order.status} />
                                         </td>
-                                        <td className="px-4 py-3">
+                                        <td className="px-4 py-3 text-gray-500">
                                             {new Date(order.created_at).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-3 text-right">

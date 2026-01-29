@@ -14,8 +14,8 @@ export default async function AdminProductsPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight text-white">Products</h2>
-                    <p className="text-gray-400">Manage your store's products.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">Products</h2>
+                    <p className="text-gray-500">Manage your store's products.</p>
                 </div>
                 <Link
                     href="/admin/products/new"
@@ -26,7 +26,7 @@ export default async function AdminProductsPage() {
                 </Link>
             </div>
 
-            <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 {/* We'll separate the table into a client component for interactivity if needed, 
             but for now, a simple server render is fine, or a client component for actions */}
                 <ProductTable products={products || []} />

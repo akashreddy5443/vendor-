@@ -21,8 +21,8 @@ export function ProductTable({ products }: { products: any[] }) {
 
     return (
         <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-400">
-                <thead className="border-b border-gray-800 text-xs uppercase text-gray-500">
+            <table className="w-full text-left text-sm text-gray-500">
+                <thead className="border-b border-gray-200 text-xs uppercase text-gray-500 bg-gray-50">
                     <tr>
                         <th className="px-4 py-3">Product Name</th>
                         <th className="px-4 py-3">Status</th>
@@ -31,29 +31,29 @@ export function ProductTable({ products }: { products: any[] }) {
                         <th className="px-4 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-800">
+                <tbody className="divide-y divide-gray-200">
                     {products.map((product) => (
-                        <tr key={product.id} className="hover:bg-gray-800/50">
-                            <td className="px-4 py-3 font-medium text-white">{product.title}</td>
+                        <tr key={product.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 font-medium text-gray-900">{product.title}</td>
                             <td className="px-4 py-3">
                                 <span
                                     className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${product.status === 'active'
-                                        ? 'bg-green-400/10 text-green-400 ring-green-400/20'
-                                        : 'bg-gray-400/10 text-gray-400 ring-gray-400/20'
+                                        ? 'bg-green-50 text-green-700 ring-green-600/20'
+                                        : 'bg-gray-50 text-gray-600 ring-gray-500/10'
                                         }`}
                                 >
                                     {product.status}
                                 </span>
                             </td>
-                            <td className="px-4 py-3 text-white">
+                            <td className="px-4 py-3 text-gray-900">
                                 {product.price ? formatPrice(product.price) : formatPrice(0)}
                             </td>
-                            <td className="px-4 py-3">{product.stock}</td>
+                            <td className="px-4 py-3 text-gray-700">{product.stock}</td>
                             <td className="px-4 py-3 text-right">
                                 <div className="flex justify-end gap-2">
                                     <Link
                                         href={`/admin/products/${product.id}`}
-                                        className="rounded p-1 hover:bg-gray-800 hover:text-white"
+                                        className="rounded p-1 hover:bg-gray-100 text-gray-500 hover:text-blue-600"
                                     >
                                         <Edit className="h-4 w-4" />
                                     </Link>
@@ -61,7 +61,7 @@ export function ProductTable({ products }: { products: any[] }) {
                                         await deleteProduct(formData)
                                     }}>
                                         <input type="hidden" name="id" value={product.id} />
-                                        <button className="rounded p-1 hover:bg-gray-800 hover:text-red-400">
+                                        <button className="rounded p-1 hover:bg-gray-100 text-gray-500 hover:text-red-500">
                                             <Trash2 className="h-4 w-4" />
                                         </button>
                                     </form>
