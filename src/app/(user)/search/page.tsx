@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
+import { ProductListCard } from '@/components/shop/ProductListCard'
 import { FilterSidebar } from './FilterSidebar'
 import { SortSelect } from './SortSelect'
 import { MobileFilter } from './MobileFilter'
@@ -104,9 +105,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                         </div>
 
                         {products && products.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="flex flex-col gap-3">
                                 {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
+                                    <ProductListCard key={product.id} product={product} />
                                 ))}
                             </div>
                         ) : (
