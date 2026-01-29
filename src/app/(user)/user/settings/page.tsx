@@ -43,12 +43,20 @@ export default async function UserSettingsPage() {
                             <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                                 <Phone className="h-4 w-4" /> Phone Number
                             </label>
-                            <input
-                                name="phone"
-                                defaultValue={profile?.phone_number || ''}
-                                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                                placeholder="+1 (555) 000-0000"
-                            />
+                            <div className="flex border border-input rounded-md shadow-sm bg-background focus-within:ring-1 focus-within:ring-ring focus-within:border-transparent transition-all overflow-hidden">
+                                <div className="px-3 py-2 bg-muted/50 border-r border-border text-sm text-muted-foreground font-medium select-none">
+                                    +91
+                                </div>
+                                <input
+                                    name="phone"
+                                    type="tel"
+                                    maxLength={10}
+                                    pattern="[0-9]{10}"
+                                    defaultValue={profile?.phone_number?.replace('+91', '').trim() || ''}
+                                    className="flex-1 w-full bg-transparent px-3 py-2 text-sm text-foreground focus:outline-none placeholder:text-muted-foreground/50"
+                                    placeholder="9876543210"
+                                />
+                            </div>
                         </div>
 
                         <div className="space-y-2 opacity-50 cursor-not-allowed">

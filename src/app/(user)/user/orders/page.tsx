@@ -58,7 +58,11 @@ export default async function OrdersPage() {
                         // Get the first product to display as the main thumbnail
                         const firstItem = order.items?.[0]
                         const product = firstItem?.product
-                        const image = product?.images?.[0]
+
+                        // Find primary image or first image from the relation
+                        const productImages = product?.product_images as any[] | undefined
+                        const imageObj = productImages?.find((img: any) => img.is_primary) || productImages?.[0]
+                        const image = imageObj?.cloudinary_url
 
                         // Status Config
                         let statusColor = "text-blue-600"
