@@ -66,6 +66,10 @@ export default async function AdminOrdersPage() {
         }
     }
 
+    // Debug 3: Who am I? And can I see ANY items?
+    const { data: { user: currentUser } } = await supabase.auth.getUser();
+    const { data: anyItems } = await supabase.from('order_items').select('id, order_id').limit(5);
+
     // Merge logic
     const orders = ordersData?.map(o => ({
         ...o,
@@ -103,7 +107,11 @@ export default async function AdminOrdersPage() {
                     {' | '}
                     Last Error: {debugError ? JSON.stringify(debugError) : 'None'}
                     {' | '}
-                    Raw Fallback Items: {debugRawItems?.length || 'N/A'}
+                    Raw Fallback Items: {debugRawItems?.length ?? 'N/A'}
+                    {' | '}
+                    User: {currentUser?.email} (Role: {currentUser?.role})
+                    {' | '}
+                    Global Check: {anyItems?.length || 0} items visible in DB.
                 </div>
             </div>
 
