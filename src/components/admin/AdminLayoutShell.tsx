@@ -9,7 +9,7 @@ export function AdminLayoutShell({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     return (
-        <div className="flex h-screen w-full bg-gray-950 text-white">
+        <div className="flex h-screen w-full bg-gray-50 text-gray-900">
             {/* Desktop Sidebar */}
             <div className="hidden md:block">
                 <AdminSidebar />
@@ -25,7 +25,7 @@ export function AdminLayoutShell({ children }: { children: React.ReactNode }) {
                     />
 
                     {/* Sidebar Content */}
-                    <div className="relative h-full w-64 bg-black shadow-xl animate-in slide-in-from-left duration-200">
+                    <div className="relative h-full w-64 bg-white shadow-xl animate-in slide-in-from-left duration-200">
                         <AdminSidebar onNavigate={() => setIsSidebarOpen(false)} />
                     </div>
                 </div>
@@ -33,8 +33,8 @@ export function AdminLayoutShell({ children }: { children: React.ReactNode }) {
 
             <div className="flex flex-1 flex-col overflow-hidden">
                 <AdminTopbar onSidebarToggle={() => setIsSidebarOpen(true)} />
-                <main className="flex-1 overflow-y-auto p-8 text-white bg-black">
-                    <div className="text-white h-full">{children}</div>
+                <main className="flex-1 overflow-y-auto p-8 text-gray-900 bg-gray-50">
+                    <div className="text-gray-900 h-full">{children}</div>
                 </main>
             </div>
         </div>
