@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, cn } from '@/lib/utils'
 import { Package, Clock, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -60,9 +60,9 @@ export default async function OrdersPage() {
                             statusText = "Order Cancelled"
                             statusBg = "bg-red-50"
                         } else if (order.status === 'shipped') {
-                            statusColor = "text-indigo-600"
+                            statusColor = "text-yellow-600"
                             statusText = "Shipped"
-                            statusBg = "bg-indigo-50"
+                            statusBg = "bg-yellow-50"
                         }
 
                         // Date Format
