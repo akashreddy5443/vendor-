@@ -12,8 +12,8 @@ export default async function AdminAboutSettingsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">About Page Settings</h2>
-                <p className="text-gray-400">Customize the dedicated /about page.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">About Page Settings</h2>
+                <p className="text-gray-500">Customize the dedicated /about page.</p>
             </div>
 
             <AboutSettingsForm initialData={section} />

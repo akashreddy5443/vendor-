@@ -17,8 +17,8 @@ export default async function NotificationSettingsPage() {
     return (
         <div className="max-w-4xl space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">Notification & Email Settings</h2>
-                <p className="text-gray-400">Manage user notification options and email templates.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">Notification & Email Settings</h2>
+                <p className="text-gray-500">Manage user notification options and email templates.</p>
             </div>
 
             <NotificationSettingsForm

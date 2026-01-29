@@ -21,8 +21,8 @@ export default async function LayoutSitePage() {
     return (
         <div className="p-8 space-y-8">
             <div>
-                <h1 className="text-3xl font-bold font-serif mb-2">Site Layout</h1>
-                <p className="text-gray-400">Manage global elements like the announcement bar and footer.</p>
+                <h1 className="text-3xl font-bold font-serif mb-2 text-gray-900">Site Layout</h1>
+                <p className="text-gray-500">Manage global elements like the announcement bar and footer.</p>
             </div>
 
             <LayoutBuilder announcement={announcement} footer={footer} />

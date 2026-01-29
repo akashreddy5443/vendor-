@@ -34,43 +34,43 @@ export function SettingsForm({ settings }: { settings: any }) {
 
             {/* General Info */}
             <div className="space-y-4">
-                <h3 className="text-lg font-medium text-white border-b border-gray-800 pb-2">General Information</h3>
+                <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">General Information</h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label htmlFor="site_name" className="text-sm font-medium text-gray-400">Site Name</label>
+                        <label htmlFor="site_name" className="text-sm font-medium text-gray-700">Site Name</label>
                         <input
                             name="site_name"
                             id="site_name"
                             defaultValue={settings?.site_name}
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                            className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
                     <div className="space-y-2">
-                        <label htmlFor="contact_email" className="text-sm font-medium text-gray-400">Contact Email</label>
+                        <label htmlFor="contact_email" className="text-sm font-medium text-gray-700">Contact Email</label>
                         <input
                             name="contact_email"
                             id="contact_email"
                             defaultValue={settings?.contact_email}
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                            className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
                 </div>
 
                 {/* Logo Upload Section */}
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-400">
+                    <label className="text-sm font-medium text-gray-700">
                         Logo Image <span className="text-gray-500 text-xs ml-2">(Recommended: 512x512px Square or 200x50px Transparent PNG)</span>
                     </label>
                     <input type="hidden" name="logo_url" value={logoUrl} />
 
                     {logoUrl ? (
-                        <div className="relative w-32 h-32 rounded-lg border border-gray-700 bg-black/50 overflow-hidden group">
+                        <div className="relative w-32 h-32 rounded-lg border border-gray-200 bg-gray-50 overflow-hidden group">
                             <img src={logoUrl} alt="Logo Preview" className="h-full w-full object-contain p-2" />
                             <button
                                 type="button"
                                 onClick={() => setLogoUrl('')}
-                                className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute right-2 top-2 rounded-full bg-red-600 p-1.5 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                             >
                                 <X className="h-4 w-4" />
                             </button>
@@ -93,7 +93,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                                 <button
                                     type="button"
                                     onClick={() => open()}
-                                    className="flex items-center gap-2 px-6 py-4 bg-zinc-900 hover:bg-zinc-800 text-gray-300 hover:text-white rounded-lg border border-dashed border-zinc-700 transition-colors w-full md:w-auto"
+                                    className="flex items-center gap-2 px-6 py-4 bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-gray-900 rounded-lg border border-dashed border-gray-300 transition-colors w-full md:w-auto"
                                 >
                                     <ImagePlus className="h-5 w-5" />
                                     <span>Upload Logo</span>
@@ -104,23 +104,23 @@ export function SettingsForm({ settings }: { settings: any }) {
                 </div>
 
                 <div className="space-y-2">
-                    <label htmlFor="description" className="text-sm font-medium text-gray-400">Site Description (SEO)</label>
+                    <label htmlFor="description" className="text-sm font-medium text-gray-700">Site Description (SEO)</label>
                     <textarea
                         name="description"
                         id="description"
                         defaultValue={settings?.description}
                         rows={3}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                     />
                 </div>
             </div>
 
             {/* Pricing & Tax */}
             <div className="space-y-4">
-                <h3 className="text-lg font-medium text-white border-b border-gray-800 pb-2">Pricing & Tax</h3>
+                <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">Pricing & Tax</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-400">Global Discount (%) - Applied to ALL products</label>
+                        <label className="text-sm font-medium text-gray-700">Global Discount (%) - Applied to ALL products</label>
                         <input
                             type="number"
                             name="global_discount_percentage"
@@ -128,11 +128,11 @@ export function SettingsForm({ settings }: { settings: any }) {
                             min="0"
                             max="100"
                             step="0.1"
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                            className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-400">Default GST Rate (%)</label>
+                        <label className="text-sm font-medium text-gray-700">Default GST Rate (%)</label>
                         <input
                             type="number"
                             name="default_gst_percentage"
@@ -140,7 +140,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                             min="0"
                             max="100"
                             step="0.1"
-                            className="w-full bg-gray-950 border border-gray-800 rounded-md p-2 text-white focus:border-blue-500 outline-none"
+                            className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
                 </div>
@@ -148,15 +148,15 @@ export function SettingsForm({ settings }: { settings: any }) {
 
             {/* Danger Zone */}
             <div className="space-y-4 pt-4">
-                <h3 className="text-lg font-medium text-red-400 flex items-center gap-2 border-b border-red-900/30 pb-2">
+                <h3 className="text-lg font-medium text-red-600 flex items-center gap-2 border-b border-red-100 pb-2">
                     <AlertTriangle className="h-5 w-5" />
                     Danger Zone
                 </h3>
 
-                <div className="flex items-center justify-between p-4 border border-red-900/30 bg-red-900/10 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-red-200 bg-red-50 rounded-lg">
                     <div>
-                        <div className="font-medium text-white">Maintenance Mode</div>
-                        <div className="text-sm text-gray-400">Disable store access for customers.</div>
+                        <div className="font-medium text-red-900">Maintenance Mode</div>
+                        <div className="text-sm text-red-700">Disable store access for customers.</div>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
@@ -165,7 +165,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                             defaultChecked={settings?.maintenance_mode}
                             className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                        <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                     </label>
                 </div>
             </div>
@@ -174,7 +174,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="flex items-center justify-center gap-2 w-full md:w-auto px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 w-full md:w-auto px-8 py-3 bg-gray-900 text-white font-bold rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 shadow-md"
                 >
                     <Save className="h-4 w-4" />
                     {isPending ? 'Saving...' : 'Save Changes'}
@@ -191,7 +191,7 @@ export function SettingsForm({ settings }: { settings: any }) {
                                 else setMessage(res.success || 'Fixed!')
                             })
                         }}
-                        className="text-xs text-gray-500 hover:text-gray-300 underline"
+                        className="text-xs text-gray-500 hover:text-red-500 underline"
                     >
                         Repair Database Permissions
                     </button>

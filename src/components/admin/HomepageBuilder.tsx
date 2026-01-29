@@ -131,25 +131,25 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
     return (
         <div className="max-w-4xl space-y-8">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">Homepage Builder</h2>
-                <p className="text-gray-400">Manage your homepage content.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">Homepage Builder</h2>
+                <p className="text-gray-500">Manage your homepage content.</p>
             </div>
 
             {/* Hero Slider Editor */}
-            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-green-500 flex items-center gap-2">
+            <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-bold text-green-600 flex items-center gap-2">
                     <ImagePlus className="w-5 h-5" /> Hero Slider (Promo)
                 </h3>
                 <form action={handleSliderSubmit} className="space-y-6">
                     <div className="space-y-4">
                         {slides.map((slide, index) => (
-                            <div key={slide.id} className="p-4 rounded-lg border border-gray-700 bg-gray-950/50">
+                            <div key={slide.id} className="p-4 rounded-lg border border-gray-200 bg-gray-50">
                                 <div className="flex justify-between items-start mb-4">
-                                    <h4 className="text-sm font-bold text-gray-300">Slide #{index + 1}</h4>
+                                    <h4 className="text-sm font-bold text-gray-700">Slide #{index + 1}</h4>
                                     <button
                                         type="button"
                                         onClick={() => removeSlide(index)}
-                                        className="text-red-500 hover:text-red-400"
+                                        className="text-red-500 hover:text-red-600"
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -161,32 +161,32 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                             value={slide.title}
                                             onChange={(e) => updateSlide(index, 'title', e.target.value)}
                                             placeholder="Headline"
-                                            className="w-full rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                            className="w-full rounded bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-blue-500 outline-none"
                                         />
                                         <input
                                             value={slide.subtitle}
                                             onChange={(e) => updateSlide(index, 'subtitle', e.target.value)}
                                             placeholder="Subtitle"
-                                            className="w-full rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                            className="w-full rounded bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-blue-500 outline-none"
                                         />
                                         <div className="flex gap-2">
                                             <input
                                                 value={slide.buttonText}
                                                 onChange={(e) => updateSlide(index, 'buttonText', e.target.value)}
                                                 placeholder="Button Text"
-                                                className="w-1/2 rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                                className="w-1/2 rounded bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-blue-500 outline-none"
                                             />
                                             <input
                                                 value={slide.link}
                                                 onChange={(e) => updateSlide(index, 'link', e.target.value)}
                                                 placeholder="Link"
-                                                className="w-1/2 rounded bg-gray-900 border border-gray-700 p-2 text-white text-sm"
+                                                className="w-1/2 rounded bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-blue-500 outline-none"
                                             />
                                         </div>
                                     </div>
 
                                     {/* Image Upload */}
-                                    <div className="relative aspect-video bg-gray-900 rounded border border-gray-700 overflow-hidden flex items-center justify-center group">
+                                    <div className="relative aspect-video bg-gray-100 rounded border border-gray-200 overflow-hidden flex items-center justify-center group">
                                         {slide.imageUrl ? (
                                             <>
                                                 <img src={slide.imageUrl} alt="Slide" className="w-full h-full object-contain" />
@@ -196,7 +196,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                                         onSuccess={(result: any) => updateSlide(index, 'imageUrl', result.info.secure_url)}
                                                     >
                                                         {({ open }) => (
-                                                            <button type="button" onClick={() => open()} className="bg-white text-black px-3 py-1 rounded text-xs font-bold">
+                                                            <button type="button" onClick={() => open()} className="bg-white text-black px-3 py-1 rounded text-xs font-bold shadow-sm hover:bg-gray-100">
                                                                 Change
                                                             </button>
                                                         )}
@@ -209,7 +209,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                                 onSuccess={(result: any) => updateSlide(index, 'imageUrl', result.info.secure_url)}
                                             >
                                                 {({ open }) => (
-                                                    <button type="button" onClick={() => open()} className="flex flex-col items-center text-gray-500 hover:text-white">
+                                                    <button type="button" onClick={() => open()} className="flex flex-col items-center text-gray-400 hover:text-gray-600">
                                                         <ImagePlus className="w-8 h-8 mb-2" />
                                                         <span className="text-xs">Upload Image</span>
                                                     </button>
@@ -223,10 +223,10 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     </div>
 
                     <div className="flex justify-between">
-                        <button type="button" onClick={addSlide} className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300">
+                        <button type="button" onClick={addSlide} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700">
                             <Plus className="w-4 h-4" /> Add Slide
                         </button>
-                        <button type="submit" className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm">
+                        <button type="submit" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-colors">
                             Save Slider
                         </button>
                     </div>
@@ -234,41 +234,41 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             </section>
 
             {/* Old Hero Section Editor (Collapsed or Deprecated visual) */}
-            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6 opacity-60 hover:opacity-100 transition-opacity">
-                <h3 className="mb-4 text-xl font-bold text-gray-500">Static Hero (Legacy)</h3>
+            <section className="rounded-xl border border-gray-200 bg-white p-6 opacity-60 hover:opacity-100 transition-opacity">
+                <h3 className="mb-4 text-xl font-bold text-gray-400">Static Hero (Legacy)</h3>
                 <form action={handleHeroSubmit} className="space-y-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Main Headline</label>
+                        <label className="text-sm font-medium text-gray-700">Main Headline</label>
                         <input
                             name="title"
                             defaultValue={heroSection?.title}
                             placeholder="LEVEL UP YOUR SETUP"
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Subtitle</label>
+                        <label className="text-sm font-medium text-gray-700">Subtitle</label>
                         <textarea
                             name="subtitle"
                             defaultValue={heroSection?.subtitle}
                             rows={3}
                             placeholder="Premium gear for developers..."
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Background Image</label>
+                        <label className="text-sm font-medium text-gray-700">Background Image</label>
                         <input type="hidden" name="imageUrl" value={heroImage} />
 
                         {heroImage ? (
-                            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-700">
+                            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-200">
                                 <img src={heroImage} alt="Hero Background" className="h-full w-full object-cover" />
                                 <button
                                     type="button"
                                     onClick={() => setHeroImage('')}
-                                    className="absolute right-2 top-2 rounded-full bg-black/50 p-1 text-white hover:bg-black/70"
+                                    className="absolute right-2 top-2 rounded-full bg-white/80 p-1 text-red-600 hover:bg-white shadow-sm"
                                 >
                                     <X className="h-4 w-4" />
                                 </button>
@@ -286,10 +286,10 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                     <button
                                         type="button"
                                         onClick={() => open()}
-                                        className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-700 hover:border-blue-500 hover:bg-gray-800/50"
+                                        className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 hover:border-blue-500 hover:bg-gray-50 transition-colors"
                                     >
                                         <ImagePlus className="h-8 w-8 text-gray-400" />
-                                        <span className="text-sm text-gray-400">Upload Hero Image</span>
+                                        <span className="text-sm text-gray-500">Upload Hero Image</span>
                                     </button>
                                 )}
                             </CldUploadWidget>
@@ -299,7 +299,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
                         >
                             Update Hero
                         </button>
@@ -308,14 +308,14 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             </section>
 
             {/* Featured Products Editor */}
-            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-blue-500">Featured Products</h3>
-                <p className="mb-4 text-sm text-gray-400">Select products to display on the homepage (Max 3-6 recommended).</p>
+            <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-bold text-blue-600">Featured Products</h3>
+                <p className="mb-4 text-sm text-gray-500">Select products to display on the homepage (Max 3-6 recommended).</p>
 
                 <form action={handleFeaturedSubmit} className="space-y-6">
                     <input type="hidden" name="productIds" value={JSON.stringify(selectedProductIds)} />
 
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 max-h-96 overflow-y-auto p-2 border border-gray-800 rounded-md">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-md bg-gray-50">
                         {products.map((product) => {
                             const isSelected = selectedProductIds.includes(product.id)
                             return (
@@ -323,12 +323,12 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                     key={product.id}
                                     onClick={() => toggleProduct(product.id)}
                                     className={`cursor-pointer rounded-lg border p-3 transition-colors flex items-center justify-between ${isSelected
-                                        ? 'border-blue-500 bg-blue-500/10'
-                                        : 'border-gray-800 bg-gray-950 hover:border-gray-700'
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200 bg-white hover:border-gray-300'
                                         }`}
                                 >
-                                    <span className="text-sm font-medium text-white truncate">{product.title}</span>
-                                    {isSelected && <Check className="h-4 w-4 text-blue-500" />}
+                                    <span className="text-sm font-medium text-gray-900 truncate">{product.title}</span>
+                                    {isSelected && <Check className="h-4 w-4 text-blue-600" />}
                                 </div>
                             )
                         })}
@@ -338,7 +338,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
                         >
                             Update Featured
                         </button>
@@ -346,15 +346,15 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                 </form>
             </section>
             {/* Categories Editor */}
-            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+            <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h3 className="text-xl font-bold text-blue-500">Shop by Category</h3>
-                        <p className="text-sm text-gray-400">Edit the circular category links on the homepage.</p>
+                        <h3 className="text-xl font-bold text-blue-600">Shop by Category</h3>
+                        <p className="text-sm text-gray-500">Edit the circular category links on the homepage.</p>
                     </div>
                     <button
                         onClick={addCategory}
-                        className="flex items-center gap-2 rounded-md bg-blue-600/10 px-3 py-1.5 text-sm font-medium text-blue-400 hover:bg-blue-600/20"
+                        className="flex items-center gap-2 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-100"
                     >
                         <Plus className="h-4 w-4" /> Add Category
                     </button>
@@ -366,14 +366,14 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
                     <div className="space-y-4">
                         {categories.map((cat, index) => (
-                            <div key={index} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-950 p-4 rounded-lg border border-gray-800">
+                            <div key={index} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-50 p-4 rounded-lg border border-gray-200">
                                 <div className="flex-1 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 w-full">
                                     <div className="space-y-1">
                                         <label className="text-xs text-gray-500">Name</label>
                                         <input
                                             value={cat.name}
                                             onChange={(e) => updateCategory(index, 'name', e.target.value)}
-                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
                                             placeholder="Laptops"
                                         />
                                     </div>
@@ -382,7 +382,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                         <input
                                             value={cat.icon}
                                             onChange={(e) => updateCategory(index, 'icon', e.target.value)}
-                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
                                             placeholder="💻"
                                         />
                                     </div>
@@ -391,7 +391,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                         <input
                                             value={cat.href}
                                             onChange={(e) => updateCategory(index, 'href', e.target.value)}
-                                            className="w-full rounded bg-black border border-gray-700 p-2 text-sm text-white"
+                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
                                             placeholder="/search?category=..."
                                         />
                                     </div>
@@ -399,7 +399,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                 <button
                                     type="button"
                                     onClick={() => removeCategory(index)}
-                                    className="p-2 text-gray-500 hover:text-red-500 mt-4 sm:mt-0"
+                                    className="p-2 text-gray-400 hover:text-red-500 mt-4 sm:mt-0 transition-colors"
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </button>
@@ -410,7 +410,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
                         >
                             Update Categories
                         </button>
@@ -419,36 +419,36 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             </section>
 
             {/* Footer Settings Editor */}
-            <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
-                <h3 className="mb-4 text-xl font-bold text-blue-500">Footer Settings</h3>
-                <p className="mb-4 text-sm text-gray-400">Manage your footer copyright and credits.</p>
+            <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="mb-4 text-xl font-bold text-blue-600">Footer Settings</h3>
+                <p className="mb-4 text-sm text-gray-500">Manage your footer copyright and credits.</p>
 
                 <form action={handleFooterSubmit} className="space-y-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Copyright Text (Brand Name)</label>
+                        <label className="text-sm font-medium text-gray-700">Copyright Text (Brand Name)</label>
                         <input
                             name="copyrightText"
                             defaultValue={footerSection?.content_json?.copyrightText || 'TECHDEV'}
                             placeholder="TECHDEV"
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
                         />
                         <p className="text-xs text-gray-500">The "DEV" part is often styled blue in code, but here just enter the text.</p>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-200">Credits Text</label>
+                        <label className="text-sm font-medium text-gray-700">Credits Text</label>
                         <input
                             name="creditsText"
                             defaultValue={footerSection?.content_json?.creditsText || 'Designed and Developed by Akash'}
                             placeholder="Designed and Developed by..."
-                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
                         />
                     </div>
 
                     <div className="pt-4">
                         <button
                             type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-500"
+                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
                         >
                             Update Footer
                         </button>

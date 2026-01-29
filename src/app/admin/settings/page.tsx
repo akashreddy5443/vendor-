@@ -12,11 +12,11 @@ export default async function AdminSettingsPage() {
     return (
         <div className="max-w-2xl space-y-6">
             <div>
-                <h2 className="text-3xl font-bold tracking-tight text-white">Site Settings</h2>
-                <p className="text-gray-400">Configure global website options.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900">Site Settings</h2>
+                <p className="text-gray-500">Configure global website options.</p>
             </div>
 
-            <div className="rounded-xl border border-gray-800 bg-gray-900 p-6">
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <SettingsForm settings={settings} />
             </div>
         </div>

@@ -172,17 +172,17 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     </div>
                 </div>
             </div>
-        </div>
 
-        {/* Similar Products Section */ }
-    {
-        categories && (
-            <SimilarProducts
-                categoryId={categories.id}
-                currentProductId={product.id}
-            />
-        )
-    }
+            {/* Similar Products Section */}
+            {
+                categories && (
+                    <SimilarProducts
+                        categoryId={categories.id}
+                        currentProductId={product.id}
+                    />
+                )
+            }
+        </div>
     </div >
     )
 }
