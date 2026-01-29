@@ -64,16 +64,40 @@ export async function Footer() {
                         <div>
                             <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-white/40">Legal</h3>
                             <ul className="space-y-4 text-sm font-medium text-white/80">
-                                <li><Link href="/terms" className="hover:text-white hover:translate-x-1 transition-all inline-block">Terms of Service</Link></li>
-                                <li><Link href="/privacy" className="hover:text-white hover:translate-x-1 transition-all inline-block">Privacy Policy</Link></li>
-                                <li><Link href="/cookies" className="hover:text-white hover:translate-x-1 transition-all inline-block">Cookie Policy</Link></li>
+                                <li><Link href="/legal/terms" className="hover:text-white hover:translate-x-1 transition-all inline-block">Terms of Service</Link></li>
+                                <li><Link href="/legal/privacy" className="hover:text-white hover:translate-x-1 transition-all inline-block">Privacy Policy</Link></li>
+                                <li><Link href="/legal/shipping" className="hover:text-white hover:translate-x-1 transition-all inline-block">Shipping Policy</Link></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
+                {/* Payment & Trust Badges (New Professional Section) */}
+                <div className="mt-16 border-t border-white/10 pt-8 pb-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="text-center md:text-left">
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-3">100% Secure Payments</h4>
+                            <div className="flex gap-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                                {/* Simple CSS placeholders or SVG icons for Visa, MC, UPI */}
+                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-[#191970] text-[10px] italic border border-white/20">VISA</div>
+                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-red-600 text-[10px] border border-white/20">MC</div>
+                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-blue-600 text-[10px] border border-white/20">RUPAY</div>
+                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-green-600 text-[10px] border border-white/20">UPI</div>
+                            </div>
+                        </div>
+                        <div className="text-center md:text-right">
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-3">Trust & Certifications</h4>
+                            <div className="flex gap-4 text-xs font-medium text-white/60">
+                                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-green-500"></div> SSL Encrypted</span>
+                                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-blue-500"></div> Verified Seller</span>
+                                <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-yellow-500"></div> 100% Authentic</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Bottom Bar */}
-                <div className="mt-20 flex flex-col items-center justify-between gap-8 border-t border-white/10 pt-10 sm:flex-row">
+                <div className="flex flex-col items-center justify-between gap-8 border-t border-white/10 pt-10 sm:flex-row">
 
                     {/* Pickers */}
                     <div className="flex gap-4">
