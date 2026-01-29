@@ -15,30 +15,30 @@ export default async function SubscribersPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-white">Subscribers</h1>
-                    <p className="text-gray-400">View and manage newsletter subscriptions.</p>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Subscribers</h1>
+                    <p className="text-gray-500">View and manage newsletter subscriptions.</p>
                 </div>
-                <div className="bg-zinc-900 px-4 py-2 rounded-lg border border-zinc-800 text-white font-mono">
-                    Total: <span className="text-blue-500 font-bold">{subscribers?.length || 0}</span>
+                <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 text-gray-900 font-mono shadow-sm">
+                    Total: <span className="text-blue-600 font-bold">{subscribers?.length || 0}</span>
                 </div>
             </div>
 
-            <Card className="bg-zinc-900 border-zinc-800 text-white">
+            <Card className="bg-white border-gray-200 text-gray-900 shadow-sm">
                 <CardHeader>
                     <CardTitle>Recent Subscribers</CardTitle>
                     <CardDescription>List of all users who opted into the newsletter.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="divide-y divide-zinc-800">
+                    <div className="divide-y divide-gray-100">
                         {subscribers && subscribers.length > 0 ? (
                             subscribers.map((sub: any) => (
-                                <div key={sub.id} className="flex items-center justify-between py-4">
+                                <div key={sub.id} className="flex items-center justify-between py-4 hover:bg-gray-50 -mx-6 px-6 transition-colors">
                                     <div className="flex items-center gap-4">
-                                        <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+                                        <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                                             <Mail className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-white">{sub.email}</p>
+                                            <p className="font-medium text-gray-900">{sub.email}</p>
                                             <p className="text-xs text-gray-500 flex items-center gap-1">
                                                 <Calendar className="h-3 w-3" />
                                                 {new Date(sub.subscribed_at).toLocaleDateString()} at {new Date(sub.subscribed_at).toLocaleTimeString()}

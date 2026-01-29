@@ -25,7 +25,7 @@ export function SubscriberActions({ id }: { id: string }) {
         <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="p-2 bg-red-900/20 text-red-500 rounded-md hover:bg-red-900/40 transition-colors disabled:opacity-50"
+            className="p-2 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors disabled:opacity-50"
             title="Remove Subscriber"
         >
             {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}

@@ -70,13 +70,13 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-transparent hover:bg-transparent transition-none">
+            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100/50 hover:shadow-lg transition-all duration-300">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-[1.15/1] relative overflow-hidden flex items-center justify-center bg-[#F7F7F7] mb-3">
+                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-50/50">
 
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-6 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
@@ -86,22 +86,22 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                             />
                         </div>
                     ) : (
-                        <div className="h-full w-full bg-[#F7F7F7] flex items-center justify-center text-muted-foreground text-sm z-10">
+                        <div className="h-full w-full bg-gray-50 flex items-center justify-center text-muted-foreground text-sm z-10">
                             No Image
                         </div>
                     )}
 
-                    {/* Stock & Promo Badges */}
+                    {/* Stock & Promo Badges - Curved */}
                     {isOutOfStock ? (
                         <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
-                            <span className="bg-white text-black px-3 py-1 text-xs font-bold uppercase tracking-wider shadow-sm transform -rotate-2">
+                            <span className="bg-white text-black px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm rounded-full transform -rotate-2">
                                 Out of Stock
                             </span>
                         </div>
                     ) : (
                         hasDiscount && (
-                            <div className="absolute bottom-2 left-2 z-20">
-                                <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
+                            <div className="absolute top-3 left-3 z-20">
+                                <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
                                     -{effectiveDiscount}%
                                 </span>
                             </div>
@@ -110,14 +110,14 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                 </div>
 
-                <div className="flex flex-col relative z-30 pointer-events-none px-1">
+                <div className="flex flex-col relative z-30 pointer-events-none p-4">
                     {/* Placeholder for Color variants count */}
                     <div className="text-[10px] uppercase tracking-wider text-gray-500 font-medium mb-1">
                         1 Color
                     </div>
 
-                    <div className="flex justify-between items-start gap-4">
-                        <h3 className="text-base font-bold text-black leading-tight group-hover:underline decoration-2 decoration-black underline-offset-4 line-clamp-2 flex-grow">
+                    <div className="flex justify-between items-start gap-3">
+                        <h3 className="text-base font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 flex-grow">
                             {product.title}
                         </h3>
                         <div className="flex flex-col items-end">
@@ -133,9 +133,9 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                     </div>
                 </div>
 
-                {/* Hidden interactive elements that could overlay or appear on hover if requested later */}
-                <div className="absolute top-2 right-2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto">
-                    <WishlistToggle productId={product.id} className="bg-white/90 hover:bg-white text-black rounded-full p-2 shadow-sm" />
+                {/* Hidden interactive elements */}
+                <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto scale-90 md:scale-100">
+                    <WishlistToggle productId={product.id} className="bg-white hover:bg-gray-50 text-black border border-gray-100 rounded-full p-2.5 shadow-md transition-transform active:scale-95" />
                 </div>
             </div>
 
