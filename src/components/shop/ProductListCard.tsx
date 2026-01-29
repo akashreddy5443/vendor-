@@ -10,9 +10,23 @@ import { useCart } from '@/context/CartContext'
 export function ProductListCard({ product }: { product: any }) {
     const router = useRouter()
     const { addItem } = useCart()
+
+    // Calculate final price if compare_at_price is set, or just use price.
+    // In this project schema: price is the selling price, compare_at_price is the MSRP.
+    // So 'price' is the correct final price.
+
     const discount = product.compare_at_price > product.price
         ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
         : 0
+
+    const cartItemPayload = {
+        productId: product.id,
+        title: product.title,
+        price: product.price,
+        maxStock: product.stock ?? 10,
+        image: product.product_images?.[0]?.cloudinary_url || '/placeholder.png',
+        gstPercentage: product.gst_percentage || 18
+    }
 
     // Mock features if not present in DB
     const features = product.features || [
@@ -95,14 +109,14 @@ export function ProductListCard({ product }: { product: any }) {
                     {/* Actions */}
                     <div className="mt-auto space-y-2">
                         <button
-                            onClick={() => addItem(product, 1)}
+                            onClick={() => addItem(cartItemPayload, 1)}
                             className="w-full bg-[#ff9f00] hover:bg-[#f39400] text-white font-medium py-3 rounded-sm shadow-sm transition-colors text-sm uppercase tracking-wide"
                         >
                             Add to Cart
                         </button>
                         <button
                             onClick={() => {
-                                addItem(product, 1)
+                                addItem(cartItemPayload, 1)
                                 router.push('/checkout')
                             }}
                             className="w-full bg-[#fb641b] hover:bg-[#f45f17] text-white font-medium py-3 rounded-sm shadow-sm transition-colors text-sm uppercase tracking-wide"
