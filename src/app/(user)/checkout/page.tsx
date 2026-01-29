@@ -10,7 +10,7 @@ import { Loader2, CheckCircle, MapPin, CreditCard, Trash2 } from 'lucide-react'
 import { createOrder, validateCoupon } from './actions'
 
 export default function CheckoutPage() {
-    const { items: cart, cartTotal: total, clearCart } = useCart()
+    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart } = useCart()
     const [addresses, setAddresses] = useState<any[]>([])
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)
@@ -230,8 +230,12 @@ export default function CheckoutPage() {
                             )}
 
                             <div className="flex justify-between text-[#191970]/70 text-sm font-medium pt-4 border-t border-gray-100">
-                                <span>Subtotal</span>
-                                <span className="font-bold text-[#191970]">{formatPrice(total)}</span>
+                                <span>Subtotal (Base Price)</span>
+                                <span className="font-bold text-[#191970]">{formatPrice(subtotal)}</span>
+                            </div>
+                            <div className="flex justify-between text-[#191970]/70 text-sm font-medium">
+                                <span>GST (18%)</span>
+                                <span className="font-bold text-[#191970]">{formatPrice(taxTotal)}</span>
                             </div>
                             <div className="flex justify-between text-[#191970]/70 text-sm font-medium">
                                 <span>Shipping</span>
