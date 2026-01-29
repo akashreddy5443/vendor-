@@ -1,68 +1,77 @@
-import { CheckCircle, Circle, Clock, Package, Truck, XCircle } from 'lucide-react'
+import { Check, Clock, Package, Truck, Star, Circle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface OrderTimelineProps {
     status: string
-    className?: string
+    created_at?: string
 }
 
-export function OrderTimeline({ status, className }: OrderTimelineProps) {
-    const steps = [
-        { id: 'pending', label: 'Order Placed', icon: Clock },
-        { id: 'processing', label: 'Processing', icon: Package },
-        { id: 'shipped', label: 'Shipped', icon: Truck },
-        { id: 'delivered', label: 'Delivered', icon: CheckCircle },
-    ]
-
-    // Handle cancelled separately or as a final state override
-    if (status === 'cancelled') {
+export function OrderTimeline({ status, created_at }: OrderTimelineProps) {
+    // If delivered, show the "Green Banner" style from Meesho
+    if (status === 'delivered') {
         return (
-            <div className={cn("w-full py-6", className)}>
-                <div className="flex items-center justify-center p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 gap-2">
-                    <XCircle className="h-6 w-6" />
-                    <span className="font-bold">Order Cancelled</span>
+            <div className="bg-green-50 border border-green-100 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-green-500 rounded-full p-1">
+                        <Check className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-gray-900">Delivered Early</h3>
+                        <p className="text-xs text-gray-500">Thu, 22 Jan</p>
+                    </div>
+                </div>
+                <div className="bg-green-100/50 rounded px-3 py-2 text-sm text-green-800 flex items-center gap-2">
+                    <span className="text-yellow-600">⚡</span>
+                    Yay! Your order was delivered in just 5 days.
                 </div>
             </div>
         )
     }
 
-    const currentStepIndex = steps.findIndex(s => s.id === status)
-    // If status is not found (e.g. 'paid' which equates to processing for us maybe?), map it
-    // Mapping commonly used statuses to our timeline keys
-    let effectiveIndex = currentStepIndex
-    if (status === 'paid') effectiveIndex = 1 // Treat paid as processing start
-    if (status === 'confirmed') effectiveIndex = 1
-    if (effectiveIndex === -1) effectiveIndex = 0 // Default to start
+    // For active orders, show a vertical or horizontal tracker
+    const steps = [
+        { id: 'pending', label: 'Order Placed', icon: Clock },
+        { id: 'processing', label: 'Processing', icon: Package },
+        { id: 'shipped', label: 'Shipped', icon: Truck },
+        { id: 'delivered', label: 'Delivered', icon: Check },
+    ]
+
+    const getStepStatus = (stepId: string) => {
+        const order = ['pending', 'processing', 'shipped', 'delivered']
+        const currentIdx = order.indexOf(status)
+        const stepIdx = order.indexOf(stepId)
+
+        if (stepIdx < currentIdx) return 'completed'
+        if (stepIdx === currentIdx) return 'current'
+        return 'upcoming'
+    }
 
     return (
-        <div className={cn("w-full py-6", className)}>
-            <div className="relative flex items-center justify-between w-full max-w-3xl mx-auto">
-                {/* Progress Bar Background */}
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-800 rounded-full -z-10" />
-
-                {/* Progress Bar Active */}
-                <div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 rounded-full -z-10 transition-all duration-500"
-                    style={{ width: `${(effectiveIndex / (steps.length - 1)) * 100}%` }}
-                />
+        <div className="w-full py-4">
+            <div className="relative flex items-center justify-between w-full">
+                {/* Connecting Line */}
+                <div className="absolute top-4 left-0 w-full h-0.5 bg-gray-200 -z-10" />
 
                 {steps.map((step, index) => {
-                    const isCompleted = index <= effectiveIndex
-                    const isCurrent = index === effectiveIndex
+                    const stepStatus = getStepStatus(step.id)
                     const Icon = step.icon
 
                     return (
-                        <div key={step.id} className="flex flex-col items-center gap-2">
+                        <div key={step.id} className="flex flex-col items-center flex-1 bg-white">
+                            {/* Icon Circle */}
                             <div className={cn(
-                                "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 bg-background",
-                                isCompleted ? "border-blue-600 text-blue-600 bg-blue-600/10" : "border-gray-600 text-gray-600"
+                                "w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors z-10",
+                                stepStatus === 'completed' || stepStatus === 'current'
+                                    ? "bg-green-500 border-green-500 text-white"
+                                    : "bg-white border-gray-300 text-gray-300"
                             )}>
-                                <Icon className="h-4 w-4" />
+                                <Icon className="w-4 h-4" />
                             </div>
+
+                            {/* Label */}
                             <span className={cn(
-                                "text-xs font-medium absolute -bottom-6 w-32 text-center",
-                                isCompleted ? "text-blue-500" : "text-muted-foreground",
-                                isCurrent && "font-bold text-foreground"
+                                "mt-2 text-[10px] md:text-xs font-medium uppercase tracking-wide",
+                                (stepStatus === 'completed' || stepStatus === 'current') ? "text-green-600" : "text-gray-400"
                             )}>
                                 {step.label}
                             </span>
@@ -70,8 +79,6 @@ export function OrderTimeline({ status, className }: OrderTimelineProps) {
                     )
                 })}
             </div>
-            {/* Spacer for bottom labels */}
-            <div className="h-8" />
         </div>
     )
 }
