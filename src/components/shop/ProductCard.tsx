@@ -70,18 +70,18 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100/50 hover:shadow-lg transition-all duration-300">
+            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-50/50">
+                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-100/50 group-hover:bg-gray-100 transition-colors">
 
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-6 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
@@ -101,8 +101,8 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                     ) : (
                         hasDiscount && (
                             <div className="absolute top-3 left-3 z-20">
-                                <span className="bg-[#BA2B2B] text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
-                                    -{effectiveDiscount}%
+                                <span className="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                    <span className="text-[8px]">SAVE</span> {effectiveDiscount}%
                                 </span>
                             </div>
                         )
@@ -110,32 +110,39 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                 </div>
 
-                <div className="flex flex-col relative z-30 pointer-events-none p-4">
+                <div className="flex flex-col relative z-30 pointer-events-none p-5 flex-grow">
                     {/* Placeholder for Color variants count */}
-                    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-medium mb-1">
-                        1 Color
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2">
+                        TechDev Gear
                     </div>
 
-                    <div className="flex justify-between items-start gap-3">
-                        <h3 className="text-base font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 flex-grow">
+                    <div className="flex flex-col justify-between h-full gap-2">
+                        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
                             {product.title}
                         </h3>
-                        <div className="flex flex-col items-end">
-                            <span className={`font-bold text-sm ${isOutOfStock ? 'text-gray-400' : 'text-[#BA2B2B]'}`}>
-                                {formatPrice(finalPrice)}
-                            </span>
-                            {hasDiscount && (
-                                <span className="text-[11px] text-gray-500 line-through decoration-gray-400">
-                                    {formatPrice(product.price)}
+
+                        <div className="pt-2 border-t border-gray-50 mt-auto flex items-end justify-between">
+                            <div className="flex flex-col">
+                                {hasDiscount && (
+                                    <span className="text-[11px] text-gray-400 line-through font-medium">
+                                        {formatPrice(product.price)}
+                                    </span>
+                                )}
+                                <span className={`font-bold text-lg ${isOutOfStock ? 'text-gray-400' : 'text-gray-900'}`}>
+                                    {formatPrice(finalPrice)}
                                 </span>
-                            )}
+                            </div>
+                            {/* Visual indicator for 'Add' (Decorative, functionality is via Link or QuickView implies detail) */}
+                            <div className="h-8 w-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                                <ShoppingCart className="h-4 w-4" />
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Hidden interactive elements */}
-                <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto scale-90 md:scale-100">
-                    <WishlistToggle productId={product.id} className="bg-white hover:bg-gray-50 text-black border border-gray-100 rounded-full p-2.5 shadow-md transition-transform active:scale-95" />
+                <div className="absolute top-3 right-3 z-30 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto scale-100">
+                    <WishlistToggle productId={product.id} className="bg-white hover:bg-red-50 text-gray-400 hover:text-red-500 border border-gray-200 rounded-full p-2 shadow-sm transition-all hover:scale-110 active:scale-95" />
                 </div>
             </div>
 
