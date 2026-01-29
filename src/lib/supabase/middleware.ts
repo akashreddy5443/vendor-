@@ -44,9 +44,22 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     // Protected Routes Logic
-    if (request.nextUrl.pathname.startsWith('/admin')) {
+    // Protected Routes Logic
+    if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
         if (!user) {
             return NextResponse.redirect(new URL('/login', request.url))
+        }
+
+        // Verify Admin Role
+        const { data: userProfile } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+        if (userProfile?.role !== 'admin') {
+            // Redirect non-admins to homepage
+            return NextResponse.redirect(new URL('/', request.url))
         }
     }
 
