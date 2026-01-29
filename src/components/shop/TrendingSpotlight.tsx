@@ -50,14 +50,19 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                 </div>
                             )}
 
-                            <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-sm z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                <span className="text-white/90 text-xs font-bold uppercase tracking-widest mb-2 block">{content.hero.tag}</span>
-                                <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 uppercase leading-none shadow-sm drop-shadow-lg">
+                            <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-lg z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                                <span className="text-white/90 text-xs font-bold uppercase tracking-widest mb-2 block animate-in fade-in slide-in-from-bottom-2 duration-500">{content.hero.tag}</span>
+                                <h3 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase leading-[0.9] shadow-sm drop-shadow-lg">
                                     {content.hero.title}
                                 </h3>
-                                <Link href={content.hero.link} className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                                    Explore
+                                {(content.hero as any).description && (
+                                    <p className="text-gray-200 text-sm md:text-base font-medium mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-w-md">
+                                        {(content.hero as any).description}
+                                    </p>
+                                )}
+                                <Link href={content.hero.link} className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-lg">
+                                    Explore Collection
                                 </Link>
                             </div>
                         </div>
@@ -85,10 +90,17 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                         />
                                     </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                    <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub1.title}</h3>
-                                    <Link href={content.sub1.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/90 transition-colors pointer-events-none z-20" />
+                                <div className="absolute bottom-6 left-6 right-6 z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                                    <h3 className="text-xl md:text-2xl font-black text-white uppercase mb-2 shadow-sm leading-tight">{content.sub1.title}</h3>
+                                    {(content.sub1 as any).description && (
+                                        <p className="text-gray-300 text-xs font-medium mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+                                            {(content.sub1 as any).description}
+                                        </p>
+                                    )}
+                                    <Link href={content.sub1.link} className="inline-flex items-center text-white text-xs font-bold uppercase tracking-widest hover:text-blue-300 transition-colors group/link">
+                                        Shop Now <ArrowRight className="ml-1 w-3 h-3 transition-transform group-hover/link:translate-x-1" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -112,10 +124,17 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                         />
                                     </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/70 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                                    <h3 className="text-xl font-bold text-white uppercase mb-1 shadow-sm">{content.sub2.title}</h3>
-                                    <Link href={content.sub2.link} className="text-white text-xs font-bold uppercase tracking-widest border-b border-white pb-0.5 hover:opacity-80">Shop Now</Link>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/90 transition-colors pointer-events-none z-20" />
+                                <div className="absolute bottom-6 left-6 right-6 z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                                    <h3 className="text-xl md:text-2xl font-black text-white uppercase mb-2 shadow-sm leading-tight">{content.sub2.title}</h3>
+                                    {(content.sub2 as any).description && (
+                                        <p className="text-gray-300 text-xs font-medium mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+                                            {(content.sub2 as any).description}
+                                        </p>
+                                    )}
+                                    <Link href={content.sub2.link} className="inline-flex items-center text-white text-xs font-bold uppercase tracking-widest hover:text-blue-300 transition-colors group/link">
+                                        Shop Now <ArrowRight className="ml-1 w-3 h-3 transition-transform group-hover/link:translate-x-1" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
