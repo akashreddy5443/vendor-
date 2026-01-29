@@ -44,12 +44,15 @@ export async function fixDatabasePermissions() {
     // Only allow for admins - handled by authentication middleware on the route usually, 
     // but here we trust the admin panel context.
 
-    if (!process.env.DATABASE_URL) {
-        return { error: 'DATABASE_URL is not set' }
+    // Try multiple possible environment variables for the connection string
+    const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL;
+
+    if (!connectionString) {
+        return { error: 'Database connection string not found (checked DATABASE_URL, POSTGRES_URL, POSTGRES_PRISMA_URL)' }
     }
 
     const client = new Client({
-        connectionString: process.env.DATABASE_URL,
+        connectionString: connectionString,
         ssl: { rejectUnauthorized: false }
     })
 

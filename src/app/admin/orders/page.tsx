@@ -107,7 +107,7 @@ export default async function AdminOrdersPage() {
                     {' | '}
                     Last Error: {debugError ? JSON.stringify(debugError) : 'None'}
                     {' | '}
-                    Raw Fallback Items: {debugRawItems?.length ?? 'N/A'}
+                    Raw Fallback Items: {debugRawItems ? debugRawItems.length : 'N/A'}
                     {' | '}
                     User: {currentUser?.email} (Role: {currentUser?.role})
                     {' | '}
