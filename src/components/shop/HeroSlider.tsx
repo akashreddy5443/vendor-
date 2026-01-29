@@ -31,7 +31,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
 
         const timer = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % slides.length)
-        }, 10000)
+        }, 5000)
 
         return () => clearInterval(timer)
     }, [currentIndex, isHovered, slides.length])
