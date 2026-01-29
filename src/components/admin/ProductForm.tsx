@@ -270,7 +270,10 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                         options={{
                             resourceType: 'auto',
                             multiple: true,
-                            maxFiles: 6
+                            maxFiles: 6,
+                            cropping: true,
+                            croppingAspectRatio: 0.75, // 3:4 Portrait aspect ratio to match card
+                            showSkipCropButton: false,
                         }}
                         onSuccess={(result: any) => {
                             if (result.info?.secure_url) {

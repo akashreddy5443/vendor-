@@ -70,13 +70,13 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-[420px]">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-100/50 group-hover:bg-gray-100 transition-colors">
+                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-50 group-hover:bg-white transition-colors">
 
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-6 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
@@ -112,19 +112,24 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                 <div className="flex flex-col relative z-30 pointer-events-none p-5 flex-grow">
                     {/* Placeholder for Color variants count */}
-                    <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-2">
+                    <div className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">
                         TechDev Gear
                     </div>
 
-                    <div className="flex flex-col justify-between h-full gap-2">
-                        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <div className="flex flex-col h-full">
+                        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
                             {product.title}
                         </h3>
 
-                        <div className="pt-2 border-t border-gray-50 mt-auto flex items-end justify-between">
+                        {/* Description - New Addition */}
+                        <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-relaxed h-8">
+                            {product.description || "Premium quality tech gear designed for professionals."}
+                        </p>
+
+                        <div className="mt-auto border-t border-gray-50 pt-3 flex items-center justify-between">
                             <div className="flex flex-col">
                                 {hasDiscount && (
-                                    <span className="text-[11px] text-gray-400 line-through font-medium">
+                                    <span className="text-[10px] text-gray-400 line-through font-medium">
                                         {formatPrice(product.price)}
                                     </span>
                                 )}
@@ -133,7 +138,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                                 </span>
                             </div>
                             {/* Visual indicator for 'Add' (Decorative, functionality is via Link or QuickView implies detail) */}
-                            <div className="h-8 w-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                            <div className="h-8 w-8 rounded-full bg-gray-50 text-gray-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 group-hover:bg-blue-600 group-hover:text-white">
                                 <ShoppingCart className="h-4 w-4" />
                             </div>
                         </div>
