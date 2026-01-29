@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Package, Heart, CreditCard, User, MapPin, Settings } from 'lucide-react'
+import { Package, Heart, CreditCard, User, MapPin, Settings, Truck } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function UserDashboard() {
@@ -101,19 +101,29 @@ export default async function UserDashboard() {
                     </div>
                 </div>
 
-                {/* Settings Link */}
-                <Link href="/user/settings" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-blue-200 block md:col-span-2">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-gray-100 rounded-lg">
-                                <Settings className="h-6 w-6 text-gray-600" />
-                            </div>
-                            <div>
-                                <p className="text-lg font-bold text-foreground">Account Settings</p>
-                                <p className="text-sm text-muted-foreground">Update your profile information and phone number.</p>
-                            </div>
+                {/* Track Order Shortcut */}
+                <Link href="/track-order" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-purple-200 block">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-purple-100 rounded-lg">
+                            <Truck className="h-6 w-6 text-purple-600" />
                         </div>
-                        <div className="text-blue-600 font-medium">Edit Profile &rarr;</div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">Logistics</p>
+                            <p className="text-xl font-bold text-foreground">Track Order</p>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* Settings Link */}
+                <Link href="/user/settings" className="p-6 rounded-xl bg-card border border-border shadow-sm transition-all hover:shadow-md hover:border-blue-200 block md:col-span-1">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-gray-100 rounded-lg">
+                            <Settings className="h-6 w-6 text-gray-600" />
+                        </div>
+                        <div>
+                            <p className="text-lg font-bold text-foreground">Settings</p>
+                            <p className="text-sm text-muted-foreground">Profile & Security</p>
+                        </div>
                     </div>
                 </Link>
             </div>

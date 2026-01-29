@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, Heart, Settings, LogOut, MapPin } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Heart, MapPin, Settings, LogOut, Truck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ const navItems = [
     { label: 'My Orders', href: '/user/orders', icon: ShoppingBag },
     { label: 'Wishlist', href: '/user/wishlist', icon: Heart },
     { label: 'Addresses', href: '/user/addresses', icon: MapPin },
+    { label: 'Track Order', href: '/track-order', icon: Truck },
     { label: 'Settings', href: '/user/settings', icon: Settings },
 ]
 
