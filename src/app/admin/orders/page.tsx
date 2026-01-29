@@ -40,7 +40,7 @@ export default async function AdminOrdersPage() {
         // Attempt 1: Full Fetch with Product Relation
         const { data: allItems, error } = await supabase
             .from('order_items')
-            .select('id, order_id, quantity, price, product_id, product:products(title)')
+            .select('order_id, quantity, price, product_id, product:products(title)')
             .in('order_id', orderIds)
 
         if (error) {
@@ -148,7 +148,7 @@ export default async function AdminOrdersPage() {
                                                     <span className="text-xs text-red-400 italic">No items data</span>
                                                 ) : (
                                                     (order as any).order_items.map((item: any) => (
-                                                        <div key={item.id} className="text-xs text-gray-300">
+                                                        <div key={item.product_id} className="text-xs text-gray-300">
                                                             <span className="font-bold text-white">{item.quantity}x</span> {item.product?.title ||
                                                                 <span className="text-gray-500">Item #{item.product_id?.slice(0, 4)}...</span>}
                                                         </div>
