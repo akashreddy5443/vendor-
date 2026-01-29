@@ -47,15 +47,26 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
     ])
 
     // Categories State
-    const [categories, setCategories] = useState<any[]>(categoriesSection?.content_json?.categories || [
-        { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
-        { name: 'Phones', icon: '📱', href: '/search?category=phones' },
-        { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
-        { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
-        { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
-        { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
-        { name: 'All Categories', icon: 'GRID', href: '/products' },
-    ])
+    const [categories, setCategories] = useState<any[]>(() => {
+        let cats = categoriesSection?.content_json?.categories || [
+            { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
+            { name: 'Phones', icon: '📱', href: '/search?category=phones' },
+            { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
+            { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
+            { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
+            { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
+        ];
+
+        // Auto-fix: Ensure "All Categories" exists with GRID icon
+        if (!cats.find((c: any) => c.name === 'All Categories')) {
+            cats = [...cats, { name: 'All Categories', icon: 'GRID', href: '/products' }]
+        } else {
+            // Update existing "All Categories" to use GRID if it has old icon
+            cats = cats.map((c: any) => c.name === 'All Categories' && c.icon !== 'GRID' ? { ...c, icon: 'GRID' } : c)
+        }
+
+        return cats
+    })
 
     // Featured State
     const initialSelected = featuredSection?.content_json?.productIds || []
@@ -381,12 +392,34 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs text-gray-500">Icon (Emoji or 'GRID')</label>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <label className="text-xs text-gray-500">Icon</label>
+                                            <div className="flex gap-1">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => updateCategory(index, 'icon', 'GRID')}
+                                                    className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded hover:bg-blue-200 border border-blue-200 font-bold"
+                                                    title="Use 4-Cube Grid"
+                                                >
+                                                    GRID
+                                                </button>
+                                                {['💻', '📱', '🎧', '⌚', '🎮', '📷'].map(emoji => (
+                                                    <button
+                                                        key={emoji}
+                                                        type="button"
+                                                        onClick={() => updateCategory(index, 'icon', emoji)}
+                                                        className="text-[10px] bg-gray-100 hover:bg-gray-200 px-1.5 py-0.5 rounded border border-gray-200"
+                                                    >
+                                                        {emoji}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
                                         <input
                                             value={cat.icon}
                                             onChange={(e) => updateCategory(index, 'icon', e.target.value)}
                                             className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
-                                            placeholder="💻"
+                                            placeholder="Type emoji or 'GRID'"
                                         />
                                     </div>
                                     <div className="space-y-1">
