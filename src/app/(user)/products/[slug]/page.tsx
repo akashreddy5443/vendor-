@@ -7,6 +7,7 @@ import { AddToCartButton } from '@/components/shop/AddToCartButton'
 import { ProductGallery } from '@/components/shop/ProductGallery'
 import { ProductViewTracker } from '@/components/shop/ProductViewTracker'
 import { SimilarProducts } from '@/components/shop/SimilarProducts'
+import { ProductReviews } from '@/components/shop/ProductReviews'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
@@ -37,7 +38,8 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     let queryBuilder = supabase.from('products').select(`
             *,
             product_images (*),
-            categories (id, name, slug)
+            categories (id, name, slug),
+            reviews (*)
         `)
 
     if (isUuid) {
@@ -182,6 +184,11 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     />
                 )
             }
+
+            {/* Reviews Section */}
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+                <ProductReviews productId={product.id} initialReviews={(product as any).reviews || []} />
+            </div>
         </div>
     )
 }

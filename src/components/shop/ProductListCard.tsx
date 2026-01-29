@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Star, Heart, CheckCircle2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Star, Heart, ShieldCheck } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 import { useCart } from '@/context/CartContext'
 
 export function ProductListCard({ product }: { product: any }) {
+    const router = useRouter()
     const { addItem } = useCart()
     const discount = product.compare_at_price > product.price
         ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
@@ -72,8 +74,9 @@ export function ProductListCard({ product }: { product: any }) {
                         <div className="flex items-center gap-2 mb-1">
                             <span className="text-2xl font-bold text-gray-900">{formatPrice(product.price)}</span>
                             {product.status === 'active' && (
-                                <div className="flex items-center gap-1">
-                                    <Image src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png" width={77} height={21} alt="Assured" className="h-5 w-auto object-contain" />
+                                <div className="flex items-center gap-1 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
+                                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600 fill-blue-100" />
+                                    <span className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Assured</span>
                                 </div>
                             )}
                         </div>
@@ -97,7 +100,13 @@ export function ProductListCard({ product }: { product: any }) {
                         >
                             Add to Cart
                         </button>
-                        <button className="w-full bg-[#fb641b] hover:bg-[#f45f17] text-white font-medium py-3 rounded-sm shadow-sm transition-colors text-sm uppercase tracking-wide">
+                        <button
+                            onClick={() => {
+                                addItem(product, 1)
+                                router.push('/checkout')
+                            }}
+                            className="w-full bg-[#fb641b] hover:bg-[#f45f17] text-white font-medium py-3 rounded-sm shadow-sm transition-colors text-sm uppercase tracking-wide"
+                        >
                             Buy Now
                         </button>
                     </div>
