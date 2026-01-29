@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { formatPrice, cn } from '@/lib/utils'
 import { OrderTimeline } from '@/components/shop/OrderTimeline'
-import { ArrowLeft, MapPin, CreditCard } from 'lucide-react'
+import { ArrowLeft, MapPin, CreditCard, Package } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 
 export default async function OrderDetailsPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -12,21 +13,43 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) redirect('/login')
 
-    const { data: order } = await supabase
+    const { data: order, error } = await supabase
         .from('orders')
         .select(`
             *,
             items:order_items(
-                *,
-                product:products(*)
+                quantity,
+                price,
+                product_id,
+                product:products(
+                    title,
+                    product_images(
+                        cloudinary_url,
+                        is_primary
+                    )
+                )
             )
         `)
         .eq('id', id)
         .eq('user_id', user.id)
         .single()
 
-    if (!order) {
-        return <div className="p-8 text-center">Order not found</div>
+    if (error || !order) {
+        console.error("Order Details Error:", error)
+        return (
+            <div className="p-8 text-center space-y-4">
+                <h3 className="text-xl font-bold text-red-500">Order Not Found</h3>
+                <p className="text-muted-foreground">Unable to load order details.</p>
+                {error && (
+                    <div className="p-4 bg-gray-100 rounded text-left overflow-auto max-w-lg mx-auto">
+                        <code className="text-xs text-red-600 break-all">{JSON.stringify(error, null, 2)}</code>
+                    </div>
+                )}
+                <Link href="/user/orders" className="text-blue-500 hover:underline">
+                    Back to My Orders
+                </Link>
+            </div>
+        )
     }
 
     return (
@@ -44,7 +67,13 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                 </div>
                 <div className="text-right">
                     <p className="text-2xl font-bold text-blue-500">{formatPrice(order.total_amount)}</p>
-                    <div className="inline-flex px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-bold uppercase tracking-wider">
+                    <div className={cn(
+                        "inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider",
+                        order.status === 'delivered' ? "bg-green-100 text-green-700" :
+                            order.status === 'cancelled' ? "bg-red-100 text-red-700" :
+                                order.status === 'shipped' ? "bg-yellow-100 text-yellow-700" :
+                                    "bg-blue-100 text-blue-700"
+                    )}>
                         {order.status}
                     </div>
                 </div>
@@ -64,21 +93,38 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             <h3 className="font-semibold text-foreground">Items Ordered</h3>
                         </div>
                         <div className="divide-y divide-border">
-                            {order.items.map((item: any) => (
-                                <div key={item.id} className="p-4 flex gap-4">
-                                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
-                                        {/* Ideally use actual image if available in product */}
-                                        <div className="h-full w-full bg-gray-800 flex items-center justify-center text-gray-500 text-xs">IMG</div>
-                                    </div>
-                                    <div className="flex flex-1 flex-col justify-between">
-                                        <div>
-                                            <h4 className="font-medium text-foreground line-clamp-2">{item.product?.title}</h4>
-                                            <p className="text-sm text-muted-foreground mt-1">Qty: {item.quantity}</p>
+                            {order.items.map((item: any) => {
+                                const product = item.product
+                                const images = product?.product_images || []
+                                const imageObj = images.find((img: any) => img.is_primary) || images[0]
+                                const imageUrl = imageObj?.cloudinary_url
+
+                                return (
+                                    <div key={item.product_id} className="p-4 flex gap-4">
+                                        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md border border-border bg-gray-50 relative">
+                                            {imageUrl ? (
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt={product?.title || "Product"}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            ) : (
+                                                <div className="h-full w-full flex items-center justify-center text-gray-400">
+                                                    <Package className="h-6 w-6" />
+                                                </div>
+                                            )}
                                         </div>
-                                        <p className="font-medium text-blue-500">{formatPrice(item.price)}</p>
+                                        <div className="flex flex-1 flex-col justify-between">
+                                            <div>
+                                                <h4 className="font-medium text-foreground line-clamp-2">{product?.title || "Unknown Product"}</h4>
+                                                <p className="text-sm text-muted-foreground mt-1">Qty: {item.quantity}</p>
+                                            </div>
+                                            <p className="font-medium text-blue-500">{formatPrice(item.price)}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
@@ -92,8 +138,6 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             <h3 className="font-semibold">Shipping Address</h3>
                         </div>
                         <div className="text-sm text-muted-foreground space-y-1">
-                            {/* Assuming address is a JSON blob or specific fields */}
-                            {/* If JSON content: */}
                             {typeof order.shipping_address === 'string' ? (
                                 <p>{order.shipping_address}</p>
                             ) : (
@@ -117,10 +161,12 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                         </div>
                         <div className="text-sm text-muted-foreground">
                             <p>Method: <span className="capitalize text-foreground font-medium">{order.payment_method}</span></p>
-                            <p className="mt-2">Payment Status: <span className={cn(
+                            <p className="mt-2">Status: <span className={cn(
                                 "capitalize font-medium",
                                 order.status === 'paid' ? "text-green-500" : "text-yellow-500"
-                            )}>{order.status === 'paid' ? 'Paid' : 'Pending'}</span></p>
+                            )}>
+                                {order.payment_status || 'Pending'}
+                            </span></p>
                         </div>
                     </div>
                 </div>
