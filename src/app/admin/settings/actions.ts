@@ -53,7 +53,11 @@ export async function fixDatabasePermissions() {
 
     const client = new Client({
         connectionString: connectionString,
-        ssl: { rejectUnauthorized: false }
+        ssl: {
+            rejectUnauthorized: false,
+            // Sometimes simply setting checkServerIdentity to returns undefined helps in some Node versions
+            checkServerIdentity: () => undefined
+        }
     })
 
     try {
