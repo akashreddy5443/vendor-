@@ -65,28 +65,42 @@ export function FilterSidebar({ categories }: { categories: any[] }) {
                 <h3 className="font-bold text-foreground mb-4">Price Range</h3>
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                        <input
-                            type="number"
-                            placeholder="Min"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            className="w-full rounded bg-background border border-border p-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none"
-                        />
-                        <span className="text-muted-foreground">-</span>
-                        <input
-                            type="number"
-                            placeholder="Max"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            className="w-full rounded bg-background border border-border p-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none"
-                        />
+                        <div className="relative flex-1">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">₹</span>
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={minPrice}
+                                onChange={(e) => setMinPrice(e.target.value)}
+                                className="w-full pl-6 rounded-md bg-white border border-gray-200 p-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-all"
+                            />
+                        </div>
+                        <span className="text-gray-300">-</span>
+                        <div className="relative flex-1">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">₹</span>
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={maxPrice}
+                                onChange={(e) => setMaxPrice(e.target.value)}
+                                className="w-full pl-6 rounded-md bg-white border border-gray-200 p-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-all"
+                            />
+                        </div>
                     </div>
                     <button
                         onClick={applyPriceFilter}
-                        className="w-full rounded bg-primary py-2 text-xs font-bold text-primary-foreground hover:bg-primary/90"
+                        className="w-full rounded-md bg-[#191970] py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#131355] transition-colors uppercase tracking-wider"
                     >
                         Apply Price
                     </button>
+                    {(minPrice || maxPrice) && (
+                        <button
+                            onClick={() => { setMinPrice(''); setMaxPrice(''); router.push(`/search?category=${currentCategory}`) }}
+                            className="w-full text-xs text-gray-500 hover:text-red-500 underline decoration-gray-300 hover:decoration-bd-500"
+                        >
+                            Clear Filter
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

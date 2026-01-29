@@ -104,6 +104,7 @@ export function Navbar() {
                         <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
                         <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
                         <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
+                        <Link href="/track-order" className="text-foreground/80 hover:text-primary transition-colors">Track Order</Link>
                         <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
                     </div>
                 </div>
