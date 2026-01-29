@@ -83,7 +83,7 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center border-b border-border bg-background px-6 text-foreground sticky top-0 z-40 shadow-sm relative gap-8">
+            <nav className="flex h-16 items-center border-b border-white/10 bg-background/80 backdrop-blur-md px-6 text-foreground sticky top-0 z-40 shadow-sm relative gap-8 transition-all duration-300">
                 {/* Left: Logo & Navigation */}
                 <div className="flex items-center gap-8 shrink-0">
                     <div className="flex items-center gap-4">
@@ -94,11 +94,11 @@ export function Navbar() {
                             {isMobileMenuOpen ? <X /> : <Menu />}
                         </button>
 
-                        <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight text-foreground group">
+                        <Link href="/" className="flex items-center gap-2 text-2xl font-heading font-bold tracking-tight text-foreground group">
                             {settings?.logo_url ? (
                                 <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
                             ) : (
-                                <div className="bg-primary text-primary-foreground p-1.5 rounded-md">
+                                <div className="bg-primary text-primary-foreground p-1.5 rounded-xl shadow-lg shadow-blue-500/20">
                                     <ShoppingBag className="h-6 w-6" />
                                 </div>
                             )}
@@ -107,37 +107,59 @@ export function Navbar() {
                     </div>
 
                     {/* Navigation Links (Desktop) */}
-                    <div className="hidden md:flex items-center gap-6 text-sm font-medium uppercase tracking-wide">
-                        <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
-                        <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
+                    <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+                        <Link href="/" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">Home</Link>
 
                         {/* Mega Menu Trigger */}
                         <div className="group relative h-16 flex items-center">
-                            <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors py-6">Categories</Link>
-                            {/* Dropdown */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white dark:bg-slate-900 border border-border shadow-xl rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
-                                <div className="grid grid-cols-3 gap-4">
-                                    {categories.map(cat => (
-                                        <Link
-                                            key={cat.id}
-                                            href={`/search?category=${cat.slug || cat.id}`}
-                                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors group/item"
-                                        >
-                                            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-sm group-hover/item:scale-110 transition-transform">
-                                                {cat.icon || '📦'}
-                                            </div>
-                                            <span className="font-medium text-sm text-foreground">{cat.name}</span>
+                            <Link href="/categories" className="text-foreground/70 hover:text-primary transition-colors py-6 font-heading flex items-center gap-1">
+                                Categories <span className="text-[10px] opacity-50">▼</span>
+                            </Link>
+
+                            {/* Premium Dropdown */}
+                            <div className="absolute top-full left-0 w-[800px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-2 p-0 overflow-hidden z-50 ring-1 ring-black/5">
+                                <div className="flex">
+                                    {/* Column 1: Categories Grid */}
+                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50">
+                                        <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 dark:text-white/40 mb-2">Shop by Category</h3>
+                                        {categories.map(cat => (
+                                            <Link
+                                                key={cat.id}
+                                                href={`/search?category=${cat.slug || cat.id}`}
+                                                className="flex items-center gap-4 p-2 rounded-xl hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all group/item border border-transparent hover:border-gray-100 dark:hover:border-slate-700"
+                                            >
+                                                <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-inner group-hover/item:scale-110 transition-transform">
+                                                    {cat.icon || '🛍️'}
+                                                </div>
+                                                <span className="font-heading font-semibold text-sm text-foreground group-hover/item:translate-x-1 transition-transform">{cat.name}</span>
+                                            </Link>
+                                        ))}
+                                        <Link href="/categories" className="col-span-2 mt-4 flex items-center justify-center gap-2 text-sm font-bold text-blue-600 hover:underline">
+                                            View All Categories →
                                         </Link>
-                                    ))}
-                                    <Link href="/categories" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold">ALL</div>
-                                        <span className="font-medium text-sm text-foreground">View All</span>
-                                    </Link>
+                                    </div>
+
+                                    {/* Column 2: Featured / Promo */}
+                                    <div className="w-1/3 bg-[#191970] text-white p-8 flex flex-col justify-between relative overflow-hidden">
+                                        {/* Abstract BG Shapes */}
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+
+                                        <div className="relative z-10">
+                                            <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">New Arrival</span>
+                                            <h3 className="text-2xl font-heading font-bold leading-tight mb-2">ProDev Gear 2026</h3>
+                                            <p className="text-white/70 text-sm mb-6">Upgrade your setup with the latest mechanical keyboards and ergonomic mice.</p>
+                                            <Link href="/products" className="inline-block px-6 py-2 bg-white text-[#191970] rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg">
+                                                Shop Now
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
+                        <Link href="/products" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">Products</Link>
+                        <Link href="/about" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">About</Link>
                     </div>
                 </div>
 
