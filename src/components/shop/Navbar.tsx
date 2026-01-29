@@ -12,6 +12,7 @@ export function Navbar() {
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [categories, setCategories] = useState<any[]>([])
     const { cartCount } = useCart()
 
     const [settings, setSettings] = useState<any>(null)
@@ -30,7 +31,13 @@ export function Navbar() {
             // Fetch User
             const { data: { user } } = await supabase.auth.getUser()
             setUser(user)
-            // ... existing announcement fetch logic
+
+            // Fetch Categories (for Mega Menu)
+            const { data: cats } = await supabase
+                .from('categories')
+                .select('id, name, slug, icon')
+                .limit(10)
+            if (cats) setCategories(cats)
 
             // Fetch Announcement
             const { data } = await supabase
@@ -103,7 +110,33 @@ export function Navbar() {
                     <div className="hidden md:flex items-center gap-6 text-sm font-medium uppercase tracking-wide">
                         <Link href="/" className="text-foreground/80 hover:text-primary transition-colors">Home</Link>
                         <Link href="/products" className="text-foreground/80 hover:text-primary transition-colors">All Products</Link>
-                        <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors">Categories</Link>
+
+                        {/* Mega Menu Trigger */}
+                        <div className="group relative h-16 flex items-center">
+                            <Link href="/categories" className="text-foreground/80 hover:text-primary transition-colors py-6">Categories</Link>
+                            {/* Dropdown */}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white dark:bg-slate-900 border border-border shadow-xl rounded-b-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
+                                <div className="grid grid-cols-3 gap-4">
+                                    {categories.map(cat => (
+                                        <Link
+                                            key={cat.id}
+                                            href={`/search?category=${cat.slug || cat.id}`}
+                                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors group/item"
+                                        >
+                                            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-sm group-hover/item:scale-110 transition-transform">
+                                                {cat.icon || '📦'}
+                                            </div>
+                                            <span className="font-medium text-sm text-foreground">{cat.name}</span>
+                                        </Link>
+                                    ))}
+                                    <Link href="/categories" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+                                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold">ALL</div>
+                                        <span className="font-medium text-sm text-foreground">View All</span>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
                         <Link href="/about" className="text-foreground/80 hover:text-primary transition-colors">About Us</Link>
                     </div>
                 </div>
