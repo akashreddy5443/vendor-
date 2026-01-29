@@ -59,14 +59,20 @@ export function Navbar() {
     return (
         <div className="flex flex-col">
             {!loading && showAnnouncement && (
-                <div className="bg-[#0B1026] text-white text-[11px] font-bold py-2.5 relative z-50 flex items-center justify-center tracking-widest uppercase">
-                    {link && link !== '#' ? (
-                        <Link href={link} className="hover:text-blue-200 transition-colors flex items-center gap-2">
-                            <span>{text}</span>
-                        </Link>
-                    ) : (
-                        <span>{text}</span>
-                    )}
+                <div className="bg-[#0B1026] text-white text-[11px] font-bold py-2 overflow-hidden relative z-50">
+                    <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] w-max">
+                        {[...Array(10)].map((_, i) => (
+                            <span key={i} className="mx-8 inline-block uppercase tracking-widest select-none">
+                                {link && link !== '#' ? (
+                                    <Link href={link} className="hover:text-blue-200 transition-colors">
+                                        {text}
+                                    </Link>
+                                ) : (
+                                    <span>{text}</span>
+                                )}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             )}
 

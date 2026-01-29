@@ -46,7 +46,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
     const currentSlide = slides[currentIndex]
 
     return (
-        <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden bg-white group">
+        <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden bg-black group">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentSlide.id}
@@ -54,15 +54,29 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 h-full"
+                    className="absolute inset-0 w-full h-full"
                 >
-                    {/* Left: Text Content - Centered better */}
-                    <div className="flex flex-col justify-center items-start px-8 md:px-20 lg:px-32 bg-white z-10">
+                    {/* Background Image - Full Width */}
+                    <div className="absolute inset-0">
+                        <Image
+                            src={currentSlide.imageUrl}
+                            alt={currentSlide.title}
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="100vw"
+                        />
+                        {/* Gradient Overlay for Text Readability - Darker for better contrast */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10" />
+                    </div>
+
+                    {/* Text Content - Overlaid */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-20 lg:px-32">
                         <motion.h3
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-sm md:text-base font-bold text-blue-600 mb-4 uppercase tracking-[0.2em]"
+                            className="text-sm md:text-base font-bold text-blue-400 mb-4 uppercase tracking-[0.2em]"
                         >
                             {currentSlide.subtitle}
                         </motion.h3>
@@ -71,7 +85,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-5xl md:text-6xl lg:text-7xl font-black text-[#0B1026] mb-8 leading-[0.9] tracking-tight uppercase max-w-xl"
+                            className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.9] tracking-tight uppercase max-w-4xl drop-shadow-2xl"
                             style={{ color: currentSlide.color }}
                         >
                             {currentSlide.title}
@@ -84,66 +98,38 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                         >
                             <Link
                                 href={currentSlide.link}
-                                className="inline-flex items-center justify-center px-10 py-4 text-sm font-bold text-white bg-[#0B1026] hover:bg-blue-600 rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+                                className="inline-flex items-center justify-center px-10 py-4 text-sm font-bold text-[#0B1026] bg-white hover:bg-blue-50 rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105 uppercase tracking-wider"
                             >
                                 {currentSlide.buttonText}
                             </Link>
                         </motion.div>
                     </div>
-
-                    {/* Right: Image Content - More dynamic background */}
-                    <div className="relative w-full h-full bg-gray-50 flex items-center justify-center hidden md:flex">
-                        {/* Decorative Circle */}
-                        <div className="absolute w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-3xl -z-10" />
-
-                        <div className="relative w-3/4 h-3/4">
-                            <Image
-                                src={currentSlide.imageUrl}
-                                alt={currentSlide.title}
-                                fill
-                                className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700"
-                                priority
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Mobile Image Overlay (Background) */}
-                    <div className="md:hidden absolute inset-0 -z-10">
-                        <div className="absolute inset-0 bg-white/90 z-10" />
-                        <Image
-                            src={currentSlide.imageUrl}
-                            alt={currentSlide.title}
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
                 </motion.div>
             </AnimatePresence>
 
-            {/* Navigation Buttons - Cleaner Style */}
+            {/* Navigation Buttons - Cleaner Style with Glassmorphism */}
             {slides.length > 1 && (
                 <>
                     <button
                         onClick={prevSlide}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-gray-100 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-900 shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20 hover:scale-110"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/30 backdrop-blur-md hover:bg-white text-white hover:text-black shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30 hover:scale-110"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                         onClick={nextSlide}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-gray-100 bg-white/80 backdrop-blur-sm hover:bg-white text-gray-900 shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-20 hover:scale-110"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/30 backdrop-blur-md hover:bg-white text-white hover:text-black shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30 hover:scale-110"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
 
                     {/* Indicators */}
-                    <div className="absolute bottom-8 left-8 md:left-32 flex gap-3 z-20">
+                    <div className="absolute bottom-8 left-8 md:left-32 flex gap-3 z-30">
                         {slides.map((_, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setCurrentIndex(idx)}
-                                className={`h-1 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-[#0B1026] w-8' : 'bg-gray-200 w-4 hover:bg-gray-300'
+                                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white w-8' : 'bg-white/40 w-4 hover:bg-white/60'
                                     }`}
                             />
                         ))}
