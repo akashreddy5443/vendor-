@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, Users, Settings, Image as ImageIcon, FileText, Palette, Mail, ShoppingCart, FolderTree, Home, Bell, Tag } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Settings, Image as ImageIcon, FileText, Palette, Mail, ShoppingCart, FolderTree, Home, Bell, Tag, MessageSquare } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
     { label: 'Products', href: '/admin/products', icon: ShoppingBag },
     { label: 'Categories', href: '/admin/categories', icon: FolderTree },
     { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+    { label: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
     { label: 'Media', href: '/admin/media', icon: ImageIcon },
     { label: 'Homepage', href: '/admin/homepage', icon: Home },
     { label: 'Pages', href: '/admin/pages', icon: FileText },

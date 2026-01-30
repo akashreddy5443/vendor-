@@ -22,25 +22,24 @@ export function ProductReviews({ productId, initialReviews }: { productId: strin
         }
         setIsSubmitting(true)
 
-        const supabase = createClient()
-        const { error } = await supabase.from('reviews').insert({
-            product_id: productId,
-            rating,
-            comment,
-            author_name: name || 'Anonymous',
-            status: 'approved' // Auto-approve for demo simplicity
-        })
+        const formData = new FormData()
+        formData.append('productId', productId)
+        formData.append('rating', rating.toString())
+        formData.append('comment', comment)
+        formData.append('authorName', name)
 
-        if (error) {
-            toast.error('Failed to submit review')
+        const { submitReview } = await import('@/app/(user)/products/actions')
+        const result = await submitReview(formData)
+
+        if (result.error) {
+            toast.error(result.error)
         } else {
-            toast.success('Review submitted successfully!')
+            toast.success('Review submitted! It will appear after moderation.')
             setRating(0)
             setComment('')
             setName('')
-            // Refresh reviews (simple refetch or append)
-            const { data } = await supabase.from('reviews').select('*').eq('product_id', productId).eq('status', 'approved').order('created_at', { ascending: false })
-            if (data) setReviews(data)
+            // Since it's now 'pending' by default, we don't necessarily update the local list 
+            // unless we want to show a "thank you" state.
         }
         setIsSubmitting(false)
     }
