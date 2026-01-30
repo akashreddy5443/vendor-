@@ -32,34 +32,38 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
     console.log('[PDP] Params:', params)
 
-    // Fetch Product + Images + Category
+    // 1. Fetch Core Product
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug)
 
-    let queryBuilder = supabase.from('products').select(`
-            *,
-            product_images (*),
-            categories (id, name, slug),
-            reviews (*)
-        `)
+    const { data: product, error: prdError } = await supabase
+        .from('products')
+        .select('*')
+        .eq(isUuid ? 'id' : 'slug', params.slug)
+        .maybeSingle()
 
-    if (isUuid) {
-        queryBuilder = queryBuilder.eq('id', params.slug)
-    } else {
-        queryBuilder = queryBuilder.eq('slug', params.slug) // Use eq for slug
-    }
-
-    const { data: product } = await queryBuilder.single()
-
-    console.log('[PDP] Product Result:', product ? product.title : 'Not Found')
-
-    if (!product) {
-        console.error('[PDP] 404 - Product not found for slug:', params.slug)
+    if (prdError || !product) {
+        console.error('[PDP] 404 - Product not found for slug:', params.slug, prdError?.message)
         notFound()
     }
 
-    const { title, price, description, stock, product_images, categories } = product
+    // 2. Fetch Auxiliary Data separately to avoid failure if one table is missing/broken
+    const [imagesRes, categoryRes, reviewsRes] = await Promise.all([
+        supabase.from('product_images').select('*').eq('product_id', product.id),
+        product.category_id ? supabase.from('categories').select('id, name, slug').eq('id', product.category_id).maybeSingle() : Promise.resolve({ data: null }),
+        supabase.from('reviews').select('*').eq('product_id', product.id)
+    ])
+
+    const productImages = imagesRes.data || []
+    const productCategory = categoryRes.data
+    const reviews = reviewsRes.data || []
+
+    console.log(`[PDP] Loaded: ${product.title} (Images: ${productImages.length}, Reviews: ${reviews.length})`)
+
+
+    const { title, price, description, stock } = product
+
     const isOutOfStock = stock === 0
-    const primaryImage = product_images?.find((i: any) => i.is_primary)?.cloudinary_url || product_images?.[0]?.cloudinary_url
+    const primaryImage = productImages?.find((i: any) => i.is_primary)?.cloudinary_url || productImages?.[0]?.cloudinary_url
 
     return (
         <div className="bg-background min-h-screen text-foreground">
@@ -76,14 +80,14 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                     {/* Media Gallery */}
                     <div className="mb-10 lg:mb-0">
-                        <ProductGallery images={product_images || []} />
+                        <ProductGallery images={productImages || []} />
                     </div>
 
                     {/* Product Info */}
                     <div>
-                        {categories && (
+                        {productCategory && (
                             <span className="text-sm font-medium text-blue-500 mb-2 block tracking-wider uppercase">
-                                {categories.name}
+                                {productCategory.name}
                             </span>
                         )}
                         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 font-serif">{title}</h1>
@@ -177,9 +181,9 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
             {/* Similar Products Section */}
             {
-                categories && (
+                productCategory && (
                     <SimilarProducts
-                        categoryId={categories.id}
+                        categoryId={productCategory.id}
                         currentProductId={product.id}
                     />
                 )
@@ -187,7 +191,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
             {/* Reviews Section */}
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                <ProductReviews productId={product.id} initialReviews={(product as any).reviews || []} />
+                <ProductReviews productId={product.id} initialReviews={reviews || []} />
             </div>
         </div>
     )
