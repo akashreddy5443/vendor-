@@ -5,6 +5,7 @@ import { approveReview, deleteReview, rejectReview } from './actions'
 
 export default async function AdminReviewsPage() {
     try {
+        const supabase = await createClient()
         const { data: reviews, error } = await supabase
             .from('reviews')
             .select(`
@@ -35,7 +36,7 @@ export default async function AdminReviewsPage() {
                 </div>
 
                 <div className="grid gap-6">
-                    {reviews?.map(r => (
+                    {reviews?.map((r: any) => (
                         <div key={r.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                             <div className="p-6">
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -54,8 +55,8 @@ export default async function AdminReviewsPage() {
                                         <div className="flex items-center gap-4">
                                             <RatingStars rating={r.rating} size="sm" />
                                             <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md border ${r.status === 'approved' ? 'bg-green-50 text-green-600 border-green-100' :
-                                                    r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
-                                                        'bg-yellow-50 text-yellow-600 border-yellow-100'
+                                                r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
+                                                    'bg-yellow-50 text-yellow-600 border-yellow-100'
                                                 }`}>
                                                 {r.status}
                                             </span>
@@ -72,20 +73,29 @@ export default async function AdminReviewsPage() {
 
                                     <div className="flex md:flex-col gap-2 shrink-0">
                                         {r.status !== 'approved' && (
-                                            <form action={approveReview.bind(null, r.id)}>
+                                            <form action={async () => {
+                                                'use server'
+                                                await approveReview(r.id)
+                                            }}>
                                                 <button className="w-full flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-green-700 transition-colors">
                                                     <CheckCircle className="w-3.5 h-3.5" /> Approve
                                                 </button>
                                             </form>
                                         )}
                                         {r.status !== 'rejected' && (
-                                            <form action={rejectReview.bind(null, r.id)}>
+                                            <form action={async () => {
+                                                'use server'
+                                                await rejectReview(r.id)
+                                            }}>
                                                 <button className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors">
                                                     <XCircle className="w-3.5 h-3.5" /> Reject
                                                 </button>
                                             </form>
                                         )}
-                                        <form action={deleteReview.bind(null, r.id)}>
+                                        <form action={async () => {
+                                            'use server'
+                                            await deleteReview(r.id)
+                                        }}>
                                             <button className="w-full flex items-center justify-center gap-2 text-gray-400 px-4 py-2 rounded-xl text-xs font-bold hover:text-red-500 hover:bg-red-50 transition-all">
                                                 <Trash2 className="w-3.5 h-3.5" /> Delete
                                             </button>
