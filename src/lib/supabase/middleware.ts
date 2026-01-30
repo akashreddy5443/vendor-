@@ -45,7 +45,7 @@ export async function updateSession(request: NextRequest) {
 
     // Protected Routes Logic
     // Protected Routes Logic
-    if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
+    if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/login')) {
         if (!user) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
