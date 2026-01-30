@@ -47,17 +47,21 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     }
 
     // 2. Fetch Auxiliary Data separately to avoid failure if one table is missing/broken
-    const [imagesRes, categoryRes, reviewsRes] = await Promise.all([
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const [imagesRes, categoryRes, reviewsRes, purchaseRes] = await Promise.all([
         supabase.from('product_images').select('*').eq('product_id', product.id),
         product.category_id ? supabase.from('categories').select('id, name, slug').eq('id', product.category_id).maybeSingle() : Promise.resolve({ data: null }),
-        supabase.from('reviews').select('*').eq('product_id', product.id)
+        supabase.from('reviews').select('*').eq('product_id', product.id).eq('status', 'approved'),
+        user ? supabase.from('order_items').select('id, orders!inner(status, user_id)').eq('product_id', product.id).eq('orders.user_id', user.id).eq('orders.status', 'delivered').maybeSingle() : Promise.resolve({ data: null })
     ])
 
     const productImages = imagesRes.data || []
     const productCategory = categoryRes.data
     const reviews = reviewsRes.data || []
+    const hasPurchased = !!purchaseRes.data
 
-    console.log(`[PDP] Loaded: ${product.title} (Images: ${productImages.length}, Reviews: ${reviews.length})`)
+    console.log(`[PDP] Loaded: ${product.title} (Images: ${productImages.length}, Reviews: ${reviews.length}, HasPurchased: ${hasPurchased})`)
 
 
     const { title, price, description, stock } = product
@@ -191,7 +195,12 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
             {/* Reviews Section */}
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                <ProductReviews productId={product.id} initialReviews={reviews || []} />
+                <ProductReviews
+                    productId={product.id}
+                    initialReviews={reviews || []}
+                    hasPurchased={hasPurchased}
+                    isLoggedIn={!!user}
+                />
             </div>
         </div>
     )

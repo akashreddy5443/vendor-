@@ -19,7 +19,7 @@ export async function Footer() {
     }
 
     return (
-        <footer className="border-t border-[#191970]/10 bg-[#191970] pt-20 pb-10 text-white transition-colors duration-300 font-sans">
+        <footer className="border-t border-[#030712]/10 bg-[#030712] pt-20 pb-10 text-white transition-colors duration-300 font-sans">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
 
@@ -79,7 +79,7 @@ export async function Footer() {
                             <h4 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-3">100% Secure Payments</h4>
                             <div className="flex gap-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                                 {/* Simple CSS placeholders or SVG icons for Visa, MC, UPI */}
-                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-[#191970] text-[10px] italic border border-white/20">VISA</div>
+                                <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-[#030712] text-[10px] italic border border-white/20">VISA</div>
                                 <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-red-600 text-[10px] border border-white/20">MC</div>
                                 <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-blue-600 text-[10px] border border-white/20">RUPAY</div>
                                 <div className="h-8 w-12 bg-white rounded flex items-center justify-center font-bold text-green-600 text-[10px] border border-white/20">UPI</div>
