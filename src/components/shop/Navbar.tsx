@@ -120,23 +120,23 @@ export function Navbar() {
                             <div className="absolute top-full left-0 w-[800px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-2 p-0 overflow-hidden z-50 ring-1 ring-black/5">
                                 <div className="flex">
                                     {/* Column 1: Categories Grid */}
-                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-white dark:bg-slate-900">
-                                        <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 dark:text-white/40 mb-2">Shop by Category</h3>
+                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-white">
+                                        <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 mb-2">Shop by Category</h3>
                                         {categories.length > 0 ? categories.map(cat => (
                                             <Link
                                                 key={cat.id}
                                                 href={`/search?category=${cat.slug || cat.id}`}
-                                                className="flex items-center gap-4 p-2 rounded-xl hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all group/item border border-transparent hover:border-gray-100 dark:hover:border-slate-700"
+                                                className="flex items-center gap-4 p-2 rounded-xl hover:bg-gray-50 hover:shadow-sm transition-all group/item border border-transparent hover:border-gray-100"
                                             >
-                                                <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shadow-inner group-hover/item:scale-110 transition-transform">
+                                                <div className="w-10 h-10 rounded-lg bg-[#191970]/5 text-[#191970] flex items-center justify-center text-lg shadow-sm group-hover/item:scale-110 transition-transform">
                                                     {cat.icon || '🛍️'}
                                                 </div>
-                                                <span className="font-heading font-semibold text-sm text-foreground group-hover/item:translate-x-1 transition-transform">{cat.name}</span>
+                                                <span className="font-heading font-semibold text-sm text-[#191970] group-hover/item:translate-x-1 transition-transform">{cat.name}</span>
                                             </Link>
                                         )) : (
-                                            <div className="col-span-2 text-sm text-muted-foreground py-4">No categories found.</div>
+                                            <div className="col-span-2 text-sm text-gray-400 py-4 italic">No categories found.</div>
                                         )}
-                                        <Link href="/categories" className="col-span-2 mt-4 flex items-center justify-center gap-2 text-sm font-bold text-blue-600 hover:underline">
+                                        <Link href="/categories" className="col-span-2 mt-4 flex items-center justify-center gap-2 text-sm font-bold text-[#191970] hover:underline">
                                             View All Categories →
                                         </Link>
                                     </div>
