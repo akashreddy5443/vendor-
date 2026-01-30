@@ -22,6 +22,7 @@ interface MapPickerProps {
         state: string;
         zip: string;
         country: string;
+        label: string;
     }) => void;
 }
 
