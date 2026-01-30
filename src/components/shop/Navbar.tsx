@@ -120,7 +120,7 @@ export function Navbar() {
                             <div className="absolute top-full left-0 w-[800px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-2 p-0 overflow-hidden z-50 ring-1 ring-black/5">
                                 <div className="flex">
                                     {/* Column 1: Categories Grid */}
-                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50">
+                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-white dark:bg-slate-900">
                                         <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 dark:text-white/40 mb-2">Shop by Category</h3>
                                         {categories.length > 0 ? categories.map(cat => (
                                             <Link
