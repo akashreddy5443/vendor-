@@ -62,12 +62,22 @@ export function ProductReviews({ productId, initialReviews, hasPurchased, isLogg
                     ) : (
                         reviews.map((review) => (
                             <div key={review.id} className="border-b border-gray-100 pb-6 last:border-0">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100">
-                                        <User className="w-5 h-5" />
+                                <div className="flex items-start gap-4 mb-3">
+                                    <div className="shrink-0 mt-1">
+                                        {review.user?.avatar_url ? (
+                                            <img
+                                                src={review.user.avatar_url}
+                                                alt={review.author_name}
+                                                className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                                            />
+                                        ) : (
+                                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200 text-sm">
+                                                {review.author_name?.[0].toUpperCase() || <User className="w-4 h-4" />}
+                                            </div>
+                                        )}
                                     </div>
-                                    <div>
-                                        <div className="flex items-center gap-2">
+                                    <div className="flex-1">
+                                        <div className="flex flex-wrap items-center gap-2 mb-0.5">
                                             <span className="font-bold text-gray-900">{review.author_name}</span>
                                             {review.is_verified_purchase && (
                                                 <span className="text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
@@ -75,7 +85,11 @@ export function ProductReviews({ productId, initialReviews, hasPurchased, isLogg
                                                 </span>
                                             )}
                                         </div>
-                                        <span className="text-xs text-gray-400">{new Date(review.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] text-gray-400 font-medium">{new Date(review.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                            <span className="text-[10px] text-gray-300">•</span>
+                                            <span className="text-[10px] text-gray-400 italic">{review.user?.email || 'verified customer'}</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <RatingStars rating={review.rating} size="sm" />

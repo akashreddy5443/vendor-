@@ -58,10 +58,32 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
 
     const productImages = imagesRes.data || []
     const productCategory = categoryRes.data
-    const reviews = reviewsRes.data || []
+    const reviewsData = reviewsRes.data || []
     const hasPurchased = !!purchaseRes.data
 
-    console.log(`[PDP] Loaded: ${product.title} (Images: ${productImages.length}, Reviews: ${reviews.length}, HasPurchased: ${hasPurchased})`)
+    // 2.5 Fetch Reviewer Details for these approved reviews
+    let enrichedReviews = reviewsData
+    if (reviewsData.length > 0) {
+        const reviewerIds = Array.from(new Set(reviewsData.map(r => r.user_id).filter(Boolean)))
+        if (reviewerIds.length > 0) {
+            const { data: reviewers } = await supabase
+                .from('users')
+                .select('id, email, avatar_url')
+                .in('id', reviewerIds)
+
+            const usersMap = (reviewers || []).reduce((acc, u) => {
+                acc[u.id] = u
+                return acc
+            }, {} as Record<string, any>)
+
+            enrichedReviews = reviewsData.map(r => ({
+                ...r,
+                user: usersMap[r.user_id] || { email: 'Guest', avatar_url: null }
+            }))
+        }
+    }
+
+    console.log(`[PDP] Loaded: ${product.title} (Images: ${productImages.length}, Reviews: ${reviewsData.length}, HasPurchased: ${hasPurchased})`)
 
 
     const { title, price, description, stock } = product
@@ -197,7 +219,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
                 <ProductReviews
                     productId={product.id}
-                    initialReviews={reviews || []}
+                    initialReviews={enrichedReviews || []}
                     hasPurchased={hasPurchased}
                     isLoggedIn={!!user}
                 />

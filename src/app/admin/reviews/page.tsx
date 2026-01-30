@@ -15,30 +15,30 @@ export default async function AdminReviewsPage() {
 
         if (reviewsError) throw reviewsError
 
-        // 2. Fetch User Emails for these reviews manually to avoid the "relationship error"
-        // This is more stable than client-side joins across schemas.
+        // 2. Fetch User Details (Email & Avatar) for these reviews manually
         const userIds = Array.from(new Set(reviews?.map(r => r.user_id).filter(Boolean)))
 
-        let usersMap: Record<string, string> = {}
+        let usersMap: Record<string, { email: string, avatar_url: string | null }> = {}
         if (userIds.length > 0) {
             const { data: usersData } = await supabase
-                .from('order_items') // We use order_items/orders to get user details if auth.users is inaccessible
-                .select('orders!inner(user_id, user_email:user_id)') // Dummy strategy or if we have a profiles table
-                .in('orders.user_id', userIds)
+                .from('users')
+                .select('id, email, avatar_url')
+                .in('id', userIds)
 
-            // Actually, in many Supabase setups, you might have a public 'profiles' table.
-            // If not, we'll just handle the email as missing or fetch from a known table.
-            // Let's try to get emails from the 'profiles' table if it exists, otherwise use a fallback.
-            const { data: profiles } = await supabase.from('profiles').select('id, email').in('id', userIds)
-            if (profiles) {
-                profiles.forEach(p => { usersMap[p.id] = p.email });
+            if (usersData) {
+                usersData.forEach(u => {
+                    usersMap[u.id] = {
+                        email: u.email,
+                        avatar_url: u.avatar_url
+                    }
+                });
             }
         }
 
         // Combine data
         const enrichedReviews = reviews?.map(r => ({
             ...r,
-            user: { email: usersMap[r.user_id] || 'Customer' }
+            user: usersMap[r.user_id] || { email: 'Guest', avatar_url: null }
         }))
 
         return (
@@ -57,39 +57,56 @@ export default async function AdminReviewsPage() {
                     {enrichedReviews?.map((r: any) => (
                         <div key={r.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                             <div className="p-6">
-                                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-3">
-                                            <span className="font-bold text-gray-900">{r.author_name}</span>
-                                            <span className="text-gray-400 text-xs">•</span>
-                                            <span className="text-gray-500 text-xs">{(r.user as any)?.email || 'Guest'}</span>
-                                            {r.is_verified_purchase && (
-                                                <span className="text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                                                    Verified Buyer
-                                                </span>
+                                <div className="flex flex-col md:flex-row justify-between gap-6">
+                                    {/* Left: Avatar & Content */}
+                                    <div className="flex gap-4 flex-1">
+                                        <div className="shrink-0 pt-1">
+                                            {r.user?.avatar_url ? (
+                                                <img
+                                                    src={r.user.avatar_url}
+                                                    alt={r.author_name}
+                                                    className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100 shadow-sm"
+                                                />
+                                            ) : (
+                                                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg border-2 border-white shadow-sm">
+                                                    {r.author_name?.[0].toUpperCase() || 'U'}
+                                                </div>
                                             )}
                                         </div>
+                                        <div className="space-y-4 flex-1">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="font-bold text-gray-900">{r.author_name}</span>
+                                                <span className="text-gray-400 text-xs">•</span>
+                                                <span className="text-gray-500 text-xs">{r.user?.email || 'Guest Account'}</span>
+                                                {r.is_verified_purchase && (
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                                                        Verified Buyer
+                                                    </span>
+                                                )}
+                                            </div>
 
-                                        <div className="flex items-center gap-4">
-                                            <RatingStars rating={r.rating} size="sm" />
-                                            <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md border ${r.status === 'approved' ? 'bg-green-50 text-green-600 border-green-100' :
-                                                r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
-                                                    'bg-yellow-50 text-yellow-600 border-yellow-100'
-                                                }`}>
-                                                {r.status}
-                                            </span>
+                                            <div className="flex items-center gap-4">
+                                                <RatingStars rating={r.rating} size="sm" />
+                                                <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md border ${r.status === 'approved' ? 'bg-green-50 text-green-600 border-green-100' :
+                                                        r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
+                                                            'bg-yellow-50 text-yellow-600 border-yellow-100'
+                                                    }`}>
+                                                    {r.status}
+                                                </span>
+                                            </div>
+
+                                            <p className="text-gray-700 text-sm leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100 italic">
+                                                "{r.comment}"
+                                            </p>
+
+                                            <p className="text-[10px] text-gray-400 font-medium">
+                                                Submitted on {new Date(r.created_at).toLocaleString()}
+                                            </p>
                                         </div>
-
-                                        <p className="text-gray-700 text-sm leading-relaxed max-w-2xl bg-gray-50 p-4 rounded-xl border border-gray-100 italic">
-                                            "{r.comment}"
-                                        </p>
-
-                                        <p className="text-[10px] text-gray-400 font-medium">
-                                            Submitted on {new Date(r.created_at).toLocaleString()}
-                                        </p>
                                     </div>
 
-                                    <div className="flex md:flex-col gap-2 shrink-0">
+                                    {/* Right: Actions */}
+                                    <div className="flex md:flex-col gap-2 shrink-0 md:w-32">
                                         {r.status !== 'approved' && (
                                             <form action={async () => {
                                                 'use server'
@@ -123,7 +140,8 @@ export default async function AdminReviewsPage() {
                             </div>
                         </div>
                     ))}
-                    {!reviews?.length && (
+
+                    {(!enrichedReviews || enrichedReviews.length === 0) && (
                         <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
                             <p className="text-gray-400 font-medium">No reviews found in the database.</p>
                         </div>
@@ -133,8 +151,13 @@ export default async function AdminReviewsPage() {
         )
     } catch (e: any) {
         return (
-            <div className="p-4 bg-red-50 text-red-600">
-                Exception: {e.message}
+            <div className="p-8 max-w-4xl mx-auto">
+                <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 shadow-sm">
+                    <h2 className="font-bold flex items-center gap-2 mb-1">
+                        <XCircle className="w-5 h-5" /> Database Connection Issue
+                    </h2>
+                    <p className="text-sm opacity-90">{e.message}</p>
+                </div>
             </div>
         )
     }

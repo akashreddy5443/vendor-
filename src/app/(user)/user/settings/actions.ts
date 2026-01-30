@@ -11,12 +11,14 @@ export async function updateProfile(formData: FormData) {
 
     const fullName = formData.get('fullName') as string
     const phone = formData.get('phone') as string
+    const avatarUrl = formData.get('avatarUrl') as string
 
     const { error } = await supabase
         .from('users')
         .update({
             full_name: fullName,
-            phone_number: phone
+            phone_number: phone,
+            avatar_url: avatarUrl
             // Email updates usually require re-verification flow, skipping for simple profile edit
         })
         .eq('id', user.id)
