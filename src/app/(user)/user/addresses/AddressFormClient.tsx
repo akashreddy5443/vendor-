@@ -73,12 +73,29 @@ export function AddressFormClient() {
                 <form onSubmit={handleSubmit} className="flex-1 space-y-4">
                     <div className="grid grid-cols-1 gap-4">
                         <div className="space-y-1">
-                            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Label</label>
+                            <div className="flex justify-between items-end mb-1">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Label</label>
+                                <div className="flex gap-1.5">
+                                    {['Home', 'Office', 'Work'].map((lab) => (
+                                        <button
+                                            key={lab}
+                                            type="button"
+                                            onClick={() => setAddress(prev => ({ ...prev, fullName: lab }))}
+                                            className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold transition-all border ${address.fullName === lab
+                                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                                                    : "bg-background text-muted-foreground border-border hover:border-blue-300"
+                                                }`}
+                                        >
+                                            {lab}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                             <input
                                 name="fullName"
                                 value={address.fullName}
                                 onChange={(e) => setAddress(prev => ({ ...prev, fullName: e.target.value }))}
-                                placeholder="Home / Office / Work"
+                                placeholder="Home / Office / Work or Custom Name"
                                 className="w-full rounded-xl bg-background px-4 py-3 text-sm text-foreground border border-border focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                                 required
                             />

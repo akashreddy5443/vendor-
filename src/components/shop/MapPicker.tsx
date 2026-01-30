@@ -58,16 +58,26 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
             if (data.address) {
                 const addr = data.address
 
-                // Try to determine a label
-                const label = data.name || addr.building || addr.office || addr.amenity || addr.industrial || (addr.road ? 'Home' : 'My Location')
+                // Construct a better street address with house number if available
+                const streetParts = []
+                if (addr.house_number) streetParts.push(addr.house_number)
+                if (addr.building) streetParts.push(addr.building)
+                if (addr.road) streetParts.push(addr.road)
+                const streetAddress = streetParts.join(', ') || addr.suburb || addr.neighbourhood || ''
+
+                // Try to determine a professional label - avoid "My Location" or numeric names
+                let suggestedLabel = data.name || addr.building || addr.amenity || addr.office || addr.industrial || ''
+                if (!suggestedLabel || /^\d+$/.test(suggestedLabel) || suggestedLabel.toLowerCase().includes('location')) {
+                    suggestedLabel = 'Home' // Safer default than "My Location"
+                }
 
                 onAddressSelect({
-                    street: addr.road || addr.suburb || addr.neighbourhood || '',
+                    street: streetAddress,
                     city: addr.city || addr.town || addr.village || addr.county || '',
                     state: addr.state || '',
                     zip: addr.postcode || '',
                     country: addr.country || '',
-                    label: label
+                    label: suggestedLabel
                 })
                 lastPositionRef.current = new L.LatLng(lat, lon)
             }
