@@ -37,7 +37,22 @@ export function Navbar() {
                 .from('categories')
                 .select('id, name, slug, icon')
                 .limit(10)
-            if (cats) setCategories(cats)
+
+            // Hardcoded fallback if DB is empty (ensures UI always looks good)
+            const STATIC_CATEGORIES = [
+                { id: 'laptops', name: 'Laptops', slug: 'laptops', icon: '💻' },
+                { id: 'accessories', name: 'Accessories', slug: 'accessories', icon: '🎧' },
+                { id: 'monitors', name: 'Monitors', slug: 'monitors', icon: '🖥️' },
+                { id: 'keyboards', name: 'Keyboards', slug: 'keyboards', icon: '⌨️' },
+                { id: 'mice', name: 'Mice', slug: 'mice', icon: '🖱️' },
+                { id: 'smartphones', name: 'Smartphones', slug: 'smartphones', icon: '📱' },
+            ]
+
+            if (cats && cats.length > 0) {
+                setCategories(cats)
+            } else {
+                setCategories(STATIC_CATEGORIES)
+            }
 
             // Fetch Announcement
             const { data } = await supabase

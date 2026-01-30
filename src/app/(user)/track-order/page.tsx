@@ -22,30 +22,43 @@ export default function TrackOrderPage() {
 
         const supabase = createClient()
 
-        // Try searching by partial ID using the RPC function
-        const { data, error } = await supabase.rpc('get_order_by_partial_id', { lookup_id: orderId.trim() })
+        // STRATEGY: Try RPC (Partial Match) -> Fallback to Exact Match
+        let foundOrder = null
 
-        if (error) {
-            console.error('Tracking Error:', error)
-            setError('Error tracking order. Please try again.')
-        } else if (data && data.length > 0) {
-            // Found it! Fetch the items for the first match
-            const orderData = data[0]
+        try {
+            // Attempt 1: RPC for partial match
+            const { data, error } = await supabase.rpc('get_order_by_partial_id', { lookup_id: orderId.trim() })
+            if (!error && data && data.length > 0) {
+                foundOrder = data[0]
+            }
+        } catch (e) {
+            // RPC failed (probably not deployed), proceed to fallback
+        }
 
-            // We need to fetch items separately since RPC returns just the order row usually, 
-            // OR we could have made the RPC return a joined structure, but standard join is easier here.
-
-            const { data: fullOrder, error: itemsError } = await supabase
+        if (!foundOrder) {
+            // Attempt 2: Exact UUID match (Standard Supabase Query)
+            const { data, error } = await supabase
                 .from('orders')
                 .select('*, order_items(*)')
-                .eq('id', orderData.id)
-                .single()
+                .eq('id', orderId.trim())
+                .maybeSingle() // Use maybeSingle to avoid 406 errors
 
-            if (fullOrder) {
-                setOrder(fullOrder)
-            } else {
-                setError('Order details not available.')
+            if (data) {
+                foundOrder = data
             }
+        }
+
+        if (foundOrder) {
+            // If we only got summary from RPC, fetch details now if needed
+            if (!foundOrder.order_items) {
+                const { data: fullOrder } = await supabase
+                    .from('orders')
+                    .select('*, order_items(*)')
+                    .eq('id', foundOrder.id)
+                    .single()
+                if (fullOrder) foundOrder = fullOrder
+            }
+            setOrder(foundOrder)
         } else {
             setError('Order not found. Please check your Order ID.')
         }
@@ -117,8 +130,8 @@ export default function TrackOrderPage() {
                                 <p className="font-mono text-xl text-[#191970] font-bold tracking-wide">{order.id}</p>
                             </div>
                             <div className={`px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider border ${order.status === 'delivered' ? 'bg-green-50 text-green-700 border-green-200' :
-                                    order.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
-                                        'bg-blue-50 text-blue-700 border-blue-200'
+                                order.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
+                                    'bg-blue-50 text-blue-700 border-blue-200'
                                 }`}>
                                 {order.status}
                             </div>
@@ -144,8 +157,8 @@ export default function TrackOrderPage() {
                                     return (
                                         <div key={label} className="flex flex-col items-center gap-4 relative group">
                                             <div className={`w-14 h-14 rounded-full flex items-center justify-center border-4 transition-all duration-500 relative z-10 ${isActive
-                                                    ? 'border-[#191970] bg-[#191970] text-white scale-110 shadow-lg'
-                                                    : 'border-gray-200 bg-white text-gray-300'
+                                                ? 'border-[#191970] bg-[#191970] text-white scale-110 shadow-lg'
+                                                : 'border-gray-200 bg-white text-gray-300'
                                                 }`}>
                                                 {index === 0 && <CheckCircle className="w-6 h-6" />}
                                                 {index === 1 && <Package className="w-6 h-6" />}
