@@ -18,20 +18,20 @@ export async function submitReview(formData: FormData) {
     // Check if user is logged in to associate with user_id
     const { data: { user } } = await supabase.auth.getUser()
 
-    const { data, error } = await supabase.from('reviews').insert({
+    const { error } = await supabase.from('reviews').insert({
         product_id: productId,
         user_id: user?.id || null,
         rating,
         comment,
         author_name: authorName || 'Anonymous',
         status: 'pending' // Default to pending for moderation
-    }).select().single()
+    })
 
     if (error) {
         console.error('Error submitting review:', error)
-        return { error: error.message || 'Failed to submit review' }
+        return { error: 'Failed to submit review' }
     }
 
     revalidatePath(`/products/${productId}`)
-    return { success: true, review: data }
+    return { success: true }
 }
