@@ -15,30 +15,31 @@ export default async function AdminReviewsPage() {
 
         if (reviewsError) throw reviewsError
 
-        // 2. Fetch User Details (Email & Avatar) for these reviews manually
+        // 2. Fetch User Details (Email & Avatar)
         const userIds = Array.from(new Set(reviews?.map(r => r.user_id).filter(Boolean)))
+        const productIds = Array.from(new Set(reviews?.map(r => r.product_id).filter(Boolean)))
 
-        let usersMap: Record<string, { email: string, avatar_url: string | null }> = {}
-        if (userIds.length > 0) {
-            const { data: usersData } = await supabase
-                .from('users')
-                .select('id, email, avatar_url')
-                .in('id', userIds)
+        // Parallel fetch for Users and Products
+        const [usersRes, productsRes, imagesRes] = await Promise.all([
+            userIds.length > 0 ? supabase.from('users').select('id, email, avatar_url').in('id', userIds) : Promise.resolve({ data: [] }),
+            productIds.length > 0 ? supabase.from('products').select('id, title').in('id', productIds) : Promise.resolve({ data: [] }),
+            productIds.length > 0 ? supabase.from('product_images').select('product_id, cloudinary_url').eq('is_primary', true).in('product_id', productIds) : Promise.resolve({ data: [] })
+        ])
 
-            if (usersData) {
-                usersData.forEach(u => {
-                    usersMap[u.id] = {
-                        email: u.email,
-                        avatar_url: u.avatar_url
-                    }
-                });
-            }
-        }
+        const usersMap: Record<string, any> = {}
+        usersRes.data?.forEach(u => { usersMap[u.id] = u })
+
+        const productsMap: Record<string, any> = {}
+        productsRes.data?.forEach(p => {
+            const primaryImg = imagesRes.data?.find(img => img.product_id === p.id)?.cloudinary_url
+            productsMap[p.id] = { title: p.title, image: primaryImg }
+        })
 
         // Combine data
         const enrichedReviews = reviews?.map(r => ({
             ...r,
-            user: usersMap[r.user_id] || { email: 'Guest', avatar_url: null }
+            user: usersMap[r.user_id] || { email: 'Guest', avatar_url: null },
+            product: productsMap[r.product_id] || { title: 'Unknown Product', image: null }
         }))
 
         return (
@@ -78,6 +79,18 @@ export default async function AdminReviewsPage() {
                                                 <span className="font-bold text-gray-900">{r.author_name}</span>
                                                 <span className="text-gray-400 text-xs">•</span>
                                                 <span className="text-gray-500 text-xs">{r.user?.email || 'Guest Account'}</span>
+
+                                                <div className="flex items-center gap-2 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100 ml-2">
+                                                    {r.product?.image ? (
+                                                        <img src={r.product.image} className="w-5 h-5 rounded object-cover" alt="" />
+                                                    ) : (
+                                                        <div className="w-5 h-5 bg-gray-200 rounded flex items-center justify-center text-[10px]">📦</div>
+                                                    )}
+                                                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-tight truncate max-w-[150px]">
+                                                        {r.product?.title}
+                                                    </span>
+                                                </div>
+
                                                 {r.is_verified_purchase && (
                                                     <span className="text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
                                                         Verified Buyer
@@ -88,8 +101,8 @@ export default async function AdminReviewsPage() {
                                             <div className="flex items-center gap-4">
                                                 <RatingStars rating={r.rating} size="sm" />
                                                 <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md border ${r.status === 'approved' ? 'bg-green-50 text-green-600 border-green-100' :
-                                                        r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
-                                                            'bg-yellow-50 text-yellow-600 border-yellow-100'
+                                                    r.status === 'rejected' ? 'bg-red-50 text-red-600 border-red-100' :
+                                                        'bg-yellow-50 text-yellow-600 border-yellow-100'
                                                     }`}>
                                                     {r.status}
                                                 </span>
