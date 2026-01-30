@@ -28,7 +28,7 @@ export async function Footer() {
                         <h2 className="text-4xl lg:text-5xl font-extrabold tracking-incredibly-tight leading-none text-white uppercase">
                             {/* Manual split for style, or dynamic if simple text */}
                             <span className="block text-white/50 mb-2 text-2xl font-bold tracking-widest">Stay Ahead</span>
-                            SUBSCRIBE TO OUR <br /><span className="text-blue-200">NEWSLETTER</span>
+                            SUBSCRIBE TO OUR <br /><span className="text-blue-400">NEWSLETTER</span>
                         </h2>
                         <div className="relative max-w-sm">
                             <NewsletterForm />
@@ -113,7 +113,7 @@ export async function Footer() {
                     <div className="flex flex-col items-center gap-2 sm:items-end">
                         <div className="text-2xl font-black font-sans tracking-tight text-white">
                             {config.copyrightText || (
-                                <>TECH<span className="text-blue-300">DEV</span></>
+                                <>TECH<span className="text-blue-400">DEV</span></>
                             )}
                         </div>
                         <div className="text-xs text-white/40 text-center sm:text-right font-medium">

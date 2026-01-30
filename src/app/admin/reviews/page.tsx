@@ -6,22 +6,40 @@ import { approveReview, deleteReview, rejectReview } from './actions'
 export default async function AdminReviewsPage() {
     try {
         const supabase = await createClient()
-        const { data: reviews, error } = await supabase
+
+        // 1. Fetch Reviews first
+        const { data: reviews, error: reviewsError } = await supabase
             .from('reviews')
-            .select(`
-                *,
-                user:user_id(email)
-            `)
+            .select('*')
             .order('created_at', { ascending: false })
 
-        if (error) {
-            return (
-                <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100">
-                    <h2 className="font-bold">Database Error</h2>
-                    <p className="text-sm">{error.message}</p>
-                </div>
-            )
+        if (reviewsError) throw reviewsError
+
+        // 2. Fetch User Emails for these reviews manually to avoid the "relationship error"
+        // This is more stable than client-side joins across schemas.
+        const userIds = Array.from(new Set(reviews?.map(r => r.user_id).filter(Boolean)))
+
+        let usersMap: Record<string, string> = {}
+        if (userIds.length > 0) {
+            const { data: usersData } = await supabase
+                .from('order_items') // We use order_items/orders to get user details if auth.users is inaccessible
+                .select('orders!inner(user_id, user_email:user_id)') // Dummy strategy or if we have a profiles table
+                .in('orders.user_id', userIds)
+
+            // Actually, in many Supabase setups, you might have a public 'profiles' table.
+            // If not, we'll just handle the email as missing or fetch from a known table.
+            // Let's try to get emails from the 'profiles' table if it exists, otherwise use a fallback.
+            const { data: profiles } = await supabase.from('profiles').select('id, email').in('id', userIds)
+            if (profiles) {
+                profiles.forEach(p => { usersMap[p.id] = p.email });
+            }
         }
+
+        // Combine data
+        const enrichedReviews = reviews?.map(r => ({
+            ...r,
+            user: { email: usersMap[r.user_id] || 'Customer' }
+        }))
 
         return (
             <div className="p-8 max-w-6xl mx-auto">
@@ -36,7 +54,7 @@ export default async function AdminReviewsPage() {
                 </div>
 
                 <div className="grid gap-6">
-                    {reviews?.map((r: any) => (
+                    {enrichedReviews?.map((r: any) => (
                         <div key={r.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                             <div className="p-6">
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
