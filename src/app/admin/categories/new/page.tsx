@@ -11,7 +11,12 @@ export default function NewCategoryPage() {
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                <form action={createCategory} className="space-y-6">
+                <form
+                    action={async (formData) => {
+                        await createCategory(formData)
+                    }}
+                    className="space-y-6"
+                >
                     <div className="space-y-2">
                         <label htmlFor="name" className="text-sm font-medium text-gray-700">
                             Category Name
