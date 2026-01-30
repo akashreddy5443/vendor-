@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Plus, MapPin, Loader2, Map as MapIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { addAddress } from '@/app/(user)/user/addresses/actions'
@@ -24,7 +24,7 @@ export function AddressFormClient() {
         country: 'India'
     })
 
-    const handleAddressSelect = (data: any) => {
+    const handleAddressSelect = useCallback((data: any) => {
         setAddress(prev => ({
             ...prev,
             street: data.street || prev.street,
@@ -34,7 +34,7 @@ export function AddressFormClient() {
             country: data.country || prev.country
         }))
         toast.success('Address coordinates captured!')
-    }
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

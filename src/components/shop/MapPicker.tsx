@@ -43,7 +43,12 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     const [loading, setLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
 
+    const lastPositionRef = useRef<L.LatLng>(position)
+
     const reverseGeocode = useCallback(async (lat: number, lon: number) => {
+        // Prevent calls if position hasn't actually changed significantly
+        if (lastPositionRef.current.lat === lat && lastPositionRef.current.lng === lon) return
+
         setLoading(true)
         try {
             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`)
@@ -58,6 +63,7 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                     zip: addr.postcode || '',
                     country: addr.country || ''
                 })
+                lastPositionRef.current = new L.LatLng(lat, lon)
             }
         } catch (error) {
             console.error('Reverse geocoding error:', error)
@@ -67,7 +73,10 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     }, [onAddressSelect])
 
     useEffect(() => {
-        reverseGeocode(position.lat, position.lng)
+        const timeout = setTimeout(() => {
+            reverseGeocode(position.lat, position.lng)
+        }, 500) // Debounce geocoding
+        return () => clearTimeout(timeout)
     }, [position, reverseGeocode])
 
     const handleSearch = async (e: React.FormEvent) => {
