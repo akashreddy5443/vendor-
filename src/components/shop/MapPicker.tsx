@@ -56,12 +56,17 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
 
             if (data.address) {
                 const addr = data.address
+
+                // Try to determine a label
+                const label = data.name || addr.building || addr.office || addr.amenity || addr.industrial || (addr.road ? 'Home' : 'My Location')
+
                 onAddressSelect({
                     street: addr.road || addr.suburb || addr.neighbourhood || '',
                     city: addr.city || addr.town || addr.village || addr.county || '',
                     state: addr.state || '',
                     zip: addr.postcode || '',
-                    country: addr.country || ''
+                    country: addr.country || '',
+                    label: label
                 })
                 lastPositionRef.current = new L.LatLng(lat, lon)
             }

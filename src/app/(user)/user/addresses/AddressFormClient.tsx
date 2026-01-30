@@ -31,7 +31,8 @@ export function AddressFormClient() {
             city: data.city || prev.city,
             state: data.state || prev.state,
             zip: data.zip || prev.zip,
-            country: data.country || prev.country
+            country: data.country || prev.country,
+            fullName: prev.fullName === '' || prev.fullName === 'Home' || prev.fullName === 'Work' || prev.fullName === 'Office' ? data.label || prev.fullName : prev.fullName
         }))
         toast.success('Address coordinates captured!')
     }, [])
