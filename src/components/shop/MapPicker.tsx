@@ -98,14 +98,20 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
         }
     }
 
-    const detectLocation = () => {
+    const detectLocation = useCallback(() => {
         if (!navigator.geolocation) return
 
         navigator.geolocation.getCurrentPosition((pos) => {
             const newPos = new L.LatLng(pos.coords.latitude, pos.coords.longitude)
             setPosition(newPos)
-        })
-    }
+        }, (err) => {
+            console.error('Geolocation error:', err)
+        }, { enableHighAccuracy: true })
+    }, [])
+
+    useEffect(() => {
+        detectLocation()
+    }, [detectLocation])
 
     return (
         <div className="space-y-4">
