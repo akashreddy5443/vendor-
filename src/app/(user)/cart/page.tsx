@@ -2,17 +2,6 @@
 
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/utils'
-import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck, Lock, CheckCircle, AlertCircle } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useState } from 'react'
-import { CartRecommendations } from '@/components/shop/CartRecommendations'
-
-// ... (Cart Page Code with Save For Later)
-'use client'
-
-import { useCart } from '@/context/CartContext'
-import { formatPrice } from '@/lib/utils'
 import { Minus, Plus, Trash2, ArrowRight, Tag, ShieldCheck, Lock, CheckCircle, AlertCircle, Heart, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
