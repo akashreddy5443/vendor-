@@ -2,7 +2,7 @@
 
 import { updateHero, updateFeatured, updateCategories, updateFooter, updateHeroSlider } from '@/app/admin/homepage/actions'
 import { CldUploadWidget } from 'next-cloudinary'
-import { ImagePlus, X, Check, Trash2, Plus, GripVertical, ChevronDown, ChevronUp } from 'lucide-react'
+import { ImagePlus, X, Check, Trash2, Plus, GripVertical, ChevronDown, ChevronUp, LayoutGrid } from 'lucide-react'
 import { useState } from 'react'
 import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
@@ -49,20 +49,17 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
     // Categories State
     const [categories, setCategories] = useState<any[]>(() => {
         let cats = categoriesSection?.content_json?.categories || [
-            { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
-            { name: 'Phones', icon: '📱', href: '/search?category=phones' },
-            { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
-            { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
-            { name: 'Gaming', icon: '🎮', href: '/search?category=gaming' },
-            { name: 'Cameras', icon: '📷', href: '/search?category=cameras' },
+            { name: 'Laptops', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853', href: '/search?category=laptops' },
+            { name: 'Phones', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9', href: '/search?category=phones' },
+            { name: 'Audio', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e', href: '/search?category=audio' },
+            { name: 'Watches', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30', href: '/search?category=wearables' },
+            { name: 'Gaming', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e', href: '/search?category=gaming' },
+            { name: 'Accessories', image: 'https://images.unsplash.com/photo-1615526675159-e248c3021d3f', href: '/search?category=accessories' },
         ];
 
-        // Auto-fix: Ensure "All Categories" exists with GRID icon
+        // Auto-fix: Ensure "All Categories" exists with image
         if (!cats.find((c: any) => c.name === 'All Categories')) {
-            cats = [...cats, { name: 'All Categories', icon: 'GRID', href: '/products' }]
-        } else {
-            // Update existing "All Categories" to use GRID if it has old icon
-            cats = cats.map((c: any) => c.name === 'All Categories' && c.icon !== 'GRID' ? { ...c, icon: 'GRID' } : c)
+            cats = [...cats, { name: 'All Categories', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f', href: '/products' }]
         }
 
         return cats
@@ -96,7 +93,7 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
     }
 
     const addCategory = () => {
-        setCategories([...categories, { name: 'New Category', icon: '📦', href: '/search?category=new' }])
+        setCategories([...categories, { name: 'New Unit', image: '', href: '/products' }])
     }
 
     // Slider Helpers
@@ -359,96 +356,103 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     </div>
                 </form>
             </section>
-            {/* Categories Editor */}
+            {/* Categories Editor (AJIO-Style Tiles) */}
             <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h3 className="text-xl font-bold text-blue-600">Shop by Category</h3>
-                        <p className="text-sm text-gray-500">Edit the circular category links on the homepage.</p>
+                        <h3 className="text-xl font-bold text-indigo-600 flex items-center gap-2">
+                            <LayoutGrid className="w-5 h-5" /> Browse Categories (Tiles)
+                        </h3>
+                        <p className="text-sm text-gray-500 font-medium">Manage the image-based category tiles on your homepage.</p>
                     </div>
                     <button
                         onClick={addCategory}
-                        className="flex items-center gap-2 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-100"
+                        className="flex items-center gap-2 rounded-xl bg-indigo-50 px-4 py-2 text-sm font-bold text-indigo-600 hover:bg-indigo-100 transition-colors shadow-sm"
                     >
-                        <Plus className="h-4 w-4" /> Add Category
+                        <Plus className="h-4 w-4" /> Add Tile
                     </button>
                 </div>
 
                 <form action={handleCategoriesSubmit} className="space-y-6">
-                    {/* Explicitly passing key to force re-render if categories change, though React should handle value update */}
                     <input type="hidden" name="categories" value={JSON.stringify(categories)} key={JSON.stringify(categories)} />
 
-                    <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {categories.map((cat, index) => (
-                            <div key={index} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <div className="flex-1 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4 w-full">
-                                    <div className="space-y-1">
-                                        <label className="text-xs text-gray-500">Name</label>
-                                        <input
-                                            value={cat.name}
-                                            onChange={(e) => updateCategory(index, 'name', e.target.value)}
-                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
-                                            placeholder="Laptops"
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="flex justify-between items-center mb-1">
-                                            <label className="text-xs text-gray-500">Icon</label>
-                                            <div className="flex gap-1">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => updateCategory(index, 'icon', 'GRID')}
-                                                    className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded hover:bg-blue-200 border border-blue-200 font-bold"
-                                                    title="Use 4-Cube Grid"
-                                                >
-                                                    GRID
-                                                </button>
-                                                {['💻', '📱', '🎧', '⌚', '🎮', '📷'].map(emoji => (
-                                                    <button
-                                                        key={emoji}
-                                                        type="button"
-                                                        onClick={() => updateCategory(index, 'icon', emoji)}
-                                                        className="text-[10px] bg-gray-100 hover:bg-gray-200 px-1.5 py-0.5 rounded border border-gray-200"
-                                                    >
-                                                        {emoji}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <input
-                                            value={cat.icon}
-                                            onChange={(e) => updateCategory(index, 'icon', e.target.value)}
-                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
-                                            placeholder="Type emoji or 'GRID'"
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-xs text-gray-500">Link URL</label>
-                                        <input
-                                            value={cat.href}
-                                            onChange={(e) => updateCategory(index, 'href', e.target.value)}
-                                            className="w-full rounded bg-white border border-gray-300 p-2 text-sm text-gray-900 outline-none focus:border-blue-500"
-                                            placeholder="/search?category=..."
-                                        />
-                                    </div>
-                                </div>
+                            <div key={index} className="flex flex-col gap-4 bg-gray-50 p-5 rounded-2xl border border-gray-200 relative group">
                                 <button
                                     type="button"
                                     onClick={() => removeCategory(index)}
-                                    className="p-2 text-gray-400 hover:text-red-500 mt-4 sm:mt-0 transition-colors"
+                                    className="absolute -top-2 -right-2 p-1.5 bg-white rounded-full text-red-500 shadow-md border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity z-10"
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </button>
+
+                                <div className="flex gap-4 items-start">
+                                    {/* Image Selector */}
+                                    <div className="relative h-24 w-20 shrink-0 rounded-xl bg-white border border-gray-200 overflow-hidden shadow-sm flex items-center justify-center">
+                                        {cat.image ? (
+                                            <>
+                                                <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <CldUploadWidget
+                                                        uploadPreset="ml_default"
+                                                        onSuccess={(result: any) => updateCategory(index, 'image', result.info.secure_url)}
+                                                    >
+                                                        {({ open }) => (
+                                                            <button type="button" onClick={() => open()} className="text-[9px] font-black text-white uppercase tracking-widest px-2 py-1 bg-white/20 rounded backdrop-blur-sm border border-white/20">
+                                                                Swap
+                                                            </button>
+                                                        )}
+                                                    </CldUploadWidget>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <CldUploadWidget
+                                                uploadPreset="ml_default"
+                                                onSuccess={(result: any) => updateCategory(index, 'image', result.info.secure_url)}
+                                            >
+                                                {({ open }) => (
+                                                    <button type="button" onClick={() => open()} className="flex flex-col items-center text-gray-400 hover:text-indigo-600">
+                                                        <ImagePlus className="w-6 h-6 mb-1" />
+                                                        <span className="text-[10px] font-black uppercase">Cover</span>
+                                                    </button>
+                                                )}
+                                            </CldUploadWidget>
+                                        )}
+                                    </div>
+
+                                    {/* Fields */}
+                                    <div className="flex-1 space-y-3">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Display Name</label>
+                                            <input
+                                                value={cat.name}
+                                                onChange={(e) => updateCategory(index, 'name', e.target.value)}
+                                                className="w-full rounded-lg bg-white border border-gray-200 px-3 py-1.5 text-xs font-bold text-gray-900 outline-none focus:border-indigo-500 shadow-sm"
+                                                placeholder="e.g. Laptops"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Redirection Href</label>
+                                            <input
+                                                value={cat.href}
+                                                onChange={(e) => updateCategory(index, 'href', e.target.value)}
+                                                className="w-full rounded-lg bg-white border border-gray-200 px-3 py-1.5 text-xs font-bold text-gray-500 outline-none focus:border-indigo-500 shadow-sm"
+                                                placeholder="/search?category=..."
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-6 border-t border-gray-100 flex justify-end">
                         <button
                             type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
+                            className="rounded-xl bg-indigo-600 px-8 py-3 font-black text-white transition-all hover:bg-indigo-700 shadow-lg shadow-indigo-200 hover:scale-105 active:scale-95 text-xs uppercase tracking-widest"
                         >
-                            Update Categories
+                            Sync Category Logic
                         </button>
                     </div>
                 </form>
