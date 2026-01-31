@@ -219,10 +219,22 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
                         <div className="space-y-4">
                             <h4 className="font-bold text-gray-800 flex items-center gap-2"><Palette className="w-4 h-4" /> Social Links</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input placeholder="Twitter URL" value={config.socialLinks.twitter} onChange={e => updateSocial('twitter', e.target.value)} className="text-sm border-gray-200 rounded-md" />
-                                <input placeholder="Instagram URL" value={config.socialLinks.instagram} onChange={e => updateSocial('instagram', e.target.value)} className="text-sm border-gray-200 rounded-md" />
-                                <input placeholder="YouTube URL" value={config.socialLinks.youtube} onChange={e => updateSocial('youtube', e.target.value)} className="text-sm border-gray-200 rounded-md" />
-                                <input placeholder="Facebook URL" value={config.socialLinks.facebook} onChange={e => updateSocial('facebook', e.target.value)} className="text-sm border-gray-200 rounded-md" />
+                                <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-md bg-gray-50 focus-within:bg-white focus-within:border-blue-500 transition-colors">
+                                    <Twitter className="w-5 h-5 text-blue-400" />
+                                    <input placeholder="Twitter URL" value={config.socialLinks.twitter} onChange={e => updateSocial('twitter', e.target.value)} className="flex-1 bg-transparent border-none text-sm focus:ring-0 p-0" />
+                                </div>
+                                <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-md bg-gray-50 focus-within:bg-white focus-within:border-pink-500 transition-colors">
+                                    <Instagram className="w-5 h-5 text-pink-500" />
+                                    <input placeholder="Instagram URL" value={config.socialLinks.instagram} onChange={e => updateSocial('instagram', e.target.value)} className="flex-1 bg-transparent border-none text-sm focus:ring-0 p-0" />
+                                </div>
+                                <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-md bg-gray-50 focus-within:bg-white focus-within:border-red-500 transition-colors">
+                                    <Youtube className="w-5 h-5 text-red-500" />
+                                    <input placeholder="YouTube URL" value={config.socialLinks.youtube} onChange={e => updateSocial('youtube', e.target.value)} className="flex-1 bg-transparent border-none text-sm focus:ring-0 p-0" />
+                                </div>
+                                <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-md bg-gray-50 focus-within:bg-white focus-within:border-blue-700 transition-colors">
+                                    <Facebook className="w-5 h-5 text-blue-700" />
+                                    <input placeholder="Facebook URL" value={config.socialLinks.facebook} onChange={e => updateSocial('facebook', e.target.value)} className="flex-1 bg-transparent border-none text-sm focus:ring-0 p-0" />
+                                </div>
                             </div>
                         </div>
 
