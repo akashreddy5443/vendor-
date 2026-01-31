@@ -91,7 +91,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     let brands: string[] = []
 
     // 3. Site Settings for Price Limits & Discount
-    // 3. Site Settings for Price Limits & Discount
     const { data: settings } = await supabase.from('site_settings').select(`
         min_price_filter, 
         max_price_filter, 
@@ -99,8 +98,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         filter_category_label,
         filter_brand_label,
         show_category_filter,
-        show_brand_filter
+        show_brand_filter,
+        hidden_categories
     `).single()
+
+    // Filter categories based on hidden_categories setting
+    const hiddenCats = settings?.hidden_categories || []
+    const visibleCategories = categories?.filter(c => !hiddenCats.includes(c.slug)) || []
 
     let priceBounds = { min: 0, max: 10000 } // Fallout default
 
@@ -132,7 +136,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                             minPrice={priceBounds.min}
                             maxPrice={priceBounds.max}
                             brands={brands}
-                            categories={categories || []}
+                            categories={visibleCategories || []}
                             pricePresets={settings?.price_presets}
                             categoryLabel={settings?.filter_category_label || 'All Categories'}
                             brandLabel={settings?.filter_brand_label || 'Brands'}

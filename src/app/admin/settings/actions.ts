@@ -22,6 +22,17 @@ export async function updateSettings(formData: FormData) {
     const show_category_filter = formData.get('show_category_filter') === 'on'
     const show_brand_filter = formData.get('show_brand_filter') === 'on'
 
+    // Parse hidden_categories
+    let hidden_categories = []
+    try {
+        const hiddenRaw = formData.get('hidden_categories') as string
+        if (hiddenRaw) {
+            hidden_categories = JSON.parse(hiddenRaw)
+        }
+    } catch (e) {
+        console.error('Invalid JSON for hidden_categories:', e)
+    }
+
     // Parse price_presets safely
     let price_presets = null
     try {
@@ -49,6 +60,7 @@ export async function updateSettings(formData: FormData) {
         filter_brand_label,
         show_category_filter,
         show_brand_filter,
+        hidden_categories,
         updated_at: new Date().toISOString()
     }
 

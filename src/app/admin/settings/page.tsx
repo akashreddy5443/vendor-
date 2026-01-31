@@ -9,6 +9,11 @@ export default async function AdminSettingsPage() {
         .eq('id', 1)
         .single()
 
+    const { data: categories } = await supabase
+        .from('categories')
+        .select('*')
+        .order('name')
+
     return (
         <div className="max-w-2xl space-y-6">
             <div>
@@ -17,7 +22,7 @@ export default async function AdminSettingsPage() {
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                <SettingsForm settings={settings} />
+                <SettingsForm settings={settings} categories={categories || []} />
             </div>
         </div>
     )

@@ -5,7 +5,7 @@ import { useState, useTransition } from 'react'
 import { Save, AlertTriangle, ImagePlus, X, Plus, Trash2 } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
-export function SettingsForm({ settings }: { settings: any }) {
+export function SettingsForm({ settings, categories = [] }: { settings: any, categories?: any[] }) {
     const [isPending, startTransition] = useTransition()
     const [message, setMessage] = useState('')
     const [logoUrl, setLogoUrl] = useState(settings?.logo_url || '')
@@ -17,6 +17,20 @@ export function SettingsForm({ settings }: { settings: any }) {
         { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
         { label: 'Over ₹1,00,000', min: 100000, max: 1000000 }
     ])
+
+    const [hiddenCategories, setHiddenCategories] = useState<string[]>(
+        settings?.hidden_categories || []
+    )
+
+    // Watch for external updates (e.g. after save)
+    useEffect(() => {
+        if (settings?.price_presets) {
+            setPresets(settings.price_presets)
+        }
+        if (settings?.hidden_categories) {
+            setHiddenCategories(settings.hidden_categories)
+        }
+    }, [settings])
 
     const addPreset = () => {
         setPresets([...presets, { label: 'New Range', min: 0, max: 10000 }])
@@ -194,6 +208,37 @@ export function SettingsForm({ settings }: { settings: any }) {
                                 className="w-full bg-white border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 outline-none"
                                 placeholder="e.g. Collections"
                             />
+                        </div>
+
+                        {/* Hidden Categories Selector */}
+                        <div className="pt-2 border-t border-gray-200 mt-2">
+                            <label className="text-xs font-medium text-gray-700 mb-2 block">Visible Categories</label>
+                            <div className="max-h-40 overflow-y-auto space-y-2 custom-scrollbar p-1">
+                                {categories?.map((cat: any) => {
+                                    const isHidden = hiddenCategories.includes(cat.slug)
+                                    return (
+                                        <label key={cat.id} className="flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded transition-colors">
+                                            <input
+                                                type="checkbox"
+                                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+                                                checked={!isHidden}
+                                                onChange={(e) => {
+                                                    if (e.target.checked) {
+                                                        setHiddenCategories(prev => prev.filter(c => c !== cat.slug))
+                                                    } else {
+                                                        setHiddenCategories(prev => [...prev, cat.slug])
+                                                    }
+                                                }}
+                                            />
+                                            <span className={`text-sm ${isHidden ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
+                                                {cat.name}
+                                            </span>
+                                        </label>
+                                    )
+                                })}
+                            </div>
+                            <input type="hidden" name="hidden_categories" value={JSON.stringify(hiddenCategories)} />
+                            <p className="text-[10px] text-gray-400 mt-1">Uncheck to hide from sidebar. (Does not delete category)</p>
                         </div>
                     </div>
 

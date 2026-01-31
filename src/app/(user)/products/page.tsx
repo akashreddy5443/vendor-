@@ -94,7 +94,6 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             }
 
             const { data: cats } = await supabase.from('categories').select('*').order('name')
-            setCategories(cats || [])
 
             const { data: settings } = await supabase.from('site_settings').select(`
                 global_discount_percentage, 
@@ -105,8 +104,14 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                 filter_category_label,
                 filter_brand_label,
                 show_category_filter,
-                show_brand_filter
+                show_brand_filter,
+                hidden_categories
             `).single()
+
+            // Filter categories based on hidden_categories setting
+            const hiddenCats = settings?.hidden_categories || []
+            setCategories(cats?.filter(c => !hiddenCats.includes(c.slug)) || [])
+
             setGlobalDiscount(settings?.global_discount_percentage || 0)
             setGlobalGst(settings?.default_gst_percentage || 18)
 
