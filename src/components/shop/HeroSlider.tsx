@@ -73,14 +73,14 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             priority
                             sizes="100vw"
                         />
-                        {/* Enhanced Multi-layer Gradient for Premium Look */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/60 to-slate-950/20 z-10" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+                        {/* Adjusted Gradient - Heavy on left, light on right to show background */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/98 via-slate-950/70 via-40% to-slate-950/10 z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent z-10" />
                     </div>
 
-                    {/* Text Content - Refined Layout */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-16 lg:px-24 max-w-7xl mx-auto">
-                        {/* Premium Glow Effect */}
+                    {/* Text Content - Left Aligned */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-16 lg:px-24">
+                        {/* Premium Glow Effect - positioned on left */}
                         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/15 blur-[150px] -z-10 pointer-events-none rounded-full" />
 
                         <motion.div
