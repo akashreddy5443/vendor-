@@ -71,7 +71,8 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                             }}
                             className="relative h-[600px]"
                         >
-                            <Link href={item.link} className="group block h-full w-full">
+                            {/* Phase 6: Cursor feedback - whole card clickable */}
+                            <Link href={item.link} className="group block h-full w-full cursor-pointer">
                                 {/* Phase 3: Consistent corner radius (2.5rem), enhanced shadows, card lift */}
                                 <div className="h-full w-full relative rounded-[2.5rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_50px_100px_-20px_rgba(59,130,246,0.3)] group-hover:-translate-y-3 transition-all duration-500">
                                     {/* Phase 3: Image zoom 1.05 on hover */}
@@ -86,6 +87,13 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
                                     <div className="absolute inset-0 bg-gradient-to-br from-slate-950/40 via-transparent to-transparent" />
                                     <div className="absolute inset-0 bg-blue-900/15 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                                    {/* Phase 6: Micro-copy on hover - top right badge */}
+                                    <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                                        <div className="bg-white/95 backdrop-blur-xl px-4 py-2 rounded-full shadow-lg border border-white/50">
+                                            <p className="text-xs font-bold text-slate-900">Explore Now →</p>
+                                        </div>
+                                    </div>
 
                                     <div className="absolute bottom-10 left-8 right-8 z-20">
                                         {/* Phase 3: Improved label container - Dark glassmorphism, higher contrast */}
