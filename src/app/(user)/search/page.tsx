@@ -103,7 +103,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         const prices = allProducts.map(p => p.price)
         if (prices.length > 0) {
             priceBounds = {
-                min: Math.floor(Math.min(...prices)),
+                min: 0,
                 max: Math.ceil(Math.max(...prices))
             }
         }

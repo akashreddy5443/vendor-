@@ -91,7 +91,7 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                 const prices = allProducts.map(p => p.price)
                 if (prices.length > 0) {
                     setPriceBounds({
-                        min: Math.floor(Math.min(...prices)),
+                        min: 0,
                         max: Math.ceil(Math.max(...prices))
                     })
                 }
