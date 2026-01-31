@@ -106,11 +106,12 @@ export async function Footer() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         {trustBadges?.map((badge: any, idx: number) => {
                             const Icon = ICON_MAP[badge.icon] || ShieldCheck
+                            const badgeColor = badge.color || style.accentColor
                             return (
                                 <div key={idx} className={`p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors group ${idx === 2 ? 'sm:col-span-2' : ''}`}>
                                     <div
                                         className="h-10 w-10 rounded-lg flex items-center justify-center mb-4 transition-all group-hover:scale-110"
-                                        style={{ backgroundColor: `${style.accentColor}1A`, color: style.accentColor }}
+                                        style={{ backgroundColor: `${badgeColor}1A`, color: badgeColor }}
                                     >
                                         <Icon className="h-5 w-5" />
                                     </div>

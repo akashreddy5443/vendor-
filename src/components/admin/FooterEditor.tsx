@@ -19,6 +19,7 @@ type TrustBadge = {
     icon: string
     title: string
     desc: string
+    color?: string
 }
 
 type FooterConfig = {
@@ -229,16 +230,28 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
                         <div className="space-y-4">
                             <h4 className="font-bold text-gray-800 flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> Trust Badges</h4>
                             {config.trustBadges.map((badge, idx) => (
-                                <div key={idx} className="p-4 bg-gray-50 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div key={idx} className="p-4 bg-gray-50 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-4 gap-3">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] uppercase font-bold text-gray-400">Icon Name (Lucide)</label>
+                                        <label className="text-[10px] uppercase font-bold text-gray-400">Icon (Lucide)</label>
                                         <input value={badge.icon} onChange={e => updateTrustBadge(idx, 'icon', e.target.value)} className="w-full text-xs border-gray-200 rounded" />
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 md:col-span-1">
+                                        <label className="text-[10px] uppercase font-bold text-gray-400">Icon Color</label>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                value={badge.color || config.style.accentColor}
+                                                onChange={e => updateTrustBadge(idx, 'color' as any, e.target.value)}
+                                                className="h-8 w-8 rounded cursor-pointer border-0 p-0"
+                                            />
+                                            <span className="text-xs text-gray-400">{badge.color || 'Default'}</span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1 md:col-span-2">
                                         <label className="text-[10px] uppercase font-bold text-gray-400">Title</label>
                                         <input value={badge.title} onChange={e => updateTrustBadge(idx, 'title', e.target.value)} className="w-full text-xs border-gray-200 rounded" />
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 md:col-span-4">
                                         <label className="text-[10px] uppercase font-bold text-gray-400">Description</label>
                                         <input value={badge.desc} onChange={e => updateTrustBadge(idx, 'desc', e.target.value)} className="w-full text-xs border-gray-200 rounded" />
                                     </div>
