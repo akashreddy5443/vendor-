@@ -3,7 +3,7 @@
 import React from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ChevronDown, Filter, X } from 'lucide-react'
+import { Check, ChevronDown, Filter, Search, X } from 'lucide-react'
 
 interface FilterSidebarProps {
     minPrice: number
@@ -124,6 +124,25 @@ export function ProductFilterSidebar({
                     </button>
                 </div>
 
+                {/* Search */}
+                <div className="mb-8 relative">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        defaultValue={searchParams.get('q') || ''}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                const params = new URLSearchParams(searchParams.toString())
+                                params.set('q', e.currentTarget.value)
+                                params.delete('page')
+                                router.push(`?${params.toString()}`, { scroll: false })
+                            }
+                        }}
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
+                    />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                </div>
+
                 {/* Categories */}
                 <div className="mb-8">
                     <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
@@ -189,19 +208,87 @@ export function ProductFilterSidebar({
                     <h4 className="font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
                         Price Range
                     </h4>
-                    <div className="space-y-4">
+
+                    {/* Price Presets */}
+                    <div className="space-y-2 mb-6">
+                        {[
+                            { label: 'Under ₹20,000', min: 0, max: 20000 },
+                            { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
+                            { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
+                            { label: 'Over ₹1,00,000', min: 100000, max: maxPrice }
+                        ].map((preset, idx) => (
+                            <label key={idx} className="flex items-center gap-3 cursor-pointer group">
+                                <div className={`
+                                    w-4 h-4 rounded-full border flex items-center justify-center transition-colors
+                                    ${(priceRange[0] === preset.min && priceRange[1] === preset.max)
+                                        ? 'border-primary'
+                                        : 'border-slate-300 group-hover:border-primary'}
+                                `}>
+                                    {(priceRange[0] === preset.min && priceRange[1] === preset.max) && (
+                                        <div className="w-2 h-2 rounded-full bg-primary" />
+                                    )}
+                                </div>
+                                <input
+                                    type="radio"
+                                    name="pricePreset"
+                                    className="hidden"
+                                    checked={priceRange[0] === preset.min && priceRange[1] === preset.max}
+                                    onChange={() => setPriceRange([preset.min, preset.max])}
+                                />
+                                <span className={`text-sm transition-colors ${(priceRange[0] === preset.min && priceRange[1] === preset.max) ? 'text-primary font-medium' : 'text-slate-600'}`}>
+                                    {preset.label}
+                                </span>
+                            </label>
+                        ))}
+                    </div>
+
+                    {/* Manual Range */}
+                    <div className="space-y-4 pt-4 border-t border-slate-100">
                         <div className="flex items-center justify-between text-xs font-medium text-slate-500">
-                            <span>₹{priceRange[0]}</span>
-                            <span>₹{priceRange[1]}</span>
+                            <span>Custom Range</span>
                         </div>
-                        <input
-                            type="range"
-                            min={minPrice}
-                            max={maxPrice}
-                            value={priceRange[1]}
-                            onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                            className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
+                        <div className="flex items-center gap-4">
+                            <div className="relative flex-1">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">₹</span>
+                                <input
+                                    type="number"
+                                    min={minPrice}
+                                    max={priceRange[1]}
+                                    value={priceRange[0]}
+                                    onChange={(e) => {
+                                        const val = Math.min(Number(e.target.value), priceRange[1] - 100);
+                                        setPriceRange([val, priceRange[1]]);
+                                    }}
+                                    className="w-full pl-6 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                />
+                            </div>
+                            <span className="text-slate-300">-</span>
+                            <div className="relative flex-1">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">₹</span>
+                                <input
+                                    type="number"
+                                    min={priceRange[0]}
+                                    max={maxPrice}
+                                    value={priceRange[1]}
+                                    onChange={(e) => {
+                                        const val = Math.max(Number(e.target.value), priceRange[0] + 100);
+                                        setPriceRange([priceRange[0], val]);
+                                    }}
+                                    className="w-full pl-6 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Visual Slider (Pseudo) */}
+                        <div className="relative h-1 bg-slate-200 rounded-full mt-2">
+                            <div
+                                className="absolute h-full bg-primary rounded-full transition-all duration-300"
+                                style={{
+                                    left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                                    right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
 
