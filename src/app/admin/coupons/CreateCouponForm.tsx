@@ -44,56 +44,56 @@ export function CreateCouponForm() {
             {status === 'error' && <p className="text-red-500 text-sm font-bold">{message}</p>}
 
             <div>
-                <label className="block text-sm font-medium mb-1">Coupon Code</label>
+                <label className="block text-sm font-medium mb-1 text-slate-700">Coupon Code</label>
                 <input
                     name="code"
                     type="text"
                     required
                     placeholder="e.g. SUMMER25"
-                    className="w-full bg-[#1E293B] border border-gray-700 rounded p-2 text-white uppercase font-bold tracking-widest focus:border-[#3B82F6] focus:outline-none"
+                    className="w-full bg-white border border-gray-300 rounded p-2 text-slate-900 uppercase font-bold tracking-widest focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium mb-1">Type</label>
+                    <label className="block text-sm font-medium mb-1 text-slate-700">Type</label>
                     <select
                         name="discount_type"
-                        className="w-full bg-[#1E293B] border border-gray-700 rounded p-2 text-white focus:border-[#3B82F6] focus:outline-none"
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                     >
                         <option value="percent">Percentage (%)</option>
                         <option value="fixed">Fixed Amount (₹)</option>
                     </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium mb-1">Value</label>
+                    <label className="block text-sm font-medium mb-1 text-slate-700">Value</label>
                     <input
                         name="discount_value"
                         type="number"
                         required
                         step="0.01"
                         placeholder="10"
-                        className="w-full bg-[#1E293B] border border-gray-700 rounded p-2 text-white focus:border-[#3B82F6] focus:outline-none"
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                     />
                 </div>
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Min. Order Value (₹)</label>
+                <label className="block text-sm font-medium mb-1 text-slate-700">Min. Order Value (₹)</label>
                 <input
                     name="min_order_value"
                     type="number"
                     defaultValue="0"
-                    className="w-full bg-[#1E293B] border border-gray-700 rounded p-2 text-white focus:border-[#3B82F6] focus:outline-none"
+                    className="w-full bg-white border border-gray-300 rounded p-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Expiration Date (Optional)</label>
+                <label className="block text-sm font-medium mb-1 text-slate-700">Expiration Date (Optional)</label>
                 <input
                     name="expires_at"
                     type="datetime-local"
-                    className="w-full bg-[#1E293B] border border-gray-700 rounded p-2 text-white/50 focus:border-[#3B82F6] focus:outline-none [color-scheme:dark]"
+                    className="w-full bg-white border border-gray-300 rounded p-2 text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 />
             </div>
 
@@ -102,9 +102,9 @@ export function CreateCouponForm() {
                     name="is_public"
                     type="checkbox"
                     id="is_public"
-                    className="h-4 w-4 rounded border-gray-700 bg-[#1E293B] text-[#3B82F6] focus:ring-[#3B82F6]"
+                    className="h-4 w-4 rounded border-gray-300 bg-white text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="is_public" className="text-sm">Show to Users (Public)</label>
+                <label htmlFor="is_public" className="text-sm text-slate-700">Show to Users (Public)</label>
             </div>
 
             <div className="flex items-center gap-2 pt-2">
@@ -113,9 +113,9 @@ export function CreateCouponForm() {
                     type="checkbox"
                     id="is_active"
                     defaultChecked
-                    className="h-4 w-4 rounded border-gray-700 bg-[#1E293B] text-[#3B82F6] focus:ring-[#3B82F6]"
+                    className="h-4 w-4 rounded border-gray-300 bg-white text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="is_active" className="text-sm">Active immediately</label>
+                <label htmlFor="is_active" className="text-sm text-slate-700">Active immediately</label>
             </div>
 
             <button

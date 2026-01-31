@@ -5,7 +5,11 @@ import { createClient } from '@/lib/supabase/client'
 import { Ticket, Copy, Check } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export function AvailableCoupons() {
+interface AvailableCouponsProps {
+    onApply?: (code: string) => void
+}
+
+export function AvailableCoupons({ onApply }: AvailableCouponsProps) {
     const [coupons, setCoupons] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [copiedId, setCopiedId] = useState<string | null>(null)
@@ -27,10 +31,14 @@ export function AvailableCoupons() {
         fetchCoupons()
     }, [])
 
-    const copyToClipboard = (code: string, id: string) => {
-        navigator.clipboard.writeText(code)
-        setCopiedId(id)
-        setTimeout(() => setCopiedId(null), 2000)
+    const handleAction = (code: string, id: string) => {
+        if (onApply) {
+            onApply(code)
+        } else {
+            navigator.clipboard.writeText(code)
+            setCopiedId(id)
+            setTimeout(() => setCopiedId(null), 2000)
+        }
     }
 
     if (loading) return <div className="animate-pulse h-24 bg-gray-100 rounded-xl" />
@@ -47,7 +55,8 @@ export function AvailableCoupons() {
                         key={coupon.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center justify-between p-3 bg-white rounded-lg border border-primary/10 shadow-sm group hover:border-primary/30 transition-colors"
+                        onClick={() => onApply && onApply(coupon.code)}
+                        className={`flex items-center justify-between p-3 bg-white rounded-lg border border-primary/10 shadow-sm group hover:border-primary/30 transition-colors ${onApply ? 'cursor-pointer hover:bg-primary/5' : ''}`}
                     >
                         <div>
                             <div className="flex items-center gap-2">
@@ -61,9 +70,12 @@ export function AvailableCoupons() {
                             </p>
                         </div>
                         <button
-                            onClick={() => copyToClipboard(coupon.code, coupon.id)}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleAction(coupon.code, coupon.id)
+                            }}
                             className="p-2 hover:bg-gray-50 rounded-full transition-colors relative"
-                            title="Copy Code"
+                            title={onApply ? "Apply Code" : "Copy Code"}
                         >
                             <AnimatePresence mode='wait'>
                                 {copiedId === coupon.id ? (
@@ -82,7 +94,7 @@ export function AvailableCoupons() {
                                         animate={{ scale: 1 }}
                                         exit={{ scale: 0 }}
                                     >
-                                        <Copy className="h-4 w-4 text-slate-400 group-hover:text-primary" />
+                                        {onApply ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4 text-slate-400 group-hover:text-primary" />}
                                     </motion.div>
                                 )}
                             </AnimatePresence>

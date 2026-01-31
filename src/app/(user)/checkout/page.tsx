@@ -215,6 +215,7 @@ export default function CheckoutPage() {
                                     className="flex-1 rounded-sm border border-[#191970]/20 bg-gray-50 p-2 text-sm text-[#191970] placeholder-[#191970]/30 focus:border-[#191970] focus:outline-none uppercase font-bold tracking-wide"
                                 />
                                 <button
+                                    id="apply-coupon-btn"
                                     onClick={handleApplyCoupon}
                                     disabled={validatingCoupon || !couponCode || !!appliedCoupon}
                                     className="rounded-sm bg-[#191970] px-4 text-xs font-bold text-white hover:bg-[#131355] disabled:opacity-50 disabled:cursor-not-allowed transition-colors tracking-wide"
@@ -232,7 +233,15 @@ export default function CheckoutPage() {
 
                             {/* Available Public Coupons */}
                             <div className="pt-2">
-                                <AvailableCoupons />
+                                <AvailableCoupons onApply={(code) => {
+                                    setCouponCode(code)
+                                    // Hack to trigger useEffect or just call function after state update? 
+                                    // Better to just call validate directly or wrapped
+                                    // But handleApplyCoupon depends on state couponCode. 
+                                    // So we set state, wait a tick, or just refactor.
+                                    // Let's refactor handleApplyCoupon to accept optional code.
+                                    setTimeout(() => document.getElementById('apply-coupon-btn')?.click(), 100)
+                                }} />
                             </div>
 
                             <div className="flex justify-between text-[#191970]/70 text-sm font-medium pt-4 border-t border-gray-100">
