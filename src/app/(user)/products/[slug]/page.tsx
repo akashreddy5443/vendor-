@@ -14,15 +14,35 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const supabase = await createClient()
     const { data: product } = await supabase
         .from('products')
-        .select('title, description')
+        .select('id, title, description')
         .or(`slug.eq.${slug},id.eq.${slug}`)
         .single()
 
     if (!product) return { title: 'Product Not Found' }
 
+    const { data: images } = await supabase
+        .from('product_images')
+        .select('cloudinary_url')
+        .eq('product_id', product.id)
+        .order('is_primary', { ascending: false })
+        .limit(1)
+
+    const imageUrl = images?.[0]?.cloudinary_url
+
     return {
         title: `${product.title} | TechDev Store`,
         description: product.description || 'Premium developer gear.',
+        openGraph: {
+            title: product.title,
+            description: product.description || 'Premium developer gear.',
+            images: imageUrl ? [{ url: imageUrl }] : [],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: product.title,
+            description: product.description || 'Premium developer gear.',
+            images: imageUrl ? [imageUrl] : [],
+        },
     }
 }
 
