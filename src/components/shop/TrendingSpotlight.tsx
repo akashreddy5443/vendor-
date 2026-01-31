@@ -3,150 +3,143 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export function TrendingSpotlight({ data }: { data?: any }) {
     // Default fallback if no data
     const content = data || {
-        hero: { image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops' },
-        sub1: { image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=2072&auto=format&fit=crop', title: 'CONSOLE READY', link: '/search?category=gaming' },
-        sub2: { image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop', title: 'AUDIOPHILE GRADE', link: '/search?category=audio' }
+        hero: { image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops', description: 'Experience unpowered performance with our latest gaming rigs and high-refresh setups.' },
+        sub1: { image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=2072&auto=format&fit=crop', title: 'CONSOLE READY', link: '/search?category=gaming', description: 'Next-gen performance for the modern gamer.' },
+        sub2: { image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop', title: 'AUDIOPHILE GRADE', link: '/search?category=audio', description: 'Studio-quality sound for every moment.' }
+    }
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: [0.21, 0.45, 0.32, 0.9] }
+        }
     }
 
     return (
-        <section className="py-20 bg-[#F1F3F6] text-foreground">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                    <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-[#0B1026] dark:text-black">
-                        In The Spotlight
-                    </h2>
-                    <Link href="/products" className="hidden md:flex items-center text-sm font-bold text-[#0B1026] dark:text-gray-600 hover:opacity-70 uppercase tracking-wider">
-                        View All Collections <ArrowRight className="ml-2 h-4 w-4" />
+        <section className="py-24 bg-transparent overflow-hidden">
+            <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={containerVariants}
+                className="max-w-7xl mx-auto px-6"
+            >
+                <motion.div variants={itemVariants} className="flex flex-col md:flex-row justify-between items-end mb-16">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-blue-600 mb-2">
+                            <Sparkles className="h-4 w-4 fill-blue-600" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Curated Essentials</span>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900 leading-none font-heading">
+                            In The <span className="text-blue-600 font-serif normal-case italic">Spotlight</span>
+                        </h2>
+                    </div>
+                    <Link href="/products" className="group mt-4 md:mt-0 flex items-center text-[10px] font-black text-slate-500 hover:text-blue-600 uppercase tracking-[0.2em] transition-colors">
+                        View All Collections <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </Link>
-                </div>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Large Featured Item */}
-                    <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-200 transition-shadow hover:shadow-md">
-                        <div className="relative aspect-[16/9] md:aspect-auto md:h-[500px] overflow-hidden group rounded-xl">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+                    {/* Large Featured Item (8/12 columns) */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="md:col-span-8 group relative rounded-[2rem] overflow-hidden bg-white border border-blue-100/50 shadow-2xl shadow-blue-500/5"
+                    >
+                        <motion.div
+                            whileHover={{ scale: 1.03 }}
+                            transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] }}
+                            className="relative h-[600px] w-full"
+                        >
                             <Image
                                 src={content.hero.image}
-                                alt="Pro Gaming Layout"
+                                alt={content.hero.title}
                                 fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
+                                className="object-cover"
+                                priority
                             />
 
-                            {/* Video on Hover */}
-                            {(content.hero as any).video && (
-                                <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
-                                    <video
-                                        src={(content.hero as any).video}
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
-                            )}
+                            {/* Mesh Overlay for Text Legibility */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent z-10" />
 
-                            <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-                            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-lg z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                <span className="text-white/90 text-xs font-bold uppercase tracking-widest mb-2 block animate-in fade-in slide-in-from-bottom-2 duration-500">{content.hero.tag}</span>
-                                <h3 className="text-3xl md:text-5xl font-black text-white mb-4 uppercase leading-[0.9] shadow-sm drop-shadow-lg">
-                                    {content.hero.title}
-                                </h3>
-                                {(content.hero as any).description && (
-                                    <p className="text-gray-200 text-sm md:text-base font-medium mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-w-md">
-                                        {(content.hero as any).description}
+                            <div className="absolute bottom-12 left-12 right-12 z-20">
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    className="space-y-4"
+                                >
+                                    <span className="inline-block bg-blue-600 text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-2">
+                                        {content.hero.tag}
+                                    </span>
+                                    <h3 className="text-4xl md:text-6xl font-black text-white uppercase leading-[0.85] tracking-tighter max-w-xl">
+                                        {content.hero.title}
+                                    </h3>
+                                    <p className="text-slate-300 text-sm md:text-base font-medium max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                        {content.hero.description}
                                     </p>
-                                )}
-                                <Link href={content.hero.link} className="inline-block bg-white text-black px-8 py-3 font-bold uppercase text-sm rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-lg">
-                                    Explore Collection
-                                </Link>
+                                    <div className="pt-4">
+                                        <Link href={content.hero.link} className="inline-flex items-center gap-2 bg-white text-slate-950 px-8 py-4 font-black uppercase text-[10px] tracking-widest rounded-full hover:bg-blue-600 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-xl">
+                                            Explore Now <ArrowRight className="h-4 w-4" />
+                                        </Link>
+                                    </div>
+                                </motion.div>
                             </div>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
 
-                    {/* Secondary Items */}
-                    <div className="grid grid-rows-2 gap-4 h-[500px] md:h-auto">
-                        <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-200 transition-shadow hover:shadow-md">
-                            <div className="relative h-full w-full overflow-hidden group rounded-xl min-h-[230px]">
-                                <Image
-                                    src={content.sub1.image}
-                                    alt="Console Gaming"
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
-                                />
-                                {(content.sub1 as any).video && (
-                                    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
-                                        <video
-                                            src={(content.sub1 as any).video}
-                                            autoPlay
-                                            muted
-                                            loop
-                                            playsInline
-                                            className="h-full w-full object-cover"
-                                        />
+                    {/* Secondary Stacked Items (4/12 columns) */}
+                    <div className="md:col-span-4 flex flex-col gap-6">
+                        {[content.sub1, content.sub2].map((item, idx) => (
+                            <motion.div
+                                key={idx}
+                                variants={itemVariants}
+                                whileHover={{ y: -8 }}
+                                className="flex-1 group relative rounded-[2rem] overflow-hidden bg-white border border-blue-100/50 shadow-xl shadow-blue-500/5 min-h-[288px]"
+                            >
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] }}
+                                    className="relative h-full w-full"
+                                >
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
+
+                                    <div className="absolute bottom-8 left-8 right-8 z-20">
+                                        <h3 className="text-xl md:text-2xl font-black text-white uppercase leading-none tracking-tighter mb-3">
+                                            {item.title}
+                                        </h3>
+                                        <Link href={item.link} className="inline-flex items-center text-[9px] font-black text-blue-400 group-hover:text-white uppercase tracking-widest transition-colors">
+                                            Shop Collection <ArrowRight className="ml-2 h-3 w-3" />
+                                        </Link>
                                     </div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/90 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 right-6 z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                    <h3 className="text-xl md:text-2xl font-black text-white uppercase mb-2 shadow-sm leading-tight">{content.sub1.title}</h3>
-                                    {(content.sub1 as any).description && (
-                                        <p className="text-gray-300 text-xs font-medium mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
-                                            {(content.sub1 as any).description}
-                                        </p>
-                                    )}
-                                    <Link href={content.sub1.link} className="inline-flex items-center text-white text-xs font-bold uppercase tracking-widest hover:text-blue-300 transition-colors group/link">
-                                        Shop Now <ArrowRight className="ml-1 w-3 h-3 transition-transform group-hover/link:translate-x-1" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-200 transition-shadow hover:shadow-md">
-                            <div className="relative h-full w-full overflow-hidden group rounded-xl min-h-[230px]">
-                                <Image
-                                    src={content.sub2.image}
-                                    alt="Audio Gear"
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105 z-0"
-                                />
-                                {(content.sub2 as any).video && (
-                                    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black">
-                                        <video
-                                            src={(content.sub2 as any).video}
-                                            autoPlay
-                                            muted
-                                            loop
-                                            playsInline
-                                            className="h-full w-full object-cover"
-                                        />
-                                    </div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:from-black/90 transition-colors pointer-events-none z-20" />
-                                <div className="absolute bottom-6 left-6 right-6 z-30 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                    <h3 className="text-xl md:text-2xl font-black text-white uppercase mb-2 shadow-sm leading-tight">{content.sub2.title}</h3>
-                                    {(content.sub2 as any).description && (
-                                        <p className="text-gray-300 text-xs font-medium mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
-                                            {(content.sub2 as any).description}
-                                        </p>
-                                    )}
-                                    <Link href={content.sub2.link} className="inline-flex items-center text-white text-xs font-bold uppercase tracking-widest hover:text-blue-300 transition-colors group/link">
-                                        Shop Now <ArrowRight className="ml-1 w-3 h-3 transition-transform group-hover/link:translate-x-1" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+                                </motion.div>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
-
-                <div className="md:hidden mt-8 text-center">
-                    <Link href="/products" className="inline-flex items-center text-sm font-bold text-[#0B1026] hover:opacity-70 uppercase tracking-wider">
-                        View All Collections <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                </div>
-            </div>
+            </motion.div>
         </section>
     )
 }

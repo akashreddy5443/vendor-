@@ -15,7 +15,7 @@ import { HeroSlider } from '@/components/shop/HeroSlider'
 import { PromoBanner } from '@/components/shop/PromoBanner'
 import { LifestyleGrid } from '@/components/shop/LifestyleGrid'
 import { TrendingSpotlight } from '@/components/shop/TrendingSpotlight'
-import { LayoutGrid } from 'lucide-react'
+import { LayoutGrid, Sparkles, ArrowRight } from 'lucide-react'
 
 export default function HomePage() {
   // const [heroSection, setHeroSection] = React.useState<any>(null) // Legacy
@@ -109,46 +109,43 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-transparent text-slate-900 overflow-hidden font-sans">
       {/* Hero Slider */}
-      <section className="relative bg-background border-b border-gray-100">
+      <section className="relative">
         <HeroSlider slides={slides} />
       </section >
 
-      {/* BigTech Phase 2: Category Circles */}
-      <section className="py-16 border-b border-gray-100 bg-gray-50/50">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
+      {/* Categories: Alive & Interactive */}
+      <section className="py-24 bg-transparent">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-lg font-bold text-blue-600 mb-2 uppercase tracking-widest"
+            className="text-center mb-20"
           >
-            Explore
-          </motion.h3>
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-4xl font-black text-[#0B1026] mb-12 uppercase tracking-tight"
-          >
-            Shop by Category
-          </motion.h2>
+            <div className="flex justify-center items-center gap-2 text-blue-600 mb-2">
+              <LayoutGrid className="h-4 w-4" />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em]">Quick Access</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none font-heading">
+              Shop by <span className="text-blue-600 font-serif normal-case italic">Category</span>
+            </h2>
+          </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+          <div className="flex flex-wrap justify-center gap-10 md:gap-20">
             {categories.map((cat, idx) => (
-              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-4">
+              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-6">
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="h-24 w-24 rounded-full bg-white flex items-center justify-center text-4xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#0B1026] group-hover:text-white group-hover:shadow-xl border border-gray-100"
+                  transition={{ delay: idx * 0.1, type: 'spring', stiffness: 100 }}
+                  className="h-28 w-28 rounded-[2rem] bg-white flex items-center justify-center text-4xl shadow-xl shadow-blue-500/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/20 group-hover:rotate-6 border border-blue-50"
                 >
                   {cat.icon === 'GRID' ? <LayoutGrid className="w-10 h-10" /> : cat.icon}
                 </motion.div>
-                <span className="text-sm font-bold uppercase tracking-wider text-gray-500 group-hover:text-[#0B1026] transition-colors">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-blue-600 transition-colors">
                   {cat.name}
                 </span>
               </Link>
@@ -157,54 +154,65 @@ export default function HomePage() {
         </div>
       </section >
 
-      {/* Made For Every Moment (Lifestyle Grid) */}
+      {/* Lifestyle Grid */}
       <LifestyleGrid items={lifestyleItems} />
 
-      {/* BigTech Phase 3: Promo Banners */}
-      < PromoBanner />
+      {/* Promo Banner */}
+      <section className="bg-transparent py-12">
+        <PromoBanner />
+      </section>
 
-      {/* In The Spotlight (Trending/Editorial) */}
+      {/* Trending Spotlight */}
       <TrendingSpotlight data={trendingData} />
 
-      {/* Featured Products Placeholder */}
-      < section className="py-24 px-6 bg-white" >
-        <div className="text-center mb-16">
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
+      {/* Featured Gear: Editorial Finish */}
+      < section className="py-24 px-6 bg-transparent" >
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-lg font-bold text-blue-600 mb-2 uppercase tracking-widest"
+            className="flex flex-col md:flex-row justify-between items-end mb-20"
           >
-            Curated Selection
-          </motion.h3>
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-            className="text-3xl md:text-4xl font-black text-[#0B1026] uppercase tracking-tight"
-          >
-            Featured Gear
-          </motion.h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-6xl mx-auto">
-          {featuredProducts.length > 0 ? (
-            featuredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
-              </motion.div>
-            ))
-          ) : (
-            <div className="col-span-full text-center text-muted-foreground py-10">
-              No featured products selected. Check Admin Panel.
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-blue-600">
+                <Sparkles className="h-4 w-4 fill-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none font-heading">
+                Featured <span className="text-blue-600 font-serif normal-case italic">Gear</span>
+              </h2>
             </div>
-          )}
+            <Link href="/products" className="group hidden md:flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-all">
+              View Collection <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: (index % 3) * 0.15, ease: [0.21, 0.45, 0.32, 0.9] }}
+                >
+                  <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 bg-white/50 backdrop-blur-md rounded-[2rem] border border-dashed border-blue-100 text-slate-400 font-black uppercase tracking-widest text-[10px]">
+                No curated gear available. Add from Admin.
+              </div>
+            )}
+          </div>
+
+          <div className="md:hidden mt-12 text-center">
+            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-widest">
+              View All Collection <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section >
     </div >

@@ -23,83 +23,83 @@
 
   --font-sans: var(--font-inter);
   --font-heading: var(--font-outfit);
+  --font-serif: var(--font-serif);
   --font-mono: monospace;
 }
 
 :root {
-  /* Dark Blue Theme */
-  --background: #ffffff;
-  --foreground: #333333;
+  /* Subtle Blue-White Premium Theme */
+  --background: #f8fafc;
+  --foreground: #0f172a;
 
   --card: #ffffff;
-  --card-foreground: #333333;
+  --card-foreground: #0f172a;
 
   --popover: #ffffff;
-  --popover-foreground: #333333;
+  --popover-foreground: #0f172a;
 
-  --primary: #1e3a8a;
-  /* Dark Blue (Blue 900) */
+  --primary: #2563eb;
+  /* Royal Blue */
   --primary-foreground: #ffffff;
 
-  --secondary: #F3F4F6;
-  /* Light Grey for backgrounds */
-  --secondary-foreground: #111827;
+  --secondary: #f1f5f9;
+  /* Cool Slate */
+  --secondary-foreground: #0f172a;
 
-  --muted: #E5E7EB;
-  --muted-foreground: #6B7280;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
 
-  --accent: #EFF6FF;
-  /* Light Blue Tint */
-  --accent-foreground: #1e3a8a;
+  --accent: #eff6ff;
+  --accent-foreground: #2563eb;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #10B981;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #3b82f6;
 
-  --brand-orange: #F59E0B;
-  /* Keeping an accent color if needed */
+  --brand-orange: #f59e0b;
 }
 
-/* Dark Mode: Premium Tech Theme (Midnight Blue & Electric Blue) */
+/* Dark Mode: Premium Midnight Theme */
 .dark {
   --background: #020617;
-  /* Deep Space Blue */
-  --foreground: #FFFFFF;
-  /* Pure White for maximum visibility */
+  --foreground: #f8fafc;
 
-  --card: #0F172A;
-  /* Slate 900 */
-  --card-foreground: #FFFFFF;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
 
-  --popover: #0F172A;
-  --popover-foreground: #FFFFFF;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
 
-  --primary: #3B82F6;
-  /* Electric Blue Accents */
-  --primary-foreground: #FFFFFF;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
 
-  --secondary: #1E293B;
-  --secondary-foreground: #FFFFFF;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
 
-  --muted: #1E293B;
-  --muted-foreground: #A1A1AA;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
 
-  --accent: #1E293B;
-  --accent-foreground: #FFFFFF;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #1E293B;
-  --input: #1E293B;
-  --ring: #3B82F6;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #3b82f6;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(at 0% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(215, 100%, 98%, 1) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(220, 100%, 97%, 1) 0, transparent 50%);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
 }

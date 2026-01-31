@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, ShoppingCart, Heart, User, Menu, X, ChevronDown } from 'lucide-react'
+import { ShoppingBag, ShoppingCart, Heart, User, Menu, X, ChevronDown, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -98,76 +98,72 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center border-b border-white/10 bg-background/80 backdrop-blur-md px-6 text-foreground sticky top-0 z-40 shadow-sm relative gap-8 transition-all duration-300">
+            <nav className="flex h-16 items-center border-b border-white/5 bg-white/70 backdrop-blur-xl px-6 text-foreground sticky top-0 z-40 shadow-[0_2px_15px_-3px_rgba(59,130,246,0.08)] relative gap-8 transition-all duration-500">
                 {/* Left: Logo & Navigation */}
-                <div className="flex items-center gap-8 shrink-0">
+                <div className="flex items-center gap-10 shrink-0">
                     <div className="flex items-center gap-4">
                         <button
-                            className="md:hidden text-muted-foreground hover:text-foreground"
+                            className="md:hidden text-slate-500 hover:text-blue-600 transition-colors"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
-                            {isMobileMenuOpen ? <X /> : <Menu />}
+                            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                         </button>
 
-                        <Link href="/" className="flex items-center gap-2 text-2xl font-heading font-bold tracking-tight text-foreground group">
+                        <Link href="/" className="flex items-center gap-2 text-2xl font-heading font-black tracking-tighter text-slate-900 group">
                             {settings?.logo_url ? (
-                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
+                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
                             ) : (
-                                <div className="bg-primary text-primary-foreground p-1.5 rounded-xl shadow-lg shadow-blue-500/20">
-                                    <ShoppingBag className="h-6 w-6" />
+                                <div className="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-all duration-500">
+                                    <ShoppingBag className="h-5 w-5" />
                                 </div>
                             )}
-                            <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors">{settings?.site_name || 'TechDev'}</span>
+                            <span className="hidden min-[370px]:inline group-hover:text-blue-600 transition-colors duration-300">{settings?.site_name || 'TechDev'}</span>
                         </Link>
                     </div>
 
-                    {/* Navigation Links (Desktop) */}
-                    <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-                        <Link href="/" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">Home</Link>
+                    {/* Navigation Links (Desktop) - Enhanced with "Life" animations */}
+                    <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.15em] text-slate-500">
+                        <Link href="/" className="hover:text-blue-600 transition-all hover:translate-y-[-1px] active:scale-95 transform">Home</Link>
 
                         {/* Mega Menu Trigger */}
                         <div className="group relative h-16 flex items-center">
-                            <Link href="/categories" className="text-foreground/70 hover:text-primary transition-colors py-6 font-heading flex items-center gap-1 group-hover:text-primary">
-                                Categories <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
-                            </Link>
+                            <button className="hover:text-blue-600 transition-all hover:translate-y-[-1px] py-6 font-black flex items-center gap-1 group-hover:text-blue-600">
+                                Categories <ChevronDown className="h-3 w-3 transition-transform duration-500 group-hover:rotate-180" />
+                            </button>
 
-                            {/* Premium Dropdown */}
-                            <div className="absolute top-full left-0 w-[800px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-2 p-0 overflow-hidden z-50 ring-1 ring-black/5">
-                                <div className="flex">
+                            {/* Premium Dropdown - Glassmorphism Refresh */}
+                            <div className="absolute top-[calc(100%-4px)] left-0 w-[800px] bg-white/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_50px_-12px_rgba(59,130,246,0.15)] rounded-3xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 p-1 overflow-hidden z-50 ring-1 ring-blue-500/5">
+                                <div className="flex bg-white/40 rounded-[1.4rem] overflow-hidden">
                                     {/* Column 1: Categories Grid */}
-                                    <div className="w-2/3 p-8 grid grid-cols-2 gap-x-8 gap-y-4 bg-white">
-                                        <h3 className="col-span-2 text-xs font-bold uppercase tracking-widest text-[#191970]/50 mb-2">Shop by Category</h3>
+                                    <div className="w-2/3 p-10 grid grid-cols-2 gap-x-10 gap-y-6">
+                                        <h3 className="col-span-2 text-[9px] font-black uppercase tracking-[0.25em] text-blue-600/40 mb-2">Shop by Category</h3>
                                         {categories.length > 0 ? categories.map(cat => (
                                             <Link
                                                 key={cat.id}
                                                 href={`/search?category=${cat.slug || cat.id}`}
-                                                className="flex items-center gap-4 p-2 rounded-xl hover:bg-gray-50 hover:shadow-sm transition-all group/item border border-transparent hover:border-gray-100"
+                                                className="flex items-center gap-4 group/item"
                                             >
-                                                <div className="w-10 h-10 rounded-lg bg-[#191970]/5 text-[#191970] flex items-center justify-center text-lg shadow-sm group-hover/item:scale-110 transition-transform">
+                                                <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-blue-50/50 flex items-center justify-center text-xl group-hover/item:scale-110 group-hover/item:shadow-blue-500/10 group-hover/item:border-blue-200 transition-all duration-500">
                                                     {cat.icon || '🛍️'}
                                                 </div>
-                                                <span className="font-heading font-semibold text-sm text-[#191970] group-hover/item:translate-x-1 transition-transform">{cat.name}</span>
+                                                <div className="flex flex-col">
+                                                    <span className="font-heading font-black text-sm text-slate-900 group-hover/item:text-blue-600 transition-colors uppercase tracking-tight">{cat.name}</span>
+                                                    <span className="text-[10px] font-medium text-slate-400 group-hover/item:text-slate-500">Explore Collection</span>
+                                                </div>
                                             </Link>
                                         )) : (
                                             <div className="col-span-2 text-sm text-gray-400 py-4 italic">No categories found.</div>
                                         )}
-                                        <Link href="/categories" className="col-span-2 mt-4 flex items-center justify-center gap-2 text-sm font-bold text-[#191970] hover:underline">
-                                            View All Categories →
-                                        </Link>
                                     </div>
 
                                     {/* Column 2: Featured / Promo */}
-                                    <div className="w-1/3 bg-[#191970] text-white p-8 flex flex-col justify-between relative overflow-hidden">
-                                        {/* Abstract BG Shapes */}
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-                                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
-
-                                        <div className="relative z-10">
-                                            <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">New Arrival</span>
-                                            <h3 className="text-2xl font-heading font-bold leading-tight mb-2">ProDev Gear 2026</h3>
-                                            <p className="text-white/70 text-sm mb-6">Upgrade your setup with the latest mechanical keyboards and ergonomic mice.</p>
-                                            <Link href="/products" className="inline-block px-6 py-2 bg-white text-[#191970] rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg shadow-black/20">
-                                                Shop Now
+                                    <div className="w-1/3 bg-blue-600 text-white p-10 flex flex-col justify-center relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                                        <div className="relative z-10 space-y-4">
+                                            <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/20">Winter Drop</span>
+                                            <h3 className="text-3xl font-heading font-black leading-none tracking-tighter">ProDev<br />Series 2026</h3>
+                                            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:gap-4 transition-all">
+                                                Discover <ArrowRight className="h-3 w-3" />
                                             </Link>
                                         </div>
                                     </div>
@@ -175,8 +171,8 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        <Link href="/products" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">Products</Link>
-                        <Link href="/about" className="text-foreground/70 hover:text-primary transition-colors font-heading hover:scale-105 transform duration-200">About</Link>
+                        <Link href="/products" className="hover:text-blue-600 transition-all hover:translate-y-[-1px] active:scale-95 transform">Explore</Link>
+                        <Link href="/about" className="hover:text-blue-600 transition-all hover:translate-y-[-1px] active:scale-95 transform">Our Story</Link>
                     </div>
                 </div>
 

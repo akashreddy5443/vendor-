@@ -3,58 +3,81 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Zap } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export function LifestyleGrid({ items }: { items?: any[] }) {
     const gridItems = items || [
         {
             title: 'WORK ESSENTIALS',
-            image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop', // Office/Desk
+            image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop',
             link: '/search?category=laptops'
         },
         {
             title: 'AFTER HOURS',
-            image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop', // Monitor/Gaming
+            image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop',
             link: '/search?category=audio'
         },
         {
             title: 'EVERYDAY CARRY',
-            image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop', // Watch/Phone
+            image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop',
             link: '/search?category=wearables'
         }
     ]
 
     return (
-        <section className="py-20 bg-background text-foreground">
+        <section className="py-24 bg-transparent overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
-                <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight mb-12 text-[#0B1026] dark:text-white">
-                    Made For Every Moment
-                </h2>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col gap-2 mb-16"
+                >
+                    <div className="flex items-center gap-2 text-blue-600">
+                        <Zap className="h-4 w-4 fill-blue-600" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Lifestyle Collections</span>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900 leading-none font-heading">
+                        Made For <span className="text-blue-600 font-serif normal-case italic">Every Moment</span>
+                    </h2>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {gridItems.map((item) => (
-                        <Link
-                            href={item.link}
+                    {gridItems.map((item, idx) => (
+                        <motion.div
                             key={item.title}
-                            className="group block relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300"
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1, duration: 0.5 }}
                         >
-                            <div className="aspect-[4/5] relative overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                            <Link
+                                href={item.link}
+                                className="group block relative overflow-hidden rounded-[2rem] bg-white border border-blue-100/50 shadow-xl shadow-blue-500/5 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
+                            >
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.6 }}
+                                    className="aspect-[4/5] relative overflow-hidden"
+                                >
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity" />
 
-                                <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                    <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight">{item.title}</h3>
-                                    <div className="flex items-center text-white/80 text-sm font-bold uppercase tracking-widest gap-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
-                                        Shop Now <ArrowRight className="h-4 w-4" />
+                                    <div className="absolute bottom-0 left-0 p-10 w-full transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                                        <h3 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter leading-none">{item.title}</h3>
+                                        <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-blue-400 group-hover:text-white transition-all delay-100 gap-2">
+                                            Shop Collection <ArrowRight className="h-3 w-3" />
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </Link>
+                                </motion.div>
+                            </Link>
+                        </motion.div>
                     ))}
                 </div>
             </div>

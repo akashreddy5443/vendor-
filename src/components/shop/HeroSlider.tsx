@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 
 // Define the structure of a single slide
 export type HeroSlide = {
@@ -79,20 +79,23 @@ export function HeroSlider({ slides }: HeroSliderProps) {
 
                     {/* Text Content - Overlaid */}
                     <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-20 lg:px-32">
+                        {/* Subtle Blue Radial Glow behind text */}
+                        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[50%] h-[100%] bg-blue-600/10 blur-[120px] -z-10 pointer-events-none" />
+
                         <motion.h3
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-sm md:text-base font-bold text-blue-400 mb-4 uppercase tracking-[0.2em]"
+                            className="text-xs md:text-[10px] font-black text-blue-400 mb-6 uppercase tracking-[0.4em]"
                         >
                             {currentSlide.subtitle}
                         </motion.h3>
 
                         <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.9] tracking-tight uppercase max-w-4xl drop-shadow-2xl"
+                            transition={{ delay: 0.3, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] }}
+                            className="text-5xl md:text-7xl lg:text-9xl font-medium text-white mb-10 leading-[0.95] tracking-tighter max-w-4xl drop-shadow-2xl font-serif"
                             style={{ color: currentSlide.color }}
                         >
                             {currentSlide.title}
@@ -105,9 +108,10 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                         >
                             <Link
                                 href={currentSlide.link}
-                                className="inline-flex items-center justify-center px-10 py-4 text-sm font-bold text-[#0B1026] bg-white hover:bg-blue-50 rounded-full transition-all shadow-lg hover:shadow-xl hover:scale-105 uppercase tracking-wider"
+                                className="inline-flex items-center justify-center px-12 py-5 text-[10px] font-black text-slate-900 bg-white hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-2xl hover:shadow-blue-500/25 hover:scale-105 uppercase tracking-[0.2em] group"
                             >
                                 {currentSlide.buttonText}
+                                <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                             </Link>
                         </motion.div>
                     </div>

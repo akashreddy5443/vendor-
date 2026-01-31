@@ -70,84 +70,80 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-[420px]">
+            <div className="group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-blue-100/50 hover:border-blue-200 shadow-xl shadow-blue-500/5 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-2 h-[440px]">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center bg-gray-50 group-hover:bg-white transition-colors">
-
+                <div className="aspect-[1/1] relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-500">
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-6 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain transition-transform duration-700 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                         </div>
                     ) : (
-                        <div className="h-full w-full bg-gray-50 flex items-center justify-center text-muted-foreground text-sm z-10">
-                            No Image
+                        <div className="h-full w-full bg-slate-50 flex items-center justify-center text-slate-400 text-xs font-black uppercase tracking-widest z-10">
+                            No Preview
                         </div>
                     )}
 
-                    {/* Stock & Promo Badges - Curved */}
+                    {/* Stock & Promo Badges - High-End Style */}
                     {isOutOfStock ? (
-                        <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm">
-                            <span className="bg-white text-black px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm rounded-full transform -rotate-2">
-                                Out of Stock
+                        <div className="absolute inset-0 flex items-center justify-center z-20 bg-slate-950/40 backdrop-blur-[2px]">
+                            <span className="bg-white text-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl rounded-full">
+                                Sold Out
                             </span>
                         </div>
                     ) : (
                         hasDiscount && (
-                            <div className="absolute top-3 left-3 z-20">
-                                <span className="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
-                                    <span className="text-[8px]">SAVE</span> {effectiveDiscount}%
+                            <div className="absolute top-4 left-4 z-20">
+                                <span className="bg-blue-600 text-white text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-blue-500/30 flex items-center gap-1 uppercase tracking-widest">
+                                    {effectiveDiscount}% OFF
                                 </span>
                             </div>
                         )
                     )}
-
                 </div>
 
-                <div className="flex flex-col relative z-30 pointer-events-none p-5 flex-grow">
-                    {/* Placeholder for Color variants count */}
-                    <div className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">
-                        TechDev Gear
+                <div className="flex flex-col relative z-30 pointer-events-none p-6 flex-grow">
+                    <div className="text-[9px] uppercase tracking-[0.3em] text-blue-600 font-black mb-2 opacity-60">
+                        TechDev Essentials
                     </div>
 
                     <div className="flex flex-col h-full">
-                        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
+                        <h3 className="text-lg font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-1 mb-2 font-heading tracking-tight uppercase">
                             {product.title}
                         </h3>
 
-                        {/* Description - New Addition */}
-                        <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-relaxed h-8">
-                            {product.description || "Premium quality tech gear designed for professionals."}
+                        <p className="text-[11px] text-slate-500 line-clamp-2 mb-4 leading-relaxed font-medium h-8">
+                            {product.description || "Premium quality tech gear designed for the modern professional workspace."}
                         </p>
 
-                        <div className="mt-auto border-t border-gray-50 pt-3 flex items-center justify-between">
+                        <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
                             <div className="flex flex-col">
                                 {hasDiscount && (
-                                    <span className="text-[10px] text-gray-400 line-through font-medium">
+                                    <span className="text-[10px] text-slate-400 line-through font-bold tracking-tighter">
                                         {formatPrice(product.price)}
                                     </span>
                                 )}
-                                <span className={`font-bold text-lg ${isOutOfStock ? 'text-gray-400' : 'text-gray-900'}`}>
+                                <span className={`font-black text-xl tracking-tighter ${isOutOfStock ? 'text-slate-300' : 'text-slate-900'}`}>
                                     {formatPrice(finalPrice)}
                                 </span>
                             </div>
-                            {/* Visual indicator for 'Add' (Decorative, functionality is via Link or QuickView implies detail) */}
-                            <div className="h-8 w-8 rounded-full bg-gray-50 text-gray-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 group-hover:bg-blue-600 group-hover:text-white">
+
+                            <div className="h-10 w-10 rounded-2xl bg-slate-50 text-slate-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-12 shadow-lg shadow-blue-500/20">
                                 <ShoppingCart className="h-4 w-4" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Hidden interactive elements */}
-                <div className="absolute top-3 right-3 z-30 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity pointer-events-auto scale-100">
-                    <WishlistToggle productId={product.id} className="bg-white hover:bg-red-50 text-gray-400 hover:text-red-500 border border-gray-200 rounded-full p-2 shadow-sm transition-all hover:scale-110 active:scale-95" />
+                {/* Wishlist Action */}
+                <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-auto scale-90 group-hover:scale-100">
+                    <WishlistToggle productId={product.id} className="bg-white/80 backdrop-blur-md hover:bg-white text-slate-400 hover:text-red-500 border border-white/50 rounded-2xl p-2.5 shadow-xl transition-all hover:scale-110 active:scale-90" />
                 </div>
             </div>
 
