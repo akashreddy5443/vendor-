@@ -38,18 +38,19 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                     initial={{ opacity: 0, x: -30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="flex flex-col gap-3 mb-24"
+                    className="flex flex-col gap-3 mb-32"
                 >
                     <div className="flex items-center gap-3 text-primary">
                         <div className="w-10 h-[2px] bg-primary" />
                         <span className="text-[10px] font-black uppercase tracking-[0.4em]">{sectionSubtitle}</span>
                     </div>
+                    {/* Phase 4: Reduced underline thickness from 8 to 5 */}
                     <h2 className="text-5xl md:text-7xl font-black uppercase tracking-[-0.05em] text-slate-900 leading-[0.9] font-heading">
                         {sectionTitle.split(' ').slice(0, -2).join(' ')} <br />
                         <span className="text-primary relative">
                             {sectionTitle.split(' ').slice(-2).join(' ')}
                             <svg className="absolute -bottom-2 left-0 w-full h-3 text-primary/20 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
-                                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="8" />
+                                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="5" />
                             </svg>
                         </span>
                     </h2>

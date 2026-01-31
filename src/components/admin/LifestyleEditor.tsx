@@ -42,6 +42,11 @@ export function LifestyleEditor({ initialItems, initialSubtitle, initialTitle }:
                     Lifestyle Grid
                 </h3>
                 <p className="text-sm text-slate-500">Customize the lifestyle collections section with premium imagery and compelling copy</p>
+                <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+                    <p className="text-xs text-blue-700 font-medium">
+                        ✨ <strong>Enhanced Design:</strong> Cards now feature 600px height, 2.5rem corner radius, stronger glassmorphism, and refined hover effects for a premium feel.
+                    </p>
+                </div>
             </div>
             <form action={handleSubmit} className="space-y-8">
                 {/* Section Headings Control */}
@@ -59,7 +64,7 @@ export function LifestyleEditor({ initialItems, initialSubtitle, initialTitle }:
                             className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
                         />
                         <p className="text-xs text-slate-600 mt-2">
-                            💡 The last two words will be highlighted in blue
+                            💡 The last two words will be highlighted in blue with a refined underline
                         </p>
                     </label>
 
@@ -130,12 +135,20 @@ export function LifestyleEditor({ initialItems, initialSubtitle, initialTitle }:
                                 placeholder="Card Title (e.g., DESK & PRODUCTIVITY)"
                                 className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm font-medium focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
                             />
+                            <p className="text-xs text-slate-500">
+                                💡 Use bold, action-oriented titles in UPPERCASE for maximum impact
+                            </p>
                             <input
                                 value={item.link}
                                 onChange={(e) => updateItem(index, 'link', e.target.value)}
                                 placeholder="Link URL (e.g., /search?category=laptops)"
                                 className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
                             />
+                            <div className="p-3 bg-amber-50 border border-amber-100 rounded-lg">
+                                <p className="text-xs text-amber-700">
+                                    <strong>Image Tips:</strong> Use consistent lighting, similar angles, and clean backgrounds for visual cohesion
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
