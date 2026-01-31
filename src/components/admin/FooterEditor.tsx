@@ -256,10 +256,22 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
                                                 onChange={e => updateTrustBadge(idx, 'color' as any, e.target.value)}
                                                 className="h-8 w-8 rounded cursor-pointer border-0 p-0"
                                             />
-                                            <span className="text-xs text-gray-400">{badge.color || 'Default'}</span>
+                                            <span className="text-xs text-gray-400">{badge.color || 'Def'}</span>
                                         </div>
                                     </div>
-                                    <div className="space-y-1 md:col-span-2">
+                                    <div className="space-y-1 md:col-span-1">
+                                        <label className="text-[10px] uppercase font-bold text-gray-400">BG Color</label>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                value={badge.iconBgColor || '#ffffff'}
+                                                onChange={e => updateTrustBadge(idx, 'iconBgColor' as any, e.target.value)}
+                                                className="h-8 w-8 rounded cursor-pointer border-0 p-0"
+                                            />
+                                            <span className="text-xs text-gray-400">{badge.iconBgColor || 'Def'}</span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1 md:col-span-1">
                                         <label className="text-[10px] uppercase font-bold text-gray-400">Title</label>
                                         <input value={badge.title} onChange={e => updateTrustBadge(idx, 'title', e.target.value)} className="w-full text-xs border-gray-200 rounded" />
                                     </div>

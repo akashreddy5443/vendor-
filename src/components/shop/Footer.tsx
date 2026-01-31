@@ -107,11 +107,15 @@ export async function Footer() {
                         {trustBadges?.map((badge: any, idx: number) => {
                             const Icon = ICON_MAP[badge.icon] || ShieldCheck
                             const badgeColor = badge.color || style.accentColor
+                            // Default bg is 10% opacity of the badge color (hex + 1A)
+                            // If iconBgColor is provided, use it directly.
+                            const badgeBg = badge.iconBgColor || `${badgeColor}1A`
+
                             return (
                                 <div key={idx} className={`p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors group ${idx === 2 ? 'sm:col-span-2' : ''}`}>
                                     <div
                                         className="h-10 w-10 rounded-lg flex items-center justify-center mb-4 transition-all group-hover:scale-110"
-                                        style={{ backgroundColor: `${badgeColor}1A`, color: badgeColor }}
+                                        style={{ backgroundColor: badgeBg, color: badgeColor }}
                                     >
                                         <Icon className="h-5 w-5" />
                                     </div>
