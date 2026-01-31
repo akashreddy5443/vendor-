@@ -4,12 +4,14 @@ import React from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ChevronDown, Filter, Search, X } from 'lucide-react'
+import * as Slider from '@radix-ui/react-slider'
 
 interface FilterSidebarProps {
     minPrice: number
     maxPrice: number
     brands: string[]
     categories: { id: string, name: string, slug: string }[]
+    pricePresets?: { label: string, min: number, max: number }[]
     isOpen?: boolean
     onClose?: () => void
 }
@@ -19,6 +21,7 @@ export function ProductFilterSidebarV2({
     maxPrice,
     brands,
     categories,
+    pricePresets,
     isOpen,
     onClose
 }: FilterSidebarProps) {
@@ -110,6 +113,14 @@ export function ProductFilterSidebarV2({
         else params.delete('brand')
         router.push(`?${params.toString()}`, { scroll: false })
     }
+
+    // Default presets if none provided
+    const displayPresets = pricePresets || [
+        { label: 'Under ₹20,000', min: 0, max: 20000 },
+        { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
+        { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
+        { label: 'Over ₹1,00,000', min: 100000, max: maxPrice }
+    ]
 
     return (
         <aside className={`
@@ -211,12 +222,7 @@ export function ProductFilterSidebarV2({
 
                     {/* Price Presets */}
                     <div className="space-y-2 mb-6">
-                        {[
-                            { label: 'Under ₹20,000', min: 0, max: 20000 },
-                            { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
-                            { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
-                            { label: 'Over ₹1,00,000', min: 100000, max: maxPrice }
-                        ].map((preset, idx) => (
+                        {displayPresets.map((preset, idx) => (
                             <label key={idx} className="flex items-center gap-3 cursor-pointer group">
                                 <div className={`
                                     w-4 h-4 rounded-full border flex items-center justify-center transition-colors
@@ -257,7 +263,6 @@ export function ProductFilterSidebarV2({
                                     value={priceRange[0]}
                                     onChange={(e) => {
                                         const raw = Number(e.target.value);
-                                        // Prevent negative inputs and clamp to valid range
                                         const val = Math.max(minPrice, Math.min(raw, priceRange[1] - 100));
                                         setPriceRange([val, priceRange[1]]);
                                     }}
@@ -274,7 +279,6 @@ export function ProductFilterSidebarV2({
                                     value={priceRange[1]}
                                     onChange={(e) => {
                                         const raw = Number(e.target.value);
-                                        // Prevent negative inputs and clamp to valid range
                                         const val = Math.min(maxPrice, Math.max(raw, priceRange[0] + 100));
                                         setPriceRange([priceRange[0], val]);
                                     }}
@@ -283,44 +287,28 @@ export function ProductFilterSidebarV2({
                             </div>
                         </div>
 
-                        {/* Interactive Dual Slider */}
-                        <div className="relative h-5 mt-6 mb-2">
-                            {/* Track Background */}
-                            <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-1 bg-slate-200 rounded-full" />
-
-                            {/* Active Range Track */}
-                            <div
-                                className="absolute top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full pointer-events-none"
-                                style={{
-                                    left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                                    right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`
-                                }}
+                        {/* Radix UI Slider */}
+                        <Slider.Root
+                            className="relative flex items-center select-none touch-none w-full h-5 mt-6 mb-2"
+                            value={[priceRange[0], priceRange[1]]}
+                            max={maxPrice}
+                            min={minPrice}
+                            step={100}
+                            minStepsBetweenThumbs={1}
+                            onValueChange={(value) => setPriceRange([value[0], value[1]])}
+                        >
+                            <Slider.Track className="bg-slate-200 relative grow rounded-full h-[3px]">
+                                <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                            </Slider.Track>
+                            <Slider.Thumb
+                                className="block w-5 h-5 bg-white border-2 border-primary shadow-md rounded-full hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-transform hover:scale-110"
+                                aria-label="Minimum Price"
                             />
-
-                            {/* Range Inputs */}
-                            <input
-                                type="range"
-                                min={minPrice}
-                                max={maxPrice}
-                                value={priceRange[0]}
-                                onChange={(e) => {
-                                    const val = Math.min(Number(e.target.value), priceRange[1] - 100)
-                                    setPriceRange([val, priceRange[1]])
-                                }}
-                                className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-5 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer z-20"
+                            <Slider.Thumb
+                                className="block w-5 h-5 bg-white border-2 border-primary shadow-md rounded-full hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-transform hover:scale-110"
+                                aria-label="Maximum Price"
                             />
-                            <input
-                                type="range"
-                                min={minPrice}
-                                max={maxPrice}
-                                value={priceRange[1]}
-                                onChange={(e) => {
-                                    const val = Math.max(Number(e.target.value), priceRange[0] + 100)
-                                    setPriceRange([priceRange[0], val])
-                                }}
-                                className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-5 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer z-10"
-                            />
-                        </div>
+                        </Slider.Root>
                     </div>
                 </div>
 
@@ -342,7 +330,6 @@ export function ProductFilterSidebarV2({
                             checked={inStockOnly}
                             onChange={(e) => {
                                 setInStockOnly(e.target.checked);
-                                // Trigger update manually since it's not in debounce
                                 const params = new URLSearchParams(searchParams.toString())
                                 if (e.target.checked) params.set('stock', 'true')
                                 else params.delete('stock')

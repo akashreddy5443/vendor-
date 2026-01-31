@@ -91,7 +91,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     let brands: string[] = []
 
     // 3. Site Settings for Price Limits & Discount
-    const { data: settings } = await supabase.from('site_settings').select('min_price_filter, max_price_filter').single()
+    // 3. Site Settings for Price Limits & Discount
+    const { data: settings } = await supabase.from('site_settings').select('min_price_filter, max_price_filter, price_presets').single()
 
     let priceBounds = { min: 0, max: 10000 } // Fallout default
 
@@ -124,6 +125,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                             maxPrice={priceBounds.max}
                             brands={brands}
                             categories={categories || []}
+                            pricePresets={settings?.price_presets}
                             isOpen={false} // Desktop always visible via CSS 'hidden lg:block'
                         // onClose is optional
                         />

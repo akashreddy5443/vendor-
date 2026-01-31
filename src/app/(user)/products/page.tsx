@@ -22,6 +22,7 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
     const [brands, setBrands] = React.useState<string[]>([])
     const [categories, setCategories] = React.useState<any[]>([])
     const [priceBounds, setPriceBounds] = React.useState<{ min: number, max: number }>({ min: 0, max: 10000 })
+    const [pricePresets, setPricePresets] = React.useState<any[] | undefined>(undefined)
 
     // UI State
     const [globalDiscount, setGlobalDiscount] = React.useState(0)
@@ -41,7 +42,6 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                 .eq('status', 'active')
 
             // Apply Sort
-            const sort = resolvedSearchParams.category // Bug in my head? No, searchParams.sort
             const sortParam = (resolvedSearchParams as any).sort || 'newest'
 
             if (sortParam === 'price_asc') query = query.order('price', { ascending: true })
@@ -50,8 +50,6 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
 
             // Apply Filters
             if (resolvedSearchParams.category) {
-                // Check if it's a slug or id. Usually slug in URL.
-                // We need to resolve slug to ID.
                 const { data: cat } = await supabase.from('categories').select('id').eq('slug', resolvedSearchParams.category).single()
                 if (cat) query = query.eq('category_id', cat.id)
             }
@@ -79,30 +77,24 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             const { data: productsData } = await query
             setProducts(productsData || [])
 
-            // 2. Fetch Metadata (Only once or independent of filters? Ideally independent)
-            // We fetch all active products to determine available brands/price range
-            // Optimally this should be capped or aggregations.
+            // 2. Fetch Metadata
             const { data: allProducts } = await supabase.from('products').select('brand, price').eq('status', 'active')
 
             if (allProducts) {
                 const distinctBrands = Array.from(new Set(allProducts.map(p => p.brand).filter(Boolean))) as string[]
                 setBrands(distinctBrands.sort())
-
-                const prices = allProducts.map(p => p.price)
-                if (prices.length > 0) {
-                    setPriceBounds({
-                        min: 0,
-                        max: Math.ceil(Math.max(...prices))
-                    })
-                }
             }
 
             const { data: cats } = await supabase.from('categories').select('*').order('name')
             setCategories(cats || [])
 
-            const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage, min_price_filter, max_price_filter').single()
+            const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage, min_price_filter, max_price_filter, price_presets').single()
             setGlobalDiscount(settings?.global_discount_percentage || 0)
             setGlobalGst(settings?.default_gst_percentage || 18)
+
+            if (settings?.price_presets) {
+                setPricePresets(settings.price_presets)
+            }
 
             // Override price bounds with admin settings if available
             if (settings?.max_price_filter) {
@@ -147,6 +139,7 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                                 maxPrice={priceBounds.max}
                                 brands={brands}
                                 categories={categories}
+                                pricePresets={pricePresets}
                                 isOpen={mobileFiltersOpen}
                                 onClose={() => setMobileFiltersOpen(false)}
                             />

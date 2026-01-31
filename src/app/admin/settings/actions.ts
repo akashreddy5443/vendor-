@@ -16,21 +16,39 @@ export async function updateSettings(formData: FormData) {
     const min_price_filter = parseFloat(formData.get('min_price_filter') as string || '0')
     const max_price_filter = parseFloat(formData.get('max_price_filter') as string || '100000')
 
+    // Parse price_presets safely
+    let price_presets = null
+    try {
+        const presetsRaw = formData.get('price_presets') as string
+        if (presetsRaw) {
+            price_presets = JSON.parse(presetsRaw)
+        }
+    } catch (e) {
+        console.error('Invalid JSON for price_presets:', e)
+        // Keep null to avoid breaking DB if invalid
+    }
+
+    const updateData: any = {
+        id: 1,
+        site_name,
+        description,
+        contact_email,
+        maintenance_mode,
+        logo_url,
+        global_discount_percentage,
+        default_gst_percentage,
+        min_price_filter,
+        max_price_filter,
+        updated_at: new Date().toISOString()
+    }
+
+    if (price_presets) {
+        updateData.price_presets = price_presets
+    }
+
     const { error } = await supabase
         .from('site_settings')
-        .upsert({
-            id: 1,
-            site_name,
-            description,
-            contact_email,
-            maintenance_mode,
-            logo_url,
-            global_discount_percentage,
-            default_gst_percentage,
-            min_price_filter,
-            max_price_filter,
-            updated_at: new Date().toISOString()
-        }, { onConflict: 'id' })
+        .upsert(updateData, { onConflict: 'id' })
 
     if (error) {
         console.error('Error updating settings:', error)

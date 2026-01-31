@@ -171,6 +171,24 @@ export function SettingsForm({ settings }: { settings: any }) {
                         />
                     </div>
                 </div>
+
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Price Presets (JSON Format)</label>
+                    <textarea
+                        name="price_presets"
+                        defaultValue={JSON.stringify(settings?.price_presets || [
+                            { label: 'Under ₹20,000', min: 0, max: 20000 },
+                            { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
+                            { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
+                            { label: 'Over ₹1,00,000', min: 100000, max: 1000000 }
+                        ], null, 2)}
+                        rows={10}
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-sm font-mono text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+                    />
+                    <p className="text-xs text-gray-500">
+                        Format: Array of objects with label, min, and max. Example: <code>{`[{"label": "Under ₹5000", "min": 0, "max": 5000}]`}</code>
+                    </p>
+                </div>
             </div>
 
             {/* Danger Zone */}
