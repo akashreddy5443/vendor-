@@ -99,7 +99,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.35, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] as const }}
-                            className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white mb-12 leading-[0.85] tracking-[-0.04em] max-w-5xl font-heading uppercase"
+                            className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white mb-12 leading-[0.85] tracking-[-0.04em] max-w-5xl font-heading"
                             style={{
                                 color: currentSlide.color,
                                 textShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(59,130,246,0.2)'
