@@ -130,20 +130,20 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                     {/* Quick View & Add to Cart Hover Overlay */}
                     {!isOutOfStock && (
-                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 z-20">
+                        <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 z-20 px-4">
                             <button
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setShowQuickView(true)
                                 }}
-                                className="bg-white text-slate-900 p-3 rounded-xl shadow-xl hover:bg-slate-50 transition-colors"
+                                className="h-10 w-10 flex items-center justify-center bg-white text-slate-900 rounded-xl shadow-xl hover:bg-slate-50 transition-colors border border-slate-100"
                                 title="Quick View"
                             >
-                                <Eye className="w-4 h-4" />
+                                <Eye className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={handleAddToCart}
-                                className="bg-primary text-white px-6 py-3 rounded-xl shadow-xl hover:bg-primary/90 transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-wider"
+                                className="h-10 bg-primary text-white px-6 rounded-xl shadow-xl hover:bg-primary/90 transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-wider border border-transparent"
                             >
                                 <ShoppingCart className="w-4 h-4" />
                                 Add to Cart
