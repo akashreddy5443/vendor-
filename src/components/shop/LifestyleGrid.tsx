@@ -37,15 +37,15 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
                     viewport={{ once: true }}
                     className="flex flex-col gap-3 mb-24"
                 >
-                    <div className="flex items-center gap-3 text-blue-600">
-                        <div className="w-10 h-[2px] bg-blue-600" />
+                    <div className="flex items-center gap-3 text-primary">
+                        <div className="w-10 h-[2px] bg-primary" />
                         <span className="text-[10px] font-black uppercase tracking-[0.4em]">Lifestyle Collections</span>
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black uppercase tracking-[-0.05em] text-slate-900 leading-[0.9] font-heading">
                         Designed For <br />
-                        <span className="text-blue-600 relative">
+                        <span className="text-primary relative">
                             Every Moment
-                            <svg className="absolute -bottom-2 left-0 w-full h-3 text-blue-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <svg className="absolute -bottom-2 left-0 w-full h-3 text-primary/20 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="8" />
                             </svg>
                         </span>
@@ -100,11 +100,11 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
                                                 {item.title}
                                             </h3>
 
-                                            <div className="flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover/label:text-white transition-all gap-2 relative z-10">
+                                            <div className="flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-primary group-hover/label:text-white transition-all gap-2 relative z-10">
                                                 Explore Collection
                                                 <div className="relative">
                                                     <ArrowRight className="h-3 w-3 transition-transform group-hover/label:translate-x-2" />
-                                                    <div className="absolute inset-0 bg-blue-400 blur-lg opacity-0 group-hover/label:opacity-50" />
+                                                    <div className="absolute inset-0 bg-primary blur-lg opacity-0 group-hover/label:opacity-50" />
                                                 </div>
                                             </div>
                                         </motion.div>

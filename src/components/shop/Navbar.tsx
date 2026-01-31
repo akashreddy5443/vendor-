@@ -138,7 +138,7 @@ export function Navbar() {
                                 <div className="flex bg-white/40 rounded-[1.4rem] overflow-hidden">
                                     {/* Column 1: Categories Grid */}
                                     <div className="w-2/3 p-10 grid grid-cols-2 gap-x-10 gap-y-6">
-                                        <h3 className="col-span-2 text-[9px] font-black uppercase tracking-[0.25em] text-blue-600/40 mb-2">Shop by Category</h3>
+                                        <h3 className="col-span-2 text-[9px] font-black uppercase tracking-[0.25em] text-primary/40 mb-2">Shop by Category</h3>
                                         {categories.length > 0 ? categories.map(cat => (
                                             <Link
                                                 key={cat.id}
@@ -149,7 +149,7 @@ export function Navbar() {
                                                     {cat.icon || '🛍️'}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-heading font-black text-sm text-slate-900 group-hover/item:text-blue-600 transition-colors uppercase tracking-tight">{cat.name}</span>
+                                                    <span className="font-heading font-black text-sm text-slate-900 group-hover/item:text-primary transition-colors uppercase tracking-tight">{cat.name}</span>
                                                     <span className="text-[10px] font-medium text-slate-400 group-hover/item:text-slate-500">Explore Collection</span>
                                                 </div>
                                             </Link>
@@ -159,7 +159,7 @@ export function Navbar() {
                                     </div>
 
                                     {/* Column 2: Featured / Promo */}
-                                    <div className="w-1/3 bg-blue-600 text-white p-10 flex flex-col justify-center relative overflow-hidden">
+                                    <div className="w-1/3 bg-gradient-to-br from-[#2d5cf7] to-[#1e3a8a] text-white p-10 flex flex-col justify-center relative overflow-hidden">
                                         <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
                                         <div className="relative z-10 space-y-4">
                                             <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/20">Winter Drop</span>
@@ -173,8 +173,8 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        <Link href="/products" className="hover:text-blue-600 transition-all hover:translate-y-[-1px] active:scale-95 transform">Explore</Link>
-                        <Link href="/about" className="hover:text-blue-600 transition-all hover:translate-y-[-1px] active:scale-95 transform">Our Story</Link>
+                        <Link href="/products" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Explore</Link>
+                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Our Story</Link>
                     </div>
                 </div>
 

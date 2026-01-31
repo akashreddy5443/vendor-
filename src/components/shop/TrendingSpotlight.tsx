@@ -49,15 +49,15 @@ export function TrendingSpotlight({ data }: { data?: any }) {
             >
                 <motion.div variants={itemVariants} className="flex flex-col md:flex-row justify-between items-end mb-16">
                     <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-blue-400 mb-2">
-                            <Sparkles className="h-4 w-4 fill-blue-400" />
+                        <div className="flex items-center gap-2 text-primary mb-2">
+                            <Sparkles className="h-4 w-4 fill-primary" />
                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Curated Essentials</span>
                         </div>
                         <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[-0.04em] text-white leading-none font-heading">
-                            In The <span className="text-blue-500">Spotlight</span>
+                            In The <span className="text-primary">Spotlight</span>
                         </h2>
                     </div>
-                    <Link href="/products" className="group mt-4 md:mt-0 flex items-center text-[10px] font-black text-blue-400/80 hover:text-white uppercase tracking-[0.2em] transition-colors">
+                    <Link href="/products" className="group mt-4 md:mt-0 flex items-center text-[10px] font-black text-primary/80 hover:text-white uppercase tracking-[0.2em] transition-colors">
                         View All Collections <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </Link>
                 </motion.div>
@@ -135,7 +135,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                         <h3 className="text-2xl font-black text-white uppercase leading-none tracking-tighter mb-4 font-heading">
                                             {item.title}
                                         </h3>
-                                        <Link href={item.link} className="inline-flex items-center text-[10px] font-black text-blue-400 group-hover:text-white uppercase tracking-widest transition-all gap-2">
+                                        <Link href={item.link} className="inline-flex items-center text-[10px] font-black text-primary group-hover:text-white uppercase tracking-widest transition-all gap-2">
                                             Shop Collection <ArrowRight className="h-3.5 w-3.5" />
                                         </Link>
                                     </div>

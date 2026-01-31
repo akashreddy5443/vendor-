@@ -108,7 +108,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                         >
                             <Link
                                 href={currentSlide.link}
-                                className="inline-flex items-center justify-center px-12 py-5 text-[10px] font-black text-slate-900 bg-white hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-2xl hover:shadow-blue-500/25 hover:scale-105 uppercase tracking-[0.2em] group"
+                                className="inline-flex items-center justify-center px-12 py-5 text-[10px] font-black text-slate-900 bg-white hover:bg-primary hover:text-white rounded-full transition-all shadow-2xl hover:shadow-primary/25 hover:scale-105 uppercase tracking-[0.2em] group"
                             >
                                 {currentSlide.buttonText}
                                 <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
