@@ -146,7 +146,7 @@ export function ProductFilterSidebar({
                 {/* Categories */}
                 <div className="mb-8">
                     <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
-                        Categories
+                        All Categories
                     </h4>
                     <div className="space-y-2">
                         {categories.map(cat => (
