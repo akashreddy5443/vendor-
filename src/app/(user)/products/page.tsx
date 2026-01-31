@@ -100,9 +100,25 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             const { data: cats } = await supabase.from('categories').select('*').order('name')
             setCategories(cats || [])
 
-            const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').single()
+            const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage, min_price_filter, max_price_filter').single()
             setGlobalDiscount(settings?.global_discount_percentage || 0)
             setGlobalGst(settings?.default_gst_percentage || 18)
+
+            // Override price bounds with admin settings if available
+            if (settings?.max_price_filter) {
+                setPriceBounds({
+                    min: settings.min_price_filter || 0,
+                    max: settings.max_price_filter
+                })
+            } else if (allProducts) {
+                const prices = allProducts.map(p => p.price)
+                if (prices.length > 0) {
+                    setPriceBounds({
+                        min: 0,
+                        max: Math.ceil(Math.max(...prices))
+                    })
+                }
+            }
             setLoading(false)
         }
         fetchData()

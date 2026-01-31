@@ -145,8 +145,36 @@ export function SettingsForm({ settings }: { settings: any }) {
                     </div>
                 </div>
             </div>
+        </div>
 
-            {/* Danger Zone */}
+            {/* Filter Configuration */ }
+    <div className="space-y-4">
+        <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">Filter Configuration</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Minimum Price (Slider Start)</label>
+                <input
+                    type="number"
+                    name="min_price_filter"
+                    defaultValue={settings?.min_price_filter ?? 0}
+                    min="0"
+                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+                />
+            </div>
+            <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Maximum Price (Slider End)</label>
+                <input
+                    type="number"
+                    name="max_price_filter"
+                    defaultValue={settings?.max_price_filter ?? 100000}
+                    min="0"
+                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+                />
+            </div>
+        </div>
+    </div>
+
+    {/* Danger Zone */ }
             <div className="space-y-4 pt-4">
                 <h3 className="text-lg font-medium text-red-600 flex items-center gap-2 border-b border-red-100 pb-2">
                     <AlertTriangle className="h-5 w-5" />
@@ -197,6 +225,6 @@ export function SettingsForm({ settings }: { settings: any }) {
                     </button>
                 </div>
             </div>
-        </form>
+        </form >
     )
 }

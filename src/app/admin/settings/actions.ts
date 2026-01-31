@@ -13,6 +13,8 @@ export async function updateSettings(formData: FormData) {
     const logo_url = formData.get('logo_url') as string
     const global_discount_percentage = parseFloat(formData.get('global_discount_percentage') as string || '0')
     const default_gst_percentage = parseFloat(formData.get('default_gst_percentage') as string || '18')
+    const min_price_filter = parseFloat(formData.get('min_price_filter') as string || '0')
+    const max_price_filter = parseFloat(formData.get('max_price_filter') as string || '100000')
 
     const { error } = await supabase
         .from('site_settings')
@@ -25,6 +27,8 @@ export async function updateSettings(formData: FormData) {
             logo_url,
             global_discount_percentage,
             default_gst_percentage,
+            min_price_filter,
+            max_price_filter,
             updated_at: new Date().toISOString()
         }, { onConflict: 'id' })
 
