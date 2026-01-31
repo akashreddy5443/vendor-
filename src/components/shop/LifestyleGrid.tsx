@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { ArrowRight, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: string }) {
+export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subtitle?: string, title?: string }) {
     const gridItems = items || [
         {
             title: 'DESK & PRODUCTIVITY',
@@ -26,6 +26,7 @@ export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: s
     ]
 
     const sectionSubtitle = subtitle || 'Collections curated for modern creators'
+    const sectionTitle = title || 'Designed For Every Moment'
 
     return (
         <section className="pt-8 pb-32 bg-transparent relative overflow-hidden">
@@ -44,9 +45,9 @@ export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: s
                         <span className="text-[10px] font-black uppercase tracking-[0.4em]">{sectionSubtitle}</span>
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black uppercase tracking-[-0.05em] text-slate-900 leading-[0.9] font-heading">
-                        Designed For <br />
+                        {sectionTitle.split(' ').slice(0, -2).join(' ')} <br />
                         <span className="text-primary relative">
-                            Every Moment
+                            {sectionTitle.split(' ').slice(-2).join(' ')}
                             <svg className="absolute -bottom-2 left-0 w-full h-3 text-primary/20 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="8" />
                             </svg>
@@ -69,16 +70,7 @@ export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: s
                             className={`relative h-[550px] ${idx % 2 !== 0 ? 'md:mt-0' : 'md:mt-0'}`}
                         >
                             <Link href={item.link} className="group block h-full w-full">
-                                <motion.div
-                                    whileHover={{
-                                        rotateX: 4,
-                                        rotateY: -4,
-                                        scale: 1.02,
-                                        y: -10
-                                    }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                    className="h-full w-full relative rounded-[3rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-blue-500/20 transition-all duration-700"
-                                >
+                                <div className="h-full w-full relative rounded-[3rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_40px_80px_-20px_rgba(59,130,246,0.25)] group-hover:-translate-y-2 transition-all duration-500">
                                     <Image
                                         src={item.image}
                                         alt={item.title}
@@ -111,7 +103,7 @@ export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: s
                                             </div>
                                         </motion.div>
                                     </div>
-                                </motion.div>
+                                </div>
                             </Link>
                         </motion.div>
                     ))}
