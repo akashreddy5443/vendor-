@@ -89,6 +89,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     const { data: allProducts } = await supabase.from('products').select('brand, price').eq('status', 'active')
 
     let brands: string[] = []
+    if (allProducts) {
+        brands = Array.from(new Set(allProducts.map(p => p.brand).filter(Boolean))) as string[]
+        brands.sort()
+    }
 
     // 3. Site Settings for Price Limits & Discount
     const { data: settings } = await supabase.from('site_settings').select(`
