@@ -129,7 +129,7 @@ export async function createOrder({
         return { error: "Failed to add items to order" }
     }
 
-    // 3. Decrease Stock
+    // 3. Decrease Stock & Track Coupon Usage
     for (const item of items) {
         // Fetch current stock first or use an atomic rpc if available. 
         // Simple update for now:
@@ -142,6 +142,19 @@ export async function createOrder({
             // Fallback if RPC doesn't exist (creating it next) or fails
             console.error(`Failed to decrement stock for ${item.productId}`, stockError)
         }
+    }
+
+    // 4. Track Coupon Usage
+    if (couponId) {
+        // Insert usage record
+        await supabase.from('coupon_usages').insert({
+            coupon_id: couponId,
+            user_id: user.id,
+            order_id: order.id
+        })
+
+        // Increment usage count
+        await supabase.rpc('increment_coupon_usage', { coupon_id: couponId })
     }
 
     // 2. Clear Cart (Client side usually does this)

@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { CartRecommendations } from '@/components/shop/CartRecommendations'
+import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, addToCart } = useCart()
@@ -271,7 +272,12 @@ export default function CartPage() {
                         </div>
                     )}
                 </div>
-                <CartRecommendations />
+                <div className="lg:col-span-8">
+                    <CartRecommendations />
+                </div>
+                <div className="lg:col-span-4">
+                    <AvailableCoupons />
+                </div>
             </div>
         </div>
     )
