@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { MapPin, Navigation, Search, Loader2 } from 'lucide-react'
@@ -43,8 +43,28 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     const [position, setPosition] = useState<L.LatLng>(new L.LatLng(12.9716, 77.5946)) // Default to Bangalore
     const [loading, setLoading] = useState(false)
     const [searchText, setSearchText] = useState('')
+    const [pois, setPois] = useState<any[]>([])
 
     const lastPositionRef = useRef<L.LatLng>(position)
+    const lastPoiFetchPos = useRef<L.LatLng | null>(null)
+
+    const fetchPOIs = useCallback(async (lat: number, lon: number) => {
+        // Only fetch if moved more than 100m from last POI fetch
+        if (lastPoiFetchPos.current && lastPoiFetchPos.current.distanceTo(new L.LatLng(lat, lon)) < 100) return
+
+        try {
+            // Overpass query for shops, amenities, and landmarks within 300m
+            const query = `[out:json];(node["shop"](around:300,${lat},${lon});node["amenity"](around:300,${lat},${lon});node["tourism"](around:300,${lat},${lon});node["office"](around:300,${lat},${lon}););out 20;`
+            const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
+            const data = await response.json()
+            if (data.elements) {
+                setPois(data.elements)
+                lastPoiFetchPos.current = new L.LatLng(lat, lon)
+            }
+        } catch (error) {
+            console.error('POI Fetch error:', error)
+        }
+    }, [])
 
     const reverseGeocode = useCallback(async (lat: number, lon: number) => {
         // Prevent calls if position hasn't actually changed significantly
@@ -104,13 +124,14 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                     label: suggestedLabel
                 })
                 lastPositionRef.current = new L.LatLng(lat, lon)
+                fetchPOIs(lat, lon)
             }
         } catch (error) {
             console.error('Reverse geocoding error:', error)
         } finally {
             setLoading(false)
         }
-    }, [onAddressSelect])
+    }, [onAddressSelect, fetchPOIs])
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -153,6 +174,13 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
         detectLocation()
     }, [detectLocation])
 
+    const poiIcon = L.divIcon({
+        html: '<div class="bg-blue-600 rounded-full w-2 h-2 border border-white shadow-sm ring-2 ring-blue-500/20"></div>',
+        className: '',
+        iconSize: [8, 8],
+        iconAnchor: [4, 4]
+    })
+
     return (
         <div className="space-y-4">
             <div className="flex gap-2">
@@ -183,6 +211,25 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <LocationMarker position={position} setPosition={setPosition} />
+
+                    {pois.map((poi, idx) => (
+                        <Marker
+                            key={`${poi.id}-${idx}`}
+                            position={[poi.lat, poi.lon]}
+                            icon={poiIcon}
+                            eventHandlers={{
+                                click: () => {
+                                    setPosition(new L.LatLng(poi.lat, poi.lon))
+                                }
+                            }}
+                        >
+                            <Popup>
+                                <div className="text-[10px] font-bold text-blue-600 max-w-[150px]">
+                                    {poi.tags.name || poi.tags.shop || poi.tags.amenity || 'Nearby Landmark'}
+                                </div>
+                            </Popup>
+                        </Marker>
+                    ))}
                 </MapContainer>
 
                 {loading && (
@@ -193,7 +240,7 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
             </div>
 
             <p className="text-[10px] text-muted-foreground font-medium flex items-center gap-1">
-                <MapPin className="h-3 w-3" /> Click on the map to pin your exact delivery location
+                <MapPin className="h-3 w-3" /> Click on the map or nearby landmark dots to pin your exact location
             </p>
         </div>
     )
