@@ -3,7 +3,7 @@
 import React, { use } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
-import { ProductFilterSidebar } from '@/components/shop/ProductFilterSidebar'
+import { ProductFilterSidebarV2 } from '@/components/shop/ProductFilterSidebarV2'
 import { ProductSort } from '@/components/shop/ProductSort'
 import { motion, AnimatePresence } from 'framer-motion'
 import { formatPrice } from '@/lib/utils'
@@ -126,7 +126,7 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                     {/* Sidebar */}
                     <div className="w-full lg:w-64 flex-shrink-0">
                         <div className="lg:sticky lg:top-24">
-                            <ProductFilterSidebar
+                            <ProductFilterSidebarV2
                                 minPrice={priceBounds.min}
                                 maxPrice={priceBounds.max}
                                 brands={brands}
