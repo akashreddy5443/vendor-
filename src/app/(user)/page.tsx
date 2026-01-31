@@ -28,6 +28,7 @@ export default function HomePage() {
   const [lifestyleSubtitle, setLifestyleSubtitle] = React.useState<string>('')
   const [lifestyleTitle, setLifestyleTitle] = React.useState<string>('')
   const [trendingData, setTrendingData] = React.useState<any>(null)
+  const [trustSection, setTrustSection] = React.useState<any>(null)
 
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop', href: '/search?category=laptops' },
@@ -78,6 +79,10 @@ export default function HomePage() {
       // Fetch New Sections
       const { data: lifestyle } = await supabase.from('homepage_sections').select('*').eq('section_type', 'lifestyle_grid').single()
       const { data: trending } = await supabase.from('homepage_sections').select('*').eq('section_type', 'trending_spotlight').single()
+
+      // Fetch Trust Section
+      const { data: trust } = await supabase.from('homepage_sections').select('*').eq('section_type', 'trust_section').single()
+      setTrustSection(trust?.content_json || null)
 
       setLifestyleItems(lifestyle?.content_json?.items)
       setLifestyleSubtitle(lifestyle?.subtitle || 'Collections curated for modern creators')
@@ -238,7 +243,7 @@ export default function HomePage() {
       </section >
 
       {/* Social Proof & Trust */}
-      <TrustSection />
+      <TrustSection data={trustSection} />
     </div >
   )
 }
