@@ -84,7 +84,7 @@
 
 body {
   background-color: var(--background);
-  background-image: linear-gradient(180deg, #dbeafe 0%, #ffffff 40%, #ffffff 100%);
+  background-image: linear-gradient(180deg, #bfdbfe 0%, #eff6ff 50%, #ffffff 100%);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
