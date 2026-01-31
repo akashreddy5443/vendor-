@@ -1,7 +1,7 @@
 'use client'
 
 import { updateSettings, fixDatabasePermissions } from '@/app/admin/settings/actions'
-import { useState, useTransition } from 'react'
+import React, { useState, useTransition, useEffect } from 'react'
 import { Save, AlertTriangle, ImagePlus, X, Plus, Trash2 } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
