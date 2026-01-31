@@ -23,7 +23,6 @@ export async function updateOrderStatus(orderId: string, newStatus: string) {
         }
 
         // 2. Trigger Email Notification (Non-blocking)
-        // We catch errors here so the UI still shows success even if email fails
         try {
             if (['shipped', 'delivered', 'cancelled'].includes(newStatus)) {
                 await sendOrderEmail(orderId, newStatus as any)
@@ -34,6 +33,27 @@ export async function updateOrderStatus(orderId: string, newStatus: string) {
 
         revalidatePath('/admin/orders')
         revalidatePath(`/admin/orders/${orderId}`)
+        return { success: true }
+    } catch (e) {
+        return { error: 'Unexpected error' }
+    }
+}
+
+export async function deleteOrder(orderId: string) {
+    const supabase = await createClient()
+
+    try {
+        const { error } = await supabase
+            .from('orders')
+            .delete()
+            .eq('id', orderId)
+
+        if (error) {
+            console.error('Error deleting order:', error)
+            return { error: 'Failed to delete order' }
+        }
+
+        revalidatePath('/admin/orders')
         return { success: true }
     } catch (e) {
         return { error: 'Unexpected error' }
