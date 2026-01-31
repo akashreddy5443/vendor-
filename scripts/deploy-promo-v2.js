@@ -4,26 +4,26 @@ const { Client } = require('pg');
 let connectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_PRISMA_URL;
 
 if (!connectionString) {
-    console.error('No connection string');
-    process.exit(1);
+  console.error('No connection string');
+  process.exit(1);
 }
 
 // Remove sslmode from query if present to allow manual config
 connectionString = connectionString.replace('sslmode=require', '');
 
 const client = new Client({
-    connectionString: connectionString,
-    ssl: {
-        rejectUnauthorized: false, // Critical for avoiding self-signed errors
-    }
+  connectionString: connectionString,
+  ssl: {
+    rejectUnauthorized: false, // Critical for avoiding self-signed errors
+  }
 });
 
 async function run() {
-    try {
-        await client.connect();
-        console.log('✅ Connected to DB');
+  try {
+    await client.connect();
+    console.log('✅ Connected to DB');
 
-        const sql = `
+    const sql = `
       UPDATE homepage_sections
       SET content_json = '{
         "cards": [
@@ -60,9 +60,9 @@ async function run() {
           {
             "id": "promo-4",
             "title": "Early Bird",
-            "subtitle": "Free Shipping",
-            "description": "Pre-order Vision AR today. No hidden fees.",
-            "icon": "Camera",
+            "subtitle": "FLAT 10% OFF",
+            "description": "Pre-order Vision AR today. Includes pro case.",
+            "icon": "Gamepad",
             "href": "/products?category=monitors",
             "delay": 0.4,
             "color": "bg-slate-50 border-slate-100"
@@ -72,18 +72,18 @@ async function run() {
       WHERE section_type = 'promo_grid';
     `;
 
-        const res = await client.query(sql);
-        console.log(`✅ Update success! Rows affected: ${res.rowCount}`);
+    const res = await client.query(sql);
+    console.log(`✅ Update success! Rows affected: ${res.rowCount}`);
 
-        // Validate
-        const check = await client.query("SELECT content_json FROM homepage_sections WHERE section_type = 'promo_grid'");
-        console.log('Current Data Snippet:', JSON.stringify(check.rows[0]?.content_json).slice(0, 100));
+    // Validate
+    const check = await client.query("SELECT content_json FROM homepage_sections WHERE section_type = 'promo_grid'");
+    console.log('Current Data Snippet:', JSON.stringify(check.rows[0]?.content_json).slice(0, 100));
 
-    } catch (e) {
-        console.error('❌ Error:', e);
-    } finally {
-        await client.end();
-    }
+  } catch (e) {
+    console.error('❌ Error:', e);
+  } finally {
+    await client.end();
+  }
 }
 
 run();
