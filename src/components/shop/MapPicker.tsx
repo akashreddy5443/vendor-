@@ -49,16 +49,22 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     const lastPoiFetchPos = useRef<L.LatLng | null>(null)
 
     const fetchPOIs = useCallback(async (lat: number, lon: number) => {
-        // Only fetch if moved more than 100m from last POI fetch
-        if (lastPoiFetchPos.current && lastPoiFetchPos.current.distanceTo(new L.LatLng(lat, lon)) < 100) return
+        // Only fetch if moved more than 150m from last POI fetch
+        if (lastPoiFetchPos.current && lastPoiFetchPos.current.distanceTo(new L.LatLng(lat, lon)) < 150) return
 
         try {
-            // Overpass query for shops, amenities, and landmarks within 300m
-            const query = `[out:json];(node["shop"](around:300,${lat},${lon});node["amenity"](around:300,${lat},${lon});node["tourism"](around:300,${lat},${lon});node["office"](around:300,${lat},${lon}););out 20;`
+            // Expanded Overpass query for nodes and ways (buildings) within 500m
+            const query = `[out:json];(node["shop"](around:500,${lat},${lon});node["amenity"](around:500,${lat},${lon});node["tourism"](around:500,${lat},${lon});way["shop"](around:500,${lat},${lon});way["amenity"](around:500,${lat},${lon});way["building"="retail"](around:500,${lat},${lon}););out center 40;`
             const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
             const data = await response.json()
             if (data.elements) {
-                setPois(data.elements)
+                const formattedPois = data.elements.map((el: any) => ({
+                    id: el.id,
+                    lat: el.lat || el.center?.lat,
+                    lon: el.lon || el.center?.lon,
+                    name: el.tags.name || el.tags.shop || el.tags.amenity || el.tags.building || 'Landmark'
+                })).filter((el: any) => el.lat && el.lon)
+                setPois(formattedPois)
                 lastPoiFetchPos.current = new L.LatLng(lat, lon)
             }
         } catch (error) {
@@ -175,10 +181,10 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     }, [detectLocation])
 
     const poiIcon = L.divIcon({
-        html: '<div class="bg-blue-600 rounded-full w-2 h-2 border border-white shadow-sm ring-2 ring-blue-500/20"></div>',
+        html: `<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>`,
         className: '',
-        iconSize: [8, 8],
-        iconAnchor: [4, 4]
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
     })
 
     return (
@@ -204,7 +210,7 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                 </button>
             </div>
 
-            <div className="h-[300px] w-full rounded-2xl overflow-hidden border border-border relative z-0">
+            <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-border relative z-0 shadow-inner">
                 <MapContainer center={position} zoom={18} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -223,14 +229,18 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                                 }
                             }}
                         >
-                            <Popup>
-                                <div className="text-[10px] font-bold text-blue-600 max-w-[150px]">
-                                    {poi.tags.name || poi.tags.shop || poi.tags.amenity || 'Nearby Landmark'}
+                            <Popup offset={[0, -5]}>
+                                <div className="text-[11px] font-bold text-blue-600 max-w-[180px] text-center p-1">
+                                    {poi.name}
                                 </div>
                             </Popup>
                         </Marker>
                     ))}
                 </MapContainer>
+
+                <div className="absolute top-4 right-4 z-[1000] bg-white/90 backdrop-blur px-2 py-1 rounded-lg border border-border text-[9px] font-bold text-muted-foreground shadow-sm">
+                    {pois.length} Locations Nearby
+                </div>
 
                 {loading && (
                     <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-[1000] flex items-center justify-center">
@@ -239,8 +249,8 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                 )}
             </div>
 
-            <p className="text-[10px] text-muted-foreground font-medium flex items-center gap-1">
-                <MapPin className="h-3 w-3" /> Click on the map or nearby landmark dots to pin your exact location
+            <p className="text-[10px] text-muted-foreground font-medium flex items-center gap-1 bg-blue-50/50 p-2 rounded-lg border border-blue-100/50">
+                <MapPin className="h-3 w-3 text-blue-600" /> Click on the map or blue landmark dots to pin your exact location
             </p>
         </div>
     )
