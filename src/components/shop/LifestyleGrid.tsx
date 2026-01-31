@@ -56,19 +56,20 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                     </h2>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14 perspective-1000">
+                {/* Phase 5: Strict grid system - equal widths, equal gaps, vertical alignment */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                     {gridItems.map((item, idx) => (
                         <motion.div
                             key={item.title}
                             initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: idx % 2 === 0 ? 0 : 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{
                                 delay: idx * 0.15,
                                 duration: 0.8,
                                 ease: [0.21, 0.45, 0.32, 0.9] as const
                             }}
-                            className={`relative h-[600px] ${idx % 2 !== 0 ? 'md:mt-0' : 'md:mt-0'}`}
+                            className="relative h-[600px]"
                         >
                             <Link href={item.link} className="group block h-full w-full">
                                 {/* Phase 3: Consistent corner radius (2.5rem), enhanced shadows, card lift */}

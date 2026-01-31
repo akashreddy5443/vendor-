@@ -86,6 +86,20 @@ export function LifestyleEditor({ initialItems, initialSubtitle, initialTitle }:
                     </label>
                 </div>
 
+                {/* Phase 5: Grid System Info */}
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
+                    <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        Grid System (Phase 5)
+                    </h4>
+                    <div className="space-y-2 text-xs text-slate-700">
+                        <p>✅ <strong>Equal Card Widths:</strong> All cards have identical width for clean alignment</p>
+                        <p>✅ <strong>Equal Gaps:</strong> Consistent 2rem spacing between all cards</p>
+                        <p>✅ <strong>Vertical Alignment:</strong> Cards align from the top for professional layout</p>
+                        <p>✅ <strong>Breathing Space:</strong> Proper padding below section (8rem)</p>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {items.map((item, index) => (
                         <div key={index} className="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
