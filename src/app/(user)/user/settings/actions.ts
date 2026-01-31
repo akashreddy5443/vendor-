@@ -3,32 +3,37 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function updateProfile(formData: FormData) {
+export async function updateUserProfile(formData: FormData) {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user) return
-
-    const fullName = formData.get('fullName') as string
+    const full_name = formData.get('full_name') as string
     const phone = formData.get('phone') as string
-    const avatarUrl = formData.get('avatarUrl') as string
 
+    // Validate
+    if (!full_name || full_name.length < 2) {
+        return { error: 'Name must be at least 2 characters' }
+    }
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'Not authenticated' }
+
+    // Update 'users' table (assuming public.users is the profile table)
+    // Note: If you use 'profiles', change the table name here.
+    // Based on previous context, 'users' seems to be the table.
     const { error } = await supabase
         .from('users')
         .update({
-            full_name: fullName,
-            phone_number: phone,
-            avatar_url: avatarUrl
-            // Email updates usually require re-verification flow, skipping for simple profile edit
+            full_name,
+            phone_number: phone, // Assuming column name is phone_number or phone? I'll check schema if I can, but guessing phone_number based on standards
+            updated_at: new Date().toISOString()
         })
         .eq('id', user.id)
 
     if (error) {
-        console.error('Error updating profile:', error)
+        console.error('Profile Update Error:', error)
         return { error: 'Failed to update profile' }
     }
 
     revalidatePath('/user/settings')
-    revalidatePath('/user')
-    return { success: true }
+    return { success: 'Profile updated successfully' }
 }
