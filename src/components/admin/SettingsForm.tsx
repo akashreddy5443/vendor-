@@ -167,6 +167,63 @@ export function SettingsForm({ settings }: { settings: any }) {
                 </div>
             </div>
 
+            {/* Sidebar Configuration */}
+            <div className="space-y-4">
+                <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">Sidebar Configuration</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Categories Config */}
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm font-medium text-gray-900">Category Filter</label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="show_category_filter"
+                                    defaultChecked={settings?.show_category_filter ?? true}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs text-gray-500">Label Text</label>
+                            <input
+                                name="filter_category_label"
+                                defaultValue={settings?.filter_category_label || 'All Categories'}
+                                className="w-full bg-white border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 outline-none"
+                                placeholder="e.g. Collections"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Brands Config */}
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm font-medium text-gray-900">Brand Filter</label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="show_brand_filter"
+                                    defaultChecked={settings?.show_brand_filter ?? true}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs text-gray-500">Label Text</label>
+                            <input
+                                name="filter_brand_label"
+                                defaultValue={settings?.filter_brand_label || 'Brands'}
+                                className="w-full bg-white border border-gray-300 rounded-md p-2 text-sm focus:border-blue-500 outline-none"
+                                placeholder="e.g. Manufacturers"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Filter Configuration */}
             <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">Filter Configuration</h3>

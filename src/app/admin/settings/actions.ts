@@ -16,6 +16,12 @@ export async function updateSettings(formData: FormData) {
     const min_price_filter = parseFloat(formData.get('min_price_filter') as string || '0')
     const max_price_filter = parseFloat(formData.get('max_price_filter') as string || '100000')
 
+    // Sidebar Configuration
+    const filter_category_label = formData.get('filter_category_label') as string
+    const filter_brand_label = formData.get('filter_brand_label') as string
+    const show_category_filter = formData.get('show_category_filter') === 'on'
+    const show_brand_filter = formData.get('show_brand_filter') === 'on'
+
     // Parse price_presets safely
     let price_presets = null
     try {
@@ -39,6 +45,10 @@ export async function updateSettings(formData: FormData) {
         default_gst_percentage,
         min_price_filter,
         max_price_filter,
+        filter_category_label,
+        filter_brand_label,
+        show_category_filter,
+        show_brand_filter,
         updated_at: new Date().toISOString()
     }
 

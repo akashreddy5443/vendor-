@@ -24,6 +24,14 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
     const [priceBounds, setPriceBounds] = React.useState<{ min: number, max: number }>({ min: 0, max: 10000 })
     const [pricePresets, setPricePresets] = React.useState<any[] | undefined>(undefined)
 
+    // Sidebar Config
+    const [sidebarConfig, setSidebarConfig] = React.useState({
+        categoryLabel: 'All Categories',
+        brandLabel: 'Brands',
+        showCategory: true,
+        showBrand: true
+    })
+
     // UI State
     const [globalDiscount, setGlobalDiscount] = React.useState(0)
     const [globalGst, setGlobalGst] = React.useState(18)
@@ -88,12 +96,28 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             const { data: cats } = await supabase.from('categories').select('*').order('name')
             setCategories(cats || [])
 
-            const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage, min_price_filter, max_price_filter, price_presets').single()
+            const { data: settings } = await supabase.from('site_settings').select(`
+                global_discount_percentage, 
+                default_gst_percentage, 
+                min_price_filter, 
+                max_price_filter, 
+                price_presets,
+                filter_category_label,
+                filter_brand_label,
+                show_category_filter,
+                show_brand_filter
+            `).single()
             setGlobalDiscount(settings?.global_discount_percentage || 0)
             setGlobalGst(settings?.default_gst_percentage || 18)
 
-            if (settings?.price_presets) {
+            if (settings) {
                 setPricePresets(settings.price_presets)
+                setSidebarConfig({
+                    categoryLabel: settings.filter_category_label || 'All Categories',
+                    brandLabel: settings.filter_brand_label || 'Brands',
+                    showCategory: settings.show_category_filter ?? true,
+                    showBrand: settings.show_brand_filter ?? true
+                })
             }
 
             // Override price bounds with admin settings if available
@@ -140,6 +164,10 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                                 brands={brands}
                                 categories={categories}
                                 pricePresets={pricePresets}
+                                categoryLabel={sidebarConfig.categoryLabel}
+                                brandLabel={sidebarConfig.brandLabel}
+                                showCategory={sidebarConfig.showCategory}
+                                showBrand={sidebarConfig.showBrand}
                                 isOpen={mobileFiltersOpen}
                                 onClose={() => setMobileFiltersOpen(false)}
                             />

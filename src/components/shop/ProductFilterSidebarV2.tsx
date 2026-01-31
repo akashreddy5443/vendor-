@@ -12,6 +12,11 @@ interface FilterSidebarProps {
     brands: string[]
     categories: { id: string, name: string, slug: string }[]
     pricePresets?: { label: string, min: number, max: number }[]
+    // Customization Props
+    categoryLabel?: string
+    brandLabel?: string
+    showCategory?: boolean
+    showBrand?: boolean
     isOpen?: boolean
     onClose?: () => void
 }
@@ -22,6 +27,10 @@ export function ProductFilterSidebarV2({
     brands,
     categories,
     pricePresets,
+    categoryLabel = 'All Categories',
+    brandLabel = 'Brands',
+    showCategory = true,
+    showBrand = true,
     isOpen,
     onClose
 }: FilterSidebarProps) {
@@ -155,64 +164,68 @@ export function ProductFilterSidebarV2({
                 </div>
 
                 {/* Categories */}
-                <div className="mb-8">
-                    <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
-                        All Categories
-                    </h4>
-                    <div className="space-y-2">
-                        {categories.map(cat => (
-                            <label key={cat.id} className="flex items-center gap-3 cursor-pointer group">
-                                <div className={`
+                {showCategory && (
+                    <div className="mb-8">
+                        <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
+                            {categoryLabel}
+                        </h4>
+                        <div className="space-y-2">
+                            {categories.map(cat => (
+                                <label key={cat.id} className="flex items-center gap-3 cursor-pointer group">
+                                    <div className={`
                                     w-4 h-4 rounded-md border flex items-center justify-center transition-colors
                                     ${selectedCategories.includes(cat.slug)
-                                        ? 'bg-primary border-primary text-white'
-                                        : 'border-slate-300 group-hover:border-primary'}
+                                            ? 'bg-primary border-primary text-white'
+                                            : 'border-slate-300 group-hover:border-primary'}
                                 `}>
-                                    {selectedCategories.includes(cat.slug) && <Check className="w-3 h-3" />}
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    className="hidden"
-                                    checked={selectedCategories.includes(cat.slug)}
-                                    onChange={() => toggleCategory(cat.slug)}
-                                />
-                                <span className={`text-sm transition-colors ${selectedCategories.includes(cat.slug) ? 'text-primary font-medium' : 'text-slate-600'}`}>
-                                    {cat.name}
-                                </span>
-                            </label>
-                        ))}
+                                        {selectedCategories.includes(cat.slug) && <Check className="w-3 h-3" />}
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        className="hidden"
+                                        checked={selectedCategories.includes(cat.slug)}
+                                        onChange={() => toggleCategory(cat.slug)}
+                                    />
+                                    <span className={`text-sm transition-colors ${selectedCategories.includes(cat.slug) ? 'text-primary font-medium' : 'text-slate-600'}`}>
+                                        {cat.name}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Brands */}
-                <div className="mb-8">
-                    <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
-                        Brands
-                    </h4>
-                    <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                        {brands.map(brand => (
-                            <label key={brand} className="flex items-center gap-3 cursor-pointer group">
-                                <div className={`
+                {showBrand && (
+                    <div className="mb-8">
+                        <h4 className="flex items-center gap-2 font-heading font-bold text-sm uppercase tracking-wider text-slate-900 mb-4">
+                            {brandLabel}
+                        </h4>
+                        <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                            {brands.map(brand => (
+                                <label key={brand} className="flex items-center gap-3 cursor-pointer group">
+                                    <div className={`
                                     w-4 h-4 rounded-md border flex items-center justify-center transition-colors
                                     ${selectedBrands.includes(brand)
-                                        ? 'bg-primary border-primary text-white'
-                                        : 'border-slate-300 group-hover:border-primary'}
+                                            ? 'bg-primary border-primary text-white'
+                                            : 'border-slate-300 group-hover:border-primary'}
                                 `}>
-                                    {selectedBrands.includes(brand) && <Check className="w-3 h-3" />}
-                                </div>
-                                <input
-                                    type="checkbox"
-                                    className="hidden"
-                                    checked={selectedBrands.includes(brand)}
-                                    onChange={() => toggleBrand(brand)}
-                                />
-                                <span className="text-sm text-slate-600 group-hover:text-primary transition-colors">
-                                    {brand}
-                                </span>
-                            </label>
-                        ))}
+                                        {selectedBrands.includes(brand) && <Check className="w-3 h-3" />}
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        className="hidden"
+                                        checked={selectedBrands.includes(brand)}
+                                        onChange={() => toggleBrand(brand)}
+                                    />
+                                    <span className="text-sm text-slate-600 group-hover:text-primary transition-colors">
+                                        {brand}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Price Range */}
                 <div className="mb-8">
