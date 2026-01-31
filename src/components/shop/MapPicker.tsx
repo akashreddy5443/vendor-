@@ -59,31 +59,38 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
             if (data.address) {
                 const addr = data.address
 
-                // Construct a very precise street address
+                // Construct a pixel-perfect street address matching Google Maps hierarchy
                 const streetParts = []
 
-                // 1. Landmark / Business Name (Crucial for delivery)
-                const landmark = data.name || addr.amenity || addr.shop || addr.tourism || addr.building || addr.office
-                if (landmark && !/^\d+$/.test(landmark) && landmark.toLowerCase() !== 'home') {
-                    streetParts.push(landmark)
+                // 1. Primary Area / District (e.g., St Thomas Town)
+                const district = addr.city_district || addr.town || addr.village
+                if (district && !/^\d+$/.test(district) && district !== 'Bengaluru') streetParts.push(district)
+
+                // 2. Layout / Neighborhood (e.g., Ramaiah Layout)
+                const neighborhood = addr.neighbourhood || addr.suburb_district || addr.allotments
+                if (neighborhood && neighborhood !== district) streetParts.push(neighborhood)
+
+                // 3. Suburb / Area (e.g., Kacharakahalli)
+                const suburb = addr.suburb || addr.residential || addr.community
+                if (suburb && suburb !== neighborhood && suburb !== district) streetParts.push(suburb)
+
+                // 4. Landmark / Building Name (if not already included)
+                const landmark = data.name || addr.amenity || addr.shop || addr.building || addr.office
+                if (landmark && !/^\d+$/.test(landmark) && !streetParts.includes(landmark) && landmark.toLowerCase() !== 'home') {
+                    // Prepend landmark for better visibility
+                    streetParts.unshift(landmark)
                 }
 
-                // 2. House Number / Building
-                if (addr.house_number) streetParts.push(`#${addr.house_number}`)
-
-                // 3. Road / Street
-                if (addr.road) streetParts.push(addr.road)
-
-                // 4. Detailed Neighborhood / Land-use
-                const neighborhood = addr.neighbourhood || addr.suburb || addr.residential || addr.community
-                if (neighborhood && neighborhood !== landmark) {
-                    streetParts.push(neighborhood)
-                }
+                // 5. House Number / Road
+                const roadInfo = []
+                if (addr.house_number) roadInfo.push(`#${addr.house_number}`)
+                if (addr.road) roadInfo.push(addr.road)
+                if (roadInfo.length > 0) streetParts.push(roadInfo.join(', '))
 
                 const streetAddress = streetParts.join(', ')
 
-                // Intelligent Label Suggestion
-                let suggestedLabel = landmark || neighborhood || ''
+                // Intelligent Label Suggestion (Professional labels only)
+                let suggestedLabel = landmark || neighborhood || suburb || ''
                 if (!suggestedLabel || suggestedLabel.toLowerCase().includes('location') || /^\d+$/.test(suggestedLabel)) {
                     suggestedLabel = 'Home'
                 }
