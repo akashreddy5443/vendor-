@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, CheckCircle, MapPin, CreditCard, Trash2 } from 'lucide-react'
 import { createOrder, validateCoupon } from './actions'
+import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CheckoutPage() {
     const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart } = useCart()
@@ -228,6 +229,11 @@ export default function CheckoutPage() {
                                     <button onClick={() => { setAppliedCoupon(null); setCouponCode('') }} className="hover:text-green-900"><Trash2 className="h-3 w-3" /></button>
                                 </div>
                             )}
+
+                            {/* Available Public Coupons */}
+                            <div className="pt-2">
+                                <AvailableCoupons />
+                            </div>
 
                             <div className="flex justify-between text-[#191970]/70 text-sm font-medium pt-4 border-t border-gray-100">
                                 <span>Subtotal (Base Price)</span>

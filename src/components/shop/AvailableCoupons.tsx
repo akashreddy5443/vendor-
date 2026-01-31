@@ -37,7 +37,7 @@ export function AvailableCoupons() {
     if (coupons.length === 0) return null
 
     return (
-        <div className="bg-white p-6 rounded-2xl border border-dashed border-primary/20 bg-primary/5 mt-8">
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 mt-8 shadow-sm">
             <h3 className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-primary mb-4">
                 <Ticket className="h-4 w-4" /> Available Offers
             </h3>

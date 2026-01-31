@@ -99,6 +99,16 @@ export function CreateCouponForm() {
 
             <div className="flex items-center gap-2 pt-2">
                 <input
+                    name="is_public"
+                    type="checkbox"
+                    id="is_public"
+                    className="h-4 w-4 rounded border-gray-700 bg-[#1E293B] text-[#3B82F6] focus:ring-[#3B82F6]"
+                />
+                <label htmlFor="is_public" className="text-sm">Show to Users (Public)</label>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+                <input
                     name="is_active"
                     type="checkbox"
                     id="is_active"

@@ -12,7 +12,8 @@ export async function createCoupon(formData: FormData) {
         discount_value: parseFloat(formData.get('discount_value') as string),
         min_order_value: parseFloat(formData.get('min_order_value') as string) || 0,
         expires_at: formData.get('expires_at') as string || null,
-        is_active: formData.get('is_active') === 'on'
+        is_active: formData.get('is_active') === 'on',
+        is_public: formData.get('is_public') === 'on'
     }
 
     const { error } = await supabase
