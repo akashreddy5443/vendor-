@@ -24,6 +24,7 @@ export default function HomePage() {
   const [globalGst, setGlobalGst] = React.useState(18)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
   const [lifestyleItems, setLifestyleItems] = React.useState<any>(null)
+  const [lifestyleSubtitle, setLifestyleSubtitle] = React.useState<string>('')
   const [trendingData, setTrendingData] = React.useState<any>(null)
 
   const [categories, setCategories] = React.useState<any[]>([
@@ -77,6 +78,7 @@ export default function HomePage() {
       const { data: trending } = await supabase.from('homepage_sections').select('*').eq('section_type', 'trending_spotlight').single()
 
       setLifestyleItems(lifestyle?.content_json?.items)
+      setLifestyleSubtitle(lifestyle?.subtitle || 'Collections curated for modern creators')
       setTrendingData(trending?.content_json)
 
       if (featured?.content_json?.productIds?.length > 0) {
@@ -171,7 +173,7 @@ export default function HomePage() {
       </section>
 
       {/* Lifestyle Grid */}
-      <LifestyleGrid items={lifestyleItems} />
+      <LifestyleGrid items={lifestyleItems} subtitle={lifestyleSubtitle} />
 
       {/* Promo Banner */}
       <section className="bg-transparent py-12">

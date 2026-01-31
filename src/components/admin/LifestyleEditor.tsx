@@ -11,12 +11,14 @@ type Item = {
     link: string
 }
 
-export function LifestyleEditor({ initialItems }: { initialItems: Item[] }) {
+export function LifestyleEditor({ initialItems, initialSubtitle }: { initialItems: Item[], initialSubtitle?: string }) {
     const [items, setItems] = useState<Item[]>(initialItems || [
-        { title: 'WORK ESSENTIALS', image: '', link: '/search?category=laptops' },
-        { title: 'AFTER HOURS', image: '', link: '/search?category=audio' },
-        { title: 'EVERYDAY CARRY', image: '', link: '/search?category=wearables' },
+        { title: 'DESK & PRODUCTIVITY', image: '', link: '/search?category=laptops' },
+        { title: 'GAMING & PERFORMANCE', image: '', link: '/search?category=audio' },
+        { title: 'DAILY TECH GEAR', image: '', link: '/search?category=wearables' },
     ])
+
+    const [subtitle, setSubtitle] = useState(initialSubtitle || 'Collections curated for modern creators')
 
     const updateItem = (index: number, field: keyof Item, value: string) => {
         const newItems = [...items]
@@ -26,6 +28,7 @@ export function LifestyleEditor({ initialItems }: { initialItems: Item[] }) {
 
     const handleSubmit = async (formData: FormData) => {
         formData.append('items', JSON.stringify(items))
+        formData.append('subtitle', subtitle)
         await updateLifestyle(formData)
     }
 
@@ -33,6 +36,23 @@ export function LifestyleEditor({ initialItems }: { initialItems: Item[] }) {
         <section className="rounded-xl border border-gray-800 bg-gray-900 p-6">
             <h3 className="mb-4 text-xl font-bold text-purple-500">Lifestyle Grid (3 Column)</h3>
             <form action={handleSubmit} className="space-y-6">
+                {/* Phase 1: Section Subtitle Control */}
+                <div className="bg-gray-950 p-4 rounded border border-gray-800 space-y-3">
+                    <label className="block">
+                        <span className="text-sm font-bold text-gray-400 mb-2 block">Section Subtitle</span>
+                        <input
+                            type="text"
+                            value={subtitle}
+                            onChange={(e) => setSubtitle(e.target.value)}
+                            placeholder="Collections curated for modern creators"
+                            className="w-full rounded bg-gray-900 border border-gray-700 p-3 text-white"
+                        />
+                        <p className="text-xs text-gray-500 mt-2">
+                            💡 Tip: Use a clear theme that tells a story (e.g., "Work → Play → Everyday Life")
+                        </p>
+                    </label>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {items.map((item, index) => (
                         <div key={index} className="space-y-4 bg-gray-950 p-4 rounded border border-gray-800">

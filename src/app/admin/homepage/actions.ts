@@ -225,6 +225,7 @@ export async function updateLifestyle(formData: FormData) {
     const supabase = await createClient()
 
     const items = JSON.parse(formData.get('items') as string)
+    const subtitle = formData.get('subtitle') as string || 'Collections curated for modern creators'
 
     const { data: existing } = await supabase
         .from('homepage_sections')
@@ -235,6 +236,7 @@ export async function updateLifestyle(formData: FormData) {
     const payload = {
         section_type: 'lifestyle_grid',
         title: 'Made For Every Moment',
+        subtitle,
         content_json: { items },
         is_active: true,
     }

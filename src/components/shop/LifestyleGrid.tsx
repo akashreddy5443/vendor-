@@ -6,24 +6,26 @@ import Link from 'next/link'
 import { ArrowRight, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-export function LifestyleGrid({ items }: { items?: any[] }) {
+export function LifestyleGrid({ items, subtitle }: { items?: any[], subtitle?: string }) {
     const gridItems = items || [
         {
-            title: 'WORK ESSENTIALS',
+            title: 'DESK & PRODUCTIVITY',
             image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop',
             link: '/search?category=laptops'
         },
         {
-            title: 'AFTER HOURS',
+            title: 'GAMING & PERFORMANCE',
             image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=2042&auto=format&fit=crop',
             link: '/search?category=audio'
         },
         {
-            title: 'EVERYDAY CARRY',
+            title: 'DAILY TECH GEAR',
             image: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=2070&auto=format&fit=crop',
             link: '/search?category=wearables'
         }
     ]
+
+    const sectionSubtitle = subtitle || 'Collections curated for modern creators'
 
     return (
         <section className="pt-8 pb-32 bg-transparent relative overflow-hidden">
@@ -39,7 +41,7 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
                 >
                     <div className="flex items-center gap-3 text-primary">
                         <div className="w-10 h-[2px] bg-primary" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Lifestyle Collections</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">{sectionSubtitle}</span>
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black uppercase tracking-[-0.05em] text-slate-900 leading-[0.9] font-heading">
                         Designed For <br />
