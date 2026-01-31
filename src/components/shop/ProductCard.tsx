@@ -128,25 +128,18 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                         </div>
                     )}
 
-                    {/* Quick View & Add to Cart Hover Overlay */}
+                    {/* Quick View Overlay (Bottom Right) */}
                     {!isOutOfStock && (
-                        <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 z-20 px-4">
+                        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 z-20">
                             <button
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setShowQuickView(true)
                                 }}
-                                className="h-10 w-10 flex items-center justify-center bg-white text-slate-900 rounded-xl shadow-xl hover:bg-slate-50 transition-colors border border-slate-100"
+                                className="h-10 w-10 flex items-center justify-center bg-white text-slate-900 rounded-full shadow-xl hover:bg-slate-50 transition-colors border border-slate-100"
                                 title="Quick View"
                             >
                                 <Eye className="w-5 h-5" />
-                            </button>
-                            <button
-                                onClick={handleAddToCart}
-                                className="h-10 bg-primary text-white px-6 rounded-xl shadow-xl hover:bg-primary/90 transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-wider border border-transparent"
-                            >
-                                <ShoppingCart className="w-4 h-4" />
-                                Add to Cart
                             </button>
                         </div>
                     )}
@@ -193,9 +186,13 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                                 </span>
                             </div>
 
-                            <div className="h-11 w-11 rounded-2xl bg-slate-50 text-slate-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-2 group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 shadow-xl shadow-primary/20">
+                            <button
+                                onClick={handleAddToCart}
+                                className="h-11 w-11 rounded-2xl bg-slate-50 text-slate-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-2 group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 shadow-xl shadow-primary/20"
+                                title="Add to Cart"
+                            >
                                 <ShoppingCart className="h-4 w-4" />
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
