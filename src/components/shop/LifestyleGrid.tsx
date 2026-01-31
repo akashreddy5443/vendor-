@@ -26,7 +26,7 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
     ]
 
     return (
-        <section className="py-32 bg-transparent relative overflow-hidden">
+        <section className="pt-8 pb-32 bg-transparent relative overflow-hidden">
             {/* Dynamic Section Background */}
             <div className="absolute top-1/2 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] -translate-y-1/2 rounded-full pointer-events-none" />
 

@@ -118,7 +118,7 @@ export default function HomePage() {
       </section >
 
       {/* Categories: AJIO-Style Tiles */}
-      <section className="py-24 bg-transparent">
+      <section className="pt-32 pb-8 bg-transparent">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
