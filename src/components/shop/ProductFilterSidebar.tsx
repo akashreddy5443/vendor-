@@ -256,7 +256,9 @@ export function ProductFilterSidebar({
                                     max={priceRange[1]}
                                     value={priceRange[0]}
                                     onChange={(e) => {
-                                        const val = Math.min(Number(e.target.value), priceRange[1] - 100);
+                                        const raw = Number(e.target.value);
+                                        // Prevent negative inputs and clamp to valid range
+                                        const val = Math.max(minPrice, Math.min(raw, priceRange[1] - 100));
                                         setPriceRange([val, priceRange[1]]);
                                     }}
                                     className="w-full pl-6 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
@@ -271,7 +273,9 @@ export function ProductFilterSidebar({
                                     max={maxPrice}
                                     value={priceRange[1]}
                                     onChange={(e) => {
-                                        const val = Math.max(Number(e.target.value), priceRange[0] + 100);
+                                        const raw = Number(e.target.value);
+                                        // Prevent negative inputs and clamp to valid range
+                                        const val = Math.min(maxPrice, Math.max(raw, priceRange[0] + 100));
                                         setPriceRange([priceRange[0], val]);
                                     }}
                                     className="w-full pl-6 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
