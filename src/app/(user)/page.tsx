@@ -128,8 +128,8 @@ export default function HomePage() {
               <LayoutGrid className="h-4 w-4" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Quick Access</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none font-heading">
-              Shop by <span className="text-blue-600 font-serif normal-case italic">Category</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+              Shop by <span className="text-blue-600">Category</span>
             </h2>
           </motion.div>
 
@@ -141,11 +141,11 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1, type: 'spring', stiffness: 100 }}
-                  className="h-28 w-28 rounded-[2rem] bg-white flex items-center justify-center text-4xl shadow-xl shadow-blue-500/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/20 group-hover:rotate-6 border border-blue-50"
+                  className="h-28 w-28 rounded-[2.5rem] bg-white border border-blue-100 flex items-center justify-center text-4xl shadow-[0_20px_40px_-15px_rgba(59,130,246,0.1)] transition-all duration-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/30 group-hover:-rotate-3"
                 >
                   {cat.icon === 'GRID' ? <LayoutGrid className="w-10 h-10" /> : cat.icon}
                 </motion.div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-blue-600 transition-colors">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-blue-600 transition-colors">
                   {cat.name}
                 </span>
               </Link>
@@ -179,8 +179,8 @@ export default function HomePage() {
                 <Sparkles className="h-4 w-4 fill-blue-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-none font-heading">
-                Featured <span className="text-blue-600 font-serif normal-case italic">Gear</span>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+                Featured <span className="text-blue-600">Gear</span>
               </h2>
             </div>
             <Link href="/products" className="group hidden md:flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-all">

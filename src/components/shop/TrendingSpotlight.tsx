@@ -48,8 +48,8 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             <Sparkles className="h-4 w-4 fill-blue-600" />
                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Curated Essentials</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-900 leading-none font-heading">
-                            In The <span className="text-blue-600 font-serif normal-case italic">Spotlight</span>
+                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[-0.04em] text-slate-900 leading-none font-heading">
+                            In The <span className="text-blue-600">Spotlight</span>
                         </h2>
                     </div>
                     <Link href="/products" className="group mt-4 md:mt-0 flex items-center text-[10px] font-black text-slate-500 hover:text-blue-600 uppercase tracking-[0.2em] transition-colors">

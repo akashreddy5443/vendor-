@@ -38,8 +38,8 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
                         <Zap className="h-4 w-4 fill-blue-600" />
                         <span className="text-[10px] font-black uppercase tracking-[0.3em]">Lifestyle Collections</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900 leading-none font-heading">
-                        Made For <span className="text-blue-600 font-serif normal-case italic">Every Moment</span>
+                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[-0.04em] text-slate-900 leading-none font-heading">
+                        Made For <span className="text-blue-600">Every Moment</span>
                     </h2>
                 </motion.div>
 
