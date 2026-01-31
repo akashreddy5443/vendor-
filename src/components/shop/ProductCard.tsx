@@ -22,6 +22,8 @@ interface ProductCardProps {
         gst_percentage?: number | null // DB field
         features?: any
         product_images?: { cloudinary_url: string; is_primary: boolean }[]
+        short_benefit?: string
+        badges?: string[]
     }
     globalDiscount?: number
     globalGst?: number
@@ -109,25 +111,71 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                             </span>
                         </div>
                     ) : (
-                        hasDiscount && (
-                            <div className="absolute top-4 left-4 z-20">
+                        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 items-start">
+                            {/* Discount Badge */}
+                            {hasDiscount && (
                                 <span className="bg-primary text-white text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-primary/30 flex items-center gap-1 uppercase tracking-widest">
                                     {effectiveDiscount}% OFF
                                 </span>
-                            </div>
-                        )
+                            )}
+
+                            {/* Trust Badges */}
+                            {product.badges && Array.isArray(product.badges) && product.badges.map((badge: string) => (
+                                <span key={badge} className="bg-white/90 backdrop-blur text-slate-900 text-[8px] font-bold px-2 py-1 rounded-md border border-slate-200 shadow-sm uppercase tracking-wider">
+                                    {badge}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Quick View & Add to Cart Hover Overlay */}
+                    {!isOutOfStock && (
+                        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 z-20">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setShowQuickView(true)
+                                }}
+                                className="bg-white text-slate-900 p-3 rounded-xl shadow-xl hover:bg-slate-50 transition-colors"
+                                title="Quick View"
+                            >
+                                <Eye className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={handleAddToCart}
+                                className="bg-primary text-white px-6 py-3 rounded-xl shadow-xl hover:bg-primary/90 transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-wider"
+                            >
+                                <ShoppingCart className="w-4 h-4" />
+                                Add to Cart
+                            </button>
+                        </div>
                     )}
                 </div>
 
                 <div className="flex flex-col relative z-30 pointer-events-none p-6 flex-grow">
-                    <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black mb-3 opacity-60">
-                        Authorized Hub
+                    {/* Authorized Hub / Trust Signal */}
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black opacity-60">
+                            Authorized Hub
+                        </div>
+                        {/* Delivery Signal */}
+                        <div className="flex items-center gap-1 text-[9px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-full">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            3-Day Delivery
+                        </div>
                     </div>
 
                     <div className="flex flex-col h-full">
-                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-2 font-heading tracking-tight">
+                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-1 font-heading tracking-tight">
                             {product.title}
                         </h3>
+
+                        {/* Short Benefit / Hook */}
+                        {product.short_benefit && (
+                            <p className="text-xs font-bold text-indigo-600 mb-2">
+                                {product.short_benefit}
+                            </p>
+                        )}
 
                         <p className="text-[11px] text-slate-500 line-clamp-2 mb-4 leading-relaxed font-medium h-8">
                             {product.description || "Premium quality tech gear designed for the modern professional workspace."}

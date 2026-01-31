@@ -19,6 +19,9 @@ export async function createProduct(formData: FormData) {
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
     const brand = formData.get('brand') as string || null
+    const short_benefit = formData.get('short_benefit') as string || null
+    const badgesString = formData.get('badges') as string
+    const badges = badgesString ? JSON.parse(badgesString) : []
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
     const featuresString = formData.get('features') as string
@@ -40,6 +43,8 @@ export async function createProduct(formData: FormData) {
             status,
             category_id,
             brand,
+            short_benefit,
+            badges,
             features
         })
         .select()
@@ -93,6 +98,9 @@ export async function updateProduct(formData: FormData) {
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
     const brand = formData.get('brand') as string || null
+    const short_benefit = formData.get('short_benefit') as string || null
+    const badgesString = formData.get('badges') as string
+    const badges = badgesString ? JSON.parse(badgesString) : []
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
     const featuresString = formData.get('features') as string
@@ -111,6 +119,8 @@ export async function updateProduct(formData: FormData) {
             status,
             category_id,
             brand,
+            short_benefit,
+            badges,
             features
         })
         .eq('id', id)

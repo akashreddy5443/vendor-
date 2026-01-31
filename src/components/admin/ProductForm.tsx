@@ -18,6 +18,8 @@ interface ProductFormProps {
         status: string
         category_id?: string
         brand?: string
+        short_benefit?: string
+        badges?: string[] // JSONB
         features?: any // JSONB
         product_images?: { cloudinary_url: string, media_type: string }[]
     }
@@ -29,6 +31,11 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
             url: img.cloudinary_url,
             type: (img.media_type === 'video' ? 'video' : 'image')
         })) || []
+    )
+
+    // Badges State
+    const [badges, setBadges] = useState<string[]>(
+        initialData?.badges && Array.isArray(initialData.badges) ? initialData.badges : []
     )
 
     const addMedia = (url: string, type: string) => {
@@ -134,6 +141,47 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
 
             {/* Features / Specifications Editor */}
             <div className="space-y-4 rounded-lg border border-gray-800 bg-black/20 p-4">
+                {/* Conversion Fields */}
+                <div className="space-y-4 border-b border-gray-700 pb-4 mb-4">
+                    <h4 className="text-sm font-bold text-blue-400 uppercase tracking-wider">Conversion Boosters</h4>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-200">Short Benefit (1-Line Hook)</label>
+                        <input
+                            name="short_benefit"
+                            defaultValue={initialData?.short_benefit || ''}
+                            className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                            placeholder="e.g. Best for FPS Gaming"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-200">Trust Badges</label>
+                        <div className="flex flex-wrap gap-2">
+                            {['Bestseller', 'Editor\'s Pick', 'New Arrival', 'Limited Edition', 'Top Rated'].map(badge => {
+                                const isActive = badges.includes(badge)
+                                return (
+                                    <button
+                                        key={badge}
+                                        type="button"
+                                        onClick={() => {
+                                            if (isActive) setBadges(badges.filter(b => b !== badge))
+                                            else setBadges([...badges, badge])
+                                        }}
+                                        className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${isActive
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                                            }`}
+                                    >
+                                        {badge}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                        <input type="hidden" name="badges" value={JSON.stringify(badges)} />
+                    </div>
+                </div>
+
                 <div className="flex items-center justify-between">
                     <label className="text-sm font-medium text-gray-200">Specifications / Features</label>
                     <button
