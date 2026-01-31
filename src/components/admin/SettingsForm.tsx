@@ -2,13 +2,35 @@
 
 import { updateSettings, fixDatabasePermissions } from '@/app/admin/settings/actions'
 import { useState, useTransition } from 'react'
-import { Save, AlertTriangle, ImagePlus, X, Database } from 'lucide-react'
+import { Save, AlertTriangle, ImagePlus, X, Plus, Trash2 } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
 export function SettingsForm({ settings }: { settings: any }) {
     const [isPending, startTransition] = useTransition()
     const [message, setMessage] = useState('')
     const [logoUrl, setLogoUrl] = useState(settings?.logo_url || '')
+
+    // Price Presets State
+    const [presets, setPresets] = useState<any[]>(settings?.price_presets || [
+        { label: 'Under ₹20,000', min: 0, max: 20000 },
+        { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
+        { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
+        { label: 'Over ₹1,00,000', min: 100000, max: 1000000 }
+    ])
+
+    const addPreset = () => {
+        setPresets([...presets, { label: 'New Range', min: 0, max: 10000 }])
+    }
+
+    const removePreset = (index: number) => {
+        setPresets(presets.filter((_, i) => i !== index))
+    }
+
+    const updatePreset = (index: number, field: string, value: any) => {
+        const newPresets = [...presets]
+        newPresets[index] = { ...newPresets[index], [field]: value }
+        setPresets(newPresets)
+    }
 
     const handleSubmit = (formData: FormData) => {
         setMessage('')
@@ -18,7 +40,6 @@ export function SettingsForm({ settings }: { settings: any }) {
                 setMessage(result.error)
             } else {
                 setMessage('Settings saved!')
-                // Clear message after 3s
                 setTimeout(() => setMessage(''), 3000)
             }
         })
@@ -149,6 +170,8 @@ export function SettingsForm({ settings }: { settings: any }) {
             {/* Filter Configuration */}
             <div className="space-y-4">
                 <h3 className="text-lg font-medium text-gray-900 border-b border-gray-200 pb-2">Filter Configuration</h3>
+
+                {/* Global Min/Max */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700">Minimum Price (Slider Start)</label>
@@ -172,22 +195,70 @@ export function SettingsForm({ settings }: { settings: any }) {
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Price Presets (JSON Format)</label>
-                    <textarea
-                        name="price_presets"
-                        defaultValue={JSON.stringify(settings?.price_presets || [
-                            { label: 'Under ₹20,000', min: 0, max: 20000 },
-                            { label: '₹20,000 - ₹50,000', min: 20000, max: 50000 },
-                            { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
-                            { label: 'Over ₹1,00,000', min: 100000, max: 1000000 }
-                        ], null, 2)}
-                        rows={10}
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-sm font-mono text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
-                    />
-                    <p className="text-xs text-gray-500">
-                        Format: Array of objects with label, min, and max. Example: <code>{`[{"label": "Under ₹5000", "min": 0, "max": 5000}]`}</code>
-                    </p>
+                {/* VISUAL PRESET EDITOR */}
+                <div className="space-y-4 pt-4 border-t border-gray-100">
+                    <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-700">Price Range Presets</label>
+                        <button
+                            type="button"
+                            onClick={addPreset}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md text-xs font-semibold hover:bg-blue-100 transition-colors"
+                        >
+                            <Plus className="w-3.5 h-3.5" />
+                            Add Preset
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="price_presets" value={JSON.stringify(presets)} />
+
+                    <div className="space-y-3">
+                        {presets.map((preset, idx) => (
+                            <div key={idx} className="flex flex-col md:flex-row gap-3 items-start md:items-center bg-gray-50 p-3 rounded-lg border border-gray-200 group">
+                                <div className="flex-1 w-full">
+                                    <label className="text-xs text-gray-500 mb-1 block">Label</label>
+                                    <input
+                                        type="text"
+                                        value={preset.label}
+                                        onChange={(e) => updatePreset(idx, 'label', e.target.value)}
+                                        className="w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                                        placeholder="e.g. Under ₹5000"
+                                    />
+                                </div>
+                                <div className="w-full md:w-32">
+                                    <label className="text-xs text-gray-500 mb-1 block">Min Price</label>
+                                    <input
+                                        type="number"
+                                        value={preset.min}
+                                        onChange={(e) => updatePreset(idx, 'min', Number(e.target.value))}
+                                        className="w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                                <div className="w-full md:w-32">
+                                    <label className="text-xs text-gray-500 mb-1 block">Max Price</label>
+                                    <input
+                                        type="number"
+                                        value={preset.max}
+                                        onChange={(e) => updatePreset(idx, 'max', Number(e.target.value))}
+                                        className="w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => removePreset(idx)}
+                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors mt-4 md:mt-0"
+                                    title="Remove Preset"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            </div>
+                        ))}
+
+                        {presets.length === 0 && (
+                            <div className="text-center py-6 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 text-sm">
+                                No presets defined. Filters will be empty.
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
