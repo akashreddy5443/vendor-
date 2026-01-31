@@ -67,15 +67,17 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                                 duration: 0.8,
                                 ease: [0.21, 0.45, 0.32, 0.9] as const
                             }}
-                            className={`relative h-[550px] ${idx % 2 !== 0 ? 'md:mt-0' : 'md:mt-0'}`}
+                            className={`relative h-[600px] ${idx % 2 !== 0 ? 'md:mt-0' : 'md:mt-0'}`}
                         >
                             <Link href={item.link} className="group block h-full w-full">
-                                <div className="h-full w-full relative rounded-[3rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_40px_80px_-20px_rgba(59,130,246,0.25)] group-hover:-translate-y-2 transition-all duration-500">
+                                {/* Phase 3: Consistent corner radius (2.5rem), enhanced shadows, card lift */}
+                                <div className="h-full w-full relative rounded-[2.5rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_50px_100px_-20px_rgba(59,130,246,0.3)] group-hover:-translate-y-3 transition-all duration-500">
+                                    {/* Phase 3: Image zoom 1.05 on hover */}
                                     <Image
                                         src={item.image}
                                         alt={item.title}
                                         fill
-                                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
                                     />
 
                                     {/* Phase 2: Consistent Gradient Overlay - Stronger for text readability */}
@@ -84,23 +86,28 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                                     <div className="absolute inset-0 bg-blue-900/15 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                                     <div className="absolute bottom-10 left-8 right-8 z-20">
-                                        {/* Floating Glass Label - Enhanced for readability */}
+                                        {/* Phase 3: Improved label container - Dark glassmorphism, higher contrast */}
                                         <motion.div
                                             whileHover={{ y: -5 }}
-                                            className="bg-slate-950/60 backdrop-blur-2xl border border-white/30 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group/label"
+                                            className="bg-slate-950/70 backdrop-blur-3xl border border-white/40 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group/label"
                                         >
-                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
-                                            <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm" />
+                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/25 to-transparent pointer-events-none" />
+                                            <div className="absolute inset-0 bg-slate-950/30 backdrop-blur-sm" />
 
-                                            <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tighter leading-none font-heading relative z-10 drop-shadow-lg">
+                                            {/* Phase 3: CTA Hierarchy - Title → CTA → Arrow */}
+                                            <h3 className="text-2xl md:text-3xl font-black text-white mb-5 uppercase tracking-tighter leading-none font-heading relative z-10 drop-shadow-2xl">
                                                 {item.title}
                                             </h3>
 
-                                            <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover/label:text-white transition-all gap-2 relative z-10 drop-shadow-md">
-                                                Explore Collection
+                                            <div className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-blue-300 group-hover/label:text-white transition-all gap-2 relative z-10 drop-shadow-md">
+                                                <span className="relative">
+                                                    Explore Collection
+                                                    {/* Phase 3: CTA underline animation */}
+                                                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-white group-hover/label:w-full transition-all duration-300"></span>
+                                                </span>
                                                 <div className="relative">
-                                                    <ArrowRight className="h-3 w-3 transition-transform group-hover/label:translate-x-2" />
-                                                    <div className="absolute inset-0 bg-blue-400 blur-lg opacity-0 group-hover/label:opacity-50" />
+                                                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/label:translate-x-2" />
+                                                    <div className="absolute inset-0 bg-blue-300 blur-lg opacity-0 group-hover/label:opacity-60" />
                                                 </div>
                                             </div>
                                         </motion.div>
