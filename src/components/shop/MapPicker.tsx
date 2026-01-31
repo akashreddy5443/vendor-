@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMapEvents, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { MapPin, Navigation, Search, Loader2 } from 'lucide-react'
@@ -30,7 +30,7 @@ function LocationMarker({ position, setPosition }: { position: L.LatLng, setPosi
     const map = useMapEvents({
         click(e) {
             setPosition(e.latlng)
-            map.flyTo(e.latlng, 18)
+            map.flyTo(e.latlng, 19)
         },
     })
 
@@ -53,8 +53,8 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
         if (lastPoiFetchPos.current && lastPoiFetchPos.current.distanceTo(new L.LatLng(lat, lon)) < 150) return
 
         try {
-            // Expanded Overpass query for nodes and ways (buildings) within 500m
-            const query = `[out:json];(node["shop"](around:500,${lat},${lon});node["amenity"](around:500,${lat},${lon});node["tourism"](around:500,${lat},${lon});way["shop"](around:500,${lat},${lon});way["amenity"](around:500,${lat},${lon});way["building"="retail"](around:500,${lat},${lon}););out center 40;`
+            // High-density query for ALL named commercial nodes within 300m
+            const query = `[out:json];(node["name"](around:300,${lat},${lon});node["shop"](around:300,${lat},${lon});way["shop"](around:300,${lat},${lon});node["amenity"](around:300,${lat},${lon});way["amenity"](around:300,${lat},${lon});node["craft"](around:300,${lat},${lon}););out center 50;`
             const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
             const data = await response.json()
             if (data.elements) {
@@ -62,8 +62,8 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                     id: el.id,
                     lat: el.lat || el.center?.lat,
                     lon: el.lon || el.center?.lon,
-                    name: el.tags.name || el.tags.shop || el.tags.amenity || el.tags.building || 'Landmark'
-                })).filter((el: any) => el.lat && el.lon)
+                    name: el.tags.name || el.tags.shop || el.tags.amenity || 'Landmark'
+                })).filter((el: any) => el.lat && el.lon && el.name !== 'Landmark')
                 setPois(formattedPois)
                 lastPoiFetchPos.current = new L.LatLng(lat, lon)
             }
@@ -181,10 +181,10 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
     }, [detectLocation])
 
     const poiIcon = L.divIcon({
-        html: `<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>`,
+        html: `<div style="background-color: #3b82f6; width: 8px; height: 8px; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.3);"></div>`,
         className: '',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
+        iconSize: [8, 8],
+        iconAnchor: [4, 4]
     })
 
     return (
@@ -210,14 +210,15 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                 </button>
             </div>
 
-            <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-border relative z-0 shadow-inner">
-                <MapContainer center={position} zoom={18} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+            <div className="h-[450px] w-full rounded-2xl overflow-hidden border border-border relative z-0 shadow-sm">
+                <MapContainer center={position} zoom={18} maxZoom={20} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        maxNativeZoom={19}
+                        maxZoom={20}
                     />
                     <LocationMarker position={position} setPosition={setPosition} />
-
                     {pois.map((poi, idx) => (
                         <Marker
                             key={`${poi.id}-${idx}`}
@@ -234,12 +235,15 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
                                     {poi.name}
                                 </div>
                             </Popup>
+                            <Tooltip permanent direction="top" offset={[0, -5]} className="bg-transparent border-none shadow-none text-[10px] font-bold text-blue-800/80 pointer-events-none">
+                                {poi.name}
+                            </Tooltip>
                         </Marker>
                     ))}
                 </MapContainer>
 
-                <div className="absolute top-4 right-4 z-[1000] bg-white/90 backdrop-blur px-2 py-1 rounded-lg border border-border text-[9px] font-bold text-muted-foreground shadow-sm">
-                    {pois.length} Locations Nearby
+                <div className="absolute top-4 right-4 z-[1000] bg-white/95 backdrop-blur px-2 py-1 rounded-lg border border-border text-[9px] font-bold text-blue-600 shadow-sm">
+                    {pois.length} Shops Visible (Deep Zoom)
                 </div>
 
                 {loading && (
