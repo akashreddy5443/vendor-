@@ -30,7 +30,7 @@ function LocationMarker({ position, setPosition }: { position: L.LatLng, setPosi
     const map = useMapEvents({
         click(e) {
             setPosition(e.latlng)
-            map.flyTo(e.latlng, map.getZoom())
+            map.flyTo(e.latlng, 18)
         },
     })
 
@@ -52,27 +52,44 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
 
         setLoading(true)
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`)
+            // zoom=18 gives the most granular address possible (building/house level)
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&zoom=18`)
             const data = await response.json()
 
             if (data.address) {
                 const addr = data.address
 
-                // Construct a better street address with house number if available
+                // Construct a very precise street address
                 const streetParts = []
-                if (addr.house_number) streetParts.push(addr.house_number)
-                if (addr.building) streetParts.push(addr.building)
-                if (addr.road) streetParts.push(addr.road)
-                const streetAddress = streetParts.join(', ') || addr.suburb || addr.neighbourhood || ''
 
-                // Try to determine a professional label - avoid "My Location" or numeric names
-                let suggestedLabel = data.name || addr.building || addr.amenity || addr.office || addr.industrial || ''
-                if (!suggestedLabel || /^\d+$/.test(suggestedLabel) || suggestedLabel.toLowerCase().includes('location')) {
-                    suggestedLabel = 'Home' // Safer default than "My Location"
+                // 1. Landmark / Business Name (Crucial for delivery)
+                const landmark = data.name || addr.amenity || addr.shop || addr.tourism || addr.building || addr.office
+                if (landmark && !/^\d+$/.test(landmark) && landmark.toLowerCase() !== 'home') {
+                    streetParts.push(landmark)
+                }
+
+                // 2. House Number / Building
+                if (addr.house_number) streetParts.push(`#${addr.house_number}`)
+
+                // 3. Road / Street
+                if (addr.road) streetParts.push(addr.road)
+
+                // 4. Detailed Neighborhood / Land-use
+                const neighborhood = addr.neighbourhood || addr.suburb || addr.residential || addr.community
+                if (neighborhood && neighborhood !== landmark) {
+                    streetParts.push(neighborhood)
+                }
+
+                const streetAddress = streetParts.join(', ')
+
+                // Intelligent Label Suggestion
+                let suggestedLabel = landmark || neighborhood || ''
+                if (!suggestedLabel || suggestedLabel.toLowerCase().includes('location') || /^\d+$/.test(suggestedLabel)) {
+                    suggestedLabel = 'Home'
                 }
 
                 onAddressSelect({
-                    street: streetAddress,
+                    street: streetAddress || addr.road || '',
                     city: addr.city || addr.town || addr.village || addr.county || '',
                     state: addr.state || '',
                     zip: addr.postcode || '',
@@ -153,7 +170,7 @@ export default function MapPicker({ onAddressSelect }: MapPickerProps) {
             </div>
 
             <div className="h-[300px] w-full rounded-2xl overflow-hidden border border-border relative z-0">
-                <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                <MapContainer center={position} zoom={18} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

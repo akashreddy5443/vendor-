@@ -24,6 +24,8 @@ export function AddressFormClient() {
         country: 'India'
     })
 
+    const [suggestedLandmark, setSuggestedLandmark] = useState('')
+
     const handleAddressSelect = useCallback((data: any) => {
         setAddress(prev => ({
             ...prev,
@@ -32,10 +34,13 @@ export function AddressFormClient() {
             state: data.state || prev.state,
             zip: data.zip || prev.zip,
             country: data.country || prev.country,
-            fullName: prev.fullName === '' || prev.fullName === 'Home' || prev.fullName === 'Work' || prev.fullName === 'Office' ? data.label || prev.fullName : prev.fullName
+            fullName: prev.fullName === '' || prev.fullName === 'Home' || prev.fullName === 'Work' || prev.fullName === 'Office' || prev.fullName === suggestedLandmark ? data.label || prev.fullName : prev.fullName
         }))
+        if (data.label && data.label !== 'Home' && data.label !== 'My Address') {
+            setSuggestedLandmark(data.label)
+        }
         toast.success('Address coordinates captured!')
-    }, [])
+    }, [suggestedLandmark])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -75,20 +80,32 @@ export function AddressFormClient() {
                         <div className="space-y-1">
                             <div className="flex justify-between items-end mb-1">
                                 <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Label</label>
-                                <div className="flex gap-1.5">
+                                <div className="flex gap-1.5 flex-wrap">
                                     {['Home', 'Office', 'Work'].map((lab) => (
                                         <button
                                             key={lab}
                                             type="button"
                                             onClick={() => setAddress(prev => ({ ...prev, fullName: lab }))}
                                             className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold transition-all border ${address.fullName === lab
-                                                    ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                                                    : "bg-background text-muted-foreground border-border hover:border-blue-300"
+                                                ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                                                : "bg-background text-muted-foreground border-border hover:border-blue-300"
                                                 }`}
                                         >
                                             {lab}
                                         </button>
                                     ))}
+                                    {suggestedLandmark && !['Home', 'Office', 'Work'].includes(suggestedLandmark) && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setAddress(prev => ({ ...prev, fullName: suggestedLandmark }))}
+                                            className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold transition-all border animate-in fade-in zoom-in duration-300 ${address.fullName === suggestedLandmark
+                                                ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                                                : "bg-blue-50 text-blue-600 border-blue-100 hover:border-blue-300"
+                                                }`}
+                                        >
+                                            {suggestedLandmark}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <input
