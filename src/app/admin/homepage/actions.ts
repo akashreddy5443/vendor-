@@ -135,8 +135,17 @@ export async function updateCategories(formData: FormData) {
 export async function updateFooter(formData: FormData) {
     const supabase = await createClient()
 
-    const copyrightText = formData.get('copyrightText') as string
-    const creditsText = formData.get('creditsText') as string
+    const fullConfigStr = formData.get('fullConfig') as string
+    let content_json: any = {}
+
+    if (fullConfigStr) {
+        content_json = JSON.parse(fullConfigStr)
+    } else {
+        // Fallback for legacy calls
+        const copyrightText = formData.get('copyrightText') as string
+        const creditsText = formData.get('creditsText') as string
+        content_json = { copyrightText, creditsText }
+    }
 
     // Find section with type 'footer'.
     const { data: existing } = await supabase
@@ -148,10 +157,7 @@ export async function updateFooter(formData: FormData) {
     const payload = {
         section_type: 'footer',
         title: 'Footer',
-        content_json: {
-            copyrightText,
-            creditsText
-        },
+        content_json,
         is_active: true,
     }
 

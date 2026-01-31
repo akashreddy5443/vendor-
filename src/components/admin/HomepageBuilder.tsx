@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
 import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
+import { FooterEditor } from '@/components/admin/FooterEditor'
 
 type Product = {
     id: string
@@ -459,42 +460,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             </section>
 
             {/* Footer Settings Editor */}
-            <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="mb-4 text-xl font-bold text-blue-600">Footer Settings</h3>
-                <p className="mb-4 text-sm text-gray-500">Manage your footer copyright and credits.</p>
+            <FooterEditor initialConfig={footerSection?.content_json} />
 
-                <form action={handleFooterSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Copyright Text (Brand Name)</label>
-                        <input
-                            name="copyrightText"
-                            defaultValue={footerSection?.content_json?.copyrightText || 'TECHDEV'}
-                            placeholder="TECHDEV"
-                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
-                        />
-                        <p className="text-xs text-gray-500">The "DEV" part is often styled blue in code, but here just enter the text.</p>
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Credits Text</label>
-                        <input
-                            name="creditsText"
-                            defaultValue={footerSection?.content_json?.creditsText || 'Designed and Developed by Akash'}
-                            placeholder="Designed and Developed by..."
-                            className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-blue-500 focus:outline-none"
-                        />
-                    </div>
-
-                    <div className="pt-4">
-                        <button
-                            type="submit"
-                            className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-700 shadow-sm"
-                        >
-                            Update Footer
-                        </button>
-                    </div>
-                </form>
-            </section>
             {/* Lifestyle Grid Editor */}
             <LifestyleEditor initialItems={lifestyleSection?.content_json?.items} />
 
