@@ -118,7 +118,7 @@ export function ProductFilterSidebar({
         `}>
             <div className="h-full overflow-y-auto p-6 lg:p-0">
                 <div className="flex items-center justify-between lg:hidden mb-6">
-                    <h3 className="font-heading font-bold text-lg">Filters</h3>
+                    <h3 className="font-heading font-bold text-lg">Filter Products</h3>
                     <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full">
                         <X className="w-5 h-5" />
                     </button>
