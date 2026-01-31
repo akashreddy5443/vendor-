@@ -29,7 +29,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.6, ease: [0.21, 0.45, 0.32, 0.9] }
+            transition: { duration: 0.6, ease: [0.21, 0.45, 0.32, 0.9] as const }
         }
     }
 
@@ -65,7 +65,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                     >
                         <motion.div
                             whileHover={{ scale: 1.03 }}
-                            transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] }}
+                            transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] as const }}
                             className="relative h-[600px] w-full"
                         >
                             <Image
@@ -115,7 +115,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             >
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] }}
+                                    transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] as const }}
                                     className="relative h-full w-full"
                                 >
                                     <Image

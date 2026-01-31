@@ -94,7 +94,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                         <motion.h1
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] }}
+                            transition={{ delay: 0.3, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] as const }}
                             className="text-5xl md:text-7xl lg:text-9xl font-medium text-white mb-10 leading-[0.95] tracking-tighter max-w-4xl drop-shadow-2xl font-serif"
                             style={{ color: currentSlide.color }}
                         >
