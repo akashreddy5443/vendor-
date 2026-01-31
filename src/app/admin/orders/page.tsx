@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { formatPrice } from '@/lib/utils'
 import { Eye, MapPin } from 'lucide-react'
 import Link from 'next/link'
-import { StatusSelector } from './StatusSelector'
+import OrderStatusSelect from './OrderStatusSelect'
 import { OrderDeleteButton } from '@/components/admin/OrderDeleteButton'
 
 // Define Address Interface for type safety
@@ -158,8 +158,11 @@ export default async function AdminOrdersPage() {
                                         <td className="px-4 py-3 text-gray-900 font-medium">
                                             {formatPrice(order.total_amount)}
                                         </td>
-                                        <td className="px-4 py-3">
-                                            <StatusSelector orderId={order.id} currentStatus={order.status} />
+                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                            <OrderStatusSelect
+                                                orderId={order.id}
+                                                currentStatus={order.status}
+                                            />
                                         </td>
                                         <td className="px-4 py-3 text-gray-500">
                                             {new Date(order.created_at).toLocaleDateString()}

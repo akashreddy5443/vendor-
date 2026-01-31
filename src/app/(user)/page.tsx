@@ -15,6 +15,7 @@ import { HeroSlider } from '@/components/shop/HeroSlider'
 import { PromoBanner } from '@/components/shop/PromoBanner'
 import { LifestyleGrid } from '@/components/shop/LifestyleGrid'
 import { TrendingSpotlight } from '@/components/shop/TrendingSpotlight'
+import TrustSection from '@/components/shop/TrustSection'
 import { LayoutGrid, Sparkles, ArrowRight } from 'lucide-react'
 
 export default function HomePage() {
@@ -235,6 +236,9 @@ export default function HomePage() {
           </div>
         </div>
       </section >
+
+      {/* Social Proof & Trust */}
+      <TrustSection />
     </div >
   )
 }
