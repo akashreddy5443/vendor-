@@ -113,22 +113,20 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                     </h2>
                 </motion.div>
 
-                {/* Phase 7: Mobile Horizontal Scroll */}
-                <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
-                    <div className="flex gap-4 snap-x snap-mandatory pb-4">
-                        {gridItems.map((item, idx) => (
-                            <motion.div
-                                key={item.title}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.15, duration: 0.8 }}
-                                className="relative h-[500px] min-w-[85vw] snap-center flex-shrink-0"
-                            >
-                                <Card item={item} idx={idx} />
-                            </motion.div>
-                        ))}
-                    </div>
+                {/* Mobile: Vertical Stack */}
+                <div className="md:hidden space-y-6">
+                    {gridItems.map((item, idx) => (
+                        <motion.div
+                            key={item.title}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.15, duration: 0.8 }}
+                            className="relative h-[500px] w-full"
+                        >
+                            <Card item={item} idx={idx} />
+                        </motion.div>
+                    ))}
                 </div>
 
                 {/* Desktop Grid */}
