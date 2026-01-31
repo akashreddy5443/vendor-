@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Search, X, Loader2, Command } from 'lucide-react'
+import { Search, X, Loader2, Command, ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -119,25 +119,25 @@ export function SpotlightSearch() {
                             initial={{ opacity: 0, scale: 0.95, y: -20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-border bg-white shadow-2xl shadow-blue-500/10 mx-4 text-foreground"
+                            className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-white/40 bg-white/90 backdrop-blur-3xl shadow-[0_40px_100px_-20px_rgba(45,92,247,0.25)] mx-4 text-foreground ring-1 ring-primary/5"
                         >
-                            <div className="flex items-center border-b border-gray-800 px-4">
-                                <Search className="mr-2 h-5 w-5 shrink-0 text-gray-500" />
+                            <div className="flex items-center border-b border-slate-100 px-6">
+                                <Search className="mr-3 h-5 w-5 shrink-0 text-primary" />
                                 <input
                                     ref={inputRef}
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                     onKeyDown={onKeyDown}
-                                    placeholder="Search products..."
-                                    className="flex h-14 w-full bg-transparent py-3 text-lg text-foreground placeholder:text-muted-foreground focus:outline-none"
+                                    placeholder="Search the TechDev inventory..."
+                                    className="flex h-16 w-full bg-transparent py-4 text-lg font-heading font-black placeholder:text-slate-400 placeholder:font-medium focus:outline-none tracking-tight"
                                 />
-                                {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin text-blue-500" />}
-                                <button onClick={() => setOpen(false)} className="ml-2 p-1 text-gray-500 hover:text-white">
+                                {loading && <Loader2 className="ml-2 h-5 w-5 animate-spin text-primary" />}
+                                <button onClick={() => setOpen(false)} className="ml-2 p-2 text-slate-400 hover:text-primary transition-colors">
                                     <X className="h-5 w-5" />
                                 </button>
                             </div>
 
-                            <div className="max-h-[60vh] overflow-y-auto p-2">
+                            <div className="max-h-[60vh] overflow-y-auto p-4 custom-scrollbar">
                                 {results.length === 0 && query && !loading && (
                                     <p className="p-4 text-center text-sm text-gray-500">No results found.</p>
                                 )}
@@ -152,42 +152,42 @@ export function SpotlightSearch() {
                                     <button
                                         key={product.id}
                                         onClick={() => handleSelect(product.id)}
-                                        className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left hover:bg-muted transition-colors group"
+                                        className="flex w-full items-center gap-4 rounded-3xl px-4 py-3 text-left hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group"
                                     >
-                                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-md border border-border bg-secondary">
+                                        <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl border border-slate-100 bg-white group-hover:scale-110 transition-transform duration-500">
                                             {product.product_images?.[0]?.cloudinary_url ? (
                                                 <Image
                                                     src={product.product_images[0].cloudinary_url}
                                                     alt={product.title}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-contain p-2"
                                                 />
                                             ) : (
                                                 <div className="flex h-full w-full items-center justify-center">
-                                                    <Command className="h-4 w-4 text-gray-600" />
+                                                    <Command className="h-5 w-5 text-slate-300" />
                                                 </div>
                                             )}
                                         </div>
-                                        <div>
-                                            <h3 className="font-medium text-foreground group-hover:text-blue-600 transition-colors">{product.title}</h3>
-                                            <p className="text-xs text-blue-500 font-mono">₹{product.price}</p>
+                                        <div className="flex-1">
+                                            <h3 className="font-heading font-black text-slate-900 group-hover:text-primary transition-colors tracking-tight line-clamp-1">{product.title}</h3>
+                                            <p className="text-xs text-primary font-bold uppercase tracking-widest mt-0.5">₹{product.price}</p>
                                         </div>
+                                        <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
                                     </button>
                                 ))}
                             </div>
 
-
-
-                            <div className="border-t border-border bg-muted/50 px-4 py-2 flex items-center justify-between">
+                            <div className="border-t border-slate-50 bg-slate-50/30 px-6 py-4 flex items-center justify-between">
                                 <button
                                     onClick={handleSearchAll}
-                                    className="text-xs text-blue-500 hover:text-blue-400 font-medium"
+                                    className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-indigo-600 transition-colors"
                                 >
-                                    Press Enter to see all results
+                                    Press Enter for full specifications
                                 </button>
-                                <p className="text-[10px] text-gray-500 gap-2 hidden sm:flex">
-                                    <span>Search by TechDev</span>
-                                </p>
+                                <div className="flex items-center gap-2 opacity-30 select-none">
+                                    <span className="text-[9px] font-black uppercase tracking-tighter">Powered by</span>
+                                    <div className="bg-primary text-white h-4 w-4 rounded flex items-center justify-center text-[8px] font-black">T</div>
+                                </div>
                             </div>
                         </motion.div>
                     </div>

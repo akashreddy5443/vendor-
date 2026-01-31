@@ -27,11 +27,12 @@ export default function HomePage() {
   const [trendingData, setTrendingData] = React.useState<any>(null)
 
   const [categories, setCategories] = React.useState<any[]>([
-    { name: 'Laptops', icon: '💻', href: '/search?category=laptops' },
-    { name: 'Phones', icon: '📱', href: '/search?category=phones' },
-    { name: 'Audio', icon: '🎧', href: '/search?category=audio' },
-    { name: 'Watches', icon: '⌚', href: '/search?category=wearables' },
-    { name: 'All Categories', icon: 'GRID', href: '/products' },
+    { name: 'Laptops', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop', href: '/search?category=laptops' },
+    { name: 'Smartphones', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1780&auto=format&fit=crop', href: '/search?category=phones' },
+    { name: 'Studio Audio', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop', href: '/search?category=audio' },
+    { name: 'Wearables', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop', href: '/search?category=wearables' },
+    { name: 'Gaming Rigs', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop', href: '/search?category=gaming' },
+    { name: 'Accessories', image: 'https://images.unsplash.com/photo-1615526675159-e248c3021d3f?q=80&w=2070&auto=format&fit=crop', href: '/search?category=accessories' },
   ])
 
   React.useEffect(() => {
@@ -67,8 +68,8 @@ export default function HomePage() {
         .eq('section_type', 'categories')
         .single()
 
-      if (catSection?.content_json?.categories) {
-        setCategories(catSection.content_json.categories)
+      if (catSection?.content_json?.categories && catSection.content_json.categories.length > 0) {
+        setCategories(catSection.content_json.categories.slice(0, 8))
       }
 
       // Fetch New Sections
@@ -98,6 +99,7 @@ export default function HomePage() {
       subtitle: 'Premium Gear',
       imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f',
       buttonText: 'Shop Now',
+      color: '#ffffff',
       link: '/products'
     }
   ]
@@ -115,44 +117,51 @@ export default function HomePage() {
         <HeroSlider slides={slides} />
       </section >
 
-      {/* Categories: Alive & Interactive */}
+      {/* Categories: AJIO-Style Tiles */}
       <section className="py-24 bg-transparent">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="flex flex-col gap-2 mb-16"
           >
-            <div className="flex justify-center items-center gap-2 text-blue-600 mb-2">
+            <div className="flex items-center gap-2 text-primary">
               <LayoutGrid className="h-4 w-4" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em]">Quick Access</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
-              Shop by <span className="text-blue-600">Category</span>
+              Browse <span className="text-primary">Categories</span>
             </h2>
           </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-10 md:gap-20">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
             {categories.map((cat, idx) => (
-              <Link key={cat.name} href={cat.href} className="group flex flex-col items-center gap-6">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1, type: 'spring', stiffness: 100 }}
-                  className="h-28 w-28 rounded-[2.5rem] bg-white border border-blue-100 flex items-center justify-center text-4xl shadow-[0_20px_40px_-15px_rgba(59,130,246,0.1)] transition-all duration-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/30 group-hover:-rotate-3"
-                >
-                  {cat.icon === 'GRID' ? <LayoutGrid className="w-10 h-10" /> : cat.icon}
-                </motion.div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-blue-600 transition-colors">
-                  {cat.name}
-                </span>
-              </Link>
+              <motion.div
+                key={cat.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <Link href={cat.href || '#'} className="group block relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
+                  <img
+                    src={cat.image || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9'}
+                    alt={cat.name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+                  <div className="absolute bottom-0 left-0 p-6 w-full">
+                    <h3 className="text-sm font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-none mb-1">{cat.name}</h3>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Explore Collection</p>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* Lifestyle Grid */}
       <LifestyleGrid items={lifestyleItems} />

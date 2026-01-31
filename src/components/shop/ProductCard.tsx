@@ -31,15 +31,18 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
     const [showQuickView, setShowQuickView] = useState(false)
     const { addItem } = useCart()
 
-    // Find primary image
-    const primaryImage = product.product_images?.find(img => img.is_primary) || product.product_images?.[0]
+    // Find primary and hover images
+    const images = product.product_images || []
+    const primaryImage = images.find(img => img.is_primary) || images[0]
+    const hoverImage = images.length > 1 ? (images.find(img => !img.is_primary) || images[1]) : null
+
     const imageUrl = primaryImage?.cloudinary_url
+    const hoverImageUrl = hoverImage?.cloudinary_url
 
     const stock = product.stock ?? 0
     const isOutOfStock = stock === 0
 
     // Discount Logic
-    // Product override takes precedence. If null, use global.
     const effectiveDiscount = product.discount_percentage !== null && product.discount_percentage !== undefined
         ? product.discount_percentage
         : globalDiscount
@@ -47,8 +50,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
     const hasDiscount = effectiveDiscount > 0
     const finalPrice = hasDiscount ? product.price * (1 - effectiveDiscount / 100) : product.price
 
-    // GST Logic (Product priority > Global default)
-    // We assume global GST is passed prop, or fallback 18
+    // GST Logic
     const effectiveGst = product.gst_percentage !== null && product.gst_percentage !== undefined
         ? product.gst_percentage
         : (globalGst || 18)
@@ -60,7 +62,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
             addItem({
                 productId: product.id,
                 title: product.title,
-                price: finalPrice, // Use discounted price
+                price: finalPrice,
                 maxStock: stock,
                 image: imageUrl,
                 gstPercentage: effectiveGst
@@ -70,22 +72,31 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-blue-100/50 hover:border-blue-200 shadow-xl shadow-blue-500/5 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-2 h-[440px]">
+            <div className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden border border-slate-100/80 hover:border-primary/20 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[480px]">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-[1/1] relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-500">
+                <div className="aspect-square relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-700">
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-8 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center p-10 z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain transition-transform duration-700 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain transition-all duration-1000 group-hover:scale-110 group-hover:opacity-0 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
+                            {hoverImageUrl && (
+                                <Image
+                                    src={hoverImageUrl}
+                                    alt={`${product.title} alternate`}
+                                    fill
+                                    className={`object-contain transition-all duration-1000 absolute inset-0 p-10 opacity-0 group-hover:opacity-100 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                            )}
                         </div>
                     ) : (
-                        <div className="h-full w-full bg-slate-50 flex items-center justify-center text-slate-400 text-xs font-black uppercase tracking-widest z-10">
+                        <div className="h-full w-full bg-slate-50 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 z-10">
                             No Preview
                         </div>
                     )}
@@ -100,7 +111,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                     ) : (
                         hasDiscount && (
                             <div className="absolute top-4 left-4 z-20">
-                                <span className="bg-blue-600 text-white text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-blue-500/30 flex items-center gap-1 uppercase tracking-widest">
+                                <span className="bg-primary text-white text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-primary/30 flex items-center gap-1 uppercase tracking-widest">
                                     {effectiveDiscount}% OFF
                                 </span>
                             </div>
@@ -109,12 +120,12 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                 </div>
 
                 <div className="flex flex-col relative z-30 pointer-events-none p-6 flex-grow">
-                    <div className="text-[9px] uppercase tracking-[0.3em] text-blue-600 font-black mb-2 opacity-60">
-                        TechDev Essentials
+                    <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black mb-3 opacity-60">
+                        Authorized TechDev Hub
                     </div>
 
                     <div className="flex flex-col h-full">
-                        <h3 className="text-lg font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-1 mb-2 font-heading tracking-tight uppercase">
+                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-2 font-heading tracking-tight uppercase">
                             {product.title}
                         </h3>
 
@@ -122,19 +133,19 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                             {product.description || "Premium quality tech gear designed for the modern professional workspace."}
                         </p>
 
-                        <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                        <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
                             <div className="flex flex-col">
                                 {hasDiscount && (
                                     <span className="text-[10px] text-slate-400 line-through font-bold tracking-tighter">
                                         {formatPrice(product.price)}
                                     </span>
                                 )}
-                                <span className={`font-black text-xl tracking-tighter ${isOutOfStock ? 'text-slate-300' : 'text-slate-900'}`}>
+                                <span className={`font-black text-2xl tracking-tighter ${isOutOfStock ? 'text-slate-300' : 'text-slate-900'}`}>
                                     {formatPrice(finalPrice)}
                                 </span>
                             </div>
 
-                            <div className="h-10 w-10 rounded-2xl bg-slate-50 text-slate-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-12 shadow-lg shadow-blue-500/20">
+                            <div className="h-11 w-11 rounded-2xl bg-slate-50 text-slate-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-2 group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 shadow-xl shadow-primary/20">
                                 <ShoppingCart className="h-4 w-4" />
                             </div>
                         </div>
