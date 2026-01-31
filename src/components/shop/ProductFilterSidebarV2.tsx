@@ -283,14 +283,42 @@ export function ProductFilterSidebarV2({
                             </div>
                         </div>
 
-                        {/* Visual Slider (Pseudo) */}
-                        <div className="relative h-1 bg-slate-200 rounded-full mt-2">
+                        {/* Interactive Dual Slider */}
+                        <div className="relative h-5 mt-6 mb-2">
+                            {/* Track Background */}
+                            <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-1 bg-slate-200 rounded-full" />
+
+                            {/* Active Range Track */}
                             <div
-                                className="absolute h-full bg-primary rounded-full transition-all duration-300"
+                                className="absolute top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full pointer-events-none"
                                 style={{
                                     left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
                                     right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`
                                 }}
+                            />
+
+                            {/* Range Inputs */}
+                            <input
+                                type="range"
+                                min={minPrice}
+                                max={maxPrice}
+                                value={priceRange[0]}
+                                onChange={(e) => {
+                                    const val = Math.min(Number(e.target.value), priceRange[1] - 100)
+                                    setPriceRange([val, priceRange[1]])
+                                }}
+                                className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-5 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer z-20"
+                            />
+                            <input
+                                type="range"
+                                min={minPrice}
+                                max={maxPrice}
+                                value={priceRange[1]}
+                                onChange={(e) => {
+                                    const val = Math.max(Number(e.target.value), priceRange[0] + 100)
+                                    setPriceRange([priceRange[0], val])
+                                }}
+                                className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-5 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer z-10"
                             />
                         </div>
                     </div>
