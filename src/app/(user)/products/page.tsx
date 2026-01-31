@@ -3,6 +3,8 @@
 import React, { use } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
+import { ProductFilterSidebar } from '@/components/shop/ProductFilterSidebar'
+import { ProductSort } from '@/components/shop/ProductSort'
 import { motion, AnimatePresence } from 'framer-motion'
 import { formatPrice } from '@/lib/utils'
 
@@ -15,35 +17,88 @@ interface ProductPageProps {
 export default function ProductsPage({ searchParams }: ProductPageProps) {
     const resolvedSearchParams = use(searchParams)
     const [products, setProducts] = React.useState<any[]>([])
+
+    // Filter Metadata State
+    const [brands, setBrands] = React.useState<string[]>([])
+    const [categories, setCategories] = React.useState<any[]>([])
+    const [priceBounds, setPriceBounds] = React.useState<{ min: number, max: number }>({ min: 0, max: 10000 })
+
+    // UI State
     const [globalDiscount, setGlobalDiscount] = React.useState(0)
     const [globalGst, setGlobalGst] = React.useState(18)
     const [loading, setLoading] = React.useState(true)
+    const [mobileFiltersOpen, setMobileFiltersOpen] = React.useState(false)
 
     React.useEffect(() => {
         const fetchData = async () => {
             const supabase = createClient()
             setLoading(true)
 
+            // 1. Base Query for Products
             let query = supabase
                 .from('products')
                 .select('*, product_images(*)')
                 .eq('status', 'active')
-                .order('created_at', { ascending: false })
 
-            if (resolvedSearchParams.category && resolvedSearchParams.category !== 'all') {
-                const { data: categoryData } = await supabase
-                    .from('categories')
-                    .select('id')
-                    .eq('slug', resolvedSearchParams.category)
-                    .single()
+            // Apply Sort
+            const sort = resolvedSearchParams.category // Bug in my head? No, searchParams.sort
+            const sortParam = (resolvedSearchParams as any).sort || 'newest'
 
-                if (categoryData) {
-                    query = query.eq('category_id', categoryData.id)
-                }
+            if (sortParam === 'price_asc') query = query.order('price', { ascending: true })
+            else if (sortParam === 'price_desc') query = query.order('price', { ascending: false })
+            else query = query.order('created_at', { ascending: false })
+
+            // Apply Filters
+            if (resolvedSearchParams.category) {
+                // Check if it's a slug or id. Usually slug in URL.
+                // We need to resolve slug to ID.
+                const { data: cat } = await supabase.from('categories').select('id').eq('slug', resolvedSearchParams.category).single()
+                if (cat) query = query.eq('category_id', cat.id)
+            }
+
+            if ((resolvedSearchParams as any).brand) {
+                const brands = (resolvedSearchParams as any).brand.split(',')
+                query = query.in('brand', brands)
+            }
+
+            if ((resolvedSearchParams as any).stock === 'true') {
+                query = query.gt('stock', 0)
+            }
+
+            if ((resolvedSearchParams as any).min_price) {
+                query = query.gte('price', Number((resolvedSearchParams as any).min_price))
+            }
+            if ((resolvedSearchParams as any).max_price) {
+                query = query.lte('price', Number((resolvedSearchParams as any).max_price))
+            }
+
+            if ((resolvedSearchParams as any).q) {
+                query = query.ilike('title', `%${(resolvedSearchParams as any).q}%`)
             }
 
             const { data: productsData } = await query
             setProducts(productsData || [])
+
+            // 2. Fetch Metadata (Only once or independent of filters? Ideally independent)
+            // We fetch all active products to determine available brands/price range
+            // Optimally this should be capped or aggregations.
+            const { data: allProducts } = await supabase.from('products').select('brand, price').eq('status', 'active')
+
+            if (allProducts) {
+                const distinctBrands = Array.from(new Set(allProducts.map(p => p.brand).filter(Boolean))) as string[]
+                setBrands(distinctBrands.sort())
+
+                const prices = allProducts.map(p => p.price)
+                if (prices.length > 0) {
+                    setPriceBounds({
+                        min: Math.floor(Math.min(...prices)),
+                        max: Math.ceil(Math.max(...prices))
+                    })
+                }
+            }
+
+            const { data: cats } = await supabase.from('categories').select('*').order('name')
+            setCategories(cats || [])
 
             const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').single()
             setGlobalDiscount(settings?.global_discount_percentage || 0)
@@ -51,91 +106,85 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             setLoading(false)
         }
         fetchData()
-    }, [resolvedSearchParams.category])
+    }, [resolvedSearchParams])
 
     return (
         <div className="bg-background text-foreground min-h-screen transition-colors duration-300">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 mt-10">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 mt-10">
                 {/* Premium Header */}
-                <div className="text-center mb-20 space-y-4">
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-center items-center gap-2 text-primary"
-                    >
-                        <span className="w-8 h-[2px] bg-primary/20" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Official Inventory</span>
-                        <span className="w-8 h-[2px] bg-primary/20" />
-                    </motion.div>
-
+                <div className="text-center mb-16 space-y-4">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-black font-heading text-slate-900 uppercase tracking-tight"
+                        className="text-4xl md:text-6xl font-black font-heading text-slate-900 uppercase tracking-tight"
                     >
                         The <span className="text-primary">Collection</span>
                     </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-slate-500 max-w-2xl mx-auto text-sm font-medium tracking-tight"
-                    >
-                        Explore our curated series of elite developer tools, professional hardware, and workspace essentials.
-                    </motion.p>
                 </div>
 
-                {/* Filters & Sort Shell */}
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-                    <div className="flex items-center gap-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Showing {products?.length || 0} Results</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        {/* Placeholder for real filters */}
-                        <div className="px-4 py-2 bg-slate-50 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-600 border border-slate-100 italic">
-                            Refinement Tools coming soon
+                <div className="flex flex-col lg:flex-row gap-10">
+                    {/* Sidebar */}
+                    <div className="w-full lg:w-64 flex-shrink-0">
+                        <div className="lg:sticky lg:top-24">
+                            <ProductFilterSidebar
+                                minPrice={priceBounds.min}
+                                maxPrice={priceBounds.max}
+                                brands={brands}
+                                categories={categories}
+                                isOpen={mobileFiltersOpen}
+                                onClose={() => setMobileFiltersOpen(false)}
+                            />
                         </div>
                     </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {loading ? (
-                        // Skeleton Loaders
-                        Array.from({ length: 8 }).map((_, i) => (
-                            <div key={i} className="bg-white rounded-[2.5rem] p-6 border border-slate-50 shadow-sm animate-pulse h-[480px]">
-                                <div className="aspect-square bg-slate-100 rounded-3xl mb-6" />
-                                <div className="h-2 w-24 bg-slate-100 rounded-full mb-4" />
-                                <div className="h-6 w-full bg-slate-100 rounded-lg mb-2" />
-                                <div className="h-4 w-3/4 bg-slate-100 rounded-lg mb-6" />
-                                <div className="mt-auto pt-6 border-t border-slate-50 flex justify-between">
-                                    <div className="h-8 w-24 bg-slate-100 rounded-lg" />
-                                    <div className="h-10 w-10 bg-slate-100 rounded-xl" />
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <AnimatePresence>
-                            {products.length > 0 ? (
-                                products.map((product) => (
-                                    <motion.div
-                                        key={product.id}
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                    >
-                                        <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
-                                    </motion.div>
+                    {/* Main Content */}
+                    <div className="flex-1">
+                        {/* Mobile Filter Toggle & Sort */}
+                        <div className="flex flex-wrap justify-between items-center mb-8 gap-4 bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 shadow-sm">
+                            <button
+                                onClick={() => setMobileFiltersOpen(true)}
+                                className="lg:hidden flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-wider"
+                            >
+                                Filters
+                            </button>
+
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                {products?.length || 0} Products Found
+                            </span>
+
+                            <ProductSort />
+                        </div>
+
+                        {/* Product Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                            {loading ? (
+                                Array.from({ length: 6 }).map((_, i) => (
+                                    <div key={i} className="bg-white rounded-[2rem] h-[450px] animate-pulse border border-slate-100" />
                                 ))
                             ) : (
-                                <div className="col-span-full py-20 text-center">
-                                    <h3 className="text-xl font-black text-slate-300 uppercase tracking-widest font-heading">No results found</h3>
-                                    <p className="text-slate-500 mt-2 font-medium">Try adjusting your category or check back soon.</p>
-                                </div>
+                                <AnimatePresence mode='wait'>
+                                    {products.length > 0 ? (
+                                        products.map((product) => (
+                                            <motion.div
+                                                key={product.id}
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                layout
+                                            >
+                                                <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
+                                            </motion.div>
+                                        ))
+                                    ) : (
+                                        <div className="col-span-full py-20 text-center flex flex-col items-center justify-center p-8 bg-slate-50 rounded-3xl border border-slate-100 border-dashed">
+                                            <h3 className="text-xl font-black text-slate-400 uppercase tracking-widest font-heading mb-2">No Matches</h3>
+                                            <p className="text-slate-500 text-sm font-medium">Try resetting your filters or adjusting criteria.</p>
+                                        </div>
+                                    )}
+                                </AnimatePresence>
                             )}
-                        </AnimatePresence>
-                    )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -18,6 +18,7 @@ export async function createProduct(formData: FormData) {
     const gst_percentage = formData.get('gst_percentage') ? parseFloat(formData.get('gst_percentage') as string) : null
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
+    const brand = formData.get('brand') as string || null
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
     const featuresString = formData.get('features') as string
@@ -38,6 +39,7 @@ export async function createProduct(formData: FormData) {
             gst_percentage,
             status,
             category_id,
+            brand,
             features
         })
         .select()
@@ -90,6 +92,7 @@ export async function updateProduct(formData: FormData) {
     const gst_percentage = formData.get('gst_percentage') ? parseFloat(formData.get('gst_percentage') as string) : null
     const status = formData.get('status') as string
     const category_id = formData.get('category_id') as string || null
+    const brand = formData.get('brand') as string || null
     const mediaString = formData.get('media') as string
     const media = mediaString ? JSON.parse(mediaString) : []
     const featuresString = formData.get('features') as string
@@ -107,6 +110,7 @@ export async function updateProduct(formData: FormData) {
             gst_percentage,
             status,
             category_id,
+            brand,
             features
         })
         .eq('id', id)

@@ -17,6 +17,7 @@ interface ProductFormProps {
         gst_percentage?: number | null
         status: string
         category_id?: string
+        brand?: string
         features?: any // JSONB
         product_images?: { cloudinary_url: string, media_type: string }[]
     }
@@ -31,8 +32,6 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
     )
 
     const addMedia = (url: string, type: string) => {
-        // Cloudinary returns 'image' or 'video'. We map it to our type.
-        // Ensure type is 'image' or 'video'
         const mediaType = type === 'video' ? 'video' : 'image'
         setMedia(prev => [...prev, { url, type: mediaType }])
     }
@@ -89,21 +88,34 @@ export function ProductForm({ categories = [], initialData }: ProductFormProps) 
                 </div>
 
                 <div className="space-y-2">
-                    <label htmlFor="category_id" className="text-sm font-medium text-gray-200">
-                        Category
+                    <label htmlFor="brand" className="text-sm font-medium text-gray-200">
+                        Brand
                     </label>
-                    <select
-                        id="category_id"
-                        name="category_id"
-                        defaultValue={initialData?.category_id || ""}
+                    <input
+                        id="brand"
+                        name="brand"
+                        defaultValue={initialData?.brand || ""}
                         className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
-                    >
-                        <option value="">Select a Category</option>
-                        {categories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                        ))}
-                    </select>
+                        placeholder="e.g. Logitech"
+                    />
                 </div>
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="category_id" className="text-sm font-medium text-gray-200">
+                    Category
+                </label>
+                <select
+                    id="category_id"
+                    name="category_id"
+                    defaultValue={initialData?.category_id || ""}
+                    className="w-full rounded-md border border-gray-700 bg-gray-950 p-2 text-white focus:border-blue-500 focus:outline-none"
+                >
+                    <option value="">Select a Category</option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                </select>
             </div>
 
             <div className="space-y-2">
