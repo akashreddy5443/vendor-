@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { User, Phone, Mail, Save } from 'lucide-react'
-import { updateProfile } from './actions'
+import { updateUserProfile } from './actions'
 import { redirect } from 'next/navigation'
 import { SettingsFormClient } from './SettingsFormClient'
 
@@ -26,7 +26,7 @@ export default async function UserSettingsPage() {
                 <SettingsFormClient
                     profile={profile}
                     email={user.email!}
-                    updateProfileAction={updateProfile}
+                    updateProfileAction={updateUserProfile}
                 />
             </div>
         </div>
