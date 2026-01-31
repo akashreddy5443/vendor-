@@ -35,13 +35,11 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                     </div>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[300px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[300px]">
                     {promos.map((promo, idx) => {
                         const IconComponent = ICON_MAP[promo.icon] || Tag
-                        // Make first item span 2 cols and 2 rows for "Bento" effect if it's the first one
-                        // Actually, for 4 items, let's span the first one 2 cols.
-                        const isLarge = idx === 0 || idx === 3
-                        const colSpan = isLarge ? 'md:col-span-2' : ''
+                        // Uniform grid: all items same size
+                        const colSpan = ''
 
                         return (
                             <motion.div
@@ -67,7 +65,7 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                                             )}
                                         </div>
 
-                                        <h3 className={`font-black text-slate-900 uppercase tracking-tight leading-[0.9] mb-3 group-hover:translate-x-1 transition-transform duration-500 ${isLarge ? 'text-4xl md:text-5xl' : 'text-3xl'}`}>
+                                        <h3 className="font-black text-slate-900 uppercase tracking-tight leading-[0.9] mb-3 group-hover:translate-x-1 transition-transform duration-500 text-3xl">
                                             {promo.subtitle || promo.title}
                                         </h3>
                                         <p className="text-slate-500 font-medium leading-relaxed max-w-[80%] group-hover:text-slate-700 transition-colors">
