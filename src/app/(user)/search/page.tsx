@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { ProductListCard } from '@/components/shop/ProductListCard'
-import { FilterSidebar } from './FilterSidebar'
+import { ProductFilterSidebarV2 } from '@/components/shop/ProductFilterSidebarV2'
 import { SortSelect } from './SortSelect'
 import { MobileFilter } from './MobileFilter'
 import { SearchHeader } from './SearchHeader'
@@ -64,9 +64,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     if (categoryId) {
         dbQuery = dbQuery.eq('category_id', categoryId)
     } else if (category !== 'all') {
-        // Fallback: If param exists but lookup failed, maybe force 0 results or ignore?
-        // If we don't filter, we show ALL products which is confusing.
-        // Let's force a non-match if category was requested but invalid
         dbQuery = dbQuery.eq('id', '00000000-0000-0000-0000-000000000000')
     }
 
@@ -75,7 +72,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         dbQuery = dbQuery.order('price', { ascending: true })
     } else if (sort === 'price_desc') {
         dbQuery = dbQuery.order('price', { ascending: false })
-    } else if (sort === 'newest') { // Fix "newest" sorting key
+    } else if (sort === 'newest') {
         dbQuery = dbQuery.order('created_at', { ascending: false })
     } else {
         // Default sort (relevance/none)
@@ -83,8 +80,34 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
     const { data: products } = await dbQuery
 
-    // Fetch Categories for Filter
+    // Fetch Metadata for Filters (Brands, Prices, Categories)
+    // 1. Categories
     const { data: categories } = await supabase.from('categories').select('id, name, slug').order('name')
+
+    // 2. All Active Products (for Brands & Price Range)
+    // In a real large-scale app, this should be a dedicated RPC or cached aggregation
+    const { data: allProducts } = await supabase.from('products').select('brand, price').eq('status', 'active')
+
+    let brands: string[] = []
+    let priceBounds = { min: 0, max: 10000 } // Default fallback
+
+    if (allProducts) {
+        // Brands
+        const distinctBrands = new Set<string>()
+        allProducts.forEach(p => {
+            if (p.brand) distinctBrands.add(p.brand)
+        })
+        brands = Array.from(distinctBrands).sort()
+
+        // Prices
+        const prices = allProducts.map(p => p.price)
+        if (prices.length > 0) {
+            priceBounds = {
+                min: Math.floor(Math.min(...prices)),
+                max: Math.ceil(Math.max(...prices))
+            }
+        }
+    }
 
     return (
         <div className="min-h-screen bg-background text-foreground pb-20">
@@ -94,12 +117,20 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Sidebar Filters (Desktop) */}
                     <aside className="w-full lg:w-64 flex-shrink-0 hidden lg:block">
-                        <FilterSidebar categories={categories || []} />
+                        <ProductFilterSidebarV2
+                            minPrice={priceBounds.min}
+                            maxPrice={priceBounds.max}
+                            brands={brands}
+                            categories={categories || []}
+                            isOpen={false} // Desktop always visible via CSS 'hidden lg:block'
+                        // onClose is optional
+                        />
                     </aside>
 
                     {/* Main Content */}
                     <div className="flex-1">
                         <div className="flex items-center justify-between mb-6">
+                            {/* We might want to fix MobileFilter later too, but prioritizing Desktop */}
                             <MobileFilter categories={categories || []} />
                             <SortSelect />
                         </div>
