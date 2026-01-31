@@ -53,7 +53,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             <Sparkles className="h-4 w-4 fill-primary" />
                             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Curated Essentials</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[-0.04em] text-white leading-none font-heading">
+                        <h2 className="text-4xl md:text-5xl font-black tracking-[-0.04em] text-white leading-none font-heading">
                             In The <span className="text-primary">Spotlight</span>
                         </h2>
                     </div>
@@ -66,7 +66,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                     {/* Large Featured Item (8/12 columns) */}
                     <motion.div
                         variants={itemVariants}
-                        className="md:col-span-8 group relative rounded-[2.5rem] overflow-hidden bg-slate-900/40 border border-white/10 shadow-2xl"
+                        className="md:col-span-8 group relative rounded-2xl overflow-hidden bg-slate-900/40 border border-white/10 shadow-2xl"
                     >
                         <motion.div
                             whileHover={{ scale: 1.02 }}
@@ -93,14 +93,14 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     <span className="inline-block bg-blue-600 text-white text-[9px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full mb-2 shadow-lg shadow-blue-500/20">
                                         {content.hero.tag}
                                     </span>
-                                    <h3 className="text-5xl md:text-7xl font-black text-white uppercase leading-[0.85] tracking-tighter max-w-2xl font-heading">
+                                    <h3 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tighter max-w-2xl font-heading">
                                         {content.hero.title}
                                     </h3>
                                     <p className="text-slate-300 text-sm md:text-base font-medium max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 leading-relaxed">
                                         {content.hero.description}
                                     </p>
                                     <div className="pt-6">
-                                        <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white text-[#020617] px-10 py-5 font-black uppercase text-[11px] tracking-widest rounded-full hover:bg-blue-600 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl">
+                                        <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white text-[#020617] px-10 py-5 font-black text-[11px] tracking-widest rounded-full hover:bg-blue-600 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-2xl">
                                             Explore Now <ArrowRight className="h-4 w-4" />
                                         </Link>
                                     </div>
@@ -116,7 +116,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                 key={idx}
                                 variants={itemVariants}
                                 whileHover={{ y: -10 }}
-                                className="flex-1 group relative rounded-[2.5rem] overflow-hidden bg-slate-900/40 border border-white/10 shadow-xl min-h-[300px]"
+                                className="flex-1 group relative rounded-2xl overflow-hidden bg-slate-900/40 border border-white/10 shadow-xl min-h-[300px]"
                             >
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
@@ -132,10 +132,10 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-transparent to-transparent z-10" />
 
                                     <div className="absolute bottom-10 left-10 right-10 z-20">
-                                        <h3 className="text-2xl font-black text-white uppercase leading-none tracking-tighter mb-4 font-heading">
+                                        <h3 className="text-2xl font-black text-white leading-none tracking-tighter mb-4 font-heading">
                                             {item.title}
                                         </h3>
-                                        <Link href={item.link} className="inline-flex items-center text-[10px] font-black text-primary group-hover:text-white uppercase tracking-widest transition-all gap-2">
+                                        <Link href={item.link} className="inline-flex items-center text-[10px] font-black text-primary group-hover:text-white tracking-widest transition-all gap-2">
                                             Shop Collection <ArrowRight className="h-3.5 w-3.5" />
                                         </Link>
                                     </div>

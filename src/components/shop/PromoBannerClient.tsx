@@ -24,7 +24,7 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                                 viewport={{ once: true }}
                             >
-                                <Link href={promo.href || '#'} className={`block h-full overflow-hidden rounded-xl ${promo.color || 'bg-white border border-gray-100'} p-6 relative group transition-transform hover:scale-[1.02] shadow-sm hover:shadow-md`}>
+                                <Link href={promo.href || '#'} className={`block h-full overflow-hidden rounded-2xl ${promo.color || 'bg-white border border-gray-100'} p-6 relative group transition-transform hover:scale-[1.02] shadow-sm hover:shadow-md`}>
                                     {/* Background Pattern - Subtle for white cards */}
                                     <div className="absolute top-0 right-0 -mr-8 -mt-8 h-32 w-32 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
 
@@ -44,7 +44,7 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary group-hover:gap-3 transition-all">
+                                        <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-primary group-hover:gap-3 transition-all">
                                             Shop Now <span>→</span>
                                         </div>
                                     </div>

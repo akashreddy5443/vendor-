@@ -15,6 +15,7 @@ const navItems = [
     { label: 'Homepage', href: '/admin/homepage', icon: Home },
     { label: 'Pages', href: '/admin/pages', icon: FileText },
     { label: 'Site Layout', href: '/admin/layout-site', icon: LayoutDashboard },
+    { label: 'Design Settings', href: '/admin/design', icon: Palette },
     { label: 'Users', href: '/admin/users', icon: Users },
     { label: 'About Page', href: '/admin/settings/about', icon: FileText },
     { label: 'Settings', href: '/admin/settings', icon: Settings },

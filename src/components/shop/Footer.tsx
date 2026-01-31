@@ -27,7 +27,7 @@ export async function Footer() {
                     <div className="lg:col-span-12 xl:col-span-5 space-y-10">
                         <div className="space-y-4">
                             <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.3em] text-primary">Protocol 2026</span>
-                            <h2 className="text-5xl lg:text-7xl font-heading font-black tracking-tighter leading-[0.9] text-white uppercase">
+                            <h2 className="text-5xl lg:text-7xl font-heading font-black tracking-tighter leading-[0.9] text-white">
                                 Stay <span className="text-primary">Informed</span>
                             </h2>
                             <p className="max-w-md text-slate-400 text-sm font-medium leading-relaxed">

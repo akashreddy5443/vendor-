@@ -72,7 +72,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden border border-slate-100/80 hover:border-primary/20 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[480px]">
+            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-primary/20 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[480px]">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
                 <div className="aspect-square relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-700">
@@ -121,11 +121,11 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                 <div className="flex flex-col relative z-30 pointer-events-none p-6 flex-grow">
                     <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black mb-3 opacity-60">
-                        Authorized TechDev Hub
+                        Authorized Hub
                     </div>
 
                     <div className="flex flex-col h-full">
-                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-2 font-heading tracking-tight uppercase">
+                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-2 font-heading tracking-tight">
                             {product.title}
                         </h3>
 

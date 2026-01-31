@@ -153,8 +153,8 @@ export function Navbar() {
                                                     {cat.icon || '🛍️'}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-heading font-black text-base text-slate-900 group-hover/item:text-primary transition-colors uppercase tracking-tight leading-none mb-1">{cat.name}</span>
-                                                    <span className="text-[10px] font-bold text-slate-400 group-hover/item:text-slate-500 uppercase tracking-widest">Inventory List</span>
+                                                    <span className="font-heading font-black text-base text-slate-900 group-hover/item:text-primary transition-colors tracking-tight leading-none mb-1">{cat.name}</span>
+                                                    <span className="text-[10px] font-bold text-slate-400 group-hover/item:text-slate-500 uppercase tracking-widest">In Stock</span>
                                                 </div>
                                             </Link>
                                         ))}
@@ -238,10 +238,10 @@ export function Navbar() {
                             </>
                         ) : (
                             <div className="flex flex-col gap-4">
-                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-slate-50 text-slate-900 font-black uppercase tracking-widest text-[10px]">
+                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-slate-50 text-slate-900 font-black tracking-widest text-[10px]">
                                     Sign In
                                 </Link>
-                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary/20">
+                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-primary text-white font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
                                     Join the Hub
                                 </Link>
                             </div>

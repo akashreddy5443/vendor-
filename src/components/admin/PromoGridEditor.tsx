@@ -49,7 +49,7 @@ export function PromoGridEditor({ initialCards }: { initialCards: any[] }) {
 
     return (
         <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-xl font-bold text-purple-600 flex items-center gap-2">
+            <h3 className="mb-4 text-xl font-bold text-blue-600 flex items-center gap-2">
                 <Tag className="h-5 w-5" /> Promo Banners
             </h3>
             <p className="mb-4 text-sm text-gray-500">Manage the 4-column promo grid (Subtitle, Description, Icon).</p>
@@ -109,10 +109,10 @@ export function PromoGridEditor({ initialCards }: { initialCards: any[] }) {
                 </div>
 
                 <div className="flex justify-between items-center pt-2">
-                    <button type="button" onClick={addCard} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    <button type="button" onClick={addCard} className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-bold transition-colors">
                         <Plus className="h-4 w-4" /> Add Banner
                     </button>
-                    <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-colors">
+                    <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]">
                         Save Promo Banners
                     </button>
                 </div>
