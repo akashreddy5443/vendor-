@@ -2,12 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params
     const supabase = await createClient()
     const { data: page } = await supabase
         .from('pages')
         .select('title')
-        .eq('slug', params.slug)
+        .eq('slug', slug)
         .eq('is_published', true)
         .single()
 
@@ -18,12 +19,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
 }
 
-export default async function DynamicCMSPage({ params }: { params: { slug: string } }) {
+export default async function DynamicCMSPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params
     const supabase = await createClient()
     const { data: page } = await supabase
         .from('pages')
         .select('*')
-        .eq('slug', params.slug)
+        .eq('slug', slug)
         .eq('is_published', true)
         .single()
 

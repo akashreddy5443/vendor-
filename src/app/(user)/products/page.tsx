@@ -1,18 +1,19 @@
 'use client'
 
-import React from 'react'
+import React, { use } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
 import { motion, AnimatePresence } from 'framer-motion'
 import { formatPrice } from '@/lib/utils'
 
 interface ProductPageProps {
-    searchParams: {
+    searchParams: Promise<{
         category?: string
-    }
+    }>
 }
 
 export default function ProductsPage({ searchParams }: ProductPageProps) {
+    const resolvedSearchParams = use(searchParams)
     const [products, setProducts] = React.useState<any[]>([])
     const [globalDiscount, setGlobalDiscount] = React.useState(0)
     const [globalGst, setGlobalGst] = React.useState(18)
@@ -29,11 +30,11 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
                 .eq('status', 'active')
                 .order('created_at', { ascending: false })
 
-            if (searchParams.category && searchParams.category !== 'all') {
+            if (resolvedSearchParams.category && resolvedSearchParams.category !== 'all') {
                 const { data: categoryData } = await supabase
                     .from('categories')
                     .select('id')
-                    .eq('slug', searchParams.category)
+                    .eq('slug', resolvedSearchParams.category)
                     .single()
 
                 if (categoryData) {
@@ -50,7 +51,7 @@ export default function ProductsPage({ searchParams }: ProductPageProps) {
             setLoading(false)
         }
         fetchData()
-    }, [searchParams.category])
+    }, [resolvedSearchParams.category])
 
     return (
         <div className="bg-background text-foreground min-h-screen transition-colors duration-300">

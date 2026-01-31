@@ -29,28 +29,37 @@ export default async function AdminCategoriesPage() {
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-gray-600">
-                        <thead className="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-bold tracking-wider">
+                        <thead className="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-black tracking-widest">
                             <tr>
-                                <th className="px-6 py-4 w-16 text-center">Icon</th>
-                                <th className="px-6 py-4">Name</th>
+                                <th className="px-6 py-4 w-20 text-center">Asset</th>
+                                <th className="px-6 py-4">Identity</th>
                                 <th className="px-6 py-4">Slug</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <th className="px-6 py-4 text-right">Operations</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {categories?.map((category) => (
-                                <tr key={category.id} className="hover:bg-gray-50/80 transition-colors">
-                                    <td className="px-6 py-4 text-center text-2xl">
-                                        {category.icon || '📦'}
+                                <tr key={category.id} className="hover:bg-indigo-50/30 transition-colors group">
+                                    <td className="px-6 py-4">
+                                        <div className="mx-auto h-12 w-10 shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-sm">
+                                            {category.image_url ? (
+                                                <img src={category.image_url} alt={category.name} className="h-full w-full object-cover" />
+                                            ) : (
+                                                <span className="text-xl">{category.icon || '📦'}</span>
+                                            )}
+                                        </div>
                                     </td>
-                                    <td className="px-6 py-4 font-bold text-gray-900">{category.name}</td>
-                                    <td className="px-6 py-4 font-mono text-xs">{category.slug}</td>
+                                    <td className="px-6 py-4">
+                                        <div className="font-bold text-gray-900">{category.name}</div>
+                                        <div className="text-[10px] text-gray-400 uppercase tracking-widest leading-none mt-1">Status: Active</div>
+                                    </td>
+                                    <td className="px-6 py-4 font-mono text-xs text-gray-500">{category.slug}</td>
                                     <td className="px-6 py-4 text-right">
-                                        <div className="flex justify-end gap-2">
+                                        <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <Link
                                                 href={`/admin/categories/${category.id}`}
-                                                className="rounded-md p-2 hover:bg-gray-100 text-blue-600 transition-colors"
-                                                title="Edit"
+                                                className="rounded-xl p-2.5 hover:bg-white hover:text-indigo-600 border border-transparent hover:border-indigo-100 text-gray-400 transition-all shadow-indigo-100 hover:shadow-lg"
+                                                title="Elevate"
                                             >
                                                 <Edit className="h-4 w-4" />
                                             </Link>

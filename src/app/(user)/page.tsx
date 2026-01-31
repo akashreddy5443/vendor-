@@ -146,7 +146,14 @@ export default function HomePage() {
               >
                 <Link href={cat.href || '#'} className="group block relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
                   <img
-                    src={cat.image || 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9'}
+                    src={cat.image || (
+                      cat.name === 'Laptops' ? 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853' :
+                        cat.name === 'Smartphones' || cat.name === 'Phones' ? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9' :
+                          cat.name === 'Audio' || cat.name === 'Studio Audio' ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e' :
+                            cat.name === 'Watches' || cat.name === 'Wearables' ? 'https://images.unsplash.com/photo-1523275335684-37898b6baf30' :
+                              cat.name === 'Gaming Rigs' || cat.name === 'Gaming' ? 'https://images.unsplash.com/photo-1542751371-adc38448a05e' :
+                                'https://images.unsplash.com/photo-1550745165-9bc0b252726f'
+                    )}
                     alt={cat.name}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />

@@ -1,9 +1,11 @@
 import { login, signup, signInWithGoogle } from './actions'
 import Link from 'next/link'
 
-export default function LoginPage(props: {
-    searchParams: { error?: string; message?: string }
+export default async function LoginPage(props: {
+    searchParams: Promise<{ error?: string; message?: string }>
 }) {
+    const searchParams = await props.searchParams
+
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 text-gray-900">
             <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-xl">
@@ -11,15 +13,15 @@ export default function LoginPage(props: {
                     Sign In
                 </h2>
 
-                {props.searchParams.error && (
+                {searchParams.error && (
                     <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600 border border-red-200">
-                        {props.searchParams.error}
+                        {searchParams.error}
                     </div>
                 )}
 
-                {props.searchParams.message && (
+                {searchParams.message && (
                     <div className="mb-4 rounded bg-green-50 p-3 text-sm text-green-600 border border-green-200">
-                        {props.searchParams.message}
+                        {searchParams.message}
                     </div>
                 )}
 

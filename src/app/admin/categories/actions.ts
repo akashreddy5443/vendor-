@@ -9,6 +9,7 @@ export async function createCategory(formData: FormData) {
 
     const name = formData.get('name') as string
     const icon = formData.get('icon') as string
+    const image_url = formData.get('image_url') as string
     // Simple slug generator: lowercase, spaces to dashes, remove special chars
     const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
 
@@ -18,6 +19,7 @@ export async function createCategory(formData: FormData) {
             name,
             slug,
             icon: icon || '📦', // Default icon if none provided
+            image_url: image_url || null,
         })
 
     if (error) {
@@ -36,6 +38,7 @@ export async function updateCategory(id: string, formData: FormData) {
     const name = formData.get('name') as string
     const slug = formData.get('slug') as string
     const icon = formData.get('icon') as string
+    const image_url = formData.get('image_url') as string
 
     const { error } = await supabase
         .from('categories')
@@ -43,6 +46,7 @@ export async function updateCategory(id: string, formData: FormData) {
             name,
             slug,
             icon,
+            image_url,
         })
         .eq('id', id)
 

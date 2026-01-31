@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, use } from 'react'
 import { useCart } from '@/context/CartContext'
 import Link from 'next/link'
 import { CheckCircle } from 'lucide-react'
 import confetti from 'canvas-confetti'
 
-export default function OrderConfirmationPage({ params }: { params: { id: string } }) {
+export default function OrderConfirmationPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params)
     const { clearCart } = useCart()
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export default function OrderConfirmationPage({ params }: { params: { id: string
                     Thank you for your purchase. Your order ID is:
                 </p>
                 <div className="bg-gray-900 border border-gray-800 rounded p-3 font-mono text-sm break-all text-blue-500">
-                    {params.id}
+                    {id}
                 </div>
 
                 <div className="pt-8">
