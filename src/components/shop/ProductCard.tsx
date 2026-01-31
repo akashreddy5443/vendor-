@@ -82,7 +82,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain transition-all duration-1000 group-hover:scale-110 group-hover:opacity-0 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-contain transition-all duration-1000 group-hover:scale-110 ${hoverImageUrl ? 'group-hover:opacity-0' : ''} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                             {hoverImageUrl && (
