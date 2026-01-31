@@ -26,54 +26,88 @@ export function LifestyleGrid({ items }: { items?: any[] }) {
     ]
 
     return (
-        <section className="py-24 bg-transparent overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6">
+        <section className="py-32 bg-transparent relative overflow-hidden">
+            {/* Dynamic Section Background */}
+            <div className="absolute top-1/2 left-0 w-full h-[500px] bg-blue-500/5 blur-[120px] -translate-y-1/2 rounded-full pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="flex flex-col gap-2 mb-16"
+                    className="flex flex-col gap-3 mb-24"
                 >
-                    <div className="flex items-center gap-2 text-blue-600">
-                        <Zap className="h-4 w-4 fill-blue-600" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Lifestyle Collections</span>
+                    <div className="flex items-center gap-3 text-blue-600">
+                        <div className="w-10 h-[2px] bg-blue-600" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Lifestyle Collections</span>
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[-0.04em] text-slate-900 leading-none font-heading">
-                        Made For <span className="text-blue-600">Every Moment</span>
+                    <h2 className="text-5xl md:text-7xl font-black uppercase tracking-[-0.05em] text-slate-900 leading-[0.9] font-heading">
+                        Designed For <br />
+                        <span className="text-blue-600 relative">
+                            Every Moment
+                            <svg className="absolute -bottom-2 left-0 w-full h-3 text-blue-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="8" />
+                            </svg>
+                        </span>
                     </h2>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14 perspective-1000">
                     {gridItems.map((item, idx) => (
                         <motion.div
                             key={item.title}
-                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1, duration: 0.5 }}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: idx % 2 === 0 ? 0 : 40 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{
+                                delay: idx * 0.15,
+                                duration: 0.8,
+                                ease: [0.21, 0.45, 0.32, 0.9] as const
+                            }}
+                            className={`relative h-[550px] ${idx % 2 !== 0 ? 'md:mt-0' : 'md:mt-0'}`}
                         >
-                            <Link
-                                href={item.link}
-                                className="group block relative overflow-hidden rounded-[2rem] bg-white border border-blue-100/50 shadow-xl shadow-blue-500/5 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
-                            >
+                            <Link href={item.link} className="group block h-full w-full">
                                 <motion.div
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.6 }}
-                                    className="aspect-[4/5] relative overflow-hidden"
+                                    whileHover={{
+                                        rotateX: 4,
+                                        rotateY: -4,
+                                        scale: 1.02,
+                                        y: -10
+                                    }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                    className="h-full w-full relative rounded-[3rem] overflow-hidden bg-white border border-blue-100/50 shadow-[0_30px_60px_-15px_rgba(59,130,246,0.1)] group-hover:shadow-blue-500/20 transition-all duration-700"
                                 >
                                     <Image
                                         src={item.image}
                                         alt={item.title}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity" />
 
-                                    <div className="absolute bottom-0 left-0 p-10 w-full transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                                        <h3 className="text-3xl font-black text-white mb-4 uppercase tracking-tighter leading-none">{item.title}</h3>
-                                        <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-blue-400 group-hover:text-white transition-all delay-100 gap-2">
-                                            Shop Collection <ArrowRight className="h-3 w-3" />
-                                        </div>
+                                    {/* Cinematic Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+                                    <div className="absolute inset-0 bg-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                                    <div className="absolute bottom-10 left-8 right-8 z-20">
+                                        {/* Floating Glass Label */}
+                                        <motion.div
+                                            whileHover={{ y: -5 }}
+                                            className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group/label"
+                                        >
+                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+
+                                            <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tighter leading-none font-heading relative z-10">
+                                                {item.title}
+                                            </h3>
+
+                                            <div className="flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover/label:text-white transition-all gap-2 relative z-10">
+                                                Explore Collection
+                                                <div className="relative">
+                                                    <ArrowRight className="h-3 w-3 transition-transform group-hover/label:translate-x-2" />
+                                                    <div className="absolute inset-0 bg-blue-400 blur-lg opacity-0 group-hover/label:opacity-50" />
+                                                </div>
+                                            </div>
+                                        </motion.div>
                                     </div>
                                 </motion.div>
                             </Link>
