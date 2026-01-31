@@ -78,27 +78,29 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
                                     />
 
-                                    {/* Cinematic Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
-                                    <div className="absolute inset-0 bg-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                    {/* Phase 2: Consistent Gradient Overlay - Stronger for text readability */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-br from-slate-950/40 via-transparent to-transparent" />
+                                    <div className="absolute inset-0 bg-blue-900/15 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                                     <div className="absolute bottom-10 left-8 right-8 z-20">
-                                        {/* Floating Glass Label */}
+                                        {/* Floating Glass Label - Enhanced for readability */}
                                         <motion.div
                                             whileHover={{ y: -5 }}
-                                            className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group/label"
+                                            className="bg-slate-950/60 backdrop-blur-2xl border border-white/30 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group/label"
                                         >
-                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+                                            <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm" />
 
-                                            <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tighter leading-none font-heading relative z-10">
+                                            <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tighter leading-none font-heading relative z-10 drop-shadow-lg">
                                                 {item.title}
                                             </h3>
 
-                                            <div className="flex items-center text-[9px] font-black uppercase tracking-[0.2em] text-primary group-hover/label:text-white transition-all gap-2 relative z-10">
+                                            <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover/label:text-white transition-all gap-2 relative z-10 drop-shadow-md">
                                                 Explore Collection
                                                 <div className="relative">
                                                     <ArrowRight className="h-3 w-3 transition-transform group-hover/label:translate-x-2" />
-                                                    <div className="absolute inset-0 bg-primary blur-lg opacity-0 group-hover/label:opacity-50" />
+                                                    <div className="absolute inset-0 bg-blue-400 blur-lg opacity-0 group-hover/label:opacity-50" />
                                                 </div>
                                             </div>
                                         </motion.div>
