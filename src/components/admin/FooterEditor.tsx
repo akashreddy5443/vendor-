@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { updateFooter } from '@/app/admin/homepage/actions'
-import { Plus, Trash2, ChevronDown, ChevronUp, Palette, Link as LinkIcon, ShieldCheck, Mail, Globe } from 'lucide-react'
+import { Plus, Trash2, ChevronDown, ChevronUp, Palette, Link as LinkIcon, ShieldCheck, Mail, Globe, Twitter, Instagram, Youtube, Facebook } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary'
 
 type LinkItem = {
