@@ -129,9 +129,9 @@ export default function CartPage() {
 
                                         {/* Content */}
                                         <div className="flex flex-1 flex-col justify-between py-1">
-                                            <div className="flex justify-between items-start gap-4 mb-4">
-                                                <div className="min-w-0 flex-1">
-                                                    <h3 className="font-heading font-bold text-lg md:text-xl text-slate-900 leading-tight mb-2 pr-2">
+                                            <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4 mb-4">
+                                                <div className="w-full">
+                                                    <h3 className="font-heading font-bold text-lg md:text-xl text-slate-900 leading-tight mb-2">
                                                         <Link href={`/products/${item.productId}`} className="hover:text-primary transition-colors line-clamp-2">
                                                             {item.title}
                                                         </Link>
@@ -143,8 +143,8 @@ export default function CartPage() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div className="shrink-0 text-right">
-                                                    <p className="font-heading font-black text-lg md:text-2xl text-primary whitespace-nowrap">{formatPrice(item.price)}</p>
+                                                <div className="shrink-0 mt-2 md:mt-0">
+                                                    <p className="font-heading font-black text-xl md:text-2xl text-primary whitespace-nowrap">{formatPrice(item.price)}</p>
                                                 </div>
                                             </div>
 
