@@ -111,6 +111,11 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     const isOutOfStock = stock === 0
     const primaryImage = productImages?.find((i: any) => i.is_primary)?.cloudinary_url || productImages?.[0]?.cloudinary_url
 
+    // Discount Logic
+    const discount = product.discount_percentage || 0
+    const hasDiscount = discount > 0
+    const finalPrice = hasDiscount ? price * (1 - discount / 100) : price
+
     return (
         <div className="bg-background min-h-screen text-foreground">
             <ProductViewTracker
