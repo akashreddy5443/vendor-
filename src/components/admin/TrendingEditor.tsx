@@ -34,10 +34,38 @@ type TrendingData = {
 }
 
 export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
-    const [data, setData] = useState<TrendingData>(initialData || {
-        hero: { image: '', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', quote: '', author: '', role: '', link: '/search?category=laptops', description: '' },
-        sub1: { image: '', title: 'CONSOLE READY', link: '/search?category=gaming', description: '' },
-        sub2: { image: '', title: 'AUDIOPHILE GRADE', link: '/search?category=audio', description: '' }
+    const [data, setData] = useState<TrendingData>(() => {
+        const defaults = {
+            hero: {
+                image: '',
+                title: 'THE PRO GAMER EDIT',
+                tag: 'New Arrival',
+                quote: 'Design is not just what it looks like and feels like. Design is how it works.',
+                author: 'Vendor Tech',
+                role: 'Editor in Chief',
+                link: '/search?category=laptops',
+                description: 'Experience unpowered performance with our latest gaming rigs.'
+            },
+            sub1: { image: '', title: 'CONSOLE READY', link: '/search?category=gaming', description: '' },
+            sub2: { image: '', title: 'AUDIOPHILE GRADE', link: '/search?category=audio', description: '' }
+        }
+
+        if (!initialData) return defaults
+
+        // Merge defaults with initialData for deep fields
+        return {
+            ...initialData,
+            hero: {
+                ...defaults.hero,
+                ...initialData.hero,
+                quote: initialData.hero.quote || defaults.hero.quote,
+                author: initialData.hero.author || defaults.hero.author,
+                role: initialData.hero.role || defaults.hero.role,
+                description: initialData.hero.description || defaults.hero.description
+            },
+            sub1: { ...defaults.sub1, ...initialData.sub1 },
+            sub2: { ...defaults.sub2, ...initialData.sub2 }
+        }
     })
 
     const updateHero = (field: string, value: string) => {
