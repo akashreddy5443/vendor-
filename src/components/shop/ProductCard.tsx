@@ -74,144 +74,113 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-primary/20 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[380px] md:h-[480px]">
+            <div className="group relative flex flex-col h-[420px] md:h-[500px] w-full bg-transparent">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
-                <div className="aspect-square relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-700">
+                {/* Image Container - Floating Card Look */}
+                <div className="relative w-full h-[320px] md:h-[380px] rounded-[2rem] overflow-hidden bg-slate-50 transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-2">
+                    {/* Badge Layer */}
+                    <div className="absolute top-4 left-4 z-30 flex gap-2">
+                        {isOutOfStock ? (
+                            <span className="bg-slate-900 text-white text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest backdrop-blur-md">
+                                Sold Out
+                            </span>
+                        ) : hasDiscount && (
+                            <span className="bg-white/90 text-slate-900 text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
+                                -{effectiveDiscount}%
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Wishlist Button - Top Right */}
+                    <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <WishlistToggle
+                            productId={product.id}
+                            className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full text-slate-400 hover:text-red-500 hover:scale-110 active:scale-95 shadow-sm transition-all"
+                        />
+                    </div>
+
+                    {/* Product Images */}
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center z-10">
+                        <>
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-cover transition-all duration-1000 group-hover:scale-110 ${hoverImageUrl ? 'group-hover:opacity-0' : ''} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
-                                sizes="(max-width: 640px) 45vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                className={`object-cover transition-transform duration-1000 ease-out group-hover:scale-105 ${hoverImageUrl ? 'group-hover:opacity-0' : ''} ${isOutOfStock ? 'grayscale opacity-60' : ''}`}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                             {hoverImageUrl && (
                                 <Image
                                     src={hoverImageUrl}
-                                    alt={`${product.title} alternate`}
+                                    alt={product.title}
                                     fill
-                                    className={`object-contain transition-all duration-1000 absolute inset-0 p-10 opacity-0 group-hover:opacity-100 group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                    className={`object-cover absolute inset-0 transition-all duration-1000 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105 ${isOutOfStock ? 'grayscale opacity-60' : ''}`}
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
                             )}
-                        </div>
+                        </>
                     ) : (
-                        <div className="h-full w-full bg-slate-50 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 z-10">
-                            No Preview
+                        <div className="flex h-full items-center justify-center bg-slate-100 text-[10px] font-black uppercase text-slate-300 tracking-widest">
+                            No Image
                         </div>
                     )}
 
-                    {/* Stock & Promo Badges - High-End Style */}
-                    {isOutOfStock ? (
-                        <div className="absolute inset-0 flex items-center justify-center z-20 bg-slate-950/40 backdrop-blur-[2px]">
-                            <span className="bg-white text-slate-950 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl rounded-full">
-                                Sold Out
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 items-start">
-                            {/* Discount Badge */}
-                            {hasDiscount && (
-                                <span className="bg-primary text-white text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-primary/30 flex items-center gap-1 uppercase tracking-widest">
-                                    {effectiveDiscount}% OFF
-                                </span>
-                            )}
-
-                            {/* Trust Badges */}
-                            {product.badges && Array.isArray(product.badges) && product.badges.map((badge: string) => (
-                                <span key={badge} className="bg-white/90 backdrop-blur text-slate-900 text-[8px] font-bold px-2 py-1 rounded-md border border-slate-200 shadow-sm uppercase tracking-wider">
-                                    {badge}
-                                </span>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Quick View Overlay (Bottom Right) */}
+                    {/* Hover Overlay Actions */}
                     {!isOutOfStock && (
-                        <div className="absolute bottom-0 right-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 z-20">
+                        <div className="absolute bottom-0 inset-x-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] z-30">
                             <button
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    setShowQuickView(true)
-                                }}
-                                className="h-12 w-12 flex items-center justify-center bg-white text-slate-900 rounded-tl-2xl shadow-none hover:bg-slate-50 transition-colors border-l border-t border-slate-100"
-                                title="Quick View"
+                                onClick={handleAddToCart}
+                                className="w-full h-12 flex items-center justify-center gap-2 bg-slate-900 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-xl hover:bg-primary transition-colors active:scale-95"
                             >
-                                <Eye className="w-5 h-5" />
+                                <ShoppingCart className="w-4 h-4" /> Add to Cart
                             </button>
                         </div>
                     )}
                 </div>
 
-                <div className="flex flex-col relative z-30 pointer-events-none p-4 md:p-6 flex-grow">
-                    {/* Authorized Hub / Trust Signal */}
-                    <div className="flex items-center justify-between mb-2">
-                        <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black opacity-60">
-                            Authorized Hub
-                        </div>
-                        {/* Delivery Signal */}
-                        <div className="flex items-center gap-1 text-[9px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-full">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                            3-Day Delivery
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col h-full">
-                        <h3 className="text-lg font-black text-slate-900 leading-[1.1] group-hover:text-primary transition-colors line-clamp-1 mb-1 font-heading tracking-tight">
-                            {product.title}
-                        </h3>
-
-                        {/* Short Benefit / Hook */}
-                        {product.short_benefit && (
-                            <p className="text-xs font-bold text-indigo-600 mb-2">
-                                {product.short_benefit}
-                            </p>
-                        )}
-
-                        <p className="text-[11px] text-slate-500 line-clamp-2 mb-4 leading-relaxed font-medium h-8">
-                            {product.description || "Premium quality tech gear designed for the modern professional workspace."}
-                        </p>
-
-                        <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
-                            <div className="flex flex-col">
-                                {hasDiscount && (
-                                    <span className="text-[10px] text-slate-400 line-through font-bold tracking-tighter">
-                                        {formatPrice(product.price)}
-                                    </span>
-                                )}
-                                <span className={`font-black text-2xl tracking-tighter ${isOutOfStock ? 'text-slate-300' : 'text-slate-900'}`}>
-                                    {formatPrice(finalPrice)}
+                {/* Details Section - Clean & Typography First */}
+                <div className="mt-4 flex flex-col flex-1 px-2 relative">
+                    <div className="flex justify-between items-start">
+                        <div className="flex-1 pr-4">
+                            {/* Trust Badge / Subtitle */}
+                            {product.short_benefit ? (
+                                <span className="block text-[9px] font-black uppercase tracking-widest text-primary mb-1">
+                                    {product.short_benefit}
                                 </span>
+                            ) : (
+                                <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">
+                                    Official Gear
+                                </span>
+                            )}
+
+                            <h3 className="font-heading font-bold text-base md:text-lg leading-tight text-slate-900 group-hover:text-primary transition-colors line-clamp-2">
+                                {product.title}
+                            </h3>
+                        </div>
+
+                        {/* Price Block */}
+                        <div className="text-right">
+                            {hasDiscount && (
+                                <span className="block text-[10px] text-slate-400 line-through font-bold mb-0.5">
+                                    {formatPrice(product.price)}
+                                </span>
+                            )}
+                            <div className={`font-black text-lg tracking-tight ${hasDiscount ? 'text-red-600' : 'text-slate-900'}`}>
+                                {formatPrice(finalPrice)}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Add To Cart - Corner Style (Bottom Right) */}
-                <button
-                    onClick={handleAddToCart}
-                    className="absolute bottom-0 right-0 h-10 w-10 md:h-12 md:w-12 bg-slate-900 md:bg-white text-white md:text-slate-900 flex items-center justify-center rounded-tl-2xl shadow-none md:hover:bg-primary md:hover:text-white transition-all duration-300 z-30"
-                    title="Add to Cart"
-                >
-                    <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
-                </button>
-
-                {/* Wishlist Action */}
-                <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-auto scale-90 group-hover:scale-100">
-                    <WishlistToggle productId={product.id} className="bg-white/80 backdrop-blur-md hover:bg-white text-slate-400 hover:text-red-500 border border-white/50 rounded-2xl p-2.5 shadow-xl transition-all hover:scale-110 active:scale-90" />
-                </div>
             </div>
 
-            {/* Modals */}
             <QuickViewModal
                 isOpen={showQuickView}
                 onClose={() => setShowQuickView(false)}
                 product={{
                     ...product,
                     stock,
-                    description: product.description || '', // Ensure valid string
+                    description: product.description || '',
                     image: imageUrl || ''
                 }}
             />
