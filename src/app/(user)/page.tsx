@@ -25,6 +25,8 @@ export default function HomePage() {
   const [globalDiscount, setGlobalDiscount] = React.useState(0)
   const [globalGst, setGlobalGst] = React.useState(18)
   const [featuredProducts, setFeaturedProducts] = React.useState<any[]>([])
+  const [featuredTitle, setFeaturedTitle] = React.useState('Featured Gear')
+  const [featuredSubtitle, setFeaturedSubtitle] = React.useState("Editor's Choice")
   const [lifestyleItems, setLifestyleItems] = React.useState<any>(null)
   const [lifestyleSubtitle, setLifestyleSubtitle] = React.useState<string>('')
   const [lifestyleTitle, setLifestyleTitle] = React.useState<string>('')
@@ -66,6 +68,11 @@ export default function HomePage() {
         .select('*')
         .eq('section_type', 'featured')
         .single()
+
+      if (featured) {
+        setFeaturedTitle(featured.title || 'Featured Gear')
+        setFeaturedSubtitle(featured.content_json?.subtitle || "Editor's Choice")
+      }
 
       // Fetch Categories
       const { data: catSection } = await supabase
@@ -231,10 +238,10 @@ export default function HomePage() {
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-600">
                 <Sparkles className="h-3 w-3 md:h-4 md:w-4 fill-blue-600" />
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
+                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">{featuredSubtitle}</span>
               </div>
               <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
-                Featured <span className="text-blue-600">Gear</span>
+                {featuredTitle.split(' ').slice(0, -1).join(' ')} <span className="text-blue-600">{featuredTitle.split(' ').slice(-1)}</span>
               </h2>
             </div>
             <Link href="/products" className="group hidden md:flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-all">
