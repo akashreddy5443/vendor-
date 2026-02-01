@@ -33,6 +33,11 @@ type FooterConfig = {
         email: string
         phone: string
     }
+    newsletter: {
+        badge: string
+        title: string
+        desc: string
+    }
     socialLinks: {
         twitter: string
         instagram: string
@@ -43,6 +48,7 @@ type FooterConfig = {
     linkGroups: LinkGroup[]
     copyrightText: string
     creditsText: string
+    showPaymentIcons: boolean
 }
 
 export function FooterEditor({ initialConfig }: { initialConfig: any }) {
@@ -56,6 +62,11 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
         contact: {
             email: initialConfig?.contact?.email || 'support@techdev.store',
             phone: initialConfig?.contact?.phone || '+1 (800) 555-0199'
+        },
+        newsletter: {
+            badge: initialConfig?.newsletter?.badge || 'Protocol 2026',
+            title: initialConfig?.newsletter?.title || 'Stay Connected',
+            desc: initialConfig?.newsletter?.desc || 'Join our elite network for early access to experimental hardware and developer-first documentation.'
         },
         socialLinks: {
             twitter: initialConfig?.socialLinks?.twitter || '',
@@ -89,7 +100,8 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
             }
         ],
         copyrightText: initialConfig?.copyrightText || 'TECHDEV',
-        creditsText: initialConfig?.creditsText || 'Authorized Dealer'
+        creditsText: initialConfig?.creditsText || 'Authorized Dealer',
+        showPaymentIcons: initialConfig?.showPaymentIcons ?? true
     })
 
     const [activeTab, setActiveTab] = useState<'content' | 'links' | 'style'>('content')
@@ -201,12 +213,41 @@ export function FooterEditor({ initialConfig }: { initialConfig: any }) {
                                 className="w-full text-sm border-gray-200 rounded-md"
                             />
                         </div>
+                        <div className="space-y-2 col-span-full flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="showPaymentIcons"
+                                checked={config.showPaymentIcons}
+                                onChange={e => setConfig({ ...config, showPaymentIcons: e.target.checked })}
+                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            <label htmlFor="showPaymentIcons" className="text-sm font-medium text-gray-700">Show Payment Icons (Visa, MC, UPI)</label>
+                        </div>
                     </div>
                 )}
 
                 {/* --- CONTENT TAB --- */}
                 {activeTab === 'content' && (
                     <div className="space-y-8 animate-in fade-in duration-300">
+                        {/* Newsletter Settings */}
+                        <div className="space-y-4">
+                            <h4 className="font-bold text-gray-800 flex items-center gap-2"><Mail className="w-4 h-4" /> Newsletter Section</h4>
+                            <div className="grid grid-cols-1 gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <div>
+                                    <label className="text-[10px] uppercase font-bold text-gray-400">Badge Text</label>
+                                    <input value={config.newsletter.badge} onChange={e => setConfig(prev => ({ ...prev, newsletter: { ...prev.newsletter, badge: e.target.value } }))} className="w-full text-sm border-gray-200 rounded" />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] uppercase font-bold text-gray-400">Main Title</label>
+                                    <input value={config.newsletter.title} onChange={e => setConfig(prev => ({ ...prev, newsletter: { ...prev.newsletter, title: e.target.value } }))} className="w-full text-sm border-gray-200 rounded" />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] uppercase font-bold text-gray-400">Description</label>
+                                    <textarea value={config.newsletter.desc} onChange={e => setConfig(prev => ({ ...prev, newsletter: { ...prev.newsletter, desc: e.target.value } }))} className="w-full text-sm border-gray-200 rounded h-20" />
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Contact */}
                         <div className="space-y-4">
                             <h4 className="font-bold text-gray-800 flex items-center gap-2"><Mail className="w-4 h-4" /> Contact Info</h4>

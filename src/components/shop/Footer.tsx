@@ -27,6 +27,11 @@ export async function Footer() {
             email: 'support@techdev.store',
             phone: '+1 (800) 555-0199'
         },
+        newsletter: {
+            badge: 'Protocol 2026',
+            title: 'Stay Connected',
+            desc: 'Join our elite network for early access to experimental hardware and developer-first documentation.'
+        },
         socialLinks: {},
         trustBadges: [
             { icon: 'PackageCheck', title: 'Global Shipping', desc: 'Free expedited delivery on all orders over ₹5,000. Tracked & insured.' },
@@ -60,12 +65,13 @@ export async function Footer() {
             }
         ],
         copyrightText: 'TECHDEV',
-        creditsText: 'Authorized TechDev Laboratory Hub'
+        creditsText: 'Authorized TechDev Laboratory Hub',
+        showPaymentIcons: true
     }
 
     // Logic: Use DB config if it has the new 'style' structure, otherwise fall back to defaults
     const config = footerData?.content_json?.style ? footerData.content_json : defaults
-    const { style, contact, socialLinks, trustBadges, linkGroups, copyrightText, creditsText } = config
+    const { style, contact, newsletter, socialLinks, trustBadges, linkGroups, copyrightText, creditsText, showPaymentIcons } = config
 
     return (
         <footer
@@ -88,13 +94,13 @@ export async function Footer() {
                                 className="inline-block px-3 py-1 mb-6 rounded-full border text-[10px] font-black uppercase tracking-[0.2em]"
                                 style={{ borderColor: `${style.accentColor}33`, backgroundColor: `${style.accentColor}1A`, color: style.accentColor }}
                             >
-                                Protocol 2026
+                                {newsletter?.badge || 'Protocol 2026'}
                             </span>
                             <h2 className="text-4xl lg:text-5xl font-heading font-black tracking-tighter mb-4">
-                                Stay <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${style.accentColor}, #a855f7)` }}>Connected</span>
+                                {newsletter?.title || 'Stay Connected'}
                             </h2>
                             <p className="text-xs font-medium opacity-60 leading-relaxed max-w-sm">
-                                Join our elite network for early access to experimental hardware and developer-first documentation.
+                                {newsletter?.desc || 'Join our elite network for early access to experimental hardware and developer-first documentation.'}
                             </p>
                         </div>
                         <div className="max-w-md">
@@ -188,9 +194,13 @@ export async function Footer() {
                     </p>
 
                     <div className="flex items-center gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                        <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">VISA</div>
-                        <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">MC</div>
-                        <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">UPI</div>
+                        {showPaymentIcons !== false && (
+                            <>
+                                <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">VISA</div>
+                                <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">MC</div>
+                                <div className="h-8 w-12 bg-white/5 rounded border border-white/10 flex items-center justify-center font-black text-[9px]">UPI</div>
+                            </>
+                        )}
                     </div>
                 </div>
 
