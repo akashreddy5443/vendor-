@@ -294,18 +294,27 @@ export default function HomePage() {
             className="mb-8 md:mb-12 flex flex-col gap-2"
           >
             <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading text-left">
-              Designed For <span className="text-primary">Every Moment</span>
+              {(() => {
+                const words = (lifestyleTitle || 'Designed For Every Moment').split(' ')
+                const mainPart = words.slice(0, Math.max(0, words.length - 2)).join(' ')
+                const highlightPart = words.slice(Math.max(0, words.length - 2)).join(' ')
+                return (
+                  <>
+                    {mainPart} <span className="text-primary">{highlightPart}</span>
+                  </>
+                )
+              })()}
             </h2>
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Curated Workspaces</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">{lifestyleSubtitle || 'Curated Workspaces'}</p>
           </motion.div>
 
-          {/* Visual Strip - 3 Panels (Vertical Cards style) */}
+          {/* Visual Strip - 3 Panels (Editable) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 h-[120vh] lg:h-[70vh]">
-            {[
-              { title: 'Desk & Productivity', img: 'https://images.unsplash.com/photo-1493723843671-1d09e75ef1e1?q=80&w=2070' },
-              { title: 'Gaming & Performance', img: 'https://images.unsplash.com/photo-1624522206775-680786df76e1?q=80&w=2070' },
-              { title: 'Daily Tech Gear', img: 'https://images.unsplash.com/photo-1544652478-6653e09f1826?q=80&w=2070' }
-            ].map((item, idx) => (
+            {(lifestyleItems || [
+              { title: 'Desk & Productivity', image: 'https://images.unsplash.com/photo-1493723843671-1d09e75ef1e1?q=80&w=2070', link: '/products' },
+              { title: 'Gaming & Performance', image: 'https://images.unsplash.com/photo-1624522206775-680786df76e1?q=80&w=2070', link: '/products' },
+              { title: 'Daily Tech Gear', image: 'https://images.unsplash.com/photo-1544652478-6653e09f1826?q=80&w=2070', link: '/products' }
+            ]).map((item: any, idx: number) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
@@ -315,7 +324,7 @@ export default function HomePage() {
                 className="group relative h-full w-full overflow-hidden rounded-[2rem] border border-slate-100 bg-slate-900"
               >
                 <img
-                  src={item.img}
+                  src={item.image || item.img} // fallback for compatibility
                   alt={item.title}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 opacity-70 group-hover:opacity-50"
                 />
@@ -329,7 +338,7 @@ export default function HomePage() {
                     {item.title}
                   </h3>
                   <Link
-                    href="/products"
+                    href={item.link || '/products'}
                     className="w-full flex justify-between items-center text-xs font-bold text-white uppercase tracking-widest group/btn border-t border-white/20 pt-6 hover:text-primary hover:border-primary transition-all"
                   >
                     Explore Collection <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-2" />
