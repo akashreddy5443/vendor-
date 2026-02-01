@@ -139,8 +139,12 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
             setGlobalDiscount(settings?.global_discount_percentage || 0)
             setGlobalGst(settings?.default_gst_percentage || 18)
 
+            // Setup sidebar from settings if available, but Force Dynamic Prices
             if (settings) {
-                setPricePresets(settings.price_presets)
+                // Ignore admin price_presets if we want dynamic. Or keep them but ensure slider is dynamic.
+                // User said "remove filter configuration... let it differen from the product".
+                // We will ignore admin price ranges entirely.
+
                 setSidebarConfig({
                     categoryLabel: settings.filter_category_label || 'All Categories',
                     brandLabel: settings.filter_brand_label || 'Brands',
@@ -149,16 +153,34 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
                 })
             }
 
-            // Dynamic Price Range from Products (Ignoring Admin Settings as requested)
-            if (allProducts) {
+            // FORCE Dynamic Price Range from All Active Products
+            // This ensures the slider always covers the full range of available products
+            if (allProducts && allProducts.length > 0) {
                 const prices = allProducts.map(p => p.price)
                 if (prices.length > 0) {
+                    const minPrice = Math.floor(Math.min(...prices))
+                    const maxPrice = Math.ceil(Math.max(...prices))
+
                     setPriceBounds({
-                        min: Math.floor(Math.min(...prices)),
-                        max: Math.ceil(Math.max(...prices))
+                        min: minPrice,
+                        max: maxPrice
                     })
+
+                    // Optional: Generate dynamic presets based on range
+                    if (!settings?.price_presets) {
+                        const step = (maxPrice - minPrice) / 4
+                        setPricePresets([
+                            { label: `Under ${formatPrice(minPrice + step)}`, min: 0, max: minPrice + step },
+                            { label: `${formatPrice(minPrice + step)} - ${formatPrice(minPrice + step * 2)}`, min: minPrice + step, max: minPrice + step * 2 },
+                            { label: `Over ${formatPrice(minPrice + step * 2)}`, min: minPrice + step * 2, max: 10000000 }
+                        ])
+                    }
                 }
+            } else {
+                // Fallback if no products
+                setPriceBounds({ min: 0, max: 10000 })
             }
+
             setLoading(false)
         }
         fetchData()

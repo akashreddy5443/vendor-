@@ -38,7 +38,8 @@ export async function cancelUserOrder(orderId: string) {
         .eq('id', orderId)
 
     if (updateError) {
-        return { error: 'Failed to cancel order' }
+        console.error('Cancel Order Error:', updateError)
+        return { error: `Failed to cancel order: ${updateError.message}` }
     }
 
     // 3. Send Email
