@@ -188,7 +188,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                             <button
                                 onClick={handleAddToCart}
-                                className="h-11 w-11 rounded-2xl bg-slate-100 md:bg-slate-50 text-slate-900 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 transform translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 shadow-xl shadow-primary/20"
+                                className="h-10 w-10 rounded-full bg-white text-slate-900 border border-slate-100 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 transform translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:rotate-12 shadow-xl shadow-primary/20"
                                 title="Add to Cart"
                             >
                                 <ShoppingCart className="h-4 w-4" />
