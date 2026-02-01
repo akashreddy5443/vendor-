@@ -52,7 +52,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         className="hidden md:block max-w-sm text-right"
                     >
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">
-                            Explore a collection defined by precision, aesthetics, and raw performance. This is gear for the modern visionary.
+                            {content.hero.description || 'Explore a collection defined by precision, aesthetics, and raw performance. This is gear for the modern visionary.'}
                         </p>
                     </motion.div>
                 </div>
@@ -67,7 +67,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         <div className="p-8 border-l-2 border-indigo-500/30 bg-white/5 backdrop-blur-sm rounded-r-2xl">
                             <Quote className="w-8 h-8 text-indigo-500 mb-4 opacity-50" />
                             <p className="text-xl md:text-2xl text-slate-200 font-serif italic leading-relaxed mb-6">
-                                "{content.hero.description || 'Design is not just what it looks like and feels like. Design is how it works.'}"
+                                "{content.hero.quote || content.hero.description || 'Design is not just what it looks like and feels like. Design is how it works.'}"
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 overflow-hidden">
@@ -76,8 +76,8 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                                     <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
                                 </div>
                                 <div>
-                                    <span className="block text-white text-xs font-bold uppercase tracking-wider">Editor in Chief</span>
-                                    <span className="block text-slate-500 text-[10px] uppercase">Vendor Tech</span>
+                                    <span className="block text-white text-xs font-bold uppercase tracking-wider">{content.hero.role || 'Editor in Chief'}</span>
+                                    <span className="block text-slate-500 text-[10px] uppercase">{content.hero.author || 'Vendor Tech'}</span>
                                 </div>
                             </div>
                         </div>
