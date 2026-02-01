@@ -4,19 +4,40 @@ import React, { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Play, Quote, X } from 'lucide-react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion'
 
 export function TrendingSpotlight({ data }: { data?: any }) {
     const ref = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(true)
+    const [isMobile, setIsMobile] = useState(false)
     const videoRef = useRef<HTMLVideoElement>(null)
+    const isInView = useInView(ref, { amount: 0.6 }) // Play when 60% visible
+
+    // Detect Mobile
+    React.useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    // Mobile Autoplay Logic (In-View)
+    React.useEffect(() => {
+        if (isMobile && videoRef.current) {
+            if (isInView) {
+                videoRef.current.play().catch(() => { })
+            } else {
+                videoRef.current.pause()
+            }
+        }
+    }, [isMobile, isInView])
 
     const toggleMute = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
         if (videoRef.current) {
-            // If paused, just play (and keep current mute state, or maybe unmute?)
+            // If paused (and we clicked), play it
             if (videoRef.current.paused) {
                 videoRef.current.play()
             } else {
@@ -28,15 +49,15 @@ export function TrendingSpotlight({ data }: { data?: any }) {
     }
 
     const handleMouseEnter = () => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => { }) // Ignore auto-play errors
+        if (!isMobile && videoRef.current) {
+            videoRef.current.play().catch(() => { })
         }
     }
 
     const handleMouseLeave = () => {
-        if (videoRef.current) {
+        if (!isMobile && videoRef.current) {
             videoRef.current.pause()
-            videoRef.current.currentTime = 0 // Optional: Reset to start
+            videoRef.current.currentTime = 0
         }
     }
 

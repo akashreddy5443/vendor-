@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 
-export function SpotlightSearch() {
+export function SpotlightSearch({ variant = 'default' }: { variant?: 'default' | 'icon' }) {
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState('')
     const [results, setResults] = React.useState<any[]>([])
@@ -79,28 +79,29 @@ export function SpotlightSearch() {
 
     return (
         <>
-            {/* Trigger Button (Visible on Desktop Navbar usually, or hidden if pure shortcut) */}
-            <button
-                onClick={() => setOpen(true)}
-                className="hidden md:flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-500 hover:border-primary hover:ring-1 hover:ring-primary transition-all w-full shadow-sm"
-            >
-                <Search className="h-4 w-4 text-primary" />
-                <span className="flex-grow text-left">Search products...</span>
-                <div className="flex items-center gap-1 border-l border-gray-200 pl-2">
-                    <span className="text-xs text-gray-400">All Categories</span>
-                    <div className="bg-gray-100 rounded px-1.5 py-0.5">
-                        <span className="text-[10px] text-gray-500">⌘K</span>
+            {/* Trigger Button */}
+            {variant === 'default' ? (
+                <button
+                    onClick={() => setOpen(true)}
+                    className="w-full flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-500 hover:border-primary hover:ring-1 hover:ring-primary transition-all shadow-sm"
+                >
+                    <Search className="h-4 w-4 text-primary" />
+                    <span className="flex-grow text-left">Search products...</span>
+                    <div className="flex items-center gap-1 border-l border-gray-200 pl-2">
+                        <span className="text-xs text-gray-400">All Categories</span>
+                        <div className="bg-gray-100 rounded px-1.5 py-0.5">
+                            <span className="text-[10px] text-gray-500">⌘K</span>
+                        </div>
                     </div>
-                </div>
-            </button>
-
-            {/* Mobile Search Icon */}
-            <button
-                onClick={() => setOpen(true)}
-                className="flex md:hidden items-center justify-center p-2 text-gray-400 hover:text-white"
-            >
-                <Search className="h-5 w-5" />
-            </button>
+                </button>
+            ) : (
+                <button
+                    onClick={() => setOpen(true)}
+                    className="flex items-center justify-center p-2 text-slate-500 hover:text-primary transition-colors"
+                >
+                    <Search className="h-5 w-5" />
+                </button>
+            )}
 
             <AnimatePresence>
                 {open && (
