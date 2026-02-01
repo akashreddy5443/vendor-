@@ -60,6 +60,14 @@ export function ProductFilterSidebarV2({
         return () => clearTimeout(timer)
     }, [priceRange])
 
+    // Sync state with props when data loads (if no filter applied)
+    React.useEffect(() => {
+        const hasUrlParams = searchParams.has('min_price') || searchParams.has('max_price')
+        if (!hasUrlParams) {
+            setPriceRange([minPrice, maxPrice])
+        }
+    }, [minPrice, maxPrice, searchParams])
+
     const updateFilters = (override?: any) => {
         const params = new URLSearchParams(searchParams.toString())
 
