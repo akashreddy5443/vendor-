@@ -97,8 +97,20 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
             const { data: productsData } = await query
             setProducts(productsData || [])
 
-            // 2. Fetch Metadata
-            const { data: allProducts } = await supabase.from('products').select('brand, price').eq('status', 'active')
+            // 2. Fetch Metadata (Scoped to current Category/Search for better context)
+            let statsQuery = supabase.from('products').select('brand, price').eq('status', 'active')
+
+            // Scope stats to category if present so filters/ranges are relevant
+            if (resolvedSearchParams.category) {
+                const { data: cat } = await supabase.from('categories').select('id').eq('slug', resolvedSearchParams.category).single()
+                if (cat) statsQuery = statsQuery.eq('category_id', cat.id)
+            }
+            // Scope stats to search query if present
+            if ((resolvedSearchParams as any).q) {
+                statsQuery = statsQuery.ilike('title', `%${(resolvedSearchParams as any).q}%`)
+            }
+
+            const { data: allProducts } = await statsQuery
 
             if (allProducts) {
                 const distinctBrands = Array.from(new Set(allProducts.map(p => p.brand).filter(Boolean))) as string[]
@@ -137,7 +149,7 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
                 })
             }
 
-            // Override price bounds with admin settings if available
+            // Override price bounds with admin settings if available, else Dynamic
             if (settings?.max_price_filter) {
                 setPriceBounds({
                     min: settings.min_price_filter || 0,
@@ -147,8 +159,8 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
                 const prices = allProducts.map(p => p.price)
                 if (prices.length > 0) {
                     setPriceBounds({
-                        min: 0,
-                        max: Math.ceil(Math.max(...prices))
+                        min: Math.floor(Math.min(...prices)), // Dynamic Min
+                        max: Math.ceil(Math.max(...prices))    // Dynamic Max
                     })
                 }
             }

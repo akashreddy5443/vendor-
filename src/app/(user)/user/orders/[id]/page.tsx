@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { formatPrice, cn } from '@/lib/utils'
 import { OrderTimeline } from '@/components/shop/OrderTimeline'
+import { CancelOrderButton } from '@/components/shop/CancelOrderButton'
 import { ArrowLeft, MapPin, CreditCard, Package, Download, ChevronRight, Truck } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -83,11 +84,14 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                                 </h1>
                                 {!isCancelled && <p className="text-sm text-gray-500 mt-1">Your order is {order.status}</p>}
                             </div>
-                            {order.status === 'delivered' && (
-                                <button className="flex items-center gap-2 text-blue-600 text-sm font-medium hover:bg-blue-50 px-3 py-2 rounded-lg transition-colors">
-                                    <Download className="h-4 w-4" /> Invoice
-                                </button>
-                            )}
+                            <div className="flex items-center gap-2">
+                                <CancelOrderButton orderId={order.id} status={order.status} />
+                                {order.status === 'delivered' && (
+                                    <button className="flex items-center gap-2 text-blue-600 text-sm font-medium hover:bg-blue-50 px-3 py-2 rounded-lg transition-colors">
+                                        <Download className="h-4 w-4" /> Invoice
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
                         <div className="py-2">
