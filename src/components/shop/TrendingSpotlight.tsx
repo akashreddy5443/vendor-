@@ -16,8 +16,27 @@ export function TrendingSpotlight({ data }: { data?: any }) {
         e.preventDefault()
         e.stopPropagation()
         if (videoRef.current) {
-            videoRef.current.muted = !isMuted
-            setIsMuted(!isMuted)
+            // If paused, just play (and keep current mute state, or maybe unmute?)
+            if (videoRef.current.paused) {
+                videoRef.current.play()
+            } else {
+                // If playing, toggle mute
+                videoRef.current.muted = !isMuted
+                setIsMuted(!isMuted)
+            }
+        }
+    }
+
+    const handleMouseEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => { }) // Ignore auto-play errors
+        }
+    }
+
+    const handleMouseLeave = () => {
+        if (videoRef.current) {
+            videoRef.current.pause()
+            videoRef.current.currentTime = 0 // Optional: Reset to start
         }
     }
 
@@ -114,18 +133,20 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                     <div
                         className="lg:col-span-8 relative min-h-[400px] md:min-h-[500px] lg:h-auto rounded-[2rem] md:rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900 shadow-2xl shadow-indigo-500/10 cursor-pointer"
                         onClick={toggleMute}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        {/* Video Layer (Always On) */}
+                        {/* Video Layer (Hover to Play) */}
                         {content.hero.video ? (
                             <>
                                 <video
                                     ref={videoRef}
                                     src={content.hero.video}
                                     className="absolute inset-0 w-full h-full object-cover z-0"
-                                    autoPlay
                                     loop
                                     muted={isMuted}
                                     playsInline
+                                // Removed autoPlay
                                 />
                                 {/* Mute Toggle Button */}
                                 <button
