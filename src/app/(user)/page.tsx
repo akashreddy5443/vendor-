@@ -148,72 +148,63 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Categories: AJIO-Style Tiles */}
-      <section className="pt-8 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
+      {/* Phase 3: Visual Anchor Strip (Editorial) */}
+      <section className="py-12 md:py-16 bg-transparent order-2 md:order-none">
         <div className="w-full px-4 md:px-12 lg:px-16">
+          {/* Section Header - Left Aligned */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col gap-1 md:gap-2 mb-6 md:mb-16"
+            className="mb-8 md:mb-12 flex items-center gap-4"
           >
-            <div className="flex items-center gap-2 text-primary">
-              <LayoutGrid className="h-3 w-3 md:h-4 md:w-4" />
-              <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
-            </div>
-            <div className="flex items-end justify-between">
-              <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
-                Browse <span className="text-primary">Categories</span>
+            <div className="h-12 w-1.5 bg-primary" />
+            <div>
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+                The <span className="text-primary">Collection</span>
               </h2>
-              <Link href="/products" className="hidden md:flex text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary items-center gap-2">View All <ArrowRight className="w-4 h-4" /></Link>
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mt-1">Curated Workspaces</p>
             </div>
           </motion.div>
 
-          {/* Categories Grid - Mobile: 2 cols, Desktop: 3/6 cols */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
-            {categories.map((cat, idx) => (
+          {/* Visual Strip - 3 Panels */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 h-[120vh] lg:h-[70vh]">
+            {['Desk Setup', 'Gaming Station', 'On The Go'].map((title, idx) => (
               <motion.div
-                key={cat.name}
+                key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={idx > 3 ? 'hidden xl:block' : ''} // Mobile: Show 4, Desktop: Show all (if 6) or hide logic adjustment needed? 
-              // Wait, xl:grid-cols-6 means all 6 in one row.
-              // User wants 4 on mobile. 
-              // Let's hide indices > 3 on mobile (block on md).
+                className="group relative h-full w-full overflow-hidden rounded-[2rem] border border-slate-100 bg-slate-900"
               >
-                <Link href={cat.href || '#'} className={`group block relative aspect-[4/5] md:aspect-[4/5] rounded-2xl md:rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 ${idx > 3 ? 'hidden md:block' : ''}`}>
-                  <img
-                    src={cat.image || (
-                      cat.name === 'Laptops' ? 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853' :
-                        cat.name === 'Smartphones' || cat.name === 'Phones' ? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9' :
-                          cat.name === 'Audio' || cat.name === 'Studio Audio' ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e' :
-                            cat.name === 'Watches' || cat.name === 'Wearables' ? 'https://images.unsplash.com/photo-1523275335684-37898b6baf30' :
-                              cat.name === 'Gaming Rigs' || cat.name === 'Gaming' ? 'https://images.unsplash.com/photo-1542751371-adc38448a05e' :
-                                'https://images.unsplash.com/photo-1550745165-9bc0b252726f'
-                    )}
-                    alt={cat.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                <img
+                  src={
+                    idx === 0 ? 'https://images.unsplash.com/photo-1493723843671-1d09e75ef1e1?q=80&w=2070&auto=format&fit=crop' :
+                      idx === 1 ? 'https://images.unsplash.com/photo-1624522206775-680786df76e1?q=80&w=2070&auto=format&fit=crop' :
+                        'https://images.unsplash.com/photo-1544652478-6653e09f1826?q=80&w=2070&auto=format&fit=crop'
+                  }
+                  alt={title}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 opacity-60 group-hover:opacity-40"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
 
-                  <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
-                    <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-none mb-1">{cat.name}</h3>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Explore</p>
-                  </div>
-                </Link>
+                <div className="absolute bottom-0 left-0 p-8 md:p-10 flex flex-col items-start">
+                  <span className="mb-4 inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[9px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+                    Series 0{idx + 1}
+                  </span>
+                  <h3 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight leading-none mb-6">
+                    {title}
+                  </h3>
+                  <Link
+                    href="/products"
+                    className="flex items-center gap-3 text-xs font-bold text-white uppercase tracking-widest group/btn hover:text-primary transition-colors"
+                  >
+                    Explore Series <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-2" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
-          </div>
-
-          {/* Mobile View All Categories Button */}
-          <div className="mt-6 md:hidden">
-            <Link href="/products" className="flex items-center justify-center w-full py-3 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-colors">
-              View All Categories
-            </Link>
           </div>
         </div>
       </section>
