@@ -20,6 +20,7 @@ type TrustBadge = {
     title: string
     desc: string
     color?: string
+    iconBgColor?: string
 }
 
 type FooterConfig = {
