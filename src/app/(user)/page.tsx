@@ -230,7 +230,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-20"
+            className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-20"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-600">

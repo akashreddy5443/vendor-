@@ -71,7 +71,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             fill
                             className="object-cover scale-105"
                             priority
-                            sizes="100vw"
+                            sizes="(max-width: 768px) 100vw, 100vw"
                         />
                         {/* Adjusted Gradient - Stronger on Mobile for readability */}
                         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/90 md:bg-gradient-to-r md:from-slate-950/98 md:via-slate-950/70 md:via-40% md:to-slate-950/10 z-10" />
