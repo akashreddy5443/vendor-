@@ -9,6 +9,18 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 export function TrendingSpotlight({ data }: { data?: any }) {
     const ref = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isMuted, setIsMuted] = useState(true)
+    const videoRef = useRef<HTMLVideoElement>(null)
+
+    const toggleMute = (e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (videoRef.current) {
+            videoRef.current.muted = !isMuted
+            setIsMuted(!isMuted)
+        }
+    }
+
     const { scrollYProgress } = useScroll({
         target: ref,
         offset: ["start end", "end start"]
@@ -30,7 +42,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
             <div className="w-full max-w-[1800px] mx-auto px-4 md:px-12 lg:px-16 relative z-10">
 
                 {/* Section Header - Editorial Style */}
-                <div className="flex flex-col md:flex-row items-end justify-between mb-8 md:mb-24 gap-4 md:gap-8">
+                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-24 gap-4 md:gap-8 text-left">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -99,17 +111,39 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                     </div>
 
                     {/* Right Column: Hero Media (8 Cols) */}
-                    <div className="lg:col-span-8 relative min-h-[400px] md:min-h-[500px] lg:h-auto rounded-[2rem] md:rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900 shadow-2xl shadow-indigo-500/10">
+                    <div
+                        className="lg:col-span-8 relative min-h-[400px] md:min-h-[500px] lg:h-auto rounded-[2rem] md:rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900 shadow-2xl shadow-indigo-500/10 cursor-pointer"
+                        onClick={toggleMute}
+                    >
                         {/* Video Layer (Always On) */}
                         {content.hero.video ? (
-                            <video
-                                src={content.hero.video}
-                                className="absolute inset-0 w-full h-full object-cover z-0"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                            />
+                            <>
+                                <video
+                                    ref={videoRef}
+                                    src={content.hero.video}
+                                    className="absolute inset-0 w-full h-full object-cover z-0"
+                                    autoPlay
+                                    loop
+                                    muted={isMuted}
+                                    playsInline
+                                />
+                                {/* Mute Toggle Button */}
+                                <button
+                                    onClick={toggleMute}
+                                    className="absolute top-6 right-6 z-30 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white/80 hover:text-white hover:bg-black/70 transition-all border border-white/10"
+                                >
+                                    {isMuted ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" /></svg>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                                    )}
+                                </button>
+
+                                {/* Audio Hint Toast (Fade out after interaction) */}
+                                <div className={`absolute top-6 right-20 z-30 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 transition-opacity duration-500 ${!isMuted ? 'opacity-0' : 'opacity-100'}`}>
+                                    Tap for Sound
+                                </div>
+                            </>
                         ) : (
                             <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full -top-[10%]">
                                 <Image
@@ -127,13 +161,15 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-transparent z-10 pointer-events-none" />
 
                         {/* Floating Content on Image */}
-                        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 max-w-xl z-20">
-                            <h3 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 leading-none font-heading shadow-black drop-shadow-lg">
+                        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 max-w-xl z-20 pointer-events-none">
+                            <h3 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 leading-none font-heading shadow-black drop-shadow-lg text-left">
                                 {content.hero.title}
                             </h3>
-                            <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all group-hover:gap-5">
-                                Shop The Look <ArrowRight className="w-4 h-4" />
-                            </Link>
+                            <div className="pointer-events-auto inline-block" onClick={(e) => e.stopPropagation()}>
+                                <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all group-hover:gap-5">
+                                    Shop The Look <ArrowRight className="w-4 h-4" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
