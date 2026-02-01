@@ -47,7 +47,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                 variants={containerVariants}
                 className="max-w-7xl mx-auto px-6 relative z-10"
             >
-                <motion.div variants={itemVariants} className="flex flex-col md:flex-row justify-between items-end mb-16">
+                <motion.div variants={itemVariants} className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16">
                     <div className="space-y-2">
                         <div className="flex items-center gap-2 text-primary mb-2">
                             <Sparkles className="h-4 w-4 fill-primary" />

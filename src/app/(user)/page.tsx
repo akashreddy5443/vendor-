@@ -130,8 +130,26 @@ export default function HomePage() {
         <HeroSlider slides={slides} />
       </section >
 
+      {/* Mobile Trust Strip (Compact) - Order 1.5 */}
+      <div className="order-1 md:hidden bg-slate-50 border-y border-slate-100 py-3 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-6 px-4 min-w-max">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Fast Delivery</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Official Warranty</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Easy Returns</span>
+          </div>
+        </div>
+      </div>
+
       {/* Categories: AJIO-Style Tiles */}
-      <section className="pt-16 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
+      <section className="pt-8 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -229,11 +247,11 @@ export default function HomePage() {
           </motion.div>
 
           {/* Mobile: Horizontal Scroll, Desktop: Grid */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scroll-pl-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
             {loading ? (
               // Skeleton Loading State
               Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="min-w-[85vw] md:min-w-0 snap-center">
+                <div key={i} className="min-w-[75vw] md:min-w-0 snap-start">
                   <ProductCardSkeleton />
                 </div>
               ))
@@ -245,7 +263,7 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: (index % 3) * 0.15, ease: [0.21, 0.45, 0.32, 0.9] as const }}
-                  className="min-w-[85vw] md:min-w-0 snap-center"
+                  className="min-w-[75vw] md:min-w-0 snap-start"
                 >
                   <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
                 </motion.div>

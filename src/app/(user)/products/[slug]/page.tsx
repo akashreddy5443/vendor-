@@ -275,6 +275,18 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     isLoggedIn={!!user}
                 />
             </div>
+            {/* Sticky Mobile Add To Cart Bar */}
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-100 p-3 md:hidden shadow-[0_-5px_15px_rgba(0,0,0,0.05)] safe-area-bottom">
+                <div className="flex items-center gap-4">
+                    <div className="flex flex-col">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 truncate max-w-[120px]">{product.title}</span>
+                        <span className="text-lg font-black text-primary tracking-tighter">{formatPrice(hasDiscount ? finalPrice : product.price)}</span>
+                    </div>
+                    <div className="flex-grow">
+                        <AddToCartButton product={product} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
