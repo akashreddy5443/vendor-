@@ -196,9 +196,9 @@ export function Navbar() {
                             <Heart className="h-5 w-5 mb-0.5" />
                         </Link>
 
-                        <Link href="/cart" className="relative flex flex-col items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors">
+                        <Link href="/cart" className="relative flex items-center justify-center p-2 text-xs font-medium text-slate-500 hover:text-primary transition-colors">
                             <div className="relative">
-                                <ShoppingCart className="h-5 w-5 mb-0.5" />
+                                <ShoppingCart className="h-5 w-5" />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-primary text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center shadow-lg shadow-primary/20">
                                         {cartCount}

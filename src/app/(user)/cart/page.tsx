@@ -84,15 +84,17 @@ export default function CartPage() {
     return (
         <div className="bg-gray-50/50 min-h-screen py-12 md:py-20 text-foreground font-sans">
             <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-border pb-6">
-                    <h1 className="text-3xl md:text-5xl font-heading font-extrabold uppercase tracking-tight text-primary">
-                        Shopping Cart
-                        <span className="ml-4 text-xl md:text-2xl text-muted-foreground font-medium align-middle font-sans">
-                            {items.reduce((a, b) => a + b.quantity, 0)} Items
-                        </span>
+                <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10 border-b border-slate-200 pb-6">
+                    <h1 className="flex items-center gap-4 text-3xl md:text-5xl font-heading font-black uppercase tracking-tight text-slate-900">
+                        Your Selection
+                        {items.length > 0 && (
+                            <span className="flex h-8 min-w-[2rem] px-2 items-center justify-center rounded-full bg-slate-100 text-lg md:text-xl font-bold text-slate-500">
+                                {items.reduce((a, b) => a + b.quantity, 0)}
+                            </span>
+                        )}
                     </h1>
-                    <Link href="/products" className="hidden md:flex items-center text-sm font-bold text-primary hover:underline uppercase tracking-wide mt-4 md:mt-0">
-                        Continue Shopping <ArrowRight className="ml-1 h-3 w-3" />
+                    <Link href="/products" className="group flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-primary transition-colors">
+                        Continue Shopping <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                     </Link>
                 </div>
 
