@@ -148,7 +148,75 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Categories Removed for Minimalist Look (Phase 1) */}
+      {/* Categories: AJIO-Style Tiles */}
+      <section className="pt-8 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col gap-1 md:gap-2 mb-6 md:mb-16"
+          >
+            <div className="flex items-center gap-2 text-primary">
+              <LayoutGrid className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
+            </div>
+            <div className="flex items-end justify-between">
+              <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+                Browse <span className="text-primary">Categories</span>
+              </h2>
+              <Link href="/products" className="hidden md:flex text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary items-center gap-2">View All <ArrowRight className="w-4 h-4" /></Link>
+            </div>
+          </motion.div>
+
+          {/* Categories Grid - Mobile: 2 cols, Desktop: 3/6 cols */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
+            {categories.map((cat, idx) => (
+              <motion.div
+                key={cat.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={idx > 3 ? 'hidden xl:block' : ''} // Mobile: Show 4, Desktop: Show all (if 6) or hide logic adjustment needed? 
+              // Wait, xl:grid-cols-6 means all 6 in one row.
+              // User wants 4 on mobile. 
+              // Let's hide indices > 3 on mobile (block on md).
+              >
+                <Link href={cat.href || '#'} className={`group block relative aspect-[4/5] md:aspect-[4/5] rounded-2xl md:rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 ${idx > 3 ? 'hidden md:block' : ''}`}>
+                  <img
+                    src={cat.image || (
+                      cat.name === 'Laptops' ? 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853' :
+                        cat.name === 'Smartphones' || cat.name === 'Phones' ? 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9' :
+                          cat.name === 'Audio' || cat.name === 'Studio Audio' ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e' :
+                            cat.name === 'Watches' || cat.name === 'Wearables' ? 'https://images.unsplash.com/photo-1523275335684-37898b6baf30' :
+                              cat.name === 'Gaming Rigs' || cat.name === 'Gaming' ? 'https://images.unsplash.com/photo-1542751371-adc38448a05e' :
+                                'https://images.unsplash.com/photo-1550745165-9bc0b252726f'
+                    )}
+                    alt={cat.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+                  <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
+                    <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-none mb-1">{cat.name}</h3>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Explore</p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mobile View All Categories Button */}
+          <div className="mt-6 md:hidden">
+            <Link href="/products" className="flex items-center justify-center w-full py-3 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-colors">
+              View All Categories
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Promo Banner: Order 3 (Mobile) */}
       <section className="bg-transparent py-8 md:py-12 order-3 md:order-none">
