@@ -9,6 +9,7 @@ import { formatPrice } from '@/lib/utils'
 export const dynamic = 'force-dynamic'
 
 import { ProductCard } from '@/components/shop/ProductCard'
+import { ProductCardSkeleton } from '@/components/shop/ProductCardSkeleton'
 import { motion } from 'framer-motion'
 import { CyberpunkCar } from '@/components/ui/CyberpunkCar'
 import { HeroSlider } from '@/components/shop/HeroSlider'
@@ -29,6 +30,7 @@ export default function HomePage() {
   const [lifestyleTitle, setLifestyleTitle] = React.useState<string>('')
   const [trendingData, setTrendingData] = React.useState<any>(null)
   const [trustSection, setTrustSection] = React.useState<any>(null)
+  const [loading, setLoading] = React.useState(true) // Added loading state
 
   const [categories, setCategories] = React.useState<any[]>([
     { name: 'Laptops', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop', href: '/search?category=laptops' },
@@ -97,6 +99,7 @@ export default function HomePage() {
           .eq('status', 'active')
         setFeaturedProducts(products || [])
       }
+      setLoading(false)
     }
     fetchData()
   }, [])
@@ -165,6 +168,8 @@ export default function HomePage() {
                                 'https://images.unsplash.com/photo-1550745165-9bc0b252726f'
                     )}
                     alt={cat.name}
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
@@ -215,7 +220,12 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {featuredProducts.length > 0 ? (
+            {loading ? (
+              // Skeleton Loading State
+              Array.from({ length: 3 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))
+            ) : featuredProducts.length > 0 ? (
               featuredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}

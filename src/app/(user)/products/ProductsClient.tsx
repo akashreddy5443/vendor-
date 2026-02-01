@@ -3,6 +3,7 @@
 import React, { use } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ProductCard } from '@/components/shop/ProductCard'
+import { ProductCardSkeleton } from '@/components/shop/ProductCardSkeleton'
 import { ProductFilterSidebarV2 } from '@/components/shop/ProductFilterSidebarV2'
 import { ProductSort } from '@/components/shop/ProductSort'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -212,7 +213,7 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                             {loading ? (
                                 Array.from({ length: 6 }).map((_, i) => (
-                                    <div key={i} className="bg-white rounded-[2rem] h-[450px] animate-pulse border border-slate-100" />
+                                    <ProductCardSkeleton key={i} />
                                 ))
                             ) : (
                                 <AnimatePresence mode='wait'>

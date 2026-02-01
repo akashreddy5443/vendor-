@@ -27,6 +27,7 @@
 }
 
 :root {
+  scroll-behavior: smooth;
   --background: #fcfdff;
   --foreground: #020617;
   --card: #ffffff;
