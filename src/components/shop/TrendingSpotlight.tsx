@@ -8,11 +8,12 @@ import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'fra
 
 export function TrendingSpotlight({ data }: { data?: any }) {
     const ref = useRef(null)
+    const containerRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(true)
     const [isMobile, setIsMobile] = useState(false)
     const videoRef = useRef<HTMLVideoElement>(null)
-    const isInView = useInView(ref, { amount: 0.6 }) // Play when 60% visible
+    const isInView = useInView(containerRef, { amount: 0.6 }) // Play when video is 60% visible
 
     // Detect Mobile
     React.useEffect(() => {
@@ -152,6 +153,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
 
                     {/* Right Column: Hero Media (8 Cols) */}
                     <div
+                        ref={containerRef}
                         className="lg:col-span-8 relative min-h-[400px] md:min-h-[500px] lg:h-auto rounded-[2rem] md:rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900 shadow-2xl shadow-indigo-500/10 cursor-pointer"
                         onClick={toggleMute}
                         onMouseEnter={handleMouseEnter}
