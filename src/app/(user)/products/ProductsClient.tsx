@@ -149,18 +149,13 @@ export default function ProductsClient({ searchParams }: ProductPageProps) {
                 })
             }
 
-            // Override price bounds with admin settings if available, else Dynamic
-            if (settings?.max_price_filter) {
-                setPriceBounds({
-                    min: settings.min_price_filter || 0,
-                    max: settings.max_price_filter
-                })
-            } else if (allProducts) {
+            // Dynamic Price Range from Products (Ignoring Admin Settings as requested)
+            if (allProducts) {
                 const prices = allProducts.map(p => p.price)
                 if (prices.length > 0) {
                     setPriceBounds({
-                        min: Math.floor(Math.min(...prices)), // Dynamic Min
-                        max: Math.ceil(Math.max(...prices))    // Dynamic Max
+                        min: Math.floor(Math.min(...prices)),
+                        max: Math.ceil(Math.max(...prices))
                     })
                 }
             }
