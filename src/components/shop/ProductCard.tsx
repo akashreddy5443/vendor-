@@ -130,13 +130,13 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                     {/* Quick View Overlay (Bottom Right) */}
                     {!isOutOfStock && (
-                        <div className="absolute bottom-4 right-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 z-20">
+                        <div className="absolute bottom-0 right-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 z-20">
                             <button
                                 onClick={(e) => {
                                     e.preventDefault()
                                     setShowQuickView(true)
                                 }}
-                                className="h-10 w-10 flex items-center justify-center bg-white text-slate-900 rounded-full shadow-xl hover:bg-slate-50 transition-colors border border-slate-100"
+                                className="h-12 w-12 flex items-center justify-center bg-white text-slate-900 rounded-tl-2xl shadow-none hover:bg-slate-50 transition-colors border-l border-t border-slate-100"
                                 title="Quick View"
                             >
                                 <Eye className="w-5 h-5" />
