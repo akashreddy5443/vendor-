@@ -124,14 +124,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-slate-900 overflow-hidden font-sans">
-      {/* Hero Slider */}
-      <section className="relative">
+    <div className="min-h-screen bg-transparent text-slate-900 overflow-hidden font-sans flex flex-col md:block">
+      {/* Hero Slider - Order 1 */}
+      <section className="relative order-1 md:order-none">
         <HeroSlider slides={slides} />
       </section >
 
-      {/* Categories: AJIO-Style Tiles */}
-      <section className="pt-16 md:pt-32 pb-8 bg-transparent">
+      {/* Categories: Order 2 */}
+      <section className="pt-16 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -143,11 +143,15 @@ export default function HomePage() {
               <LayoutGrid className="h-4 w-4" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
-              Browse <span className="text-primary">Categories</span>
-            </h2>
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+                Browse <span className="text-primary">Categories</span>
+              </h2>
+              <Link href="/products" className="hidden md:flex text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary items-center gap-2">View All <ArrowRight className="w-4 h-4" /></Link>
+            </div>
           </motion.div>
 
+          {/* Categories Grid - Mobile: 2 cols, Desktop: 3/6 cols */}
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
             {categories.map((cat, idx) => (
               <motion.div
@@ -156,8 +160,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
+                className={idx > 3 ? 'hidden xl:block' : ''} // Mobile: Show 4, Desktop: Show all (if 6) or hide logic adjustment needed? 
+              // Wait, xl:grid-cols-6 means all 6 in one row.
+              // User wants 4 on mobile. 
+              // Let's hide indices > 3 on mobile (block on md).
               >
-                <Link href={cat.href || '#'} className="group block relative aspect-[4/5] md:aspect-[4/5] rounded-2xl md:rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
+                <Link href={cat.href || '#'} className={`group block relative aspect-[4/5] md:aspect-[4/5] rounded-2xl md:rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 ${idx > 3 ? 'hidden md:block' : ''}`}>
                   <img
                     src={cat.image || (
                       cat.name === 'Laptops' ? 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853' :
@@ -182,22 +190,23 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+
+          {/* Mobile View All Categories Button */}
+          <div className="mt-6 md:hidden">
+            <Link href="/products" className="flex items-center justify-center w-full py-3 rounded-full border border-slate-200 bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-colors">
+              View All Categories
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Lifestyle Grid */}
-      <LifestyleGrid items={lifestyleItems} subtitle={lifestyleSubtitle} title={lifestyleTitle} />
-
-      {/* Promo Banner */}
-      <section className="bg-transparent py-8 md:py-12">
+      {/* Promo Banner: Order 3 (Mobile) */}
+      <section className="bg-transparent py-8 md:py-12 order-3 md:order-none">
         <PromoBanner />
       </section>
 
-      {/* Trending Spotlight */}
-      <TrendingSpotlight data={trendingData} />
-
-      {/* Featured Gear: Editorial Finish */}
-      < section className="py-16 md:py-24 px-4 md:px-6 bg-transparent" >
+      {/* Featured Gear: Order 4 (Mobile) */}
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-transparent order-4 md:order-none" >
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -244,16 +253,28 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="md:hidden mt-12 text-center">
-            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-widest">
-              View All Collection <ArrowRight className="h-4 w-4" />
+          <div className="md:hidden mt-8 text-center">
+            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-widest border-b border-blue-600 pb-1">
+              View All Collection <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         </div>
       </section >
 
-      {/* Social Proof & Trust */}
-      <TrustSection data={trustSection} />
+      {/* Trust Section: Order 5 (Mobile - bumped up) */}
+      <div className="order-5 md:order-none">
+        <TrustSection data={trustSection} />
+      </div>
+
+      {/* Lifestyle Grid: Order 6 (Mobile - pushed down) */}
+      <div className="order-6 md:order-none">
+        <LifestyleGrid items={lifestyleItems} subtitle={lifestyleSubtitle} title={lifestyleTitle} />
+      </div>
+
+      {/* Trending Spotlight: Order 7 (Mobile - last) */}
+      <div className="order-7 md:order-none">
+        <TrendingSpotlight data={trendingData} />
+      </div>
     </div >
   )
 }
