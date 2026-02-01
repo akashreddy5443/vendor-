@@ -78,30 +78,60 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                             <textarea value={data.hero.description || ''} onChange={(e) => updateHero('description', e.target.value)} placeholder="Description (reveals on hover)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm h-20" />
                             <input value={data.hero.link} onChange={(e) => updateHero('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
-                            <div className="pt-2 border-t border-gray-800">
-                                <label className="text-xs text-gray-500 block mb-1">Featured Video URL (Plays on click)</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        value={data.hero.video || ''}
-                                        onChange={(e) => updateHero('video', e.target.value)}
-                                        placeholder="https://...mp4"
-                                        className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm"
-                                    />
-                                    <CldUploadWidget
-                                        uploadPreset="ml_default"
-                                        options={{ resourceType: 'video' }}
-                                        onSuccess={(result: any) => updateHero('video', result.info.secure_url)}
-                                    >
-                                        {({ open }) => (
-                                            <button
-                                                type="button"
-                                                onClick={() => open()}
-                                                className="bg-gray-800 hover:bg-gray-700 text-white px-3 text-xs rounded border border-gray-700"
-                                            >
-                                                Upload
-                                            </button>
-                                        )}
-                                    </CldUploadWidget>
+                            <div className="pt-4 border-t border-gray-800">
+                                <label className="text-xs text-pink-500 font-bold block mb-2">Featured Video (Cinematic Overlay)</label>
+
+                                <div className="space-y-3">
+                                    {data.hero.video ? (
+                                        <div className="relative aspect-video bg-black rounded border border-gray-700 overflow-hidden group">
+                                            <video src={data.hero.video} className="w-full h-full object-cover opacity-60" controls />
+                                            <div className="absolute top-2 right-2 flex gap-2">
+                                                <CldUploadWidget
+                                                    uploadPreset="ml_default"
+                                                    options={{ resourceType: 'video' }}
+                                                    onSuccess={(result: any) => updateHero('video', result.info.secure_url)}
+                                                >
+                                                    {({ open }) => (
+                                                        <button type="button" onClick={() => open()} className="bg-black/50 hover:bg-white hover:text-black text-white px-3 py-1 text-xs rounded border border-white/20 transition-all">
+                                                            Replace
+                                                        </button>
+                                                    )}
+                                                </CldUploadWidget>
+                                                <button type="button" onClick={() => updateHero('video', '')} className="bg-red-900/80 hover:bg-red-600 text-white px-3 py-1 text-xs rounded border border-red-500/30 transition-all">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <CldUploadWidget
+                                            uploadPreset="ml_default"
+                                            options={{ resourceType: 'video' }}
+                                            onSuccess={(result: any) => updateHero('video', result.info.secure_url)}
+                                        >
+                                            {({ open }) => (
+                                                <div
+                                                    onClick={() => open()}
+                                                    className="w-full h-32 border-2 border-dashed border-gray-800 hover:border-pink-600 hover:bg-pink-900/10 rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all group"
+                                                >
+                                                    <div className="p-3 bg-gray-900 rounded-full mb-2 group-hover:scale-110 transition-transform">
+                                                        <ImagePlus className="w-5 h-5 text-gray-400 group-hover:text-pink-500" />
+                                                    </div>
+                                                    <span className="text-xs text-gray-400 group-hover:text-pink-400 font-medium">Click to Upload Video</span>
+                                                    <span className="text-[10px] text-gray-600 mt-1">MP4, WebM (Max 50MB)</span>
+                                                </div>
+                                            )}
+                                        </CldUploadWidget>
+                                    )}
+
+                                    {/* Fallback Input */}
+                                    <div className="relative">
+                                        <input
+                                            value={data.hero.video || ''}
+                                            onChange={(e) => updateHero('video', e.target.value)}
+                                            placeholder="Or paste video link..."
+                                            className="w-full bg-black/50 border border-gray-800 p-2 pl-3 rounded text-gray-400 text-xs focus:text-white focus:border-pink-900 transition-colors"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

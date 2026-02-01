@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { ShieldCheck, Truck, RotateCcw, CreditCard } from 'lucide-react'
 import { motion } from 'framer-motion'
 
