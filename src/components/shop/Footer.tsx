@@ -19,7 +19,7 @@ export async function Footer() {
     // Default Config (Billionaire Style)
     const defaults = {
         style: {
-            backgroundColor: '#050a18',
+            backgroundColor: '#020617', // slate-950
             textColor: '#ffffff',
             accentColor: '#3b82f6'
         },

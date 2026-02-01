@@ -23,24 +23,24 @@ export function TrendingSpotlight({ data }: { data?: any }) {
     }
 
     return (
-        <section ref={ref} className="py-24 md:py-32 bg-slate-950 relative overflow-hidden">
+        <section ref={ref} className="py-12 md:py-32 bg-slate-950 relative overflow-hidden">
             {/* Ambient Background */}
             <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-900/20 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
             <div className="w-full max-w-[1800px] mx-auto px-4 md:px-12 lg:px-16 relative z-10">
 
                 {/* Section Header - Editorial Style */}
-                <div className="flex flex-col md:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
+                <div className="flex flex-col md:flex-row items-end justify-between mb-8 md:mb-24 gap-4 md:gap-8">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         className="max-w-2xl"
                     >
-                        <span className="block text-indigo-500 font-bold tracking-[0.3em] uppercase text-xs mb-4">
+                        <span className="block text-indigo-500 font-bold tracking-[0.3em] uppercase text-xs mb-3 md:mb-4">
                             — {content.hero.tag || 'Featured Story'}
                         </span>
-                        <h2 className="text-5xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter font-heading">
+                        <h2 className="text-4xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter font-heading">
                             The Creator's <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-white">Sanctuary</span>
                         </h2>
                     </motion.div>
@@ -58,21 +58,19 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                 </div>
 
                 {/* Main Feature Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-h-[600px] lg:min-h-[800px]">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 lg:min-h-[800px]">
 
                     {/* Left Column: Narrative & Sub-stories (4 Cols) */}
-                    <div className="lg:col-span-4 flex flex-col gap-8 justify-between order-2 lg:order-1">
+                    <div className="lg:col-span-4 flex flex-col gap-6 md:gap-8 justify-between order-2 lg:order-1">
 
                         {/* Quote Block */}
-                        <div className="p-8 border-l-2 border-indigo-500/30 bg-white/5 backdrop-blur-sm rounded-r-2xl">
-                            <Quote className="w-8 h-8 text-indigo-500 mb-4 opacity-50" />
-                            <p className="text-xl md:text-2xl text-slate-200 font-serif italic leading-relaxed mb-6">
+                        <div className="p-6 md:p-8 border-l-2 border-indigo-500/30 bg-white/5 backdrop-blur-sm rounded-r-2xl">
+                            <Quote className="w-6 h-6 md:w-8 md:h-8 text-indigo-500 mb-4 opacity-50" />
+                            <p className="text-lg md:text-2xl text-slate-200 font-serif italic leading-relaxed mb-6">
                                 "{content.hero.quote || content.hero.description || 'Design is not just what it looks like and feels like. Design is how it works.'}"
                             </p>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 overflow-hidden">
-                                    {/* Placeholder Avatar */}
-                                    {/* <Image src="..." width={40} height={40} /> */}
                                     <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
                                 </div>
                                 <div>
@@ -85,9 +83,9 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         {/* Sub Stories (Small Cards) */}
                         <div className="flex flex-col gap-4">
                             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest block mb-2">Related Collections</span>
-                            {[content.sub1, content.sub2].map((item, idx) => (
+                            {[content.sub1, content.sub2].map((item: any, idx: number) => (
                                 <Link key={idx} href={item.link} className="group flex items-center gap-4 p-4 rounded-xl bg-slate-900 border border-white/5 hover:border-indigo-500/30 hover:bg-slate-800 transition-all">
-                                    <div className="w-20 h-20 relative rounded-lg overflow-hidden flex-shrink-0">
+                                    <div className="w-16 h-16 md:w-20 md:h-20 relative rounded-lg overflow-hidden flex-shrink-0">
                                         <Image src={item.image} alt={item.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                                     </div>
                                     <div className="flex-1">
@@ -100,67 +98,43 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         </div>
                     </div>
 
-                    {/* Right Column: Hero Image (8 Cols) */}
-                    <div className="lg:col-span-8 relative h-[500px] lg:h-auto rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900">
-                        {/* Video Player Overlay */}
-                        <AnimatePresence>
-                            {isPlaying && content.hero.video && (
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="absolute inset-0 z-[60] bg-black"
-                                >
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); setIsPlaying(false); }}
-                                        className="absolute top-6 right-6 z-50 p-2 bg-black/50 hover:bg-white text-white hover:text-black rounded-full transition-all"
-                                    >
-                                        <X className="w-6 h-6" />
-                                    </button>
-                                    <video
-                                        src={content.hero.video}
-                                        className="w-full h-full object-cover"
-                                        autoPlay
-                                        controls
-                                        loop // Optional loop
-                                    />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full -top-[10%]">
-                            <Image
-                                src={content.hero.image}
-                                alt={content.hero.title}
-                                fill
-                                className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                                priority
+                    {/* Right Column: Hero Media (8 Cols) */}
+                    <div className="lg:col-span-8 relative min-h-[400px] md:min-h-[500px] lg:h-auto rounded-[2rem] md:rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900 shadow-2xl shadow-indigo-500/10">
+                        {/* Video Layer (Always On) */}
+                        {content.hero.video ? (
+                            <video
+                                src={content.hero.video}
+                                className="absolute inset-0 w-full h-full object-cover z-0"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                             />
-                        </motion.div>
+                        ) : (
+                            <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full -top-[10%]">
+                                <Image
+                                    src={content.hero.image}
+                                    alt={content.hero.title}
+                                    fill
+                                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    priority
+                                />
+                            </motion.div>
+                        )}
 
                         {/* Cinematic Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 pointer-events-none" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-90 z-10 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-transparent z-10 pointer-events-none" />
 
                         {/* Floating Content on Image */}
-                        <div className={`absolute bottom-12 left-8 md:left-12 max-w-xl transition-opacity duration-500 ${isPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                            <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 leading-none font-heading shadow-black drop-shadow-lg">
+                        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 max-w-xl z-20">
+                            <h3 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 leading-none font-heading shadow-black drop-shadow-lg">
                                 {content.hero.title}
                             </h3>
-                            <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all group-hover:gap-5">
+                            <Link href={content.hero.link} className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all group-hover:gap-5">
                                 Shop The Look <ArrowRight className="w-4 h-4" />
                             </Link>
                         </div>
-
-                        {/* Video Trigger (Visual Only) */}
-                        {content.hero.video && !isPlaying && (
-                            <button
-                                onClick={() => setIsPlaying(true)}
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white hover:bg-white hover:text-indigo-600 transition-all scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 duration-500 z-40 cursor-pointer"
-                            >
-                                <Play className="w-8 h-8 fill-current" />
-                            </button>
-                        )}
                     </div>
 
                 </div>

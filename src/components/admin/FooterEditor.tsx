@@ -53,55 +53,70 @@ type FooterConfig = {
 
 export function FooterEditor({ initialConfig }: { initialConfig: any }) {
     // Default fallback state
-    const [config, setConfig] = useState<FooterConfig>({
-        style: {
-            backgroundColor: initialConfig?.style?.backgroundColor || '#050a18',
-            textColor: initialConfig?.style?.textColor || '#ffffff',
-            accentColor: initialConfig?.style?.accentColor || '#3b82f6'
-        },
-        contact: {
-            email: initialConfig?.contact?.email || 'support@techdev.store',
-            phone: initialConfig?.contact?.phone || '+1 (800) 555-0199'
-        },
-        newsletter: {
-            badge: initialConfig?.newsletter?.badge || 'Protocol 2026',
-            title: initialConfig?.newsletter?.title || 'Stay Connected',
-            desc: initialConfig?.newsletter?.desc || 'Join our elite network for early access to experimental hardware and developer-first documentation.'
-        },
-        socialLinks: {
-            twitter: initialConfig?.socialLinks?.twitter || '',
-            instagram: initialConfig?.socialLinks?.instagram || '',
-            youtube: initialConfig?.socialLinks?.youtube || '',
-            facebook: initialConfig?.socialLinks?.facebook || ''
-        },
-        trustBadges: initialConfig?.trustBadges || [
-            { icon: 'PackageCheck', title: 'Global Shipping', desc: 'Free expedited delivery on all orders.' },
-            { icon: 'RotateCcw', title: '30-Day Returns', desc: 'No-questions-asked return policy.' },
-            { icon: 'ShieldCheck', title: 'Secure Warranty', desc: '2-year manufacturer warranty included.' }
-        ],
-        linkGroups: initialConfig?.linkGroups || [
-            {
-                title: 'Shop', links: [
-                    { label: 'All Products', href: '/products' },
-                    { label: 'New Arrivals', href: '/products?sort=newest' }
-                ]
+    // Default fallback state
+    const [config, setConfig] = useState<FooterConfig>(() => {
+        const defaults = {
+            style: {
+                backgroundColor: '#020617',
+                textColor: '#ffffff',
+                accentColor: '#3b82f6'
             },
-            {
-                title: 'Support', links: [
-                    { label: 'Order Status', href: '/user/orders' },
-                    { label: 'Contact Us', href: '/contact' }
-                ]
+            contact: {
+                email: 'support@techdev.store',
+                phone: '+1 (800) 555-0199'
             },
-            {
-                title: 'Legal', links: [
-                    { label: 'Privacy Policy', href: '/privacy' },
-                    { label: 'Terms', href: '/terms' }
-                ]
-            }
-        ],
-        copyrightText: initialConfig?.copyrightText || 'TECHDEV',
-        creditsText: initialConfig?.creditsText || 'Authorized Dealer',
-        showPaymentIcons: initialConfig?.showPaymentIcons ?? true
+            newsletter: {
+                badge: 'Protocol 2026',
+                title: 'Stay Connected',
+                desc: 'Join our elite network for early access to experimental hardware and developer-first documentation.'
+            },
+            socialLinks: {
+                twitter: '', instagram: '', youtube: '', facebook: ''
+            },
+            trustBadges: [
+                { icon: 'PackageCheck', title: 'Global Shipping', desc: 'Free expedited delivery on all orders.' },
+                { icon: 'RotateCcw', title: '30-Day Returns', desc: 'No-questions-asked return policy.' },
+                { icon: 'ShieldCheck', title: 'Secure Warranty', desc: '2-year manufacturer warranty included.' }
+            ],
+            linkGroups: [
+                {
+                    title: 'Shop', links: [
+                        { label: 'All Products', href: '/products' },
+                        { label: 'New Arrivals', href: '/products?sort=newest' }
+                    ]
+                },
+                {
+                    title: 'Support', links: [
+                        { label: 'Order Status', href: '/user/orders' },
+                        { label: 'Contact Us', href: '/contact' }
+                    ]
+                },
+                {
+                    title: 'Legal', links: [
+                        { label: 'Privacy Policy', href: '/privacy' },
+                        { label: 'Terms', href: '/terms' }
+                    ]
+                }
+            ],
+            copyrightText: 'TECHDEV',
+            creditsText: 'Authorized Dealer',
+            showPaymentIcons: true
+        }
+
+        if (!initialConfig) return defaults
+
+        // Deep merge
+        return {
+            ...defaults,
+            ...initialConfig,
+            style: { ...defaults.style, ...initialConfig.style },
+            contact: { ...defaults.contact, ...initialConfig.contact },
+            newsletter: { ...defaults.newsletter, ...initialConfig.newsletter },
+            socialLinks: { ...defaults.socialLinks, ...initialConfig.socialLinks },
+            // Arrays: Use initial if present and not empty, otherwise default
+            trustBadges: (initialConfig.trustBadges && initialConfig.trustBadges.length > 0) ? initialConfig.trustBadges : defaults.trustBadges,
+            linkGroups: (initialConfig.linkGroups && initialConfig.linkGroups.length > 0) ? initialConfig.linkGroups : defaults.linkGroups
+        }
     })
 
     const [activeTab, setActiveTab] = useState<'content' | 'links' | 'style'>('content')
