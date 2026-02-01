@@ -50,110 +50,76 @@ export function HeroSlider({ slides }: HeroSliderProps) {
 
     return (
         <div
-            className="relative w-full h-[75vh] md:h-[650px] lg:h-[700px] overflow-hidden bg-slate-950 group"
+            className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden bg-slate-950 group"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentSlide.id}
-                    initial={{ opacity: 0, scale: 1.05 }}
+                    initial={{ opacity: 0, scale: 1.1 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.7, ease: [0.21, 0.45, 0.32, 0.9] as const }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     className="absolute inset-0 w-full h-full"
                 >
-                    {/* Background Image - Full Width */}
+                    {/* Cinematic Background Image */}
                     <div className="absolute inset-0">
                         <Image
                             src={currentSlide.imageUrl}
                             alt={currentSlide.title}
                             fill
-                            className="object-cover scale-105"
+                            className="object-cover"
                             priority
-                            sizes="(max-width: 768px) 100vw, 100vw"
+                            sizes="100vw"
                         />
-                        {/* Adjusted Gradient - Stronger on Mobile for readability */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/90 md:bg-gradient-to-r md:from-slate-950/98 md:via-slate-950/70 md:via-40% md:to-slate-950/10 z-10" />
-                        <div className="absolute inset-0 bg-black/40 md:bg-transparent z-10" /> {/* Mobile Overlay */}
+                        {/* Cinematic Gradient: Subtle vignette + clean text legibility zone */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 opacity-60" />
                     </div>
 
-                    {/* Text Content - Left Aligned */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-6 md:px-16 lg:px-24 pb-20 md:pb-0">
-                        {/* Premium Glow Effect - positioned on left */}
-                        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/15 blur-[150px] -z-10 pointer-events-none rounded-full hidden md:block" />
-
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.6 }}
-                            className="flex items-center gap-3 mb-6 md:mb-8"
-                        >
-                            <div className="h-[2px] w-8 md:w-12 bg-primary" />
-                            <h3 className="text-[10px] md:text-xs font-black text-primary uppercase tracking-[0.4em] drop-shadow-md">
-                                {currentSlide.subtitle}
-                            </h3>
-                        </motion.div>
-
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.35, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] as const }}
-                            className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white mb-8 md:mb-12 leading-[0.9] tracking-[-0.04em] max-w-5xl font-heading drop-shadow-xl"
-                            style={{
-                                color: currentSlide.color,
-                                textShadow: '0 4px 20px rgba(0,0,0,0.5)'
-                            }}
-                        >
-                            {currentSlide.title}
-                        </motion.h1>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5, duration: 0.6 }}
-                        >
-                            <Link
-                                href={currentSlide.link}
-                                className="inline-flex items-center justify-center px-10 py-4 md:px-14 md:py-5 text-[10px] md:text-xs font-black text-slate-950 bg-white hover:bg-primary hover:text-white rounded-full transition-all duration-300 shadow-[0_20px_60px_-15px_rgba(255,255,255,0.3)] hover:shadow-[0_20px_60px_-15px_rgba(59,130,246,0.4)] hover:scale-105 active:scale-95 uppercase tracking-[0.25em] group"
+                    {/* Content Layer - Offset Layout */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center px-6 md:px-0">
+                        <div className="md:ml-[12%] max-w-4xl">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3, duration: 0.8 }}
+                                className="flex items-center gap-4 mb-6"
                             >
-                                {currentSlide.buttonText}
-                                <ArrowRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-1.5" />
-                            </Link>
-                        </motion.div>
+                                <div className="h-[2px] w-12 bg-white/50" />
+                                <h3 className="text-xs md:text-sm font-medium text-white/80 uppercase tracking-[0.3em]">
+                                    {currentSlide.subtitle}
+                                </h3>
+                            </motion.div>
+
+                            <motion.h1
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+                                className="text-5xl md:text-8xl lg:text-9xl font-black text-white mb-10 leading-[0.9] tracking-tighter"
+                                style={{ color: currentSlide.color }}
+                            >
+                                {currentSlide.title}
+                            </motion.h1>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5, duration: 0.8 }}
+                            >
+                                <Link
+                                    href={currentSlide.link}
+                                    className="inline-flex items-center gap-3 text-sm font-bold text-white uppercase tracking-widest hover:gap-5 transition-all duration-300 group/btn"
+                                >
+                                    <span className="border-b border-white pb-1">{currentSlide.buttonText}</span>
+                                    <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-2" />
+                                </Link>
+                            </motion.div>
+                        </div>
                     </div>
                 </motion.div>
             </AnimatePresence>
-
-            {/* Navigation Buttons - Cleaner Style with Glassmorphism */}
-            {slides.length > 1 && (
-                <>
-                    <button
-                        onClick={prevSlide}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/30 backdrop-blur-md hover:bg-white text-white hover:text-black shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30 hover:scale-110"
-                    >
-                        <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button
-                        onClick={nextSlide}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/30 backdrop-blur-md hover:bg-white text-white hover:text-black shadow-sm flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-30 hover:scale-110"
-                    >
-                        <ChevronRight className="w-5 h-5" />
-                    </button>
-
-                    {/* Indicators */}
-                    <div className="absolute bottom-8 left-8 md:left-32 flex gap-3 z-30">
-                        {slides.map((_, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => setCurrentIndex(idx)}
-                                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white w-8' : 'bg-white/40 w-4 hover:bg-white/60'
-                                    }`}
-                            />
-                        ))}
-                    </div>
-                </>
-            )}
         </div>
     )
 }
