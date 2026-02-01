@@ -185,17 +185,18 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                                     {formatPrice(finalPrice)}
                                 </span>
                             </div>
-
-                            <button
-                                onClick={handleAddToCart}
-                                className="h-10 w-10 rounded-full bg-white text-slate-900 border border-slate-100 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 transform translate-y-0 md:translate-y-2 md:group-hover:translate-y-0 group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:rotate-12 shadow-xl shadow-primary/20"
-                                title="Add to Cart"
-                            >
-                                <ShoppingCart className="h-4 w-4" />
-                            </button>
                         </div>
                     </div>
                 </div>
+
+                {/* Add To Cart - Corner Style (Bottom Right) */}
+                <button
+                    onClick={handleAddToCart}
+                    className="absolute bottom-0 right-0 h-10 w-10 md:h-12 md:w-12 bg-slate-900 md:bg-white text-white md:text-slate-900 flex items-center justify-center rounded-tl-2xl shadow-none md:hover:bg-primary md:hover:text-white transition-all duration-300 z-30"
+                    title="Add to Cart"
+                >
+                    <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+                </button>
 
                 {/* Wishlist Action */}
                 <div className="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-auto scale-90 group-hover:scale-100">
