@@ -69,6 +69,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
     // Featured State
     const initialSelected = featuredSection?.content_json?.productIds || []
     const [selectedProductIds, setSelectedProductIds] = useState<string[]>(initialSelected)
+    const [featuredTitle, setFeaturedTitle] = useState(featuredSection?.title || 'Featured Gear')
+    const [featuredSubtitle, setFeaturedSubtitle] = useState(featuredSection?.content_json?.subtitle || "Editor's Choice")
 
     const handleHeroSubmit = async (formData: FormData) => {
         await updateHero(formData)
@@ -82,6 +84,8 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
     const handleFeaturedSubmit = async (formData: FormData) => {
         // We need to append the JSON product IDs manually or use a hidden input structure
+        formData.append('title', featuredTitle)
+        formData.append('subtitle', featuredSubtitle)
         await updateFeatured(formData)
     }
 
@@ -326,6 +330,17 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
                 <form action={handleFeaturedSubmit} className="space-y-6">
                     <input type="hidden" name="productIds" value={JSON.stringify(selectedProductIds)} />
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Section Title</label>
+                            <input value={featuredTitle} onChange={(e) => setFeaturedTitle(e.target.value)} className="w-full rounded-md border border-gray-300 p-2 text-gray-900 focus:border-blue-500 outline-none" placeholder="Featured Gear" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Tagline / Subtitle</label>
+                            <input value={featuredSubtitle} onChange={(e) => setFeaturedSubtitle(e.target.value)} className="w-full rounded-md border border-gray-300 p-2 text-gray-900 focus:border-blue-500 outline-none" placeholder="Editor's Choice" />
+                        </div>
+                    </div>
 
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-md bg-gray-50">
                         {products.map((product) => {

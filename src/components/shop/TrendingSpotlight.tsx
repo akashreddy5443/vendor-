@@ -1,13 +1,14 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Play, Quote } from 'lucide-react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, Play, Quote, X } from 'lucide-react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 
 export function TrendingSpotlight({ data }: { data?: any }) {
     const ref = useRef(null)
+    const [isPlaying, setIsPlaying] = useState(false)
     const { scrollYProgress } = useScroll({
         target: ref,
         offset: ["start end", "end start"]
@@ -71,6 +72,7 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 overflow-hidden">
                                     {/* Placeholder Avatar */}
+                                    {/* <Image src="..." width={40} height={40} /> */}
                                     <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600"></div>
                                 </div>
                                 <div>
@@ -99,7 +101,33 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                     </div>
 
                     {/* Right Column: Hero Image (8 Cols) */}
-                    <div className="lg:col-span-8 relative h-[500px] lg:h-auto rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group">
+                    <div className="lg:col-span-8 relative h-[500px] lg:h-auto rounded-[2.5rem] overflow-hidden order-1 lg:order-2 group bg-slate-900">
+                        {/* Video Player Overlay */}
+                        <AnimatePresence>
+                            {isPlaying && content.hero.video && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="absolute inset-0 z-[60] bg-black"
+                                >
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); setIsPlaying(false); }}
+                                        className="absolute top-6 right-6 z-50 p-2 bg-black/50 hover:bg-white text-white hover:text-black rounded-full transition-all"
+                                    >
+                                        <X className="w-6 h-6" />
+                                    </button>
+                                    <video
+                                        src={content.hero.video}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        controls
+                                        loop // Optional loop
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                         <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full -top-[10%]">
                             <Image
                                 src={content.hero.image}
@@ -111,11 +139,11 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         </motion.div>
 
                         {/* Cinematic Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-transparent to-transparent pointer-events-none" />
 
                         {/* Floating Content on Image */}
-                        <div className="absolute bottom-12 left-8 md:left-12 max-w-xl">
+                        <div className={`absolute bottom-12 left-8 md:left-12 max-w-xl transition-opacity duration-500 ${isPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                             <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4 leading-none font-heading shadow-black drop-shadow-lg">
                                 {content.hero.title}
                             </h3>
@@ -125,9 +153,14 @@ export function TrendingSpotlight({ data }: { data?: any }) {
                         </div>
 
                         {/* Video Trigger (Visual Only) */}
-                        <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white hover:bg-white hover:text-indigo-600 transition-all scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 duration-500">
-                            <Play className="w-8 h-8 fill-current" />
-                        </button>
+                        {content.hero.video && !isPlaying && (
+                            <button
+                                onClick={() => setIsPlaying(true)}
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white hover:bg-white hover:text-indigo-600 transition-all scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-100 duration-500 z-40 cursor-pointer"
+                            >
+                                <Play className="w-8 h-8 fill-current" />
+                            </button>
+                        )}
                     </div>
 
                 </div>

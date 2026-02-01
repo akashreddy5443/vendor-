@@ -52,6 +52,8 @@ export async function updateFeatured(formData: FormData) {
     const supabase = await createClient()
 
     const productIds = JSON.parse(formData.get('productIds') as string)
+    const title = formData.get('title') as string || 'Featured Gear'
+    const subtitle = formData.get('subtitle') as string || "Editor's Choice"
 
     // Find section with type 'featured'.
     const { data: existing } = await supabase
@@ -62,8 +64,8 @@ export async function updateFeatured(formData: FormData) {
 
     const payload = {
         section_type: 'featured',
-        title: 'FEATURED GEAR',
-        content_json: { productIds },
+        title,
+        content_json: { productIds, subtitle },
         is_active: true,
     }
 
