@@ -236,6 +236,11 @@ export async function updateLifestyle(formData: FormData) {
     const subtitle = formData.get('subtitle') as string || 'Collections curated for modern creators'
     const title = formData.get('title') as string || 'Designed For Every Moment'
 
+    // New Fields
+    const badgeText = formData.get('badgeText') as string || 'Featured'
+    const btnText = formData.get('btnText') as string || 'Explore Now →'
+    const microText = formData.get('microText') as string || 'Explore Collection'
+
     const { data: existing } = await supabase
         .from('homepage_sections')
         .select('id')
@@ -246,7 +251,7 @@ export async function updateLifestyle(formData: FormData) {
         section_type: 'lifestyle_grid',
         title,
         subtitle,
-        content_json: { items },
+        content_json: { items, badgeText, btnText, microText },
         is_active: true,
     }
 

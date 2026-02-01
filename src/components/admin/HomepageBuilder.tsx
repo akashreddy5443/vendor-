@@ -478,7 +478,17 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             <FooterEditor initialConfig={footerSection?.content_json} />
 
             {/* Lifestyle Grid Editor */}
-            <LifestyleEditor initialItems={lifestyleSection?.content_json?.items} />
+            <LifestyleEditor
+                initialItems={lifestyleSection?.content_json?.items}
+                initialTitle={lifestyleSection?.title}
+                initialSubtitle={lifestyleSection?.subtitle}
+                // @ts-ignore
+                initialItems={Object.assign(lifestyleSection?.content_json?.items || [], {
+                    badgeText: lifestyleSection?.content_json?.badgeText,
+                    btnText: lifestyleSection?.content_json?.btnText,
+                    microText: lifestyleSection?.content_json?.microText
+                })}
+            />
 
             {/* Trending Spotlight Editor */}
             <TrendingEditor initialData={trendingSection?.content_json} />

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
-export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subtitle?: string, title?: string }) {
+export function LifestyleGrid({ items, subtitle, title, badgeText, btnText, microText }: { items?: any[], subtitle?: string, title?: string, badgeText?: string, btnText?: string, microText?: string }) {
     const gridItems = items || [
         {
             title: 'DESK & PRODUCTIVITY',
@@ -26,6 +26,9 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
 
     const sectionSubtitle = subtitle || 'Collections curated for modern creators'
     const sectionTitle = title || 'Designed For Every Moment'
+    const labelBadge = badgeText || 'Featured'
+    const labelBtn = btnText || 'Explore Now →'
+    const labelMicro = microText || 'Explore Collection'
 
     // Card Component
     const Card = ({ item, idx }: { item: any, idx: number }) => (
@@ -47,7 +50,7 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                 {idx === 0 && (
                     <div className="absolute top-6 left-6 z-20">
                         <div className="bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-2 rounded-full shadow-lg">
-                            <p className="text-xs font-black text-white uppercase tracking-wider">Featured</p>
+                            <p className="text-xs font-black text-white uppercase tracking-wider">{labelBadge}</p>
                         </div>
                     </div>
                 )}
@@ -55,7 +58,7 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
                 {/* Micro-copy on hover */}
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
                     <div className="bg-white/95 backdrop-blur-xl px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-lg border border-white/50">
-                        <p className="text-[10px] md:text-xs font-bold text-slate-900">Explore Now →</p>
+                        <p className="text-[10px] md:text-xs font-bold text-slate-900">{labelBtn}</p>
                     </div>
                 </div>
 
@@ -73,7 +76,7 @@ export function LifestyleGrid({ items, subtitle, title }: { items?: any[], subti
 
                         <div className="flex items-center text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-blue-300 group-hover/label:text-white transition-all gap-2 relative z-10 drop-shadow-md">
                             <span className="relative">
-                                Explore Collection
+                                {labelMicro}
                                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-white group-hover/label:w-full transition-all duration-300"></span>
                             </span>
                             <div className="relative">
