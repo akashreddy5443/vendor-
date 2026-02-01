@@ -150,7 +150,7 @@ export default function HomePage() {
 
       {/* Categories: AJIO-Style Tiles */}
       <section className="pt-8 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="w-full px-4 md:px-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -225,7 +225,7 @@ export default function HomePage() {
 
       {/* Featured Gear: Order 4 (Mobile) */}
       <section className="py-12 md:py-24 bg-transparent order-4 md:order-none overflow-hidden" >
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="w-full px-4 md:px-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

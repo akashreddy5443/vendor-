@@ -84,7 +84,7 @@ export async function Footer() {
                 style={{ backgroundColor: style.accentColor }}
             />
 
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+            <div className="w-full px-6 md:px-12 lg:px-16 relative z-10">
 
                 {/* Top Section: Newsletter & Value Props */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 mb-24 border-b border-white/5 pb-20">

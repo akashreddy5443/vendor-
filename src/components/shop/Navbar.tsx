@@ -86,7 +86,7 @@ export function Navbar() {
                 </div>
             )}
 
-            <nav className="flex h-16 items-center border-b border-slate-100 bg-white/80 backdrop-blur-2xl px-6 text-foreground sticky top-0 z-40 shadow-[0_4px_30px_-10px_rgba(45,92,247,0.15)] gap-8 transition-all duration-500">
+            <nav className="flex h-16 items-center border-b border-slate-100 bg-white/80 backdrop-blur-2xl px-6 md:px-12 text-foreground sticky top-0 z-40 shadow-[0_4px_30px_-10px_rgba(45,92,247,0.15)] gap-8 transition-all duration-500">
                 {/* Vibrant Identity Line */}
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-indigo-500 to-indigo-600 z-50" />
 
