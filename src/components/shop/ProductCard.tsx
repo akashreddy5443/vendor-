@@ -79,12 +79,12 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
                 <div className="aspect-square relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-700">
                     {imageUrl ? (
-                        <div className="relative h-full w-full flex items-center justify-center p-10 z-10">
+                        <div className="relative h-full w-full flex items-center justify-center z-10">
                             <Image
                                 src={imageUrl}
                                 alt={product.title}
                                 fill
-                                className={`object-contain transition-all duration-1000 group-hover:scale-110 ${hoverImageUrl ? 'group-hover:opacity-0' : ''} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+                                className={`object-cover transition-all duration-1000 group-hover:scale-110 ${hoverImageUrl ? 'group-hover:opacity-0' : ''} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
                                 sizes="(max-width: 640px) 45vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                             />
                             {hoverImageUrl && (
