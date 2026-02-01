@@ -59,145 +59,140 @@ export function LifestyleEditor({ initialItems, initialSubtitle, initialTitle }:
                 {/* Section Headings Control */}
                 <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-100 space-y-4">
                     <label className="block">
-                        {/* Title Input ... */}
+                        <span className="text-sm font-bold text-slate-700 mb-2 block flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                            Main Heading
+                        </span>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Designed For Every Moment"
+                            className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                        />
+                        <p className="text-xs text-slate-600 mt-2">
+                            💡 The last two words will be highlighted in blue with a refined underline
+                        </p>
                     </label>
-                    {/* ... Subtitle Input ... */}
+
+                    <label className="block">
+                        <span className="text-sm font-bold text-slate-700 mb-2 block flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                            Subtitle
+                        </span>
+                        <input
+                            type="text"
+                            value={subtitle}
+                            onChange={(e) => setSubtitle(e.target.value)}
+                            placeholder="Collections curated for modern creators"
+                            className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                        />
+                        <p className="text-xs text-slate-600 mt-2">
+                            💡 Use a clear theme that tells a story (e.g., "Work → Play → Everyday Life")
+                        </p>
+                    </label>
 
                     {/* New Fields */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-indigo-100 pt-4">
                         <label>
                             <span className="text-xs font-bold text-slate-700 mb-1 block">Badge Text (First Card)</span>
-                            <input value={badgeText} onChange={e => setBadgeText(e.target.value)} className="w-full rounded border p-2 text-sm" />
+                            <input value={badgeText} onChange={e => setBadgeText(e.target.value)} className="w-full rounded-lg border border-slate-200 p-2 text-sm" />
                         </label>
                         <label>
                             <span className="text-xs font-bold text-slate-700 mb-1 block">Hover Button Text</span>
-                            <input value={btnText} onChange={e => setBtnText(e.target.value)} className="w-full rounded border p-2 text-sm" />
+                            <input value={btnText} onChange={e => setBtnText(e.target.value)} className="w-full rounded-lg border border-slate-200 p-2 text-sm" />
                         </label>
                         <label>
                             <span className="text-xs font-bold text-slate-700 mb-1 block">Link Label</span>
-                            <input value={microText} onChange={e => setMicroText(e.target.value)} className="w-full rounded border p-2 text-sm" />
+                            <input value={microText} onChange={e => setMicroText(e.target.value)} className="w-full rounded-lg border border-slate-200 p-2 text-sm" />
                         </label>
                     </div>
                 </div>
-                <label className="block">
-                    <span className="text-sm font-bold text-slate-700 mb-2 block flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-                        Main Heading
-                    </span>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Designed For Every Moment"
-                        className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                    />
-                    <p className="text-xs text-slate-600 mt-2">
-                        💡 The last two words will be highlighted in blue with a refined underline
-                    </p>
-                </label>
 
-                <label className="block">
-                    <span className="text-sm font-bold text-slate-700 mb-2 block flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-                        Subtitle
-                    </span>
-                    <input
-                        type="text"
-                        value={subtitle}
-                        onChange={(e) => setSubtitle(e.target.value)}
-                        placeholder="Collections curated for modern creators"
-                        className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                    />
-                    <p className="text-xs text-slate-600 mt-2">
-                        💡 Use a clear theme that tells a story (e.g., "Work → Play → Everyday Life")
-                    </p>
-                </label>
-            </div>
-
-            {/* Phase 5: Grid System Info */}
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
-                <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                    Grid System (Phase 5)
-                </h4>
-                <div className="space-y-2 text-xs text-slate-700">
-                    <p>✅ <strong>Equal Card Widths:</strong> All cards have identical width for clean alignment</p>
-                    <p>✅ <strong>Equal Gaps:</strong> Consistent 2rem spacing between all cards</p>
-                    <p>✅ <strong>Vertical Alignment:</strong> Cards align from the top for professional layout</p>
-                    <p>✅ <strong>Breathing Space:</strong> Proper padding below section (8rem)</p>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {items.map((item, index) => (
-                    <div key={index} className="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
-                        <h4 className="font-bold text-slate-700 text-sm flex items-center gap-2">
-                            <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full text-xs font-black">
-                                {index + 1}
-                            </span>
-                            Column {index + 1}
-                        </h4>
-
-                        {/* Image Upload */}
-                        <div className="relative aspect-[4/5] bg-white rounded-xl border-2 border-dashed border-slate-200 overflow-hidden group hover:border-indigo-300 transition-colors">
-                            {item.image ? (
-                                <>
-                                    <img src={item.image} alt="Preview" className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <CldUploadWidget
-                                            uploadPreset="ml_default"
-                                            onSuccess={(result: any) => updateItem(index, 'image', result.info.secure_url)}
-                                        >
-                                            {({ open }) => (
-                                                <button type="button" onClick={() => open()} className="bg-white text-slate-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-600 hover:text-white transition-colors">
-                                                    Change Image
-                                                </button>
-                                            )}
-                                        </CldUploadWidget>
-                                    </div>
-                                </>
-                            ) : (
-                                <CldUploadWidget
-                                    uploadPreset="ml_default"
-                                    onSuccess={(result: any) => updateItem(index, 'image', result.info.secure_url)}
-                                >
-                                    {({ open }) => (
-                                        <button type="button" onClick={() => open()} className="w-full h-full flex flex-col items-center justify-center text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
-                                            <ImagePlus className="w-8 h-8 mb-2" />
-                                            <span className="text-sm font-medium">Upload Image</span>
-                                        </button>
-                                    )}
-                                </CldUploadWidget>
-                            )}
-                        </div>
-
-                        <input
-                            value={item.title}
-                            onChange={(e) => updateItem(index, 'title', e.target.value)}
-                            placeholder="Card Title (e.g., DESK & PRODUCTIVITY)"
-                            className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm font-medium focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                        />
-                        <p className="text-xs text-slate-500">
-                            💡 Use bold, action-oriented titles in UPPERCASE for maximum impact
-                        </p>
-                        <input
-                            value={item.link}
-                            onChange={(e) => updateItem(index, 'link', e.target.value)}
-                            placeholder="Link URL (e.g., /search?category=laptops)"
-                            className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                        />
-                        <div className="p-3 bg-amber-50 border border-amber-100 rounded-lg">
-                            <p className="text-xs text-amber-700">
-                                <strong>Image Tips:</strong> Use consistent lighting, similar angles, and clean backgrounds for visual cohesion
-                            </p>
-                        </div>
+                {/* Phase 5: Grid System Info */}
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
+                    <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        Grid System (Phase 5)
+                    </h4>
+                    <div className="space-y-2 text-xs text-slate-700">
+                        <p>✅ <strong>Equal Card Widths:</strong> All cards have identical width for clean alignment</p>
+                        <p>✅ <strong>Equal Gaps:</strong> Consistent 2rem spacing between all cards</p>
+                        <p>✅ <strong>Vertical Alignment:</strong> Cards align from the top for professional layout</p>
+                        <p>✅ <strong>Breathing Space:</strong> Proper padding below section (8rem)</p>
                     </div>
-                ))}
-            </div>
-            <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-bold text-sm shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 transition-all">
-                Save Lifestyle Grid
-            </button>
-        </form>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {items.map((item, index) => (
+                        <div key={index} className="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                            <h4 className="font-bold text-slate-700 text-sm flex items-center gap-2">
+                                <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full text-xs font-black">
+                                    {index + 1}
+                                </span>
+                                Column {index + 1}
+                            </h4>
+
+                            {/* Image Upload */}
+                            <div className="relative aspect-[4/5] bg-white rounded-xl border-2 border-dashed border-slate-200 overflow-hidden group hover:border-indigo-300 transition-colors">
+                                {item.image ? (
+                                    <>
+                                        <img src={item.image} alt="Preview" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <CldUploadWidget
+                                                uploadPreset="ml_default"
+                                                onSuccess={(result: any) => updateItem(index, 'image', result.info.secure_url)}
+                                            >
+                                                {({ open }) => (
+                                                    <button type="button" onClick={() => open()} className="bg-white text-slate-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-600 hover:text-white transition-colors">
+                                                        Change Image
+                                                    </button>
+                                                )}
+                                            </CldUploadWidget>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <CldUploadWidget
+                                        uploadPreset="ml_default"
+                                        onSuccess={(result: any) => updateItem(index, 'image', result.info.secure_url)}
+                                    >
+                                        {({ open }) => (
+                                            <button type="button" onClick={() => open()} className="w-full h-full flex flex-col items-center justify-center text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
+                                                <ImagePlus className="w-8 h-8 mb-2" />
+                                                <span className="text-sm font-medium">Upload Image</span>
+                                            </button>
+                                        )}
+                                    </CldUploadWidget>
+                                )}
+                            </div>
+
+                            <input
+                                value={item.title}
+                                onChange={(e) => updateItem(index, 'title', e.target.value)}
+                                placeholder="Card Title (e.g., DESK & PRODUCTIVITY)"
+                                className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm font-medium focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                            />
+                            <p className="text-xs text-slate-500">
+                                💡 Use bold, action-oriented titles in UPPERCASE for maximum impact
+                            </p>
+                            <input
+                                value={item.link}
+                                onChange={(e) => updateItem(index, 'link', e.target.value)}
+                                placeholder="Link URL (e.g., /search?category=laptops)"
+                                className="w-full rounded-lg bg-white border border-slate-200 p-3 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                            />
+                            <div className="p-3 bg-amber-50 border border-amber-100 rounded-lg">
+                                <p className="text-xs text-amber-700">
+                                    <strong>Image Tips:</strong> Use consistent lighting, similar angles, and clean backgrounds for visual cohesion
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-bold text-sm shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 transition-all">
+                    Save Lifestyle Grid
+                </button>
+            </form>
         </section >
     )
 }

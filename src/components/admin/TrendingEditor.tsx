@@ -10,6 +10,9 @@ type TrendingData = {
         image: string
         title: string
         tag: string
+        quote?: string
+        author?: string
+        role?: string
         link: string
         description?: string
         video?: string
@@ -32,7 +35,7 @@ type TrendingData = {
 
 export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
     const [data, setData] = useState<TrendingData>(initialData || {
-        hero: { image: '', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', link: '/search?category=laptops', description: '' },
+        hero: { image: '', title: 'THE PRO GAMER EDIT', tag: 'New Arrival', quote: '', author: '', role: '', link: '/search?category=laptops', description: '' },
         sub1: { image: '', title: 'CONSOLE READY', link: '/search?category=gaming', description: '' },
         sub2: { image: '', title: 'AUDIOPHILE GRADE', link: '/search?category=audio', description: '' }
     })
@@ -75,6 +78,14 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                         <div className="space-y-2">
                             <input value={data.hero.tag} onChange={(e) => updateHero('tag', e.target.value)} placeholder="Tag (e.g. New Arrival)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
                             <input value={data.hero.title} onChange={(e) => updateHero('title', e.target.value)} placeholder="Title" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+
+                            {/* New Fields */}
+                            <textarea value={data.hero.quote || ''} onChange={(e) => updateHero('quote', e.target.value)} placeholder="Quote (e.g. Design is not just...)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm h-20" />
+                            <div className="grid grid-cols-2 gap-2">
+                                <input value={data.hero.author || ''} onChange={(e) => updateHero('author', e.target.value)} placeholder="Author Name" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+                                <input value={data.hero.role || ''} onChange={(e) => updateHero('role', e.target.value)} placeholder="Author Role" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
+                            </div>
+
                             <textarea value={data.hero.description || ''} onChange={(e) => updateHero('description', e.target.value)} placeholder="Description (reveals on hover)" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm h-20" />
                             <input value={data.hero.link} onChange={(e) => updateHero('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
