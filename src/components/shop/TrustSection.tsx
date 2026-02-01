@@ -3,29 +3,44 @@
 import { ShieldCheck, Truck, RotateCcw, CreditCard } from 'lucide-react'
 import { motion } from 'framer-motion'
 
+const iconMap: any = {
+    ShieldCheck, Truck, RotateCcw, CreditCard
+}
+
 export default function TrustSection({ data }: { data?: any }) {
-    const features = data?.features || [
+    const defaultFeatures = [
         {
-            icon: <ShieldCheck className="w-6 h-6" />,
+            icon: 'ShieldCheck',
             title: "Authorized Hub",
             description: "Official dealer for all featured brands. 100% genuine guarantees."
         },
         {
-            icon: <Truck className="w-6 h-6" />,
+            icon: 'Truck',
             title: "Express Delivery",
             description: "Same-day shipping for orders before 2PM. Global tracking included."
         },
         {
-            icon: <RotateCcw className="w-6 h-6" />,
+            icon: 'RotateCcw',
             title: "Easy Returns",
             description: "Change your mind? Return within 30 days, no questions asked."
         },
         {
-            icon: <CreditCard className="w-6 h-6" />,
+            icon: 'CreditCard',
             title: "Secure Checkout",
             description: "Encrypted payments via Stripe & PayPal. Your data is safe."
         }
     ]
+
+    const features = data?.features || defaultFeatures
+
+    const renderIcon = (icon: any) => {
+        if (React.isValidElement(icon)) return icon
+        if (typeof icon === 'string') {
+            const IconComp = iconMap[icon] || ShieldCheck
+            return <IconComp className="w-6 h-6" />
+        }
+        return <ShieldCheck className="w-6 h-6" />
+    }
 
     return (
         <section className="py-24 bg-white border-t border-slate-100">
@@ -41,7 +56,7 @@ export default function TrustSection({ data }: { data?: any }) {
                             className="flex flex-col items-start gap-4 group"
                         >
                             <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-900 group-hover:scale-110 group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-all duration-500">
-                                {feature.icon || <ShieldCheck />}
+                                {renderIcon(feature.icon)}
                             </div>
                             <div>
                                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">

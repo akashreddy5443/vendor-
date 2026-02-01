@@ -79,7 +79,7 @@ export function TrendingEditor({ initialData }: { initialData: TrendingData }) {
                             <input value={data.hero.link} onChange={(e) => updateHero('link', e.target.value)} placeholder="Link URL" className="w-full bg-black border border-gray-700 p-2 rounded text-white text-sm" />
 
                             <div className="pt-2 border-t border-gray-800">
-                                <label className="text-xs text-gray-500 block mb-1">Hover Video URL (Optional)</label>
+                                <label className="text-xs text-gray-500 block mb-1">Featured Video URL (Plays on click)</label>
                                 <div className="flex gap-2">
                                     <input
                                         value={data.hero.video || ''}
