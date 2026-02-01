@@ -130,21 +130,21 @@ export default function HomePage() {
         <HeroSlider slides={slides} />
       </section >
 
-      {/* Categories: Order 2 */}
+      {/* Categories: AJIO-Style Tiles */}
       <section className="pt-16 md:pt-32 pb-8 bg-transparent order-2 md:order-none">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col gap-2 mb-8 md:mb-16"
+            className="flex flex-col gap-1 md:gap-2 mb-6 md:mb-16"
           >
             <div className="flex items-center gap-2 text-primary">
-              <LayoutGrid className="h-4 w-4" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
+              <LayoutGrid className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
             </div>
             <div className="flex items-end justify-between">
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+              <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
                 Browse <span className="text-primary">Categories</span>
               </h2>
               <Link href="/products" className="hidden md:flex text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary items-center gap-2">View All <ArrowRight className="w-4 h-4" /></Link>
@@ -206,20 +206,20 @@ export default function HomePage() {
       </section>
 
       {/* Featured Gear: Order 4 (Mobile) */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-transparent order-4 md:order-none" >
-        <div className="max-w-7xl mx-auto">
+      <section className="py-12 md:py-24 bg-transparent order-4 md:order-none overflow-hidden" >
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20"
+            className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-20"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-600">
-                <Sparkles className="h-4 w-4 fill-blue-600" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
+                <Sparkles className="h-3 w-3 md:h-4 md:w-4 fill-blue-600" />
+                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+              <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
                 Featured <span className="text-blue-600">Gear</span>
               </h2>
             </div>
@@ -228,11 +228,14 @@ export default function HomePage() {
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+          {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
             {loading ? (
               // Skeleton Loading State
               Array.from({ length: 3 }).map((_, i) => (
-                <ProductCardSkeleton key={i} />
+                <div key={i} className="min-w-[85vw] md:min-w-0 snap-center">
+                  <ProductCardSkeleton />
+                </div>
               ))
             ) : featuredProducts.length > 0 ? (
               featuredProducts.map((product, index) => (
@@ -242,6 +245,7 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: (index % 3) * 0.15, ease: [0.21, 0.45, 0.32, 0.9] as const }}
+                  className="min-w-[85vw] md:min-w-0 snap-center"
                 >
                   <ProductCard product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
                 </motion.div>
@@ -253,7 +257,7 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="md:hidden mt-8 text-center">
+          <div className="md:hidden mt-6 text-center">
             <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-widest border-b border-blue-600 pb-1">
               View All Collection <ArrowRight className="h-3 w-3" />
             </Link>
