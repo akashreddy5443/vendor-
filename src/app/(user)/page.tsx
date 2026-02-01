@@ -247,10 +247,10 @@ export default function HomePage() {
           </motion.div>
 
           {/* Mobile: Horizontal Scroll, Desktop: Grid */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scroll-pl-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scroll-pl-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0 md:mx-0 md:px-0 scrollbar-hide">
             {loading ? (
               // Skeleton Loading State
-              Array.from({ length: 3 }).map((_, i) => (
+              Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="min-w-[75vw] md:min-w-0 snap-start">
                   <ProductCardSkeleton />
                 </div>
