@@ -128,52 +128,64 @@ export default function CartPage() {
                                         </div>
 
                                         {/* Content */}
-                                        <div className="flex flex-1 flex-col justify-between py-1">
-                                            <div className="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-4 mb-4">
-                                                <div className="w-full">
-                                                    <h3 className="font-heading font-bold text-lg md:text-xl text-slate-900 leading-tight mb-2">
+                                        {/* Content */}
+                                        <div className="flex flex-1 flex-col justify-between">
+                                            <div className="mb-3">
+                                                <div className="flex justify-between items-start gap-2">
+                                                    <h3 className="font-heading font-bold text-base md:text-xl text-slate-900 leading-snug mb-1">
                                                         <Link href={`/products/${item.productId}`} className="hover:text-primary transition-colors line-clamp-2">
                                                             {item.title}
                                                         </Link>
                                                     </h3>
-                                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
-                                                        <span className="bg-slate-100 px-2 py-1 rounded-md uppercase tracking-wider text-[10px]">Default</span>
-                                                        <span className={`px-2 py-1 rounded-md uppercase tracking-wider text-[10px] ${item.maxStock < 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
-                                                            {item.maxStock < 5 ? 'Low Stock' : 'In Stock'}
-                                                        </span>
-                                                    </div>
                                                 </div>
-                                                <div className="shrink-0 mt-2 md:mt-0">
-                                                    <p className="font-heading font-black text-xl md:text-2xl text-primary whitespace-nowrap">{formatPrice(item.price)}</p>
+
+                                                <p className="font-heading font-black text-lg md:text-2xl text-primary mb-2">{formatPrice(item.price)}</p>
+
+                                                <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                                    <span className="bg-slate-100 px-2 py-1 rounded">Default</span>
+                                                    <span className={`${item.maxStock < 5 ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50'} px-2 py-1 rounded`}>
+                                                        {item.maxStock < 5 ? 'Low Stock' : 'In Stock'}
+                                                    </span>
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-wrap items-center justify-between gap-6">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="flex items-center border border-gray-200 bg-white rounded-lg shadow-sm">
-                                                        <button
-                                                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                                                            className="p-2 hover:bg-gray-50 text-foreground disabled:opacity-50"
-                                                            disabled={item.quantity <= 1}
-                                                        >
-                                                            <Minus className="h-4 w-4" />
-                                                        </button>
-                                                        <span className="w-10 text-center font-bold text-sm select-none">{item.quantity}</span>
-                                                        <button
-                                                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                                                            className="p-2 hover:bg-gray-50 text-foreground disabled:opacity-50"
-                                                            disabled={item.quantity >= item.maxStock}
-                                                        >
-                                                            <Plus className="h-4 w-4" />
-                                                        </button>
-                                                    </div>
-                                                    <button onClick={() => removeItem(item.productId)} className="text-xs font-bold text-muted-foreground hover:text-red-600 uppercase tracking-widest transition-colors flex items-center gap-1">
-                                                        <Trash2 className="h-3.5 w-3.5" /> Remove
+                                            <div className="flex items-center justify-between gap-2 mt-2">
+                                                {/* Quantity */}
+                                                <div className="flex items-center border border-slate-200 bg-white rounded-lg h-8 md:h-10 shadow-sm">
+                                                    <button
+                                                        onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                                                        className="w-8 md:w-10 h-full flex items-center justify-center text-slate-500 hover:text-primary hover:bg-slate-50 rounded-l-lg transition-colors disabled:opacity-50"
+                                                        disabled={item.quantity <= 1}
+                                                    >
+                                                        <Minus className="h-3 w-3 md:h-4 md:w-4" />
+                                                    </button>
+                                                    <span className="w-8 md:w-10 text-center text-xs md:text-sm font-black text-slate-900 select-none">{item.quantity}</span>
+                                                    <button
+                                                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                                                        className="w-8 md:w-10 h-full flex items-center justify-center text-slate-500 hover:text-primary hover:bg-slate-50 rounded-r-lg transition-colors disabled:opacity-50"
+                                                        disabled={item.quantity >= item.maxStock}
+                                                    >
+                                                        <Plus className="h-3 w-3 md:h-4 md:w-4" />
                                                     </button>
                                                 </div>
-                                                <button onClick={() => moveToSaved(item)} className="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-widest transition-colors flex items-center gap-1">
-                                                    <Heart className="h-3.5 w-3.5" /> Save for Later
-                                                </button>
+
+                                                {/* Actions */}
+                                                <div className="flex items-center gap-1 md:gap-3">
+                                                    <button
+                                                        onClick={() => moveToSaved(item)}
+                                                        className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-full transition-all"
+                                                        title="Save for Later"
+                                                    >
+                                                        <Heart className="h-5 w-5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => removeItem(item.productId)}
+                                                        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                                        title="Remove"
+                                                    >
+                                                        <Trash2 className="h-5 w-5" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
