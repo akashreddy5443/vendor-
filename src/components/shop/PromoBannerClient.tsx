@@ -22,14 +22,14 @@ export function PromoBannerClient({ promos }: { promos: any[] }) {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-12 flex items-end justify-between"
+                    className="mb-12 flex flex-col items-start gap-4"
                 >
                     <div>
                         <div className="flex items-center gap-2 text-blue-600 mb-2">
                             <Sparkles className="h-4 w-4" />
                             <span className="text-[10px] font-black uppercase tracking-[0.3em]">Exclusive Offers</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading text-left">
                             Limited <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Editions</span>
                         </h2>
                     </div>
