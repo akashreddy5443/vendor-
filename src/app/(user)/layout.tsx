@@ -9,7 +9,7 @@ export default function ShopLayout({
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
             <Navbar />
-            <main className="flex-1 w-full max-w-[1280px] mx-auto overflow-x-hidden">
+            <main className="flex-1">
                 {children}
             </main>
             <Footer />
