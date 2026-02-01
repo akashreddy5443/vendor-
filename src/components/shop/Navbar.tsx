@@ -114,9 +114,6 @@ export function Navbar() {
 
                     {/* Navigation Links (Desktop) */}
                     <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
-                        <Link href="/" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Home</Link>
-
-                        {/* Mega Menu Trigger */}
                         <div className="group relative h-16 flex items-center">
                             <button className="hover:text-primary transition-all hover:translate-y-[-1px] py-6 font-black flex items-center gap-1 group-hover:text-primary">
                                 Catalog <ChevronDown className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-180" />
@@ -163,18 +160,20 @@ export function Navbar() {
                         </div>
 
                         <Link href="/products" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Explore</Link>
-                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Our Story</Link>
+                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Story</Link>
                     </div>
                 </div>
 
-                {/* Middle: Centered Search */}
-                <div className="hidden md:flex flex-1 max-w-xl mx-auto items-center justify-center">
-                    <SpotlightSearch />
-                </div>
+                {/* Spacer to push Right Actions */}
+                <div className="flex-1" />
 
                 {/* Right: Actions */}
                 <div className="flex items-center gap-6 shrink-0">
                     <div className="flex items-center gap-4 pl-4 border-l border-slate-100">
+                        {/* Search Icon (Desktop) */}
+                        <div className="hidden md:block w-64">
+                            <SpotlightSearch />
+                        </div>
                         {user ? (
                             <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors">
                                 <User className="h-5 w-5 mb-0.5 text-primary" />
