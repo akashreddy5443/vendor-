@@ -131,24 +131,24 @@ export default function HomePage() {
       </section >
 
       {/* Categories: AJIO-Style Tiles */}
-      <section className="pt-32 pb-8 bg-transparent">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="pt-16 md:pt-32 pb-8 bg-transparent">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col gap-2 mb-16"
+            className="flex flex-col gap-2 mb-8 md:mb-16"
           >
             <div className="flex items-center gap-2 text-primary">
               <LayoutGrid className="h-4 w-4" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Shop by Genre</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
               Browse <span className="text-primary">Categories</span>
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
             {categories.map((cat, idx) => (
               <motion.div
                 key={cat.name}
@@ -157,7 +157,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
               >
-                <Link href={cat.href || '#'} className="group block relative aspect-[4/5] rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
+                <Link href={cat.href || '#'} className="group block relative aspect-[4/5] md:aspect-[4/5] rounded-2xl md:rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2">
                   <img
                     src={cat.image || (
                       cat.name === 'Laptops' ? 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853' :
@@ -174,9 +174,9 @@ export default function HomePage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-                  <div className="absolute bottom-0 left-0 p-6 w-full">
-                    <h3 className="text-sm font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-none mb-1">{cat.name}</h3>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Explore Collection</p>
+                  <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
+                    <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-none mb-1">{cat.name}</h3>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400">Explore</p>
                   </div>
                 </Link>
               </motion.div>
@@ -189,7 +189,7 @@ export default function HomePage() {
       <LifestyleGrid items={lifestyleItems} subtitle={lifestyleSubtitle} title={lifestyleTitle} />
 
       {/* Promo Banner */}
-      <section className="bg-transparent py-12">
+      <section className="bg-transparent py-8 md:py-12">
         <PromoBanner />
       </section>
 
@@ -197,20 +197,20 @@ export default function HomePage() {
       <TrendingSpotlight data={trendingData} />
 
       {/* Featured Gear: Editorial Finish */}
-      < section className="py-24 px-6 bg-transparent" >
+      < section className="py-16 md:py-24 px-4 md:px-6 bg-transparent" >
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-20"
+            className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-blue-600">
                 <Sparkles className="h-4 w-4 fill-blue-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Editor's Choice</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
                 Featured <span className="text-blue-600">Gear</span>
               </h2>
             </div>
@@ -219,7 +219,7 @@ export default function HomePage() {
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {loading ? (
               // Skeleton Loading State
               Array.from({ length: 3 }).map((_, i) => (

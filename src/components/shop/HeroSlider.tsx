@@ -50,7 +50,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
 
     return (
         <div
-            className="relative w-full h-[550px] md:h-[650px] lg:h-[700px] overflow-hidden bg-slate-950 group"
+            className="relative w-full h-[75vh] md:h-[650px] lg:h-[700px] overflow-hidden bg-slate-950 group"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -73,24 +73,24 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             priority
                             sizes="100vw"
                         />
-                        {/* Adjusted Gradient - Heavy on left, light on right to show background */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/98 via-slate-950/70 via-40% to-slate-950/10 z-10" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent z-10" />
+                        {/* Adjusted Gradient - Stronger on Mobile for readability */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/90 md:bg-gradient-to-r md:from-slate-950/98 md:via-slate-950/70 md:via-40% md:to-slate-950/10 z-10" />
+                        <div className="absolute inset-0 bg-black/40 md:bg-transparent z-10" /> {/* Mobile Overlay */}
                     </div>
 
                     {/* Text Content - Left Aligned */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-16 lg:px-24">
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-6 md:px-16 lg:px-24 pb-20 md:pb-0">
                         {/* Premium Glow Effect - positioned on left */}
-                        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/15 blur-[150px] -z-10 pointer-events-none rounded-full" />
+                        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/15 blur-[150px] -z-10 pointer-events-none rounded-full hidden md:block" />
 
                         <motion.div
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 0.6 }}
-                            className="flex items-center gap-3 mb-8"
+                            className="flex items-center gap-3 mb-6 md:mb-8"
                         >
-                            <div className="h-[2px] w-12 bg-primary" />
-                            <h3 className="text-[10px] md:text-xs font-black text-primary uppercase tracking-[0.4em]">
+                            <div className="h-[2px] w-8 md:w-12 bg-primary" />
+                            <h3 className="text-[10px] md:text-xs font-black text-primary uppercase tracking-[0.4em] drop-shadow-md">
                                 {currentSlide.subtitle}
                             </h3>
                         </motion.div>
@@ -99,10 +99,10 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.35, duration: 0.8, ease: [0.21, 0.45, 0.32, 0.9] as const }}
-                            className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white mb-12 leading-[0.85] tracking-[-0.04em] max-w-5xl font-heading"
+                            className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white mb-8 md:mb-12 leading-[0.9] tracking-[-0.04em] max-w-5xl font-heading drop-shadow-xl"
                             style={{
                                 color: currentSlide.color,
-                                textShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(59,130,246,0.2)'
+                                textShadow: '0 4px 20px rgba(0,0,0,0.5)'
                             }}
                         >
                             {currentSlide.title}

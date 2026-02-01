@@ -74,7 +74,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
 
     return (
         <>
-            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-primary/20 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[480px]">
+            <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-primary/20 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 h-[380px] md:h-[480px]">
                 <Link href={`/products/${product.slug || product.id}`} className="absolute inset-0 z-20" />
 
                 <div className="aspect-square relative overflow-hidden flex items-center justify-center bg-slate-50/50 group-hover:bg-white transition-colors duration-700">
@@ -145,7 +145,7 @@ export function ProductCard({ product, globalDiscount = 0, globalGst = 18 }: Pro
                     )}
                 </div>
 
-                <div className="flex flex-col relative z-30 pointer-events-none p-6 flex-grow">
+                <div className="flex flex-col relative z-30 pointer-events-none p-4 md:p-6 flex-grow">
                     {/* Authorized Hub / Trust Signal */}
                     <div className="flex items-center justify-between mb-2">
                         <div className="text-[9px] uppercase tracking-[0.35em] text-primary font-black opacity-60">
