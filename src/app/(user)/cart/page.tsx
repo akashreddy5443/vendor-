@@ -129,21 +129,23 @@ export default function CartPage() {
 
                                         {/* Content */}
                                         <div className="flex flex-1 flex-col justify-between py-1">
-                                            <div className="flex justify-between items-start gap-4">
-                                                <div>
-                                                    <h3 className="font-heading font-bold text-xl text-foreground leading-tight mb-2">
-                                                        <Link href={`/products/${item.productId}`} className="hover:text-primary transition-colors">
+                                            <div className="flex justify-between items-start gap-4 mb-4">
+                                                <div className="min-w-0 flex-1">
+                                                    <h3 className="font-heading font-bold text-lg md:text-xl text-slate-900 leading-tight mb-2 pr-2">
+                                                        <Link href={`/products/${item.productId}`} className="hover:text-primary transition-colors line-clamp-2">
                                                             {item.title}
                                                         </Link>
                                                     </h3>
-                                                    <div className="flex items-center gap-3 text-sm font-semibold text-muted-foreground mb-4">
-                                                        <span className="bg-gray-100 px-2 py-1 rounded text-xs uppercase tracking-wider">Size: Default</span>
-                                                        <span className={`px-2 py-1 rounded text-xs uppercase tracking-wider ${item.maxStock < 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
+                                                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+                                                        <span className="bg-slate-100 px-2 py-1 rounded-md uppercase tracking-wider text-[10px]">Default</span>
+                                                        <span className={`px-2 py-1 rounded-md uppercase tracking-wider text-[10px] ${item.maxStock < 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
                                                             {item.maxStock < 5 ? 'Low Stock' : 'In Stock'}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <p className="font-heading font-bold text-xl md:text-2xl text-primary">{formatPrice(item.price)}</p>
+                                                <div className="shrink-0 text-right">
+                                                    <p className="font-heading font-black text-lg md:text-2xl text-primary whitespace-nowrap">{formatPrice(item.price)}</p>
+                                                </div>
                                             </div>
 
                                             <div className="flex flex-wrap items-center justify-between gap-6">

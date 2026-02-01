@@ -173,14 +173,13 @@ export function Navbar() {
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex items-center gap-4 md:gap-6 shrink-0">
-                    {/* Mobile Search Icon */}
+                <div className="flex items-center gap-1 md:gap-6 shrink-0">
                     {/* Mobile Search Icon */}
                     <div className="flex md:hidden">
                         <SpotlightSearch variant="icon" />
                     </div>
 
-                    <div className="flex items-center gap-4 pl-4 border-l border-slate-100">
+                    <div className="flex items-center gap-2 md:gap-4 md:pl-4 md:border-l border-slate-100">
                         {user ? (
                             <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors">
                                 <User className="h-5 w-5 mb-0.5 text-primary" />
