@@ -99,7 +99,7 @@ export async function Footer() {
                             <h2 className="text-4xl lg:text-5xl font-heading font-black tracking-tighter mb-4">
                                 {newsletter?.title || 'Stay Connected'}
                             </h2>
-                            <p className="text-xs font-medium opacity-60 leading-relaxed max-w-sm">
+                            <p className="text-xs font-medium text-slate-400 leading-relaxed max-w-sm">
                                 {newsletter?.desc || 'Join our elite network for early access to experimental hardware and developer-first documentation.'}
                             </p>
                         </div>
@@ -126,7 +126,7 @@ export async function Footer() {
                                         <Icon className="h-5 w-5" />
                                     </div>
                                     <h4 className="font-bold text-sm mb-1">{badge.title}</h4>
-                                    <p className="text-xs opacity-50 leading-relaxed">
+                                    <p className="text-xs text-slate-400 leading-relaxed">
                                         {badge.desc}
                                     </p>
                                 </div>
@@ -148,13 +148,13 @@ export async function Footer() {
                             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Contact Support</h3>
                             <div className="space-y-2">
                                 {contact.email && (
-                                    <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 transition-opacity group">
+                                    <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-sm text-slate-300 hover:text-white transition-colors group">
                                         <Mail className="h-4 w-4 transition-transform group-hover:scale-110" style={{ color: style.accentColor }} />
                                         {contact.email}
                                     </a>
                                 )}
                                 {contact.phone && (
-                                    <a href={`tel:${contact.phone}`} className="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 transition-opacity group">
+                                    <a href={`tel:${contact.phone}`} className="flex items-center gap-3 text-sm text-slate-300 hover:text-white transition-colors group">
                                         <Phone className="h-4 w-4 transition-transform group-hover:scale-110" style={{ color: style.accentColor }} />
                                         {contact.phone}
                                     </a>
@@ -174,10 +174,10 @@ export async function Footer() {
                     {linkGroups?.map((group: any, idx: number) => (
                         <div key={idx}>
                             <h3 className="mb-6 text-[11px] font-black uppercase tracking-[0.2em] opacity-50">{group.title}</h3>
-                            <ul className="space-y-3 text-sm font-medium opacity-60">
+                            <ul className="space-y-3 text-sm font-medium text-slate-400">
                                 {group.links.map((link: any, linkIdx: number) => (
                                     <li key={linkIdx}>
-                                        <Link href={link.href} className="hover:text-white hover:opacity-100 transition-colors hover:translate-x-1 inline-block duration-300">
+                                        <Link href={link.href} className="hover:text-white transition-colors hover:translate-x-1 inline-block duration-300">
                                             {link.label}
                                         </Link>
                                     </li>
