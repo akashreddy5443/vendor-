@@ -1,4 +1,3 @@
-```
 import { createClient } from '@/lib/supabase/server'
 import { ProductCard } from './ProductCard'
 
@@ -8,15 +7,11 @@ export async function SimilarProducts({ categoryId, currentProductId, globalDisc
     const { data: products } = await supabase
         .from('products')
         .select(`
-    *,
-    product_images(
-        cloudinary_url,
-        is_primary
-    ),
-    categories(
-        name,
-        slug
-    )
+            *,
+            product_images(
+                cloudinary_url,
+                is_primary
+            )
         `)
         .eq('category_id', categoryId)
         .neq('id', currentProductId)
@@ -35,4 +30,3 @@ export async function SimilarProducts({ categoryId, currentProductId, globalDisc
         </section>
     )
 }
-```
