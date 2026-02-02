@@ -12,11 +12,14 @@ import { ProductReviews } from '@/components/shop/ProductReviews'
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
     const supabase = await createClient()
+
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)
+
     const { data: product } = await supabase
         .from('products')
         .select('id, title, description')
-        .or(`slug.eq.${slug},id.eq.${slug}`)
-        .single()
+        .eq(isUuid ? 'id' : 'slug', slug)
+        .maybeSingle()
 
     if (!product) return { title: 'Product Not Found' }
 
