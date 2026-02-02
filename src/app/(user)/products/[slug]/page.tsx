@@ -203,7 +203,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         <div className="flex flex-col gap-4">
                             <div className="flex items-center gap-4">
                                 <div className="flex-grow">
-                                    <AddToCartButton product={product} disabled={isOutOfStock} />
+                                    <AddToCartButton product={product} price={finalPrice} disabled={isOutOfStock} />
                                 </div>
                                 <WishlistToggle
                                     productId={product.id}
@@ -337,7 +337,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         </div>
                     </div>
                     <div className="flex-grow">
-                        <AddToCartButton product={product} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
+                        <AddToCartButton product={product} price={finalPrice} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
                     </div>
                 </div>
             </div>
