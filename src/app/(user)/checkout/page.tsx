@@ -278,7 +278,7 @@ export default function CheckoutPage() {
                         <button
                             onClick={handlePlaceOrder}
                             disabled={submitting || !selectedAddress}
-                            className="w-full mt-8 rounded-sm bg-primary py-4 font-bold text-lg text-white shadow-lg shadow-primary/20 hover:bg-primary/90 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
+                            className="w-full mt-8 rounded-sm bg-gradient-brand py-4 font-bold text-lg text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
                         >
                             {submitting ? (
                                 <span className="flex items-center justify-center gap-2">

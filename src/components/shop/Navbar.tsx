@@ -104,11 +104,11 @@ export function Navbar() {
                             {settings?.logo_url ? (
                                 <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
                             ) : (
-                                <div className="bg-primary text-white p-2 rounded-xl shadow-lg shadow-primary/30 group-hover:rotate-6 transition-all duration-500">
+                                <div className="bg-gradient-brand text-white p-2 rounded-xl shadow-lg shadow-indigo-500/30 group-hover:rotate-6 transition-all duration-500">
                                     <ShoppingBag className="h-5 w-5" />
                                 </div>
                             )}
-                            <span className="hidden min-[370px]:inline group-hover:text-primary transition-colors duration-300">{settings?.site_name || 'TechDev'}</span>
+                            <span className="hidden min-[370px]:inline text-gradient-brand font-black">{settings?.site_name || 'TechDev'}</span>
                         </Link>
                     </div>
 

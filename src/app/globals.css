@@ -38,6 +38,8 @@
   /* Phase 1: Primary Indigo (Royal Edition) */
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
+  --brand-gradient-start: #2563eb;
+  --brand-gradient-end: #7c3aed;
 
   --secondary: #f0f4ff;
   --secondary-foreground: #1e3a8a;
@@ -101,6 +103,14 @@ body {
 }
 
 /* Premium Component Utilities */
+.text-gradient-brand {
+  @apply bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent;
+}
+
+.bg-gradient-brand {
+  @apply bg-gradient-to-r from-blue-600 to-violet-600;
+}
+
 .btn-premium {
   @apply inline-flex items-center justify-center rounded-full font-black uppercase tracking-[0.15em] text-[10px] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-xl;
 }

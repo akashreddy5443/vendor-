@@ -140,7 +140,7 @@ export async function Footer() {
 
                     {/* Brand / Contact */}
                     <div className="col-span-2 md:col-span-1 space-y-8">
-                        <Link href="/" className="text-2xl font-heading font-black tracking-tighter inline-block">
+                        <Link href="/" className="text-2xl font-heading font-black tracking-tighter inline-block text-gradient-brand">
                             {copyrightText}
                         </Link>
 
