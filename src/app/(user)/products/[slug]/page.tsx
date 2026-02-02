@@ -147,10 +147,26 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                             )}
                             <h1 className="text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6 font-heading uppercase tracking-tight">{title}</h1>
 
-                            <div className="flex items-center gap-6 mb-8 p-6 rounded-3xl bg-slate-50/50 border border-slate-100">
+                            <div className="flex items-center gap-6 mb-8 p-6 rounded-3xl bg-slate-50/50 border border-slate-100 relative overflow-hidden group">
+                                {hasDiscount && (
+                                    <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-primary/20 group-hover:bg-primary/90 transition-colors">
+                                        Save {discount}%
+                                    </div>
+                                )}
                                 <div className="flex flex-col">
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">MSRP Retail</span>
-                                    <p className="text-4xl font-black text-primary tracking-tighter">{formatPrice(price)}</p>
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                                        {hasDiscount ? 'Exclusive Offer' : 'MSRP Retail'}
+                                    </span>
+                                    <div className="flex items-baseline gap-3 flex-wrap">
+                                        <p className="text-4xl md:text-5xl font-black text-primary tracking-tighter">
+                                            {formatPrice(finalPrice)}
+                                        </p>
+                                        {hasDiscount && (
+                                            <p className="text-lg md:text-xl font-bold text-slate-300 line-through decoration-slate-300 decoration-2">
+                                                {formatPrice(price)}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                                 {stock > 0 && stock < 10 && (
                                     <div className="ml-auto">
