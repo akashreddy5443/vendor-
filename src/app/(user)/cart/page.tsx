@@ -10,7 +10,7 @@ import { CartRecommendations } from '@/components/shop/CartRecommendations'
 import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CartPage() {
-    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, addToCart } = useCart()
+    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, gstRate, addToCart } = useCart()
     const [isPromoOpen, setIsPromoOpen] = useState(false)
     const [promoCode, setPromoCode] = useState('')
     const [promoStatus, setPromoStatus] = useState<'idle' | 'success' | 'error'>('idle')
