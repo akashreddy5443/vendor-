@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 export interface CartItem {
     productId: string
@@ -23,6 +24,7 @@ interface CartContextType {
     cartTotal: number
     subtotal: number
     taxTotal: number
+    gstRate: number
     coupon: { id: string, code: string, discountAmount: number } | null
     applyCoupon: (data: { id: string, code: string, discountAmount: number }) => void
     removeCoupon: () => void
@@ -36,27 +38,39 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([])
     const [isOpen, setIsOpen] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
+    const [defaultGst, setDefaultGst] = useState<number | null>(null)
 
-    // Load from local storage
+    // Load from local storage and fetch settings
     useEffect(() => {
-        const saved = localStorage.getItem('techdev_cart')
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved)
-                // Filter out invalid items (self-healing for previous bugs)
-                const validItems = parsed.filter((i: CartItem) =>
-                    i.productId &&
-                    !isNaN(i.quantity) &&
-                    i.quantity > 0 &&
-                    !isNaN(i.price)
-                )
-                setItems(validItems)
-            } catch (e) {
-                console.error('Failed to parse cart', e)
-                setItems([])
+        const initCart = async () => {
+            // 1. Load Local Storage
+            const saved = localStorage.getItem('techdev_cart')
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved)
+                    const validItems = parsed.filter((i: CartItem) =>
+                        i.productId &&
+                        !isNaN(i.quantity) &&
+                        i.quantity > 0 &&
+                        !isNaN(i.price)
+                    )
+                    setItems(validItems)
+                } catch (e) {
+                    console.error('Failed to parse cart', e)
+                    setItems([])
+                }
+            }
+            setIsLoaded(true)
+
+            // 2. Fetch Global GST Setting
+            const supabase = createClient()
+            const { data } = await supabase.from('site_settings').select('default_gst_percentage').maybeSingle()
+            if (data?.default_gst_percentage) {
+                setDefaultGst(data.default_gst_percentage)
             }
         }
-        setIsLoaded(true)
+
+        initCart()
     }, [])
 
     // Save to local storage
@@ -123,16 +137,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // Calculate Tax per item
     const taxTotal = items.reduce((total, item) => {
-        // GST is typically exclusive of share price in this context, or inclusive? 
-        // User asked to "add gst rate... 18%". Usually add-on.
-        // Assuming Price is Base, Tax is extra.
-        const itemTax = (item.price * (item.gstPercentage || 18) / 100) * item.quantity
+        // GST is typically exclusive of share price in this context
+        // Use item's specific GST if present, otherwise fallback to global default
+        // If global default is not yet loaded, use 18 as safe fallback
+        const rate = item.gstPercentage ?? (defaultGst || 18)
+        const itemTax = (item.price * rate / 100) * item.quantity
         return total + itemTax
     }, 0)
 
-    // Recalculate discount if subtotal changes (optional: strictly usually we should re-validate with server, but for UI we assume valid for now)
-    // Note: If discount is fixed, it's fine. If percentage, we might need to store the raw coupon data. 
-    // For simplicity, we just trust the passed amount or clear it if 0.
+    // Recalculate discount if subtotal changes
     const cartTotal = Math.max(0, subtotal + taxTotal - (coupon?.discountAmount || 0))
 
     return (
@@ -147,6 +160,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             cartTotal,
             subtotal,
             taxTotal,
+            gstRate: defaultGst || 0, // Expose for UI
             coupon,
             applyCoupon,
             removeCoupon,
