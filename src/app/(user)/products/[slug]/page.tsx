@@ -9,6 +9,8 @@ import { ProductViewTracker } from '@/components/shop/ProductViewTracker'
 import { SimilarProducts } from '@/components/shop/SimilarProducts'
 import { ProductReviews } from '@/components/shop/ProductReviews'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
     const supabase = await createClient()
@@ -140,7 +142,14 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     {/* Product Info */}
                     <div className="space-y-8">
                         <div>
-                            {productCategory && (
+                            {product.short_benefit ? (
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="text-[10px] font-black text-primary tracking-[0.3em] uppercase">
+                                        {product.short_benefit}
+                                    </span>
+                                    <div className="h-[1px] w-8 bg-primary/20" />
+                                </div>
+                            ) : productCategory && (
                                 <div className="flex items-center gap-3 mb-4">
                                     <span className="text-[10px] font-black text-primary tracking-[0.3em] uppercase">
                                         Authorized {productCategory.name}
@@ -153,12 +162,12 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                             <div className="flex items-center gap-6 mb-8 p-6 rounded-3xl bg-slate-50/50 border border-slate-100 relative overflow-hidden group">
                                 {hasDiscount && (
                                     <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-lg shadow-primary/20 group-hover:bg-primary/90 transition-colors">
-                                        Save {discount}%
+                                        Save {Math.round(discount)}%
                                     </div>
                                 )}
                                 <div className="flex flex-col">
                                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
-                                        {hasDiscount ? 'Exclusive Offer' : 'MSRP Retail'}
+                                        {hasDiscount ? (product.short_benefit || 'Exclusive Offer') : 'MSRP Retail'}
                                     </span>
                                     <div className="flex items-baseline gap-3 flex-wrap">
                                         <p className="text-4xl md:text-5xl font-black text-primary tracking-tighter">
@@ -303,8 +312,26 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-100 p-3 md:hidden shadow-[0_-5px_15px_rgba(0,0,0,0.05)] safe-area-bottom">
                 <div className="flex items-center gap-4">
                     <div className="flex flex-col">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 truncate max-w-[120px]">{product.title}</span>
-                        <span className="text-lg font-black text-primary tracking-tighter">{formatPrice(hasDiscount ? finalPrice : product.price)}</span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 truncate max-w-[120px]">
+                                {product.title}
+                            </span>
+                            {hasDiscount && (
+                                <span className="bg-primary text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase">
+                                    -{Math.round(discount)}%
+                                </span>
+                            )}
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                            <span className="text-lg font-black text-primary tracking-tighter">
+                                {formatPrice(finalPrice)}
+                            </span>
+                            {hasDiscount && (
+                                <span className="text-xs font-bold text-slate-300 line-through decoration-red-500/50">
+                                    {formatPrice(price)}
+                                </span>
+                            )}
+                        </div>
                     </div>
                     <div className="flex-grow">
                         <AddToCartButton product={product} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
