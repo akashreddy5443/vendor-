@@ -21,7 +21,7 @@ export async function Footer() {
         style: {
             backgroundColor: '#020617', // slate-950
             textColor: '#ffffff',
-            accentColor: '#3b82f6'
+            accentColor: '#4f46e5'
         },
         contact: {
             email: 'support@techdev.store',
