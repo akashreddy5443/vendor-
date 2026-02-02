@@ -298,6 +298,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                 <SimilarProducts
                     categoryId={productCategory.id}
                     currentProductId={product.id}
+                    globalDiscount={globalDiscount}
                 />
             )}
 

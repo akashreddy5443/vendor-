@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { ProductCard } from './ProductCard'
 
-export async function SimilarProducts({ categoryId, currentProductId }: { categoryId: string, currentProductId: string }) {
+export async function SimilarProducts({ categoryId, currentProductId, globalDiscount = 0 }: { categoryId: string, currentProductId: string, globalDiscount?: number }) {
     const supabase = await createClient()
 
     const { data: products } = await supabase
@@ -29,7 +29,7 @@ export async function SimilarProducts({ categoryId, currentProductId }: { catego
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6">You Might Also Like</h2>
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard key={product.id} product={product} globalDiscount={globalDiscount} />
                     ))}
                 </div>
             </div>
