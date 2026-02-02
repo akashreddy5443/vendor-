@@ -39,7 +39,7 @@
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
   --brand-gradient-start: #2563eb;
-  --brand-gradient-end: #7c3aed;
+  --brand-gradient-end: #9333ea;
 
   --secondary: #f0f4ff;
   --secondary-foreground: #1e3a8a;
@@ -104,11 +104,11 @@ body {
 
 /* Premium Component Utilities */
 .text-gradient-brand {
-  @apply bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
 }
 
 .bg-gradient-brand {
-  @apply bg-gradient-to-r from-blue-600 to-violet-600;
+  @apply bg-gradient-to-r from-blue-600 to-purple-600;
 }
 
 .btn-premium {
