@@ -23,14 +23,24 @@ export async function RelatedProducts({ categoryId, currentId }: RelatedProducts
         .eq('status', 'active')
         .limit(4)
 
+    const { data: settings } = await supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').single()
+    const globalDiscount = settings?.global_discount_percentage || 0
+    const globalGst = settings?.default_gst_percentage || 18
+
+    const productsWithSettings = products?.map(p => ({
+        ...p,
+        globalDiscount,
+        globalGst
+    })) || []
+
     if (!products || products.length === 0) return null
 
     return (
         <div className="mt-20">
             <h2 className="text-2xl font-bold font-serif mb-8 text-white">You Might Also Like</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                {productsWithSettings.map((product) => (
+                    <ProductCard key={product.id} product={product} globalDiscount={globalDiscount} globalGst={globalGst} />
                 ))}
             </div>
         </div>
