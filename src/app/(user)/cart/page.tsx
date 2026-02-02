@@ -243,7 +243,7 @@ export default function CartPage() {
                                 <div className="space-y-4 text-sm mb-8 text-muted-foreground">
                                     <div className="flex justify-between items-center"><span className="font-medium">Subtotal</span><span className="font-bold text-lg text-foreground">{formatPrice(subtotal)}</span></div>
                                     <div className="flex justify-between items-center"><span className="font-medium">Shipping</span><span className={`font-bold text-lg ${shippingCost === 0 ? "text-green-600" : "text-foreground"}`}>{shippingCost === 0 ? "Free" : formatPrice(shippingCost)}</span></div>
-                                    <div className="flex justify-between items-center"><span className="font-medium">Tax (Est. 18%)</span><span className="font-bold text-lg text-foreground">{formatPrice(taxTotal)}</span></div>
+                                    <div className="flex justify-between items-center"><span className="font-medium">Tax</span><span className="font-bold text-lg text-foreground">{formatPrice(taxTotal)}</span></div>
                                     {discountAmount > 0 && (
                                         <div className="flex justify-between items-center text-green-600 animate-in fade-in slide-in-from-right-4">
                                             <span className="font-bold">Discount</span>

@@ -10,7 +10,7 @@ interface Product {
     product_images?: { cloudinary_url: string; is_primary: boolean }[]
 }
 
-export function AddToCartButton({ product, disabled, className, price }: { product: Product, disabled?: boolean, className?: string, price?: number }) {
+export function AddToCartButton({ product, disabled, className, price, gstPercentage }: { product: Product, disabled?: boolean, className?: string, price?: number, gstPercentage?: number }) {
     if (disabled) return null // Or render disabled state, but AddToCart component handles out of stock internally mostly
 
     const image = product.product_images?.find(i => i.is_primary)?.cloudinary_url || product.product_images?.[0]?.cloudinary_url
@@ -23,6 +23,7 @@ export function AddToCartButton({ product, disabled, className, price }: { produ
                 price={price || product.price}
                 stock={product.stock}
                 image={image}
+                gstPercentage={gstPercentage}
             />
         </div>
     )

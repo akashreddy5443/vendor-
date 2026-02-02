@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Minus, Plus, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
-export function AddToCart({ productId, price, stock, title, image }: { productId: string, price: number, stock: number, title: string, image?: string }) {
+export function AddToCart({ productId, price, stock, title, image, gstPercentage }: { productId: string, price: number, stock: number, title: string, image?: string, gstPercentage?: number }) {
     const [quantity, setQuantity] = useState(1)
     const [isAdding, setIsAdding] = useState(false)
     const [buttonText, setButtonText] = useState('Add to Cart')
@@ -22,7 +22,7 @@ export function AddToCart({ productId, price, stock, title, image }: { productId
         setIsAdding(true)
 
         // Add to context
-        addItem({ productId, price, title, image, maxStock: stock }, quantity)
+        addItem({ productId, price, title, image, maxStock: stock, gstPercentage }, quantity)
 
         // Simulate feedback
         setTimeout(() => {

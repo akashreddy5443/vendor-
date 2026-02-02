@@ -79,7 +79,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
         product.category_id ? supabase.from('categories').select('id, name, slug').eq('id', product.category_id).maybeSingle() : Promise.resolve({ data: null }),
         supabase.from('reviews').select('*').eq('product_id', product.id).eq('status', 'approved'),
         user ? supabase.from('order_items').select('id, orders!inner(status, user_id)').eq('product_id', product.id).eq('orders.user_id', user.id).eq('orders.status', 'delivered').maybeSingle() : Promise.resolve({ data: null }),
-        supabase.from('site_settings').select('global_discount_percentage').maybeSingle()
+        supabase.from('site_settings').select('global_discount_percentage, default_gst_percentage').maybeSingle()
     ])
 
     const productImages = imagesRes.data || []
@@ -87,6 +87,12 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     const reviewsData = reviewsRes.data || []
     const hasPurchased = !!purchaseRes.data
     const globalDiscount = settingsRes.data?.global_discount_percentage || 0
+    const globalGst = settingsRes.data?.default_gst_percentage || 18
+
+    // GST Logic
+    const effectiveGst = product.gst_percentage !== null && product.gst_percentage !== undefined
+        ? product.gst_percentage
+        : globalGst
 
     // 2.5 Fetch Reviewer Details for these approved reviews
     let enrichedReviews = reviewsData
@@ -203,7 +209,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         <div className="flex flex-col gap-4">
                             <div className="flex items-center gap-4">
                                 <div className="flex-grow">
-                                    <AddToCartButton product={product} price={finalPrice} disabled={isOutOfStock} />
+                                    <AddToCartButton product={product} price={finalPrice} gstPercentage={effectiveGst} disabled={isOutOfStock} />
                                 </div>
                                 <WishlistToggle
                                     productId={product.id}
@@ -337,7 +343,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                         </div>
                     </div>
                     <div className="flex-grow">
-                        <AddToCartButton product={product} price={finalPrice} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
+                        <AddToCartButton product={product} price={finalPrice} gstPercentage={effectiveGst} disabled={isOutOfStock} className="w-full h-10 text-xs shadow-none" />
                     </div>
                 </div>
             </div>
