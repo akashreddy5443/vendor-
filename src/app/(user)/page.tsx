@@ -170,7 +170,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-end justify-between">
               <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading text-left">
-                Browse <span className="text-primary">Categories</span>
+                Browse <span className="text-gradient-brand">Categories</span>
               </h2>
               <Link href="/products" className="hidden md:flex text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary items-center gap-2">View All <ArrowRight className="w-4 h-4" /></Link>
             </div>
@@ -241,7 +241,7 @@ export default function HomePage() {
                 <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em]">{featuredSubtitle}</span>
               </div>
               <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-[-0.04em] leading-none font-heading">
-                {featuredTitle.split(' ').slice(0, -1).join(' ')} <span className="text-blue-600">{featuredTitle.split(' ').slice(-1)}</span>
+                {featuredTitle.split(' ').slice(0, -1).join(' ')} <span className="text-gradient-brand">{featuredTitle.split(' ').slice(-1)}</span>
               </h2>
             </div>
             <Link href="/products" className="group hidden md:flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-all">
@@ -307,7 +307,7 @@ export default function HomePage() {
                 const highlightPart = words.slice(Math.max(0, words.length - 2)).join(' ')
                 return (
                   <>
-                    {mainPart} <span className="text-primary">{highlightPart}</span>
+                    {mainPart} <span className="text-gradient-brand">{highlightPart}</span>
                   </>
                 )
               })()}

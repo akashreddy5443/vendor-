@@ -97,7 +97,12 @@ export async function Footer() {
                                 {newsletter?.badge || 'Protocol 2026'}
                             </span>
                             <h2 className="text-4xl lg:text-5xl font-heading font-black tracking-tighter mb-4">
-                                {newsletter?.title || 'Stay Connected'}
+                                {(() => {
+                                    const titleStr = newsletter?.title || 'Stay Connected'
+                                    const words = titleStr.split(' ')
+                                    const lastWord = words.pop()
+                                    return <>{words.join(' ')} <span className="text-gradient-brand">{lastWord}</span></>
+                                })()}
                             </h2>
                             <p className="text-xs font-medium text-slate-400 leading-relaxed max-w-sm">
                                 {newsletter?.desc || 'Join our elite network for early access to experimental hardware and developer-first documentation.'}
