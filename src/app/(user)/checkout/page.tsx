@@ -130,7 +130,7 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f8f9fa] text-[#191970] py-12 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="min-h-screen bg-slate-50 text-slate-900 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
 
                 {/* Left Column: Details */}
@@ -138,15 +138,15 @@ export default function CheckoutPage() {
                     {/* Address Selection */}
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2 uppercase tracking-wide">
-                                <MapPin className="text-[#191970]" /> Shipping Address
+                            <h2 className="text-xl font-bold flex items-center gap-2 uppercase tracking-wide text-slate-900">
+                                <MapPin className="text-primary" /> Shipping Address
                             </h2>
                             <Link href="/user/addresses" className="text-sm text-[#191970]/60 hover:text-[#191970] font-bold">Manage Addresses</Link>
                         </div>
 
                         {addresses.length === 0 ? (
-                            <Link href="/user/addresses" className="block p-6 rounded-sm border-2 border-dashed border-[#191970]/20 hover:bg-[#191970]/5 text-center transition-colors">
-                                <span className="text-[#191970] font-bold">+ Add New Address</span>
+                            <Link href="/user/addresses" className="block p-6 rounded-sm border-2 border-dashed border-slate-200 hover:bg-slate-50 text-center transition-colors">
+                                <span className="text-primary font-bold">+ Add New Address</span>
                             </Link>
                         ) : (
                             <div className="grid gap-4">
@@ -155,8 +155,8 @@ export default function CheckoutPage() {
                                         key={addr.id}
                                         onClick={() => setSelectedAddress(addr.id)}
                                         className={`p-4 rounded-sm border cursor-pointer transition-all ${selectedAddress === addr.id
-                                            ? 'border-[#191970] bg-[#191970]/5 ring-1 ring-[#191970]'
-                                            : 'border-gray-200 bg-white hover:border-[#191970]/50'
+                                            ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                                            : 'border-slate-200 bg-white hover:border-primary/50'
                                             }`}
                                     >
                                         <div className="flex items-center justify-between">
@@ -172,13 +172,13 @@ export default function CheckoutPage() {
 
                     {/* Payment Method */}
                     <div>
-                        <h2 className="text-xl font-bold flex items-center gap-2 mb-4 uppercase tracking-wide">
-                            <CreditCard className="text-[#191970]" /> Payment Method
+                        <h2 className="text-xl font-bold flex items-center gap-2 mb-4 uppercase tracking-wide text-slate-900">
+                            <CreditCard className="text-primary" /> Payment Method
                         </h2>
                         <div className="p-4 rounded-sm border border-[#191970]/10 bg-white shadow-sm">
                             <div className="flex items-center gap-3">
-                                <input type="radio" checked readOnly className="h-4 w-4 text-[#191970] focus:ring-[#191970]" />
-                                <span className="font-bold text-[#191970]">Cash on Delivery / Pay on Arrival</span>
+                                <input type="radio" checked readOnly className="h-4 w-4 text-primary focus:ring-primary" />
+                                <span className="font-bold text-slate-900">Cash on Delivery / Pay on Arrival</span>
                             </div>
                             <p className="text-xs text-[#191970]/60 ml-7 mt-1 font-medium">Pay comfortably when your order arrives.</p>
                         </div>
@@ -187,8 +187,8 @@ export default function CheckoutPage() {
 
                 {/* Right Column: Summary */}
                 <div className="lg:pl-12">
-                    <div className="rounded-sm border border-[#191970]/10 bg-white p-6 lg:p-8 sticky top-24 shadow-xl">
-                        <h2 className="text-xl font-extrabold mb-6 uppercase tracking-tight border-b-2 border-[#191970] pb-2 text-[#191970]">Order Summary</h2>
+                    <div className="rounded-sm border border-slate-200 bg-white p-6 lg:p-8 sticky top-24 shadow-xl">
+                        <h2 className="text-xl font-extrabold mb-6 uppercase tracking-tight border-b-2 border-slate-900 pb-2 text-slate-900">Order Summary</h2>
 
                         <div className="space-y-4 mb-6 max-h-80 overflow-y-auto custom-scrollbar">
                             {cart.map((item) => (
@@ -197,8 +197,8 @@ export default function CheckoutPage() {
                                         <img src={item.image} alt={item.title} className="h-full w-full object-contain p-2" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="text-sm font-bold text-[#191970] line-clamp-1">{item.title}</h3>
-                                        <p className="text-xs text-[#191970]/60 font-medium mt-1">Qty: {item.quantity}</p>
+                                        <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{item.title}</h3>
+                                        <p className="text-xs text-slate-500 font-medium mt-1">Qty: {item.quantity}</p>
                                     </div>
                                     <div className="text-sm font-bold text-[#191970]">{formatPrice(item.price * item.quantity)}</div>
                                 </div>
@@ -212,13 +212,13 @@ export default function CheckoutPage() {
                                     value={couponCode}
                                     onChange={(e) => setCouponCode(e.target.value)}
                                     placeholder="COUPON CODE"
-                                    className="flex-1 rounded-sm border border-[#191970]/20 bg-gray-50 p-2 text-sm text-[#191970] placeholder-[#191970]/30 focus:border-[#191970] focus:outline-none uppercase font-bold tracking-wide"
+                                    className="flex-1 rounded-sm border border-slate-200 bg-gray-50 p-2 text-sm text-slate-900 placeholder-slate-400 focus:border-primary focus:outline-none uppercase font-bold tracking-wide"
                                 />
                                 <button
                                     id="apply-coupon-btn"
                                     onClick={handleApplyCoupon}
                                     disabled={validatingCoupon || !couponCode || !!appliedCoupon}
-                                    className="rounded-sm bg-[#191970] px-4 text-xs font-bold text-white hover:bg-[#131355] disabled:opacity-50 disabled:cursor-not-allowed transition-colors tracking-wide"
+                                    className="rounded-sm bg-slate-900 px-4 text-xs font-bold text-white hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed transition-colors tracking-wide"
                                 >
                                     {validatingCoupon ? <Loader2 className="h-3 w-3 animate-spin" /> : 'APPLY'}
                                 </button>
@@ -244,15 +244,15 @@ export default function CheckoutPage() {
                                 }} />
                             </div>
 
-                            <div className="flex justify-between text-[#191970]/70 text-sm font-medium pt-4 border-t border-gray-100">
+                            <div className="flex justify-between text-slate-500 text-sm font-medium pt-4 border-t border-gray-100">
                                 <span>Subtotal (Base Price)</span>
-                                <span className="font-bold text-[#191970]">{formatPrice(subtotal)}</span>
+                                <span className="font-bold text-slate-900">{formatPrice(subtotal)}</span>
                             </div>
-                            <div className="flex justify-between text-[#191970]/70 text-sm font-medium">
+                            <div className="flex justify-between text-slate-500 text-sm font-medium">
                                 <span>GST (18%)</span>
-                                <span className="font-bold text-[#191970]">{formatPrice(taxTotal)}</span>
+                                <span className="font-bold text-slate-900">{formatPrice(taxTotal)}</span>
                             </div>
-                            <div className="flex justify-between text-[#191970]/70 text-sm font-medium">
+                            <div className="flex justify-between text-slate-500 text-sm font-medium">
                                 <span>Shipping</span>
                                 <span className="text-green-600 font-bold">Free</span>
                             </div>
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
                                     <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
                                 </div>
                             )}
-                            <div className="flex justify-between text-xl font-extrabold text-[#191970] pt-4 border-t-2 border-[#191970]">
+                            <div className="flex justify-between text-xl font-extrabold text-slate-900 pt-4 border-t-2 border-slate-900">
                                 <span>Total</span>
                                 <span>{formatPrice(finalTotal)}</span>
                             </div>
@@ -278,7 +278,7 @@ export default function CheckoutPage() {
                         <button
                             onClick={handlePlaceOrder}
                             disabled={submitting || !selectedAddress}
-                            className="w-full mt-8 rounded-sm bg-[#191970] py-4 font-bold text-lg text-white shadow-lg shadow-[#191970]/20 hover:bg-[#131355] hover:shadow-[#191970]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
+                            className="w-full mt-8 rounded-sm bg-primary py-4 font-bold text-lg text-white shadow-lg shadow-primary/20 hover:bg-primary/90 hover:shadow-primary/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
                         >
                             {submitting ? (
                                 <span className="flex items-center justify-center gap-2">
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
                             )}
                         </button>
 
-                        <p className="text-[10px] text-center text-[#191970]/40 mt-4 font-bold uppercase tracking-widest">
+                        <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">
                             Secure Checkout • Terms Apply
                         </p>
                     </div>
