@@ -74,17 +74,19 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     // 2. Fetch Auxiliary Data separately to avoid failure if one table is missing/broken
     const { data: { user } } = await supabase.auth.getUser()
 
-    const [imagesRes, categoryRes, reviewsRes, purchaseRes] = await Promise.all([
+    const [imagesRes, categoryRes, reviewsRes, purchaseRes, settingsRes] = await Promise.all([
         supabase.from('product_images').select('*').eq('product_id', product.id),
         product.category_id ? supabase.from('categories').select('id, name, slug').eq('id', product.category_id).maybeSingle() : Promise.resolve({ data: null }),
         supabase.from('reviews').select('*').eq('product_id', product.id).eq('status', 'approved'),
-        user ? supabase.from('order_items').select('id, orders!inner(status, user_id)').eq('product_id', product.id).eq('orders.user_id', user.id).eq('orders.status', 'delivered').maybeSingle() : Promise.resolve({ data: null })
+        user ? supabase.from('order_items').select('id, orders!inner(status, user_id)').eq('product_id', product.id).eq('orders.user_id', user.id).eq('orders.status', 'delivered').maybeSingle() : Promise.resolve({ data: null }),
+        supabase.from('site_settings').select('global_discount_percentage').maybeSingle()
     ])
 
     const productImages = imagesRes.data || []
     const productCategory = categoryRes.data
     const reviewsData = reviewsRes.data || []
     const hasPurchased = !!purchaseRes.data
+    const globalDiscount = settingsRes.data?.global_discount_percentage || 0
 
     // 2.5 Fetch Reviewer Details for these approved reviews
     let enrichedReviews = reviewsData
@@ -116,8 +118,8 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
     const isOutOfStock = stock === 0
     const primaryImage = productImages?.find((i: any) => i.is_primary)?.cloudinary_url || productImages?.[0]?.cloudinary_url
 
-    // Discount Logic
-    const discount = product.discount_percentage || 0
+    // Discount Logic: Prefer product-specific, fallback to global
+    const discount = product.discount_percentage ?? globalDiscount
     const hasDiscount = discount > 0
     const finalPrice = hasDiscount ? price * (1 - discount / 100) : price
 
