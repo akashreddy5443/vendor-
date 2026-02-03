@@ -11,7 +11,7 @@ import { createOrder, validateCoupon } from './actions'
 import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CheckoutPage() {
-    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart } = useCart()
+    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart, gstRate } = useCart()
     const [addresses, setAddresses] = useState<any[]>([])
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)
