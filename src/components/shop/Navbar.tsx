@@ -108,7 +108,7 @@ export function Navbar() {
                                     <ShoppingBag className="h-5 w-5" />
                                 </div>
                             )}
-                            <span className="hidden min-[370px]:inline text-gradient-brand font-black">{settings?.site_name || 'TechDev'}</span>
+                            <span className="hidden min-[370px]:inline text-blue-600 font-black">{settings?.site_name || 'TechDev'}</span>
                         </Link>
                     </div>
 

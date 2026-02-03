@@ -61,7 +61,6 @@ export async function updateSettings(formData: FormData) {
         min_price_filter,
         max_price_filter,
         filter_category_label,
-        filter_category_label,
         filter_brand_label,
         show_category_filter,
         show_brand_filter,
