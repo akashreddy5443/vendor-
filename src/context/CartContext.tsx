@@ -25,20 +25,25 @@ interface CartContextType {
     subtotal: number
     taxTotal: number
     gstRate: number
-    coupon: { id: string, code: string, discountAmount: number } | null
-    applyCoupon: (data: { id: string, code: string, discountAmount: number }) => void
+    coupon: any | null // Changed type
+    applyCoupon: (coupon: any) => void // Changed signature
     removeCoupon: () => void
     isOpen: boolean
     setIsOpen: (open: boolean) => void
+    taxLabel: string // Added
+    taxBreakdownEnabled: boolean // Added
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children }: { children: ReactNode }) { // Changed React.ReactNode to ReactNode
     const [items, setItems] = useState<CartItem[]>([])
+    const [coupon, setCoupon] = useState<any | null>(null) // Moved and changed type
     const [isOpen, setIsOpen] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
     const [defaultGst, setDefaultGst] = useState<number | null>(null)
+    const [taxLabel, setTaxLabel] = useState('GST') // Added
+    const [taxBreakdownEnabled, setTaxBreakdownEnabled] = useState(true) // Added
 
     // Load from local storage and fetch settings
     useEffect(() => {
@@ -64,9 +69,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
             // 2. Fetch Global GST Setting
             const supabase = createClient()
-            const { data } = await supabase.from('site_settings').select('default_gst_percentage').maybeSingle()
-            if (data?.default_gst_percentage) {
-                setDefaultGst(data.default_gst_percentage)
+            const { data } = await supabase.from('site_settings').select('default_gst_percentage, tax_label, tax_breakdown_enabled').maybeSingle()
+            // Default to 5 if DB setting is missing, as per user request
+            setDefaultGst(data?.default_gst_percentage ?? 5)
+            setTaxLabel(data?.tax_label || 'GST')
+            if (data?.tax_breakdown_enabled !== undefined) {
+                setTaxBreakdownEnabled(data.tax_breakdown_enabled)
             }
         }
 
@@ -120,7 +128,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setItems([])
     }
 
-    const [coupon, setCoupon] = useState<{ id: string, code: string, discountAmount: number } | null>(null)
+
 
     // ... (existing UseEffects)
 
@@ -165,7 +173,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             applyCoupon,
             removeCoupon,
             isOpen,
-            setIsOpen
+            setIsOpen,
+            taxLabel,
+            taxBreakdownEnabled
         }}>
             {children}
         </CartContext.Provider>

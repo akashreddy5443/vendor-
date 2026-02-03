@@ -16,6 +16,10 @@ export async function updateSettings(formData: FormData) {
     const min_price_filter = parseFloat(formData.get('min_price_filter') as string || '0')
     const max_price_filter = parseFloat(formData.get('max_price_filter') as string || '100000')
 
+    // Tax Configuration
+    const tax_label = formData.get('tax_label') as string || 'GST'
+    const tax_breakdown_enabled = formData.get('tax_breakdown_enabled') === 'on'
+
     // Sidebar Configuration
     const filter_category_label = formData.get('filter_category_label') as string
     const filter_brand_label = formData.get('filter_brand_label') as string
@@ -57,10 +61,13 @@ export async function updateSettings(formData: FormData) {
         min_price_filter,
         max_price_filter,
         filter_category_label,
+        filter_category_label,
         filter_brand_label,
         show_category_filter,
         show_brand_filter,
         hidden_categories,
+        tax_label,
+        tax_breakdown_enabled,
         updated_at: new Date().toISOString()
     }
 

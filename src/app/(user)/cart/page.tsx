@@ -10,7 +10,7 @@ import { CartRecommendations } from '@/components/shop/CartRecommendations'
 import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CartPage() {
-    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, gstRate, addToCart } = useCart()
+    const { items, removeItem, updateQuantity, cartTotal, subtotal, taxTotal, gstRate, addToCart, clearCart, taxLabel, taxBreakdownEnabled } = useCart()
     const [isPromoOpen, setIsPromoOpen] = useState(false)
     const [showTaxDetails, setShowTaxDetails] = useState(false)
     const [promoCode, setPromoCode] = useState('')
@@ -244,23 +244,22 @@ export default function CartPage() {
                                 <div className="space-y-4 text-sm mb-8 text-muted-foreground">
                                     <div className="flex justify-between items-center"><span className="font-medium">Subtotal</span><span className="font-bold text-lg text-foreground">{formatPrice(subtotal)}</span></div>
                                     <div className="flex justify-between items-center"><span className="font-medium">Shipping</span><span className={`font-bold text-lg ${shippingCost === 0 ? "text-green-600" : "text-foreground"}`}>{shippingCost === 0 ? "Free" : formatPrice(shippingCost)}</span></div>
-                                    <div className="flex justify-between items-center"><span className="font-medium">Shipping</span><span className={`font-bold text-lg ${shippingCost === 0 ? "text-green-600" : "text-foreground"}`}>{shippingCost === 0 ? "Free" : formatPrice(shippingCost)}</span></div>
 
                                     {/* Tax Row with Toggle */}
                                     <div className="flex flex-col gap-1">
                                         <div
-                                            className="flex justify-between items-center cursor-pointer group"
-                                            onClick={() => setShowTaxDetails(!showTaxDetails)}
+                                            className={`flex justify-between items-center ${taxBreakdownEnabled ? 'cursor-pointer group' : ''}`}
+                                            onClick={() => taxBreakdownEnabled && setShowTaxDetails(!showTaxDetails)}
                                         >
                                             <span className="font-medium flex items-center gap-1 group-hover:text-primary transition-colors">
-                                                Tax ({gstRate > 0 ? `${gstRate}%` : '5%'})
-                                                <AlertCircle className="h-3 w-3 text-muted-foreground group-hover:text-primary" />
+                                                {taxLabel} ({gstRate > 0 ? `${gstRate}%` : '5%'})
+                                                {taxBreakdownEnabled && <AlertCircle className="h-3 w-3 text-muted-foreground group-hover:text-primary" />}
                                             </span>
                                             <span className="font-bold text-lg text-foreground">{formatPrice(taxTotal)}</span>
                                         </div>
 
                                         {/* Tax Breakdown Menu */}
-                                        {showTaxDetails && (
+                                        {showTaxDetails && taxBreakdownEnabled && (
                                             <div className="text-xs text-muted-foreground bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-1 animate-in slide-in-from-top-1">
                                                 <div className="flex justify-between">
                                                     <span>CGST ({(gstRate || 5) / 2}%)</span>

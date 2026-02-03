@@ -153,6 +153,34 @@ export function SettingsForm({ settings, categories = [] }: { settings: any, cat
                             className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
+
+                    {/* New Tax Settings */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">Tax Label (e.g. GST, VAT)</label>
+                        <input
+                            type="text"
+                            name="tax_label"
+                            defaultValue={settings?.tax_label || 'GST'}
+                            placeholder="GST"
+                            className="w-full bg-white border border-gray-300 rounded-md p-2 text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <div>
+                            <div className="font-medium text-gray-900">Show Tax Breakdown</div>
+                            <div className="text-xs text-gray-500">Display CGST/SGST split in summary</div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="tax_breakdown_enabled"
+                                defaultChecked={settings?.tax_breakdown_enabled ?? true}
+                                className="sr-only peer"
+                            />
+                            <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
                 </div>
             </div>
 

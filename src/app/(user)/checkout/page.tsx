@@ -11,7 +11,7 @@ import { createOrder, validateCoupon } from './actions'
 import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 
 export default function CheckoutPage() {
-    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart, gstRate } = useCart()
+    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart, gstRate, taxLabel } = useCart()
     const [addresses, setAddresses] = useState<any[]>([])
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
                                     onClick={() => setShowTaxDetails(!showTaxDetails)}
                                 >
                                     <span className="flex items-center gap-1">
-                                        GST ({gstRate > 0 ? `${gstRate}%` : '5%'})
+                                        {taxLabel} ({gstRate > 0 ? `${gstRate}%` : '5%'})
                                         <div className="text-[10px] bg-slate-100 px-1 rounded border border-slate-200">?</div>
                                     </span>
                                     <span className="font-bold text-slate-900">{formatPrice(taxTotal)}</span>
