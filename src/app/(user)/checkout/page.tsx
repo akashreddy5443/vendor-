@@ -249,10 +249,6 @@ export default function CheckoutPage() {
                                 <span>Subtotal (Base Price)</span>
                                 <span className="font-bold text-slate-900">{formatPrice(subtotal)}</span>
                             </div>
-                            <div className="flex justify-between text-slate-500 text-sm font-medium">
-                                <span>Subtotal (Base Price)</span>
-                                <span className="font-bold text-slate-900">{formatPrice(subtotal)}</span>
-                            </div>
 
                             {/* Tax Breakdown */}
                             <div className="py-2">
@@ -281,27 +277,27 @@ export default function CheckoutPage() {
                             </div>
 
                             <div className="flex justify-between text-slate-500 text-sm font-medium">
-                                <div className="flex justify-between text-slate-500 text-sm font-medium">
-                                    <span>Shipping</span>
-                                    <span className="text-green-600 font-bold">Free</span>
+                                <span>Shipping</span>
+                                <span className="text-green-600 font-bold">Free</span>
+                            </div>
+
+                            {appliedCoupon && (
+                                <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
+                                    <span>
+                                        Discount
+                                        {appliedCoupon.discountType === 'percent' && (
+                                            <span className="ml-1 text-xs bg-green-100 px-1 rounded">
+                                                {appliedCoupon.discountValue}%
+                                            </span>
+                                        )}
+                                    </span>
+                                    <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
                                 </div>
-                                {appliedCoupon && (
-                                    <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
-                                        <span>
-                                            Discount
-                                            {appliedCoupon.discountType === 'percent' && (
-                                                <span className="ml-1 text-xs bg-green-100 px-1 rounded">
-                                                    {appliedCoupon.discountValue}%
-                                                </span>
-                                            )}
-                                        </span>
-                                        <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
-                                    </div>
-                                )}
-                                <div className="flex justify-between text-xl font-extrabold text-slate-900 pt-4 border-t-2 border-slate-900">
-                                    <span>Total</span>
-                                    <span>{formatPrice(finalTotal)}</span>
-                                </div>
+                            )}
+
+                            <div className="flex justify-between text-xl font-extrabold text-slate-900 pt-4 border-t-2 border-slate-900">
+                                <span>Total</span>
+                                <span>{formatPrice(finalTotal)}</span>
                             </div>
 
                             <button
