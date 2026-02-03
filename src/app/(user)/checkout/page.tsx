@@ -22,6 +22,7 @@ export default function CheckoutPage() {
     const [appliedCoupon, setAppliedCoupon] = useState<{ id: string, code: string, discountAmount: number, discountType?: string, discountValue?: number } | null>(null)
     const [couponError, setCouponError] = useState('')
     const [validatingCoupon, setValidatingCoupon] = useState(false)
+    const [showTaxDetails, setShowTaxDetails] = useState(false)
 
     const router = useRouter()
 
@@ -249,53 +250,81 @@ export default function CheckoutPage() {
                                 <span className="font-bold text-slate-900">{formatPrice(subtotal)}</span>
                             </div>
                             <div className="flex justify-between text-slate-500 text-sm font-medium">
-                                <span>GST (18%)</span>
-                                <span className="font-bold text-slate-900">{formatPrice(taxTotal)}</span>
+                                <span>Subtotal (Base Price)</span>
+                                <span className="font-bold text-slate-900">{formatPrice(subtotal)}</span>
                             </div>
-                            <div className="flex justify-between text-slate-500 text-sm font-medium">
-                                <span>Shipping</span>
-                                <span className="text-green-600 font-bold">Free</span>
-                            </div>
-                            {appliedCoupon && (
-                                <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
-                                    <span>
-                                        Discount
-                                        {appliedCoupon.discountType === 'percent' && (
-                                            <span className="ml-1 text-xs bg-green-100 px-1 rounded">
-                                                {appliedCoupon.discountValue}%
-                                            </span>
-                                        )}
+
+                            {/* Tax Breakdown */}
+                            <div className="py-2">
+                                <div
+                                    className="flex justify-between text-slate-500 text-sm font-medium cursor-pointer hover:text-primary transition-colors"
+                                    onClick={() => setShowTaxDetails(!showTaxDetails)}
+                                >
+                                    <span className="flex items-center gap-1">
+                                        GST ({gstRate > 0 ? `${gstRate}%` : '5%'})
+                                        <div className="text-[10px] bg-slate-100 px-1 rounded border border-slate-200">?</div>
                                     </span>
-                                    <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
+                                    <span className="font-bold text-slate-900">{formatPrice(taxTotal)}</span>
                                 </div>
-                            )}
-                            <div className="flex justify-between text-xl font-extrabold text-slate-900 pt-4 border-t-2 border-slate-900">
-                                <span>Total</span>
-                                <span>{formatPrice(finalTotal)}</span>
+                                {showTaxDetails && (
+                                    <div className="mt-2 text-xs text-slate-500 bg-slate-50 p-2 rounded border border-slate-100 space-y-1">
+                                        <div className="flex justify-between">
+                                            <span>CGST ({(gstRate || 5) / 2}%)</span>
+                                            <span>{formatPrice(taxTotal / 2)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>SGST ({(gstRate || 5) / 2}%)</span>
+                                            <span>{formatPrice(taxTotal / 2)}</span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
+
+                            <div className="flex justify-between text-slate-500 text-sm font-medium">
+                                <div className="flex justify-between text-slate-500 text-sm font-medium">
+                                    <span>Shipping</span>
+                                    <span className="text-green-600 font-bold">Free</span>
+                                </div>
+                                {appliedCoupon && (
+                                    <div className="flex justify-between text-green-600 text-sm font-bold animate-pulse">
+                                        <span>
+                                            Discount
+                                            {appliedCoupon.discountType === 'percent' && (
+                                                <span className="ml-1 text-xs bg-green-100 px-1 rounded">
+                                                    {appliedCoupon.discountValue}%
+                                                </span>
+                                            )}
+                                        </span>
+                                        <span>- {formatPrice(appliedCoupon.discountAmount)}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between text-xl font-extrabold text-slate-900 pt-4 border-t-2 border-slate-900">
+                                    <span>Total</span>
+                                    <span>{formatPrice(finalTotal)}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={handlePlaceOrder}
+                                disabled={submitting || !selectedAddress}
+                                className="w-full mt-8 rounded-sm bg-gradient-brand py-4 font-bold text-lg text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
+                            >
+                                {submitting ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <Loader2 className="animate-spin h-5 w-5" /> Processing...
+                                    </span>
+                                ) : (
+                                    `Pay ${formatPrice(finalTotal)}`
+                                )}
+                            </button>
+
+                            <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">
+                                Secure Checkout • Terms Apply
+                            </p>
                         </div>
-
-                        <button
-                            onClick={handlePlaceOrder}
-                            disabled={submitting || !selectedAddress}
-                            className="w-full mt-8 rounded-sm bg-gradient-brand py-4 font-bold text-lg text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider block"
-                        >
-                            {submitting ? (
-                                <span className="flex items-center justify-center gap-2">
-                                    <Loader2 className="animate-spin h-5 w-5" /> Processing...
-                                </span>
-                            ) : (
-                                `Pay ${formatPrice(finalTotal)}`
-                            )}
-                        </button>
-
-                        <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">
-                            Secure Checkout • Terms Apply
-                        </p>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-    )
+            )
 }
