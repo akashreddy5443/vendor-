@@ -137,10 +137,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // Calculate Tax per item
     const taxTotal = items.reduce((total, item) => {
-        // GST is typically exclusive of share price in this context
-        // Use item's specific GST if present, otherwise fallback to global default
-        // If global default is not yet loaded, use 5 as requested fallback
-        const rate = item.gstPercentage ?? (defaultGst ?? 5)
+        // STRICT FIX: Force all items to use the Global GST Rate.
+        // We ignore 'item.gstPercentage' because some products (like MacBook) have corrupted DB values (e.g. 9.6%).
+        // The user wants a consistent Dynamic GST across the site.
+        const rate = defaultGst ?? 5
         const itemTax = (item.price * rate / 100) * item.quantity
         return total + itemTax
     }, 0)
