@@ -36,7 +36,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export function CartProvider({ children }: { children: ReactNode }) { // Changed React.ReactNode to ReactNode
+export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([])
     const [coupon, setCoupon] = useState<any | null>(null) // Moved and changed type
     const [isOpen, setIsOpen] = useState(false)
