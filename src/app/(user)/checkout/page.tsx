@@ -24,7 +24,8 @@ export default function CheckoutPage() {
     const calculateTotals = (items: any[]) => {
         const sub = items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
         const tax = items.reduce((sum, item) => {
-            const taxRate = item.gstPercentage || gstRate || 18
+            // STRICT MATCH with CartContext: Ignore item.gstPercentage, use global gstRate only
+            const taxRate = gstRate || 5
             return sum + ((item.price * item.quantity * taxRate) / 100)
         }, 0)
         return { subtotal: sub, taxTotal: tax, total: sub + tax }
