@@ -6,6 +6,7 @@ import { ShoppingBag, ShoppingCart, Heart, User, Menu, X, ChevronDown, ArrowRigh
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
+import { InstantSearch } from '@/components/shop/InstantSearch'
 
 export function Navbar() {
     const [announcement, setAnnouncement] = useState<any>(null)
@@ -169,7 +170,7 @@ export function Navbar() {
 
                 {/* Middle: Centered Search */}
                 <div className="hidden md:flex flex-1 max-w-xl mx-auto items-center justify-center">
-                    <SpotlightSearch variant="default" />
+                    <InstantSearch />
                 </div>
 
                 {/* Right: Actions */}
