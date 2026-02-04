@@ -1,40 +1,33 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+require('dotenv').config({ path: '.env.local' });
 const { Client } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-const envPath = path.resolve(__dirname, '../.env.local');
-const envContent = fs.readFileSync(envPath, 'utf8');
-let connectionString = '';
+const connectionString = process.env.POSTGRES_URL || process.env.SUPABASE_DB_URL;
 
-envContent.split('\n').forEach(line => {
-    if (line.startsWith('POSTGRES_URL_NON_POOLING=')) {
-        connectionString = line.split('=')[1].trim().replace(/"/g, '');
-    }
-});
-
-if (!connectionString) {
-    // Fallback
-    envContent.split('\n').forEach(line => {
-        if (line.startsWith('POSTGRES_PRISMA_URL=')) {
-            connectionString = line.split('=')[1].trim().replace(/"/g, '');
-        }
+async function runMigration() {
+    console.log('Connecting to database...');
+    const client = new Client({
+        connectionString,
+        ssl: { rejectUnauthorized: false }
     });
-}
 
-const client = new Client({ connectionString });
-
-async function applyFix() {
     try {
         await client.connect();
-        const sqlPath = path.resolve(__dirname, '../migrations/fix_product_rls.sql');
+
+        const sqlPath = path.join(__dirname, 'fix_order_rls.sql');
         const sql = fs.readFileSync(sqlPath, 'utf8');
+
+        console.log('Applying permissions...');
         await client.query(sql);
-        console.log('✅ Successfully applied RLS fixes.');
+        console.log('Permissions applied successfully!');
+
     } catch (err) {
-        console.error('❌ Error applying fix:', err);
+        console.error('Migration failed:', err);
     } finally {
         await client.end();
     }
 }
 
-applyFix();
+runMigration();
