@@ -34,8 +34,8 @@ export function ReorderButton({ items }: ReorderButtonProps) {
         })
 
         if (addedCount > 0) {
-            toast.success('Items added to cart')
-            router.push('/cart')
+            toast.success('Items added, proceeding to checkout')
+            router.push('/checkout')
         } else {
             toast.error('Could not add items to cart')
         }
