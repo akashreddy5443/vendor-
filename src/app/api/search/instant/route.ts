@@ -22,12 +22,13 @@ export async function GET(request: Request) {
             sale_price,
             discount_percentage,
             stock,
+            description,
             product_images(
                 cloudinary_url,
                 is_primary
             )
         `)
-        .ilike('title', `%${query}%`)
+        .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
         .eq('status', 'active') // Only show active products
         .order('stock', { ascending: false }) // Prioritize in-stock items
         .limit(6)
