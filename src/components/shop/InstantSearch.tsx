@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Search, Loader2, X, Package } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
 
 interface SearchResult {
     id: string
@@ -44,11 +45,55 @@ export function InstantSearch() {
                 setLoading(true)
                 setIsOpen(true)
                 try {
-                    const res = await fetch(`/api/search/instant?q=${encodeURIComponent(query)}`)
-                    const data = await res.json()
-                    setResults(Array.isArray(data) ? data : [])
+                    // Direct Public Client Query (Matches Main Page Logic)
+                    const supabase = createClient()
+
+                    const { data, error } = await supabase
+                        .from('products')
+                        .select(`
+                            id,
+                            title,
+                            slug,
+                            price,
+                            sale_price,
+                            discount_percentage,
+                            stock,
+                            product_images(cloudinary_url, is_primary)
+                        `)
+                        .ilike('title', `%${query}%`)
+                        .eq('status', 'active')
+                        .limit(6)
+                        .order('stock', { ascending: false })
+
+                    if (error) throw error
+
+                    // Format data exactly as the component expects
+                    const formattedResults: SearchResult[] = (data || []).map((p: any) => {
+                        const image = p.product_images?.find((img: any) => img.is_primary)?.cloudinary_url
+                            || p.product_images?.[0]?.cloudinary_url
+                            || null
+
+                        let currentPrice = p.price
+                        if (p.discount_percentage > 0) {
+                            currentPrice = p.price * (1 - p.discount_percentage / 100)
+                        }
+
+                        return {
+                            id: p.id,
+                            title: p.title,
+                            slug: p.slug,
+                            image,
+                            price: p.price,
+                            currentPrice,
+                            stock: p.stock,
+                            discount: p.discount_percentage
+                        }
+                    })
+
+                    setResults(formattedResults)
                 } catch (err) {
                     console.error('Search failed', err)
+                    setResults([])
                 } finally {
                     setLoading(false)
                 }
