@@ -9,7 +9,12 @@ export async function GET(request: Request) {
         return NextResponse.json([])
     }
 
-    const supabase = await createClient()
+    // Use standard public client for instant search
+    // This allows exact matching of the RLS policies we just fixed
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
     console.log(`[Search API] Searching for: "${query}"`)
 
