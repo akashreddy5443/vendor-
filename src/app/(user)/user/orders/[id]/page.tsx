@@ -41,7 +41,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
         .eq('user_id', user.id)
         .single()
 
-    console.log('[OrderDetails] Fetch Result:', { id: params.id, userId: user.id, found: !!order, error })
+    console.log('[OrderDetails] Fetch Result:', { id, userId: user.id, found: !!order, error })
 
     if (error || !order) {
         return (
