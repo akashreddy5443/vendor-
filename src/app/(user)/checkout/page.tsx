@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { Loader2, CheckCircle, MapPin, CreditCard, Trash2 } from 'lucide-react'
 import { createOrder, validateCoupon } from './actions'
 
+import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
 import { useSearchParams } from 'next/navigation'
 
 export default function CheckoutPage() {
