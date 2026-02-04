@@ -48,8 +48,12 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
             <div className="p-8 text-center space-y-4">
                 <h3 className="text-xl font-bold text-red-500">Order Not Found</h3>
                 <p className="text-muted-foreground">Unable to load order details.</p>
-                <div className="p-2 bg-gray-100 rounded text-xs text-gray-500 max-w-xs mx-auto">
-                    ID: {id}
+                <div className="p-4 bg-red-50 rounded text-left text-xs text-red-700 max-w-lg mx-auto overflow-auto font-mono">
+                    <p><strong>Order ID:</strong> {id}</p>
+                    <p><strong>User ID:</strong> {user?.id} (Auth Status: {user ? 'Logged In' : 'Null'})</p>
+                    <p><strong>Error:</strong> {error?.message || 'NULL (No matching row found)'}</p>
+                    <p><strong>Details:</strong> {error?.details || 'N/A'}</p>
+                    <p><strong>Hint:</strong> {error?.hint || 'N/A'}</p>
                 </div>
                 <Link href="/user/orders" className="text-blue-500 hover:underline">
                     Back to My Orders
