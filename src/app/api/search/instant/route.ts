@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -9,11 +9,7 @@ export async function GET(request: Request) {
         return NextResponse.json([])
     }
 
-    // Use Service Role to bypass RLS for public search
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    )
+    const supabase = await createClient()
 
     console.log(`[Search API] Searching for: "${query}"`)
 
