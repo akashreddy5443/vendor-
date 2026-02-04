@@ -30,20 +30,23 @@ interface CartContextType {
     removeCoupon: () => void
     isOpen: boolean
     setIsOpen: (open: boolean) => void
-    taxLabel: string // Added
-    taxBreakdownEnabled: boolean // Added
+    taxLabel: string
+    taxBreakdownEnabled: boolean
+    buyNowItems: CartItem[]
+    setBuyNowItems: (items: CartItem[]) => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([])
-    const [coupon, setCoupon] = useState<any | null>(null) // Moved and changed type
+    const [buyNowItems, setBuyNowItems] = useState<CartItem[]>([])
+    const [coupon, setCoupon] = useState<any | null>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
     const [defaultGst, setDefaultGst] = useState<number | null>(null)
-    const [taxLabel, setTaxLabel] = useState('GST') // Added
-    const [taxBreakdownEnabled, setTaxBreakdownEnabled] = useState(true) // Added
+    const [taxLabel, setTaxLabel] = useState('GST')
+    const [taxBreakdownEnabled, setTaxBreakdownEnabled] = useState(true)
 
     // Load from local storage and fetch settings
     useEffect(() => {
@@ -175,7 +178,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             isOpen,
             setIsOpen,
             taxLabel,
-            taxBreakdownEnabled
+            taxBreakdownEnabled,
+            buyNowItems,
+            setBuyNowItems
         }}>
             {children}
         </CartContext.Provider>

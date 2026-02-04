@@ -8,10 +8,29 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, CheckCircle, MapPin, CreditCard, Trash2 } from 'lucide-react'
 import { createOrder, validateCoupon } from './actions'
-import { AvailableCoupons } from '@/components/shop/AvailableCoupons'
+
+import { useSearchParams } from 'next/navigation'
 
 export default function CheckoutPage() {
-    const { items: cart, cartTotal: total, subtotal, taxTotal, clearCart, gstRate, taxLabel } = useCart()
+    const { items: cartItems, cartTotal: normalTotal, subtotal: normalSubtotal, taxTotal: normalTax, clearCart, gstRate, taxLabel, buyNowItems } = useCart()
+    const searchParams = useSearchParams()
+    const isBuyNow = searchParams.get('source') === 'buy_now'
+
+    // Determine which items to show
+    const cart = isBuyNow ? buyNowItems : cartItems
+
+    // Recalculate totals if in Buy Now mode (since context totals are for the main cart)
+    const calculateTotals = (items: any[]) => {
+        const sub = items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        const tax = items.reduce((sum, item) => {
+            const taxRate = item.gstPercentage || gstRate || 18
+            return sum + ((item.price * item.quantity * taxRate) / 100)
+        }, 0)
+        return { subtotal: sub, taxTotal: tax, total: sub + tax }
+    }
+
+    const { subtotal, taxTotal, total } = isBuyNow ? calculateTotals(buyNowItems) : { subtotal: normalSubtotal, taxTotal: normalTax, total: normalTotal }
+
     const [addresses, setAddresses] = useState<any[]>([])
     const [selectedAddress, setSelectedAddress] = useState<string>('')
     const [loading, setLoading] = useState(true)

@@ -10,29 +10,29 @@ interface ReorderButtonProps {
 }
 
 export function ReorderButton({ items }: ReorderButtonProps) {
-    const { addToCart, clearCart } = useCart()
+    const { setBuyNowItems } = useCart()
     const router = useRouter()
 
     const handleReorder = () => {
-        // Appending to existing cart as requested
+        const itemsToBuy: any[] = []
 
-        let addedCount = 0
         items.forEach(item => {
             if (item.product) {
-                addToCart({
+                itemsToBuy.push({
                     productId: item.product_id,
                     title: item.product.title,
                     price: item.price,
                     image: item.product.product_images?.find((img: any) => img.is_primary)?.cloudinary_url || item.product.product_images?.[0]?.cloudinary_url,
                     maxStock: 10,
-                }, item.quantity)
-                addedCount++
+                    quantity: item.quantity
+                })
             }
         })
 
-        if (addedCount > 0) {
-            toast.success('Proceeding to checkout')
-            router.push('/checkout')
+        if (itemsToBuy.length > 0) {
+            setBuyNowItems(itemsToBuy)
+            toast.success('Proceeding to fast checkout')
+            router.push('/checkout?source=buy_now')
         } else {
             toast.error('Could not add items')
         }
