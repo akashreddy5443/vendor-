@@ -9,16 +9,15 @@ export async function GET(request: Request) {
         return NextResponse.json([])
     }
 
-    // Use standard public client for instant search
-    // This allows exact matching of the RLS policies we just fixed
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
+    // HARDCODED KEYS to rule out Vercel Env Var issues
+    const SUPABASE_URL = "https://reokmwqcdzofbimdwcxp.supabase.co"
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlb2ttd3FjZHpvZmJpbWR3Y3hwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkyMjc5OTcsImV4cCI6MjA4NDgwMzk5N30.vC8jB0i9jc_g_jqiBD5ZlERbF0KaccyU4292QHZ9658"
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
     console.log(`[Search API] Searching for: "${query}"`)
 
-    // Perform a text search on title mainly (using SERVICE ROLE)
+    // Simple, robust query: Title Only, Active Only
     const { data: products, error } = await supabase
         .from('products')
         .select(`
@@ -29,20 +28,15 @@ export async function GET(request: Request) {
             sale_price,
             discount_percentage,
             stock,
-            description,
-            product_images(
-                cloudinary_url,
-                is_primary
-            )
+            product_images(cloudinary_url, is_primary)
         `)
-        .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
-        .eq('status', 'active') // Only show active products
-        .order('stock', { ascending: false }) // Prioritize in-stock items
-        .limit(6)
+        .ilike('title', `%${query}%`)
+        .eq('status', 'active')
+        .limit(10)
 
     if (error) {
-        console.error('Search API Error:', error)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('[Search API] DB Error:', error)
+        return NextResponse.json([]) // Return empty array on error to prevent crashes
     }
 
     // Format the response for the frontend
