@@ -28,6 +28,8 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     id,
                     slug,
                     title,
+                    price,
+                    sale_price,
                     product_images(
                         cloudinary_url,
                         is_primary
