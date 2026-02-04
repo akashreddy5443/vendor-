@@ -17,6 +17,8 @@ export async function GET(request: Request) {
 
     console.log(`[Search API] Searching for: "${query}"`)
 
+    // Perform a text search on title mainly (using SERVICE ROLE)
+    const { data: products, error } = await supabase
         .from('products')
         .select(`
             id,
