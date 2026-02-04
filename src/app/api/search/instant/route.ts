@@ -31,7 +31,7 @@ export async function GET(request: Request) {
             product_images(cloudinary_url, is_primary)
         `)
         .ilike('title', `%${query}%`)
-        .eq('status', 'active')
+        // .eq('status', 'active') // Temporarily disabled for debugging
         .limit(10)
 
     if (error) {
