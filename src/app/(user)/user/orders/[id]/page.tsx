@@ -29,7 +29,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     slug,
                     title,
                     price,
-                    sale_price,
+                    discount_percentage,
                     product_images(
                         cloudinary_url,
                         is_primary
