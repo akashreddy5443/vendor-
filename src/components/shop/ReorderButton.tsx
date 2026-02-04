@@ -14,8 +14,7 @@ export function ReorderButton({ items }: ReorderButtonProps) {
     const router = useRouter()
 
     const handleReorder = () => {
-        // Clear existing cart to ensure isolation as requested
-        clearCart()
+        // Appending to existing cart as requested
 
         let addedCount = 0
         items.forEach(item => {
