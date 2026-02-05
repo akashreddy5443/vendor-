@@ -57,7 +57,6 @@ export function InstantSearch() {
                             title,
                             slug,
                             price,
-                            sale_price,
                             discount_percentage,
                             stock,
                             product_images(cloudinary_url, is_primary)
