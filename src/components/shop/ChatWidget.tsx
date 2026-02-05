@@ -69,8 +69,8 @@ export function ChatWidget() {
                     const { done, value } = await reader.read()
                     if (done) break
 
-                    const chunk = decoder.decode(value)
-                    assistantMessage += chunk
+                    const text = decoder.decode(value, { stream: true })
+                    assistantMessage += text
 
                     setMessages(prev =>
                         prev.map(m =>
