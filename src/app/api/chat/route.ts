@@ -5,30 +5,47 @@ import { streamText } from 'ai'
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-    const { messages } = await req.json()
+    try {
+        const { messages } = await req.json()
 
-    // CHECK FOR GOOGLE API KEY
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-        return new Response("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables.", { status: 500 })
+        // CHECK FOR GOOGLE API KEY
+        if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+            return new Response("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables.", { status: 500 })
+        }
+
+        const result = await streamText({
+            model: google('models/gemini-1.5-pro-latest'),
+            messages,
+            system: `You are an expert AI Shopping Assistant for "TechDev Store".
+            You help users find the best laptops, headphones, and tech gear.
+            
+            Traits:
+            - Friendly, professional, and knowledgeable.
+            - Concise answers.
+            - If you don't know something, ask the user to clarify.
+            `
+        })
+
+        // Create a readable stream from the text stream
+        const stream = new ReadableStream({
+            async start(controller) {
+                for await (const chunk of result.textStream) {
+                    controller.enqueue(new TextEncoder().encode(chunk))
+                }
+                controller.close()
+            }
+        })
+
+        return new Response(stream, {
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8',
+            },
+        })
+    } catch (error) {
+        console.error('Chat API error:', error)
+        return new Response(JSON.stringify({ error: 'Failed to process chat request' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        })
     }
-
-    const result = await streamText({
-        model: google('models/gemini-1.5-pro-latest'),
-        messages,
-        system: `You are an expert AI Shopping Assistant for "TechDev Store".
-        You help users find the best laptops, headphones, and tech gear.
-        
-        Traits:
-        - Friendly, professional, and knowledgeable.
-        - Concise answers.
-        - If you don't know something, ask the user to clarify.
-        `
-    })
-
-    // Return plain text stream that ChatWidget can parse
-    return new Response(result.textStream, {
-        headers: {
-            'Content-Type': 'text/plain; charset=utf-8',
-        },
-    })
 }

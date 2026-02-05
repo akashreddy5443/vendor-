@@ -70,7 +70,15 @@ export function InstantSearch() {
                     console.log('📦 Search results:', data)
                     console.log('❌ Search error:', error)
 
-                    if (error) throw error
+                    if (error) {
+                        console.error('Search error details:', {
+                            message: error.message,
+                            code: error.code,
+                            details: error.details,
+                            hint: error.hint
+                        })
+                        throw error
+                    }
 
                     // Format data exactly as the component expects
                     const formattedResults: SearchResult[] = (data || []).map((p: any) => {
