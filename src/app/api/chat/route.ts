@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google'
-import { streamText } from 'ai'
+import { generateText } from 'ai'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
             return new Response("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables.", { status: 500 })
         }
 
-        const result = await streamText({
+        const result = await generateText({
             model: google('gemini-1.5-flash'),
             messages,
             system: `You are an expert AI Shopping Assistant for "TechDev Store".
@@ -28,8 +28,8 @@ export async function POST(req: Request) {
             `
         })
 
-        // Return the text stream response (TypeScript suggests this over toDataStreamResponse)
-        return result.toTextStreamResponse()
+        // Return the full text response (Non-streaming for reliability)
+        return Response.json({ text: result.text })
     } catch (error: any) {
         console.error('Chat API error:', error)
 

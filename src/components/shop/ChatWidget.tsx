@@ -64,31 +64,14 @@ export function ChatWidget() {
 
             if (!response.body) throw new Error('No response body')
 
-            const reader = response.body.getReader()
-            const decoder = new TextDecoder()
-            let assistantMessage = ''
+            const data = await response.json()
 
-            // Create placeholder for assistant message
-            const assistantId = (Date.now() + 1).toString()
-            setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }])
-
-            while (true) {
-                const { done, value } = await reader.read()
-                if (done) {
-                    console.log('Stream done')
-                    break
-                }
-
-                const chunk = decoder.decode(value, { stream: true })
-                console.log('Received chunk:', chunk)
-                assistantMessage += chunk
-
-                setMessages(prev =>
-                    prev.map(m =>
-                        m.id === assistantId ? { ...m, content: assistantMessage } : m
-                    )
-                )
-            }
+            // Add assistant message
+            setMessages(prev => [...prev, {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: data.text
+            }])
 
         } catch (error: any) {
             console.error('Chat error:', error)
