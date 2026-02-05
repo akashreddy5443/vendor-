@@ -4,48 +4,95 @@ import { useState, useRef, useEffect } from 'react'
 import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { useChat } from '@ai-sdk/react'
+
+interface Message {
+    id: string
+    role: 'user' | 'assistant'
+    content: string
+}
 
 export function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 'welcome',
+            role: 'assistant',
+            content: "Hi! I'm your AI Shopping Assistant. Ask me anything about our products, coupons, or need a recommendation?"
+        }
+    ])
     const [input, setInput] = useState('')
-
-    const { messages, append, isLoading, error } = useChat({
-        api: '/api/chat',
-        initialMessages: [
-            {
-                id: 'welcome',
-                role: 'assistant',
-                content: "Hi! I'm your AI Shopping Assistant. Ask me anything about our products, coupons, or need a recommendation?"
-            }
-        ]
-    })
-
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // Auto-scroll to bottom
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
-
-    // Error handling
-    useEffect(() => {
-        if (error) {
-            console.error("Chat Error:", error)
-        }
-    }, [error])
+    }, [messages, isLoading])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!input.trim() || isLoading) return
 
-        const userMessageContent = input
-        setInput('') // Clear input immediately
-
-        await append({
+        const userMessage: Message = {
+            id: Date.now().toString(),
             role: 'user',
-            content: userMessageContent
-        })
+            content: input
+        }
+
+        setMessages(prev => [...prev, userMessage])
+        setInput('')
+        setIsLoading(true)
+        setError(null)
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [...messages, userMessage].map(m => ({
+                        role: m.role,
+                        content: m.content
+                    }))
+                })
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}))
+                throw new Error(errorData.error || `API error: ${response.status}`)
+            }
+
+            if (!response.body) throw new Error('No response body')
+
+            const reader = response.body.getReader()
+            const decoder = new TextDecoder()
+            let assistantMessage = ''
+
+            // Create placeholder for assistant message
+            const assistantId = (Date.now() + 1).toString()
+            setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }])
+
+            while (true) {
+                const { done, value } = await reader.read()
+                if (done) break
+
+                const chunk = decoder.decode(value, { stream: true })
+                assistantMessage += chunk
+
+                setMessages(prev =>
+                    prev.map(m =>
+                        m.id === assistantId ? { ...m, content: assistantMessage } : m
+                    )
+                )
+            }
+
+        } catch (error: any) {
+            console.error('Chat error:', error)
+            setError(error.message || 'Failed to send message')
+            // Don't add an error message to the chat history, just show the error alert
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -103,8 +150,8 @@ export function ChatWidget() {
                                     </div>
                                 </div>
                             ))}
-                            {/* Loading State or Error */}
-                            {isLoading && (
+                            {/* Loading Indicator */}
+                            {isLoading && messages[messages.length - 1]?.role === 'user' && (
                                 <div className="flex gap-3">
                                     <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-indigo-600 shadow-sm">
                                         <Bot className="w-4 h-4" />
@@ -118,7 +165,7 @@ export function ChatWidget() {
                             )}
                             {error && (
                                 <div className="p-3 rounded-lg bg-red-50 text-red-600 text-xs text-center">
-                                    {error.message || 'Something went wrong. Please try again.'}
+                                    {error}
                                 </div>
                             )}
                             <div ref={messagesEndRef} />
