@@ -59,9 +59,11 @@ export function InstantSearch() {
                             price,
                             discount_percentage,
                             stock,
+                            description,
+                            specifications,
                             product_images(cloudinary_url, is_primary)
                         `)
-                        .ilike('title', `%${query}%`)
+                        .or(`title.ilike.%${query}%,description.ilike.%${query}%,specifications.ilike.%${query}%`)
                         .eq('status', 'active')
                         .limit(6)
                         .order('stock', { ascending: false })
