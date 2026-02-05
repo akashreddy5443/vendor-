@@ -44,6 +44,8 @@ export function ChatWidget() {
         setIsLoading(true)
 
         try {
+            console.log('💬 Sending message:', userMessage.content)
+
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -55,38 +57,29 @@ export function ChatWidget() {
                 })
             })
 
-            if (!response.ok) throw new Error('Failed to get response')
+            console.log('📡 Response status:', response.status)
 
-            const reader = response.body?.getReader()
-            const decoder = new TextDecoder()
-            let assistantMessage = ''
-
-            const assistantId = (Date.now() + 1).toString()
-            setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }])
-
-            if (reader) {
-                while (true) {
-                    const { done, value } = await reader.read()
-                    if (done) break
-
-                    const text = decoder.decode(value, { stream: true })
-                    assistantMessage += text
-
-                    setMessages(prev =>
-                        prev.map(m =>
-                            m.id === assistantId
-                                ? { ...m, content: assistantMessage }
-                                : m
-                        )
-                    )
-                }
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}))
+                throw new Error(errorData.error || `API error: ${response.status}`)
             }
-        } catch (error) {
-            console.error('Chat error:', error)
+
+            // Parse JSON response
+            const data = await response.json()
+            console.log('✅ Received response:', data.message?.substring(0, 100))
+
+            // Add assistant message
             setMessages(prev => [...prev, {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: 'Sorry, I encountered an error. Please try again.'
+                content: data.message
+            }])
+        } catch (error: any) {
+            console.error('❌ Chat error:', error)
+            setMessages(prev => [...prev, {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: `Sorry, I encountered an error: ${error.message}. Please try again.`
             }])
         } finally {
             setIsLoading(false)
