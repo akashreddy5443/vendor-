@@ -1,10 +1,10 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { useChat } from 'ai/react'
+import { useChat } from '@ai-sdk/react'
 
 export function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
@@ -21,8 +21,6 @@ export function ChatWidget() {
 
     // We need to access useState for isOpen toggle since it's local UI state
     // But useChat manages messages, input, etc.
-    // Wait, useState is not imported in replacement? It is in the file but I need to ensure it's kept or re-added.
-    // I will replace the whole file content to be safe and clean.
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -151,6 +149,3 @@ export function ChatWidget() {
         </div>
     )
 }
-
-// Need to import useState for isOpen
-import { useState } from 'react'
