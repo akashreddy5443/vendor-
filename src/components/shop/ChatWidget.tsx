@@ -70,15 +70,7 @@ export function ChatWidget() {
                     if (done) break
 
                     const chunk = decoder.decode(value, { stream: true })
-
-                    // Parse AI SDK data stream format (lines starting with "0:")
-                    const lines = chunk.split('\n')
-                    for (const line of lines) {
-                        if (line.startsWith('0:')) {
-                            const text = line.substring(2).replace(/^"(.*)"$/, '$1')
-                            assistantMessage += text
-                        }
-                    }
+                    assistantMessage += chunk
 
                     setMessages(prev =>
                         prev.map(m =>
