@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 import { MobileBottomNav } from "@/components/shop/MobileBottomNav";
 import { CompareFloatingBar } from "@/components/shop/CompareFloatingBar";
+import { ChatWidget } from "@/components/shop/ChatWidget";
 import { Toaster } from "sonner";
 
 export default function RootLayout({
@@ -36,6 +37,7 @@ export default function RootLayout({
           {children}
           <CompareFloatingBar />
           <MobileBottomNav />
+          <ChatWidget />
           <Toaster position="top-center" richColors />
         </Providers>
       </body>
