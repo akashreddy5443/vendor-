@@ -74,9 +74,13 @@ export function ChatWidget() {
 
             while (true) {
                 const { done, value } = await reader.read()
-                if (done) break
+                if (done) {
+                    console.log('Stream done')
+                    break
+                }
 
                 const chunk = decoder.decode(value, { stream: true })
+                console.log('Received chunk:', chunk)
                 assistantMessage += chunk
 
                 setMessages(prev =>
