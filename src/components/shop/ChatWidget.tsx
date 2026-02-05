@@ -104,19 +104,19 @@ export function ChatWidget() {
                         className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-[380px] h-[500px] mb-4 flex flex-col overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="bg-slate-900 p-4 flex items-center justify-between text-white">
+                        <div className="bg-white p-4 flex items-center justify-between border-b border-slate-200">
                             <div className="flex items-center gap-2">
                                 <div className="p-1.5 bg-indigo-500 rounded-lg">
                                     <Sparkles className="w-4 h-4 text-white" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-sm">TechDev Assistant</h3>
-                                    <p className="text-[10px] text-slate-400">Powered by AI</p>
+                                    <h3 className="font-bold text-sm text-slate-900">TechDev Assistant</h3>
+                                    <p className="text-[10px] text-slate-500">Powered by AI</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                                className="p-1 hover:bg-slate-100 rounded-full transition-colors text-slate-600"
                             >
                                 <X className="w-5 h-5" />
                             </button>
