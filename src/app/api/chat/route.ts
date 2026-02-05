@@ -26,21 +26,8 @@ export async function POST(req: Request) {
             `
         })
 
-        // Create a readable stream from the text stream
-        const stream = new ReadableStream({
-            async start(controller) {
-                for await (const chunk of result.textStream) {
-                    controller.enqueue(new TextEncoder().encode(chunk))
-                }
-                controller.close()
-            }
-        })
-
-        return new Response(stream, {
-            headers: {
-                'Content-Type': 'text/plain; charset=utf-8',
-            },
-        })
+        // Use AI SDK's built-in method which handles the streaming properly
+        return result.toDataStreamResponse()
     } catch (error) {
         console.error('Chat API error:', error)
         return new Response(JSON.stringify({ error: 'Failed to process chat request' }), {
