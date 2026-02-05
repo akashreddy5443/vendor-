@@ -55,7 +55,10 @@ export function ChatWidget() {
                 })
             })
 
-            if (!response.ok) throw new Error('Failed to get response')
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}))
+                throw new Error(errorData.error || `API error: ${response.status}`)
+            }
 
             const reader = response.body?.getReader()
             const decoder = new TextDecoder()

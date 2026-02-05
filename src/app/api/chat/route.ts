@@ -28,10 +28,18 @@ export async function POST(req: Request) {
 
         // Return the text stream response
         return result.toTextStreamResponse()
-    } catch (error) {
+    } catch (error: any) {
         console.error('Chat API error:', error)
-        return new Response(JSON.stringify({ error: 'Failed to process chat request' }), {
-            status: 500,
+
+        // Extract helpful error message
+        const errorMessage = error.message || 'Unknown error occurred'
+        const status = error.status || 500
+
+        return new Response(JSON.stringify({
+            error: errorMessage,
+            details: error.toString()
+        }), {
+            status: status,
             headers: { 'Content-Type': 'application/json' }
         })
     }
