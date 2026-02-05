@@ -1,9 +1,9 @@
 'use client'
 
 import { useChat } from '@ai-sdk/react'
-import { type Message } from 'ai'
+import { type UIMessage } from 'ai'
 import { useState, useRef, useEffect } from 'react'
-import { MessageSquare, X, Send, Bot, User, Loader2, Sparkles, ShoppingBag } from 'lucide-react'
+import { MessageSquare, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -57,7 +57,7 @@ export function ChatWidget() {
 
                         {/* Messages */}
                         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
-                            {messages.map((m: Message) => (
+                            {messages.map((m: UIMessage) => (
                                 <div
                                     key={m.id}
                                     className={cn(
@@ -77,7 +77,7 @@ export function ChatWidget() {
                                             ? "bg-slate-900 text-white rounded-tr-none"
                                             : "bg-white border border-slate-200 text-slate-700 rounded-tl-none"
                                     )}>
-                                        {m.content}
+                                        {m.display || m.content}
                                     </div>
                                 </div>
                             ))}
