@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         }
 
         const result = await generateText({
-            model: google('gemini-1.5-flash-001'),
+            model: google('gemini-pro'),
             messages,
             system: `You are an expert AI Shopping Assistant for "TechDev Store".
             You help users find the best laptops, headphones, and tech gear.
