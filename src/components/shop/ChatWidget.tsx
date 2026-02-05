@@ -44,8 +44,6 @@ export function ChatWidget() {
         setIsLoading(true)
 
         try {
-            console.log('💬 Sending message:', userMessage.content)
-
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -57,29 +55,46 @@ export function ChatWidget() {
                 })
             })
 
-            console.log('📡 Response status:', response.status)
+            if (!response.ok) throw new Error('Failed to get response')
 
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}))
-                throw new Error(errorData.error || `API error: ${response.status}`)
+            const reader = response.body?.getReader()
+            const decoder = new TextDecoder()
+            let assistantMessage = ''
+
+            const assistantId = (Date.now() + 1).toString()
+            setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }])
+
+            if (reader) {
+                while (true) {
+                    const { done, value } = await reader.read()
+                    if (done) break
+
+                    const chunk = decoder.decode(value, { stream: true })
+
+                    // Parse AI SDK data stream format (lines starting with "0:")
+                    const lines = chunk.split('\n')
+                    for (const line of lines) {
+                        if (line.startsWith('0:')) {
+                            const text = line.substring(2).replace(/^"(.*)"$/, '$1')
+                            assistantMessage += text
+                        }
+                    }
+
+                    setMessages(prev =>
+                        prev.map(m =>
+                            m.id === assistantId
+                                ? { ...m, content: assistantMessage }
+                                : m
+                        )
+                    )
+                }
             }
-
-            // Parse JSON response
-            const data = await response.json()
-            console.log('✅ Received response:', data.message?.substring(0, 100))
-
-            // Add assistant message
-            setMessages(prev => [...prev, {
-                id: (Date.now() + 1).toString(),
-                role: 'assistant',
-                content: data.message
-            }])
         } catch (error: any) {
-            console.error('❌ Chat error:', error)
+            console.error('Chat error:', error)
             setMessages(prev => [...prev, {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: `Sorry, I encountered an error: ${error.message}. Please try again.`
+                content: 'Sorry, I encountered an error. Please try again.'
             }])
         } finally {
             setIsLoading(false)
