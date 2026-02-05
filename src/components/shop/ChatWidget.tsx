@@ -1,3 +1,5 @@
+'use client'
+
 import { useChat } from '@ai-sdk/react'
 import { type Message } from 'ai'
 import { useState, useRef, useEffect } from 'react'
