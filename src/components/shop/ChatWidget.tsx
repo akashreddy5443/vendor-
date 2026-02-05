@@ -1,27 +1,29 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
-
-interface Message {
-    id: string
-    role: 'user' | 'assistant'
-    content: string
-}
+import { useChat } from 'ai/react'
 
 export function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 'welcome',
-            role: 'assistant',
-            content: "Hi! I'm your AI Shopping Assistant. Ask me anything about our products, coupons, or need a recommendation?"
-        }
-    ])
-    const [input, setInput] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
+    const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+        api: '/api/chat',
+        initialMessages: [
+            {
+                id: 'welcome',
+                role: 'assistant',
+                content: "Hi! I'm your AI Shopping Assistant. Ask me anything about our products, coupons, or need a recommendation?"
+            }
+        ]
+    })
+
+    // We need to access useState for isOpen toggle since it's local UI state
+    // But useChat manages messages, input, etc.
+    // Wait, useState is not imported in replacement? It is in the file but I need to ensure it's kept or re-added.
+    // I will replace the whole file content to be safe and clean.
+
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // Auto-scroll to bottom
@@ -29,72 +31,12 @@ export function ChatWidget() {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!input.trim() || isLoading) return
-
-        const userMessage: Message = {
-            id: Date.now().toString(),
-            role: 'user',
-            content: input
+    // Error handling
+    useEffect(() => {
+        if (error) {
+            console.error("Chat Error:", error)
         }
-
-        setMessages(prev => [...prev, userMessage])
-        setInput('')
-        setIsLoading(true)
-
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages: [...messages, userMessage].map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                })
-            })
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}))
-                throw new Error(errorData.error || `API error: ${response.status}`)
-            }
-
-            const reader = response.body?.getReader()
-            const decoder = new TextDecoder()
-            let assistantMessage = ''
-
-            const assistantId = (Date.now() + 1).toString()
-            setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }])
-
-            if (reader) {
-                while (true) {
-                    const { done, value } = await reader.read()
-                    if (done) break
-
-                    const chunk = decoder.decode(value, { stream: true })
-                    assistantMessage += chunk
-
-                    setMessages(prev =>
-                        prev.map(m =>
-                            m.id === assistantId
-                                ? { ...m, content: assistantMessage }
-                                : m
-                        )
-                    )
-                }
-            }
-        } catch (error: any) {
-            console.error('Chat error:', error)
-            setMessages(prev => [...prev, {
-                id: (Date.now() + 1).toString(),
-                role: 'assistant',
-                content: 'Sorry, I encountered an error. Please try again.'
-            }])
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    }, [error])
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -151,6 +93,7 @@ export function ChatWidget() {
                                     </div>
                                 </div>
                             ))}
+                            {/* Loading State or Error */}
                             {isLoading && (
                                 <div className="flex gap-3">
                                     <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-indigo-600 shadow-sm">
@@ -163,6 +106,11 @@ export function ChatWidget() {
                                     </div>
                                 </div>
                             )}
+                            {error && (
+                                <div className="p-3 rounded-lg bg-red-50 text-red-600 text-xs text-center">
+                                    {error.message || 'Something went wrong. Please try again.'}
+                                </div>
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
 
@@ -171,7 +119,7 @@ export function ChatWidget() {
                             <input
                                 className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
                                 value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                onChange={handleInputChange}
                                 placeholder="Type a message..."
                             />
                             <button
@@ -203,3 +151,6 @@ export function ChatWidget() {
         </div>
     )
 }
+
+// Need to import useState for isOpen
+import { useState } from 'react'
