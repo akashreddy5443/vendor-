@@ -3,8 +3,6 @@ import { generateText } from 'ai'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
-// Use Edge Runtime for better streaming support
-export const runtime = 'edge'
 
 export async function POST(req: Request) {
     try {
@@ -16,7 +14,7 @@ export async function POST(req: Request) {
         }
 
         const result = await generateText({
-            model: google('gemini-1.5-flash'),
+            model: google('gemini-1.5-flash-001'),
             messages,
             system: `You are an expert AI Shopping Assistant for "TechDev Store".
             You help users find the best laptops, headphones, and tech gear.
