@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         return new Response("Missing GOOGLE_GENERATIVE_AI_API_KEY in environment variables.", { status: 500 })
     }
 
-    const result = streamText({
+    const result = await streamText({
         model: google('models/gemini-1.5-pro-latest'),
         messages,
         system: `You are an expert AI Shopping Assistant for "TechDev Store".
@@ -25,5 +25,10 @@ export async function POST(req: Request) {
         `
     })
 
-    return result.toTextStreamResponse()
+    // Return plain text stream that ChatWidget can parse
+    return new Response(result.textStream, {
+        headers: {
+            'Content-Type': 'text/plain; charset=utf-8',
+        },
+    })
 }

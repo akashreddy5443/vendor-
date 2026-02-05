@@ -45,6 +45,8 @@ export function InstantSearch() {
                 setLoading(true)
                 setIsOpen(true)
                 try {
+                    console.log('🔍 Searching for:', query)
+
                     // Direct Public Client Query (Matches Main Page Logic)
                     const supabase = createClient()
 
@@ -64,6 +66,9 @@ export function InstantSearch() {
                         .eq('status', 'active')
                         .limit(6)
                         .order('stock', { ascending: false })
+
+                    console.log('📦 Search results:', data)
+                    console.log('❌ Search error:', error)
 
                     if (error) throw error
 
