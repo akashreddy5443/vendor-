@@ -26,8 +26,8 @@ export async function POST(req: Request) {
             `
         })
 
-        // Return the data stream response (compatible with useChat)
-        return result.toDataStreamResponse()
+        // Return the text stream response (TypeScript suggests this over toDataStreamResponse)
+        return result.toTextStreamResponse()
     } catch (error: any) {
         console.error('Chat API error:', error)
 
