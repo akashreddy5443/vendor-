@@ -8,7 +8,9 @@ import { useChat } from '@ai-sdk/react'
 
 export function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
-    const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+    const [input, setInput] = useState('')
+
+    const { messages, append, isLoading, error } = useChat({
         api: '/api/chat',
         initialMessages: [
             {
@@ -18,9 +20,6 @@ export function ChatWidget() {
             }
         ]
     })
-
-    // We need to access useState for isOpen toggle since it's local UI state
-    // But useChat manages messages, input, etc.
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -35,6 +34,19 @@ export function ChatWidget() {
             console.error("Chat Error:", error)
         }
     }, [error])
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!input.trim() || isLoading) return
+
+        const userMessageContent = input
+        setInput('') // Clear input immediately
+
+        await append({
+            role: 'user',
+            content: userMessageContent
+        })
+    }
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -117,7 +129,7 @@ export function ChatWidget() {
                             <input
                                 className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
                                 value={input}
-                                onChange={handleInputChange}
+                                onChange={(e) => setInput(e.target.value)}
                                 placeholder="Type a message..."
                             />
                             <button
