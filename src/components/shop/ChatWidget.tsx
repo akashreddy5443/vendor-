@@ -23,22 +23,39 @@ interface Message {
 }
 
 export function ChatWidget() {
+    // Dynamic Greeting
+    const getGreeting = () => {
+        const hour = new Date().getHours()
+        if (hour < 12) return "Good morning! ☀️ Ready to find some gear?"
+        if (hour < 18) return "Good afternoon! 🌤️ How can I help you setup?"
+        return "Good evening! 🌙 Looking for something specific?"
+    }
+
     const [isOpen, setIsOpen] = useState(false)
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 'welcome',
-            role: 'assistant',
-            content: "Hello! I'm TechDev AI 🤖. \n\nI can help you find the best dev gear. Try asking:\n• \"Best laptops for coding\"\n• \"Noise canceling headphones\"\n• \"Mechanical keyboards\""
-        }
-    ])
+    const [messages, setMessages] = useState<Message[]>([])
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
+    // Set initial greeting
     useEffect(() => {
+        setMessages([
+            {
+                id: 'welcome',
+                role: 'assistant',
+                content: getGreeting(),
+                products: []
+            }
+        ])
+    }, [])
+
+    const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages, isLoading, isOpen])
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages, isLoading])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -53,19 +70,24 @@ export function ChatWidget() {
         setMessages(prev => [...prev, userMessage])
         setInput('')
         setIsLoading(true)
-        setError(null)
 
         try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages: [...messages, userMessage].map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                })
-            })
+            // Artificial "Thinking" Delay (Humanize)
+            // Min delay 1.2s, plus random variance
+            const delay = 1200 + Math.random() * 500
+            const [response] = await Promise.all([
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [...messages, userMessage].map(m => ({
+                            role: m.role,
+                            content: m.content
+                        }))
+                    })
+                }),
+                new Promise(resolve => setTimeout(resolve, delay))
+            ])
 
             if (!response.ok) throw new Error('Failed to fetch')
 
