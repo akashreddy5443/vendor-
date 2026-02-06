@@ -115,11 +115,11 @@ export function Navbar() {
 
                     {/* Navigation Links (Desktop) */}
                     <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
-                        <Link href="/" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Home</Link>
+                        <Link href="/" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Home</Link>
 
                         {/* Mega Menu Trigger */}
                         <div className="group relative h-16 flex items-center">
-                            <button className="hover:text-primary transition-all hover:translate-y-[-1px] py-6 font-black flex items-center gap-1 group-hover:text-primary">
+                            <button className="hover:text-primary transition-all hover:translate-y-[-1px] py-6 font-black flex items-center gap-1 group-hover:text-primary font-bold">
                                 Catalog <ChevronDown className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-180" />
                             </button>
 
@@ -163,8 +163,8 @@ export function Navbar() {
                             </div>
                         </div>
 
-                        <Link href="/products" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Explore</Link>
-                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform">Our Story</Link>
+                        <Link href="/products" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Explore</Link>
+                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Our Story</Link>
                     </div>
                 </div>
 
