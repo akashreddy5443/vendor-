@@ -3,11 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 // Simple keyword mapping for "Adaptive Search"
 const CATEGORY_MAP: Record<string, string> = {
     'laptop': 'Laptops',
+    'laptops': 'Laptops',
     'macbook': 'Laptops',
     'computer': 'Laptops',
     'notebook': 'Laptops',
     'pc': 'Laptops',
     'phone': 'Phones',
+    'phones': 'Phones',
     'mobile': 'Phones',
     'iphone': 'Phones',
     'android': 'Phones',
@@ -16,14 +18,21 @@ const CATEGORY_MAP: Record<string, string> = {
     'pixel': 'Phones',
     'audio': 'Audio',
     'headphone': 'Audio',
+    'headphones': 'Audio',
     'earphone': 'Audio',
+    'earphones': 'Audio',
     'speaker': 'Audio',
+    'speakers': 'Audio',
     'mic': 'Audio',
+    'mics': 'Audio',
     'microphone': 'Audio',
     'headset': 'Audio',
     'keyboard': 'Accessories',
+    'keyboards': 'Accessories',
     'mouse': 'Accessories',
+    'mice': 'Accessories',
     'monitor': 'Accessories',
+    'monitors': 'Accessories',
     'screen': 'Accessories',
     'gaming': 'Accessories'
 }
@@ -139,7 +148,7 @@ export async function POST(req: Request) {
             if (conversational.some(w => userQuery.includes(w))) {
                 responseText = "You're welcome! Let me know if you need to see anything else."
             } else {
-                responseText = `I couldn't find any products matching "${userQuery}". Try searching for specific items like "Laptops", "Phones", or "Headphones".`
+                responseText = `I couldn't find any exact matches for "${userQuery}". \n\nHowever, our technical support team is available to help! Try searching for broader categories like "Laptops" or "Phones".`
             }
         } else {
             const count = products.length
