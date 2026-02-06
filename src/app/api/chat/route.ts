@@ -5,6 +5,7 @@ import { generateText } from 'ai'
 export const maxDuration = 30
 
 // Configure DeepSeek Provider
+// Verified DeepSeek Integration
 const deepseek = createOpenAI({
     baseURL: 'https://api.deepseek.com',
     apiKey: process.env.DEEPSEEK_API_KEY,
