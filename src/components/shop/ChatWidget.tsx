@@ -206,6 +206,25 @@ export function ChatWidget() {
                             <div ref={messagesEndRef} />
                         </div>
 
+                        {/* Suggested Chips */}
+                        {messages.length < 3 && (
+                            <div className="px-4 py-2 flex gap-2 overflow-x-auto scrollbar-none">
+                                {['Laptops', 'Gaming', 'Track Order', 'Support'].map(suggestion => (
+                                    <button
+                                        key={suggestion}
+                                        onClick={() => {
+                                            setInput(suggestion)
+                                            // Optional: auto-submit
+                                            // handleSubmit(new Event('submit') as any) 
+                                        }}
+                                        className="whitespace-nowrap px-3 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-indigo-100 transition-colors border border-indigo-100"
+                                    >
+                                        {suggestion}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
                         {/* Input Area */}
                         <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-100">
                             <div className="flex gap-2 relative">

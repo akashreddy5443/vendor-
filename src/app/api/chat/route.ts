@@ -68,6 +68,10 @@ export async function POST(req: Request) {
             'bot': "I'm a custom-built AI assistant designed to help you navigate our tech catalog.",
             'hello': "Hello again! specific product are you looking for today?",
             'hi': "Hi there! Ready to find some gear?",
+            'yes': "Great! What specific product are you looking for? Laptops, Phones, or Audio?",
+            'sure': "Awesome. Tell me what you're interested in!",
+            'ok': "Okay! How can I help you today?",
+            'no': "No problem. Let me know if you change your mind!",
         }
 
         // Check for FAQ matches
