@@ -96,11 +96,25 @@ export async function POST(req: Request) {
 
         // --- END INTELLIGENCE LAYER ---
 
-        // 2. Adaptive Parsing (Existing Logic)
+        // 2. Adaptive Parsing
         const tokens = userQuery.split(/[\s,?.!]+/).filter((t: string) => !STOP_WORDS.includes(t))
 
         let detectedCategory: string | null = null
         const searchTerms: string[] = []
+        let priceLimit: number | null = null
+        let applyContext = false
+
+        // Check for Price/Context Modifiers
+        if (userQuery.includes('cheap') || userQuery.includes('budget') || userQuery.includes('under') || userQuery.includes('less than')) {
+            applyContext = true
+            // Try to extract number
+            const numbers = userQuery.match(/\d+/)
+            if (numbers) {
+                priceLimit = parseInt(numbers[0]) * (userQuery.includes('k') ? 1000 : 1)
+            } else {
+                priceLimit = 50000 // Default "cheap" threshold
+            }
+        }
 
         tokens.forEach((t: string) => {
             if (CATEGORY_MAP[t]) {
@@ -109,6 +123,23 @@ export async function POST(req: Request) {
                 searchTerms.push(t)
             }
         })
+
+        // CONTEXT RECOVERY: If no category found, check history for "cheaper ones" flow
+        if (!detectedCategory && applyContext && messages.length > 2) {
+            // Look at previous assistant message or user message to find topic
+            const prevUserMsg = messages[messages.length - 3] // User's last message
+            if (prevUserMsg) {
+                const prevContent = prevUserMsg.content.toLowerCase()
+                // Extract category from previous user query
+                const prevTokens = prevContent.split(/[\s,?.!]+/)
+                for (const t of prevTokens) {
+                    if (CATEGORY_MAP[t]) {
+                        detectedCategory = CATEGORY_MAP[t]
+                        break
+                    }
+                }
+            }
+        }
 
         // 3. Build Query
         let query = supabase
@@ -131,6 +162,12 @@ export async function POST(req: Request) {
         } else {
             // Broadest search if no specific inputs
             query = query.limit(5)
+        }
+
+        // Apply Price Context
+        if (priceLimit) {
+            query = query.lt('price', priceLimit)
+            query = query.order('price', { ascending: true }) // Show cheapest first
         }
 
         query = query.limit(10)
