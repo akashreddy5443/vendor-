@@ -28,7 +28,7 @@ export function ChatWidget() {
         {
             id: 'welcome',
             role: 'assistant',
-            content: "Hi! I'm your AI Shopping Assistant. Ask me about Laptops, Phones, or Audio gear!"
+            content: "Hello! I'm TechDev AI 🤖. \n\nI can help you find the best dev gear. Try asking:\n• \"Best laptops for coding\"\n• \"Noise canceling headphones\"\n• \"Mechanical keyboards\""
         }
     ])
     const [input, setInput] = useState('')
