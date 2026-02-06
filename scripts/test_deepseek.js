@@ -11,7 +11,7 @@ async function testDeepSeek() {
     console.log(`🔑 Key found: ${key.slice(0, 4)}...`);
 
     const deepseek = createOpenAI({
-        baseURL: 'https://api.deepseek.com/v1', // Trying explicit v1
+        baseURL: 'https://api.deepseek.com',
         apiKey: key,
     });
 
