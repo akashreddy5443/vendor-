@@ -87,14 +87,14 @@ export function ChatWidget() {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sans">
+        <div className="fixed bottom-24 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end font-sans">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 w-[400px] h-[600px] mb-4 flex flex-col overflow-hidden"
+                        className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 w-[92vw] md:w-[400px] h-[75vh] md:h-[600px] mb-2 md:mb-4 flex flex-col overflow-hidden origin-bottom-right"
                     >
                         {/* Header */}
                         <div className="bg-white/50 backdrop-blur-md p-4 flex items-center justify-between border-b border-slate-200/50">
@@ -253,11 +253,11 @@ export function ChatWidget() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-slate-900 text-white p-4 rounded-full shadow-2xl shadow-indigo-500/30 hover:bg-slate-800 transition-all group relative overflow-hidden"
+                className="bg-slate-900 text-white p-3.5 md:p-4 rounded-full shadow-2xl shadow-indigo-500/30 hover:bg-slate-800 transition-all group relative overflow-hidden"
             >
                 <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10">
-                    {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
+                    {isOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <MessageSquare className="w-5 h-5 md:w-6 md:h-6" />}
                 </div>
             </motion.button>
         </div>
