@@ -57,7 +57,7 @@ export default function TrustSection({ data, variant = 'default' }: { data?: any
                                 </div>
                                 <div className="flex flex-col">
                                     <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-1 group-hover:text-blue-400 transition-colors">
-                                        {feature.title}
+                                        {feature.name || feature.title}
                                     </h3>
                                     <p className="text-xs text-zinc-400 font-medium leading-relaxed hidden xl:block">
                                         {feature.description.split('.')[0]}.
@@ -108,7 +108,7 @@ export default function TrustSection({ data, variant = 'default' }: { data?: any
                                 </div>
 
                                 <h3 className="text-lg font-black uppercase tracking-tight text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
-                                    {feature.title}
+                                    {feature.name || feature.title}
                                 </h3>
 
                                 <p className="text-sm leading-relaxed text-slate-500 font-medium">
