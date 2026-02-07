@@ -154,43 +154,60 @@ export function Navbar() {
                             {/* Dropdown Shim */}
                             <div className="absolute top-20 left-0 w-full h-1 bg-transparent invisible group-hover:visible" />
 
-                            {/* Minimalist Dropdown - Expanded Width */}
-                            <div className="absolute top-full -left-10 w-[800px] bg-white border border-slate-100 shadow-xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
-                                <div className="flex bg-white h-full min-h-[400px]">
-                                    {/* Column 1: Categories (40%) */}
-                                    <div className="w-[40%] flex flex-col p-8 border-r border-slate-100">
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-2">
+                            {/* Minimalist Dropdown - Professional Look */}
+                            <div className="absolute top-full -left-20 w-[900px] bg-white border border-slate-100 shadow-2xl shadow-slate-200/50 rounded-3xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-4 group-hover:translate-y-2 overflow-hidden z-50">
+                                <div className="flex bg-white h-full min-h-[420px]">
+                                    {/* Column 1: Categories (70%) */}
+                                    <div className="w-[70%] flex flex-col p-8 bg-gradient-to-br from-slate-50/30 to-white">
+                                        <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400 mb-6">
                                             Shop By Category
                                         </h3>
-                                        <div className="grid grid-cols-2 gap-2 content-start">
-                                            {categories.slice(0, 10).map(cat => (
-                                                <Link
-                                                    key={cat.id}
-                                                    href={`/products?category=${cat.slug || cat.id}`}
-                                                    className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group/item border border-transparent hover:border-slate-100"
-                                                >
-                                                    <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 group-hover/item:bg-white flex items-center justify-center text-slate-400 group-hover/item:text-blue-600 transition-colors">
-                                                        <Search className="w-4 h-4" />
-                                                    </div>
-                                                    <span className="text-xs font-bold text-slate-700 group-hover/item:text-blue-700">
-                                                        {cat.name}
-                                                    </span>
-                                                </Link>
-                                            ))}
+                                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 content-start">
+                                            {categories.slice(0, 10).map((cat, idx) => {
+                                                // Pastel colors for icons
+                                                const colors = [
+                                                    'bg-orange-50 text-orange-600',
+                                                    'bg-blue-50 text-blue-600',
+                                                    'bg-green-50 text-green-600',
+                                                    'bg-purple-50 text-purple-600',
+                                                    'bg-pink-50 text-pink-600',
+                                                    'bg-teal-50 text-teal-600',
+                                                    'bg-indigo-50 text-indigo-600',
+                                                    'bg-rose-50 text-rose-600',
+                                                    'bg-amber-50 text-amber-600',
+                                                    'bg-cyan-50 text-cyan-600'
+                                                ]
+                                                const colorClass = colors[idx % colors.length]
+
+                                                return (
+                                                    <Link
+                                                        key={cat.id}
+                                                        href={`/products?category=${cat.slug || cat.id}`}
+                                                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white transition-all group/item border border-transparent hover:border-slate-100 hover:shadow-sm"
+                                                    >
+                                                        <div className={`w-9 h-9 rounded-[10px] ${colorClass} flex items-center justify-center transition-transform group-hover/item:scale-105 shadow-sm`}>
+                                                            <Search className="w-4 h-4" />
+                                                        </div>
+                                                        <span className="text-[13px] font-semibold text-slate-600 group-hover/item:text-slate-900 transition-colors">
+                                                            {cat.name}
+                                                        </span>
+                                                    </Link>
+                                                )
+                                            })}
                                         </div>
-                                        <div className="mt-auto pt-6">
-                                            <Link href="/categories" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:gap-3 transition-all">
+                                        <div className="mt-auto pt-6 border-t border-slate-100">
+                                            <Link href="/categories" className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors">
                                                 View All Categories <ArrowRight className="w-3 h-3" />
                                             </Link>
                                         </div>
                                     </div>
 
-                                    {/* Column 2: Dynamic Promo Card (60%) */}
-                                    <div className="w-[60%] relative overflow-hidden group/ad">
+                                    {/* Column 2: Dynamic Promo Card (30%) */}
+                                    <div className="w-[30%] relative overflow-hidden group/ad">
                                         <div
-                                            className="absolute inset-0 flex flex-col justify-end p-10 transition-transform duration-700"
+                                            className="absolute inset-0 flex flex-col justify-center p-8 transition-transform duration-700"
                                             style={{
-                                                backgroundColor: catalogContent.background_url ? 'transparent' : '#1e3a8a', // Default blue if no image
+                                                backgroundColor: catalogContent.background_url ? 'transparent' : '#172554',
                                                 color: '#FFFFFF'
                                             }}
                                         >
@@ -200,32 +217,38 @@ export function Navbar() {
                                                     <img
                                                         src={catalogContent.background_url}
                                                         alt="Promo"
-                                                        className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover/ad:scale-105"
+                                                        className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-1000 group-hover/ad:scale-105"
                                                     />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent z-10" />
+                                                    <div className="absolute inset-0 bg-blue-950/80 mix-blend-multiply z-10" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
                                                 </>
                                             )}
 
-                                            {/* Default Blue Background Pattern if no image */}
+                                            {/* Pattern if no image */}
                                             {!catalogContent.background_url && (
-                                                <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10" />
+                                                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:16px_16px]" />
                                             )}
 
-                                            <div className="relative z-20 w-full max-w-md">
-                                                <span className="inline-block px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg mb-4 bg-white/10 backdrop-blur-md border border-white/10 text-white">
-                                                    {catalogContent.badge || 'New Arrival'}
+                                            <div className="relative z-20">
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full mb-4 bg-white/10 backdrop-blur-md border border-white/10 text-white shadow-sm">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                                                    {catalogContent.badge || 'New Drop'}
                                                 </span>
-                                                <h4 className="font-heading font-black text-4xl mb-4 leading-none drop-shadow-md">
-                                                    {catalogContent.title || 'Collection'}
+
+                                                <h4 className="font-heading font-bold text-2xl mb-3 leading-tight tracking-tight">
+                                                    {catalogContent.title || 'ProDev Gear 2026'}
                                                 </h4>
-                                                <p className="text-sm mb-8 text-blue-50 font-medium leading-relaxed opacity-90">
-                                                    {catalogContent.subtitle || 'Explore our latest gadgets and accessories designed for professionals.'}
+
+                                                <p className="text-xs mb-6 text-blue-100/90 font-medium leading-relaxed">
+                                                    {catalogContent.subtitle || 'Upgrade your setup with the latest gear.'}
                                                 </p>
+
                                                 <Link
                                                     href={catalogContent.link || '/products'}
-                                                    className="inline-flex h-12 px-8 rounded-full items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all shadow-xl shadow-blue-900/20 bg-white text-blue-900 hover:bg-blue-50 hover:gap-3"
+                                                    className="inline-flex h-10 px-6 rounded-xl items-center gap-2 text-xs font-bold bg-white text-slate-950 hover:bg-blue-50 transition-all shadow-xl shadow-blue-900/20 hover:gap-3 group/btn"
                                                 >
-                                                    {catalogContent.linkText || 'Shop Now'} <ArrowRight className="h-3 w-3" />
+                                                    {catalogContent.linkText || 'Shop Now'}
+                                                    <ArrowRight className="h-3 w-3 transition-transform group-hover/btn:-rotate-45" />
                                                 </Link>
                                             </div>
                                         </div>
