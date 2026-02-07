@@ -132,32 +132,34 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-transparent text-slate-900 overflow-hidden font-sans flex flex-col md:block">
-      {/* Hero Slider - Order 1 */}
+      {/* Hero Section Wrapper with Trust Overlay */}
       <section className="relative order-1 md:order-none">
         <HeroSlider slides={slides} />
-      </section >
 
-      {/* Mobile Trust Strip (Compact) - Order 1.5 */}
-      <div className="order-1 md:hidden bg-slate-50 border-y border-slate-100 py-3 overflow-x-auto no-scrollbar">
+        {/* Trust Overlay (Desktop/Tablet) */}
+        <div className="absolute bottom-0 left-0 w-full z-30 hidden md:block">
+          <TrustSection data={trustSection} variant="overlay" />
+        </div>
+      </section>
+
+      {/* Mobile Trust Strip (Compact - Keep existing for mobile) */}
+      <div className="order-1 md:hidden bg-slate-950 border-t border-white/10 py-4 overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-6 px-4 min-w-max">
+          {/* Reusing logic from TrustSection for mobile consistency via simple mapping if needed, 
+               but keeping the existing manual strip for now as it's separate style. */}
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Fast Delivery</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Fast Delivery</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Official Warranty</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Official Warranty</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">Easy Returns</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Easy Returns</span>
           </div>
         </div>
-      </div>
-
-      {/* Trust Section: Order 2 (Right after Hero) */}
-      <div className="order-2 md:order-none">
-        <TrustSection data={trustSection} />
       </div>
 
       {/* Categories: AJIO-Style Tiles (Restored) */}

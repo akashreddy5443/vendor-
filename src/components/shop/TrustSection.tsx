@@ -8,7 +8,7 @@ const iconMap: any = {
     ShieldCheck, Truck, RotateCcw, CreditCard, CheckCircle
 }
 
-export default function TrustSection({ data }: { data?: any }) {
+export default function TrustSection({ data, variant = 'default' }: { data?: any, variant?: 'default' | 'overlay' }) {
     const defaultFeatures = [
         {
             icon: 'ShieldCheck',
@@ -34,13 +34,41 @@ export default function TrustSection({ data }: { data?: any }) {
 
     const features = data?.features || defaultFeatures
 
-    const renderIcon = (icon: any) => {
-        if (React.isValidElement(icon)) return icon
-        if (typeof icon === 'string') {
-            const IconComp = iconMap[icon] || ShieldCheck
-            return <IconComp className="w-8 h-8" />
-        }
-        return <ShieldCheck className="w-8 h-8" />
+    const renderIcon = (icon: any, isOverlay: boolean) => {
+        const IconComp = (typeof icon === 'string' ? iconMap[icon] : icon) || ShieldCheck
+        return <IconComp className={isOverlay ? "w-5 h-5 md:w-6 md:h-6" : "w-8 h-8"} />
+    }
+
+    if (variant === 'overlay') {
+        return (
+            <div className="w-full bg-white/10 backdrop-blur-md border-t border-white/10 py-4 md:py-6">
+                <div className="max-w-[1800px] mx-auto px-4 md:px-12 lg:px-16">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                        {features.map((feature: any, idx: number) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 + (idx * 0.1) }}
+                                className="flex items-center gap-3 md:gap-4 group cursor-default"
+                            >
+                                <div className="hidden md:flex w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                                    {renderIcon(feature.icon, true)}
+                                </div>
+                                <div className="flex flex-col">
+                                    <h3 className="text-[10px] md:text-xs font-black uppercase tracking-wider text-white mb-0.5 group-hover:text-blue-400 transition-colors">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-[8px] md:text-[10px] text-white/60 font-medium leading-tight hidden xl:block">
+                                        {feature.description.split('.')[0]}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -76,7 +104,7 @@ export default function TrustSection({ data }: { data?: any }) {
 
                             <div className="relative z-10 flex flex-col items-center text-center">
                                 <div className="w-20 h-20 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-inner">
-                                    {renderIcon(feature.icon)}
+                                    {renderIcon(feature.icon, false)}
                                 </div>
 
                                 <h3 className="text-lg font-black uppercase tracking-tight text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
