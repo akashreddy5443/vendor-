@@ -156,56 +156,42 @@ export function Navbar() {
 
                             {/* Minimalist Dropdown - Expanded Width */}
                             <div className="absolute top-full -left-10 w-[800px] bg-white border border-slate-100 shadow-xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
-                                <div className="flex gap-8">
-                                    {/* Column 1: Categories (20%) */}
-                                    <div className="w-[180px] shrink-0">
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">Browse By</h3>
-                                        <div className="flex flex-col gap-1">
-                                            {categories.slice(0, 8).map(cat => (
+                                <div className="flex bg-white h-full min-h-[400px]">
+                                    {/* Column 1: Categories (40%) */}
+                                    <div className="w-[40%] flex flex-col p-8 border-r border-slate-100">
+                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 flex items-center gap-2">
+                                            Shop By Category
+                                        </h3>
+                                        <div className="grid grid-cols-2 gap-2 content-start">
+                                            {categories.slice(0, 10).map(cat => (
                                                 <Link
                                                     key={cat.id}
                                                     href={`/products?category=${cat.slug || cat.id}`}
-                                                    className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors group/item"
+                                                    className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-all group/item border border-transparent hover:border-slate-100"
                                                 >
-                                                    {cat.name}
-                                                    <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-transform text-blue-600" />
+                                                    <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 group-hover/item:bg-white flex items-center justify-center text-slate-400 group-hover/item:text-blue-600 transition-colors">
+                                                        <Search className="w-4 h-4" />
+                                                    </div>
+                                                    <span className="text-xs font-bold text-slate-700 group-hover/item:text-blue-700">
+                                                        {cat.name}
+                                                    </span>
                                                 </Link>
                                             ))}
                                         </div>
-                                    </div>
-
-                                    {/* Column 2: Popular Brands (30%) */}
-                                    <div className="w-[240px] shrink-0 border-l border-slate-50 pl-8">
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Popular Brands</h3>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {catalogContent.brands?.slice(0, 8).map((brand: any, i: number) => (
-                                                <Link
-                                                    key={i}
-                                                    href={brand.link || '#'}
-                                                    className="aspect-[4/3] bg-slate-50 rounded-xl flex items-center justify-center p-4 border border-slate-100 hover:border-blue-500 hover:shadow-md transition-all group/brand"
-                                                >
-                                                    {brand.logo ? (
-                                                        <img src={brand.logo} alt={brand.name} className="w-full h-full object-contain mix-blend-multiply opacity-80 group-hover/brand:opacity-100 transition-opacity" />
-                                                    ) : (
-                                                        <span className="text-[10px] font-bold text-slate-400">{brand.name || 'Brand'}</span>
-                                                    )}
-                                                </Link>
-                                            ))}
-                                            {(!catalogContent.brands || catalogContent.brands.length === 0) && (
-                                                <div className="col-span-2 text-xs text-slate-400 italic py-4">
-                                                    Add brands in Admin &gt; Homepage
-                                                </div>
-                                            )}
+                                        <div className="mt-auto pt-6">
+                                            <Link href="/categories" className="flex items-center gap-2 text-xs font-bold text-blue-600 hover:gap-3 transition-all">
+                                                View All Categories <ArrowRight className="w-3 h-3" />
+                                            </Link>
                                         </div>
                                     </div>
 
-                                    {/* Column 3: Dynamic Promo Card (Remaining) */}
-                                    <div className="flex-1 border-l border-slate-50 pl-8">
+                                    {/* Column 2: Dynamic Promo Card (60%) */}
+                                    <div className="w-[60%] relative overflow-hidden group/ad">
                                         <div
-                                            className="h-full rounded-2xl p-6 flex flex-col justify-end items-start group/ad cursor-pointer hover:shadow-xl transition-all relative overflow-hidden"
+                                            className="absolute inset-0 flex flex-col justify-end p-10 transition-transform duration-700"
                                             style={{
-                                                backgroundColor: catalogContent.background_url ? 'transparent' : '#F8FAFC',
-                                                color: catalogContent.text_color || '#0F172A'
+                                                backgroundColor: catalogContent.background_url ? 'transparent' : '#1e3a8a', // Default blue if no image
+                                                color: '#FFFFFF'
                                             }}
                                         >
                                             {/* Background Image */}
@@ -216,22 +202,30 @@ export function Navbar() {
                                                         alt="Promo"
                                                         className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover/ad:scale-105"
                                                     />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent z-10" />
                                                 </>
                                             )}
 
-                                            <div className="relative z-20 w-full mb-2">
-                                                <span className={`inline-block px-2.5 py-1 text-[10px] font-bold uppercase rounded-lg mb-3 shadow-sm ${catalogContent.background_url ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white'}`}>
-                                                    {catalogContent.badge}
+                                            {/* Default Blue Background Pattern if no image */}
+                                            {!catalogContent.background_url && (
+                                                <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10" />
+                                            )}
+
+                                            <div className="relative z-20 w-full max-w-md">
+                                                <span className="inline-block px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg mb-4 bg-white/10 backdrop-blur-md border border-white/10 text-white">
+                                                    {catalogContent.badge || 'New Arrival'}
                                                 </span>
-                                                <h4 className="font-heading font-black text-2xl mb-2 leading-tight drop-shadow-sm">
-                                                    {catalogContent.title}
+                                                <h4 className="font-heading font-black text-4xl mb-4 leading-none drop-shadow-md">
+                                                    {catalogContent.title || 'Collection'}
                                                 </h4>
-                                                <p className={`text-sm mb-6 max-w-[90%] font-medium ${catalogContent.background_url ? 'text-white/90' : 'text-slate-500'}`}>
-                                                    {catalogContent.subtitle}
+                                                <p className="text-sm mb-8 text-blue-50 font-medium leading-relaxed opacity-90">
+                                                    {catalogContent.subtitle || 'Explore our latest gadgets and accessories designed for professionals.'}
                                                 </p>
-                                                <Link href={catalogContent.link || '#'} className={`inline-flex h-10 px-6 rounded-full items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all shadow-lg ${catalogContent.background_url ? 'bg-white text-slate-900 hover:bg-blue-50' : 'bg-slate-900 text-white hover:bg-slate-800'}`}>
-                                                    {catalogContent.linkText} <ArrowRight className="h-3 w-3" />
+                                                <Link
+                                                    href={catalogContent.link || '/products'}
+                                                    className="inline-flex h-12 px-8 rounded-full items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all shadow-xl shadow-blue-900/20 bg-white text-blue-900 hover:bg-blue-50 hover:gap-3"
+                                                >
+                                                    {catalogContent.linkText || 'Shop Now'} <ArrowRight className="h-3 w-3" />
                                                 </Link>
                                             </div>
                                         </div>
