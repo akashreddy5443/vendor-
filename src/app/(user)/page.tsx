@@ -155,8 +155,13 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Trust Section: Order 2 (Right after Hero) */}
+      <div className="order-2 md:order-none">
+        <TrustSection data={trustSection} />
+      </div>
+
       {/* Categories: AJIO-Style Tiles (Restored) */}
-      <section className="pt-8 md:pt-16 pb-8 bg-transparent order-2 md:order-none">
+      <section className="pt-8 md:pt-16 pb-8 bg-transparent order-3 md:order-none">
         <div className="w-full px-4 md:px-12 lg:px-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -286,10 +291,7 @@ export default function HomePage() {
         </div>
       </section >
 
-      {/* Trust Section: Order 5 (Mobile - bumped up) */}
-      <div className="order-5 md:order-none">
-        <TrustSection data={trustSection} />
-      </div>
+
 
       {/* Visual Anchor Strip (Phase 3) - Replaces LifestyleGrid */}
       <section className="py-12 md:py-16 bg-transparent order-6 md:order-none">

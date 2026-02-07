@@ -8,6 +8,7 @@ import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
 import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
 import { FooterEditor } from '@/components/admin/FooterEditor'
+import TrustSettingsForm from '@/components/admin/TrustSettingsForm'
 
 type Product = {
     id: string
@@ -35,9 +36,10 @@ type HomepageBuilderProps = {
     lifestyleSection: any
     trendingSection: any
     promoSection: any
+    trustSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection, trustSection }: HomepageBuilderProps) {
     // ... Existing state logic ...
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
@@ -248,6 +250,9 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
                     </div>
                 </form>
             </section>
+
+            {/* Trust Section Editor */}
+            <TrustSettingsForm initialData={trustSection} />
 
             {/* Old Hero Section Editor (Collapsed or Deprecated visual) */}
             <section className="rounded-xl border border-gray-200 bg-white p-6 opacity-60 hover:opacity-100 transition-opacity">
