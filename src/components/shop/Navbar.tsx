@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ShoppingBag, ShoppingCart, Heart, User, Menu, X, ChevronDown, ArrowRight, Search, ChevronRight } from 'lucide-react'
+import * as Icons from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/context/CartContext'
 import { SpotlightSearch } from '@/components/ui/SpotlightSearch'
@@ -179,6 +180,20 @@ export function Navbar() {
                                                 ]
                                                 const colorClass = colors[idx % colors.length]
 
+                                                // Render dynamic icon
+                                                const renderCategoryIcon = () => {
+                                                    if (!cat.icon) return <Search className="w-4 h-4" />
+
+                                                    // Try to get icon from lucide-react
+                                                    const IconComponent = (Icons as any)[cat.icon]
+                                                    if (IconComponent) {
+                                                        return <IconComponent className="w-4 h-4" />
+                                                    }
+
+                                                    // Fallback to Search icon
+                                                    return <Search className="w-4 h-4" />
+                                                }
+
                                                 return (
                                                     <Link
                                                         key={cat.id}
@@ -186,7 +201,7 @@ export function Navbar() {
                                                         className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white transition-all group/item border border-transparent hover:border-slate-100 hover:shadow-sm"
                                                     >
                                                         <div className={`w-9 h-9 rounded-[10px] ${colorClass} flex items-center justify-center transition-transform group-hover/item:scale-105 shadow-sm`}>
-                                                            <Search className="w-4 h-4" />
+                                                            {renderCategoryIcon()}
                                                         </div>
                                                         <span className="text-[13px] font-semibold text-slate-600 group-hover/item:text-slate-900 transition-colors">
                                                             {cat.name}
