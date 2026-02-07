@@ -2,381 +2,303 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Layout, Save, Upload, Image as ImageIcon, ExternalLink, Type, Palette, X } from 'lucide-react'
+import { Layout, Save, Upload, Image as ImageIcon, ExternalLink, Type, Palette, X, Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import { ImageCropper } from '@/components/admin/ImageCropper'
+import { toast } from 'sonner'
 
 interface CatalogMenuSettingsFormProps {
     initialData: any
 }
 
 export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsFormProps) {
-    const [loading, setLoading] = useState(false)
-    const [settings, setSettings] = useState(initialData?.content_json || {
+    const [isLoading, setIsLoading] = useState(false)
+    const [settings, setSettings] = useState({
         badge: 'New Arrival',
-        title: 'Summer Tech Collection',
-        subtitle: 'Upgrade your setup today.',
+        title: 'Summer Collection',
+        subtitle: 'Explore our latest gadgets and accessories.',
         link: '/products',
         linkText: 'Shop Now',
         background_url: '',
-        text_color: '#0F172A',
-        brands: [] // New Brands Array
+        text_color: '#FFFFFF', // Default to white since we encourage dark/blue cards
+        ...initialData
     })
 
+    // Cropper State
+    const [isCropperOpen, setIsCropperOpen] = useState(false)
+    const [tempImageFile, setTempImageFile] = useState<File | null>(null)
+    const [isUploading, setIsUploading] = useState(false)
+
+    // Handle File Selection -> Open Cropper
+    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        // Basic validation
+        if (!file.type.startsWith('image/')) {
+            toast.error('Please select an image file')
+            return
+        }
+
+        setTempImageFile(file)
+        setIsCropperOpen(true)
+        // Reset input
+        e.target.value = ''
+    }
+
+    // Handle Cropped Image Upload
+    const handleCropComplete = async (croppedBlob: Blob) => {
+        setIsUploading(true)
+        try {
+            const supabase = createClient()
+            const fileExt = 'webp' // Convert to webp for performance
+            const fileName = `catalog-promo-${Date.now()}.${fileExt}`
+            const filePath = `homepage/${fileName}`
+
+            const { error: uploadError } = await supabase.storage
+                .from('images') // Ensure this bucket exists, or use 'products'
+                .upload(filePath, croppedBlob, { contentType: 'image/webp' })
+
+            if (uploadError) throw uploadError
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('images')
+                .getPublicUrl(filePath)
+
+            setSettings(prev => ({ ...prev, background_url: publicUrl }))
+            alert('Image cropped and uploaded!')
+        } catch (error) {
+            console.error('Upload error:', error)
+            alert('Failed to upload image')
+        } finally {
+            setIsUploading(false)
+            setTempImageFile(null)
+        }
+    }
+
     const handleSave = async () => {
-        setLoading(true)
-        const supabase = createClient()
+        setIsLoading(true)
+        try {
+            const response = await fetch('/api/admin/homepage/catalog-menu', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+            })
 
-        const { error } = await supabase
-            .from('homepage_sections')
-            .upsert({
-                section_type: 'catalog_menu',
-                content_json: settings,
-                is_active: true,
-                updated_at: new Date().toISOString()
-            }, { onConflict: 'section_type' })
+            if (!response.ok) throw new Error('Failed to save settings')
 
-        if (error) {
-            alert('Error saving settings')
-            console.error(error)
-        } else {
-            alert('Catalog menu updated!')
+            alert('Catalog menu updated successfully')
+        } catch (error) {
+            console.error('Save error:', error)
+            alert('Failed to save changes')
+        } finally {
+            setIsLoading(false)
         }
-        setLoading(false)
-    }
-
-    const handleBrandUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        if (!file.type.startsWith('image/')) {
-            alert('Please upload an image file')
-            return
-        }
-
-        const supabase = createClient()
-        const fileExt = file.name.split('.').pop()
-        const fileName = `brand-${Math.random()}.${fileExt}`
-        const filePath = `brand-logos/${fileName}`
-
-        const { error: uploadError } = await supabase.storage
-            .from('products')
-            .upload(filePath, file)
-
-        if (uploadError) {
-            alert('Error uploading logo: ' + uploadError.message)
-            return
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-            .from('products')
-            .getPublicUrl(filePath)
-
-        const newBrands = [...(settings.brands || []), { logo: publicUrl, name: '', link: '#' }]
-        setSettings({ ...settings, brands: newBrands })
-    }
-
-    const removeBrand = (index: number) => {
-        const newBrands = [...(settings.brands || [])]
-        newBrands.splice(index, 1)
-        setSettings({ ...settings, brands: newBrands })
-    }
-
-    const updateBrand = (index: number, field: string, value: string) => {
-        const newBrands = [...(settings.brands || [])]
-        newBrands[index] = { ...newBrands[index], [field]: value }
-        setSettings({ ...settings, brands: newBrands })
-    }
-
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        // Simple check for image type
-        if (!file.type.startsWith('image/')) {
-            alert('Please upload an image file')
-            return
-        }
-
-        const supabase = createClient()
-        const fileExt = file.name.split('.').pop()
-        const fileName = `catalog-promo-${Math.random()}.${fileExt}`
-        const filePath = `promo-images/${fileName}`
-
-        const { error: uploadError } = await supabase.storage
-            .from('products') // Using products bucket as general storage for now or 'images' if available
-            .upload(filePath, file)
-
-        if (uploadError) {
-            alert('Error uploading image: ' + uploadError.message)
-            return
-        }
-
-        const { data: { publicUrl } } = supabase.storage
-            .from('products')
-            .getPublicUrl(filePath)
-
-        setSettings({ ...settings, background_url: publicUrl })
     }
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-            <div className="flex items-center justify-between mb-8">
+        <div className="space-y-8 max-w-5xl mx-auto">
+            <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-900 flex items-center gap-3">
-                        <Layout className="w-6 h-6 text-blue-600" />
-                        Catalog Dropdown Promo
-                    </h2>
-                    <p className="text-sm text-slate-500 mt-1">Customize the promo card inside the main navigation catalog dropdown.</p>
+                    <h2 className="text-2xl font-bold text-slate-900">Catalog Menu</h2>
+                    <p className="text-slate-500">Customize the mega menu dropdown: Categories Grid & Promo Card.</p>
                 </div>
                 <button
                     onClick={handleSave}
-                    disabled={loading}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all disabled:opacity-50"
+                    disabled={isLoading}
+                    className="flex items-center gap-2 bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all disabled:opacity-50"
                 >
-                    <Save className="w-4 h-4" />
-                    {loading ? 'Saving...' : 'Save Changes'}
+                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    Save Changes
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                {/* Editor Inputs */}
-                <div className="space-y-8">
-                    {/* Image Upload */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Left Column: Settings */}
+                <div className="space-y-6 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    {/* Promo Card Image */}
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Background Image</label>
-                        <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center hover:border-blue-500 hover:bg-blue-50/50 transition-all group cursor-pointer relative">
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Promo Card Background</label>
+                        <div className="relative group cursor-pointer border-2 border-dashed border-slate-200 rounded-xl hover:border-blue-500 hover:bg-blue-50/50 transition-all p-4">
                             <input
                                 type="file"
                                 accept="image/*"
-                                onChange={handleImageUpload}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                onChange={handleImageSelect}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                             />
                             <div className="flex flex-col items-center gap-3">
-                                {settings.background_url ? (
-                                    <div className="relative w-full h-32 rounded-lg overflow-hidden shadow-md">
+                                {isUploading ? (
+                                    <div className="h-32 w-full flex flex-col items-center justify-center gap-2 text-blue-600">
+                                        <Loader2 className="w-8 h-8 animate-spin" />
+                                        <span className="text-xs font-bold">Uploading...</span>
+                                    </div>
+                                ) : settings.background_url ? (
+                                    <div className="relative w-full h-48 rounded-lg overflow-hidden shadow-sm">
                                         <Image
                                             src={settings.background_url}
                                             alt="Preview"
                                             fill
                                             className="object-cover"
                                         />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center text-white opacity-0 group-hover:opacity-100">
+                                            <span className="flex items-center gap-2 font-bold text-sm bg-white/20 backdrop-blur px-3 py-1.5 rounded-full">
+                                                <Upload className="w-4 h-4" /> Change Image
+                                            </span>
+                                        </div>
                                     </div>
                                 ) : (
-                                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
-                                        <ImageIcon className="w-6 h-6" />
+                                    <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
+                                        <ImageIcon className="w-8 h-8" />
                                     </div>
                                 )}
-                                <div className="text-sm text-slate-600">
-                                    <span className="font-bold text-blue-600">Click to upload</span> or drag and drop
-                                </div>
-                                <p className="text-xs text-slate-400">Recommended: 600x800px or vertical aspect ratio</p>
+                                {!settings.background_url && (
+                                    <div className="text-center">
+                                        <div className="text-sm font-bold text-slate-700">Click to upload image</div>
+                                        <p className="text-xs text-slate-400 mt-1">Has built-in cropper. Recommended: Vertical orientation.</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    {/* Text Content */}
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* Text Inputs */}
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Badge</label>
+                                <input
+                                    type="text"
+                                    value={settings.badge}
+                                    onChange={(e) => setSettings({ ...settings, badge: e.target.value })}
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Text Color</label>
+                                <div className="flex bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                                    <button
+                                        onClick={() => setSettings({ ...settings, text_color: '#FFFFFF' })}
+                                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${settings.text_color === '#FFFFFF' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}
+                                    >
+                                        Light
+                                    </button>
+                                    <button
+                                        onClick={() => setSettings({ ...settings, text_color: '#0F172A' })}
+                                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${settings.text_color === '#0F172A' ? 'bg-white shadow text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}
+                                    >
+                                        Dark
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Badge Text</label>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Title</label>
                             <input
                                 type="text"
-                                value={settings.badge}
-                                onChange={(e) => setSettings({ ...settings, badge: e.target.value })}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                                value={settings.title}
+                                onChange={(e) => setSettings({ ...settings, title: e.target.value })}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-lg outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
+
                         <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Badge Color</label>
-                            <select
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium"
-                                value="blue" // Hardcoded for now, could be dynamic
-                                disabled
-                            >
-                                <option value="blue">Brand Blue</option>
-                            </select>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subtitle</label>
+                            <textarea
+                                rows={2}
+                                value={settings.subtitle}
+                                onChange={(e) => setSettings({ ...settings, subtitle: e.target.value })}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                            />
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Main Title</label>
-                        <input
-                            type="text"
-                            value={settings.title}
-                            onChange={(e) => setSettings({ ...settings, title: e.target.value })}
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subtitle</label>
-                        <input
-                            type="text"
-                            value={settings.subtitle}
-                            onChange={(e) => setSettings({ ...settings, subtitle: e.target.value })}
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Button Link</label>
-                            <div className="relative">
-                                <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Link Url</label>
                                 <input
                                     type="text"
                                     value={settings.link}
                                     onChange={(e) => setSettings({ ...settings, link: e.target.value })}
-                                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
-                        </div>
-                        <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Button Text</label>
-                            <input
-                                type="text"
-                                value={settings.linkText}
-                                onChange={(e) => setSettings({ ...settings, linkText: e.target.value })}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-blue-500 outline-none"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Text Color Override</label>
-                        <div className="flex gap-4">
-                            <button
-                                onClick={() => setSettings({ ...settings, text_color: '#0F172A' })}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${settings.text_color === '#0F172A' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600'}`}
-                            >
-                                <div className="w-4 h-4 rounded-full bg-slate-900 border border-slate-200"></div> Dark
-                            </button>
-                            <button
-                                onClick={() => setSettings({ ...settings, text_color: '#FFFFFF' })}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${settings.text_color === '#FFFFFF' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 text-slate-600'}`}
-                            >
-                                <div className="w-4 h-4 rounded-full bg-white border border-slate-200"></div> Light
-                            </button>
-                        </div>
-                    </div>
-
-                    <hr className="border-slate-100" />
-
-                    {/* Brands Section */}
-                    <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <label className="block text-sm font-bold text-slate-700">Popular Brands (Max 8)</label>
-                            <div className="relative overflow-hidden inline-block group">
-                                <label htmlFor="brand-upload" className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
-                                    <Upload className="w-3 h-3" /> Add Brand Logo
-                                </label>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Link Text</label>
                                 <input
-                                    id="brand-upload"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleBrandUpload}
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                    disabled={(settings.brands?.length || 0) >= 8}
+                                    type="text"
+                                    value={settings.linkText}
+                                    onChange={(e) => setSettings({ ...settings, linkText: e.target.value })}
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
-                        </div>
-
-                        <div className="space-y-3">
-                            {settings.brands?.map((brand: any, index: number) => (
-                                <div key={index} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div className="w-10 h-10 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-1 shrink-0">
-                                        <img src={brand.logo} alt="brand" className="w-full h-full object-contain" />
-                                    </div>
-                                    <div className="flex-1 grid grid-cols-2 gap-2">
-                                        <input
-                                            type="text"
-                                            placeholder="Brand Name"
-                                            value={brand.name}
-                                            onChange={(e) => updateBrand(index, 'name', e.target.value)}
-                                            className="text-xs bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none p-1"
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Link URL"
-                                            value={brand.link}
-                                            onChange={(e) => updateBrand(index, 'link', e.target.value)}
-                                            className="text-xs bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none p-1 text-slate-500"
-                                        />
-                                    </div>
-                                    <button onClick={() => removeBrand(index)} className="text-slate-400 hover:text-red-500 transition-colors">
-                                        <X className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            ))}
-                            {(!settings.brands || settings.brands.length === 0) && (
-                                <div className="text-center py-6 border-2 border-dashed border-slate-100 rounded-xl text-slate-400 text-xs">
-                                    No brands added yet. Upload logos to display.
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
 
-                {/* Live Preview */}
-                <div className="flex flex-col gap-4">
-                    <label className="block text-sm font-bold text-slate-700">Live Preview (Mega Menu)</label>
-                    <div className="bg-slate-50 rounded-2xl p-4 flex items-start justify-center min-h-[400px] border border-slate-200 overflow-hidden">
-                        {/* Mega Menu Simulation */}
-                        <div className="w-full max-w-[550px] bg-white rounded-xl shadow-lg border border-slate-100 p-6 flex gap-6">
-                            {/* Col 1: Categories (Mock) */}
-                            <div className="w-1/4 space-y-2 opacity-50 pointer-events-none">
-                                <div className="h-2 w-16 bg-slate-200 rounded mb-4"></div>
-                                <div className="h-2 w-full bg-slate-100 rounded"></div>
-                                <div className="h-2 w-full bg-slate-100 rounded"></div>
-                                <div className="h-2 w-full bg-slate-100 rounded"></div>
-                            </div>
+                {/* Right Column: Visual Preview */}
+                <div className="space-y-4">
+                    <label className="block text-sm font-bold text-slate-700">Live Preview</label>
+                    <div className="bg-slate-100 p-8 rounded-3xl flex justify-center border border-slate-200 min-h-[500px] overflow-hidden">
 
-                            {/* Col 2: Brands (New) */}
-                            <div className="w-1/4">
-                                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Popular Brands</h3>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {settings.brands?.slice(0, 8).map((brand: any, i: number) => (
-                                        <div key={i} className="aspect-square bg-slate-50 rounded-lg flex items-center justify-center p-2 border border-slate-100">
-                                            <img src={brand.logo} alt="logo" className="w-full h-full object-contain mix-blend-multiply opacity-80" />
-                                        </div>
-                                    ))}
-                                    {(!settings.brands || settings.brands.length === 0) && (
-                                        <div className="aspect-square bg-slate-50 rounded-lg" />
-                                    )}
+                        {/* Navbar Simulation */}
+                        <div className="w-[850px] bg-white rounded-2xl shadow-xl overflow-hidden flex transform scale-[0.85] origin-top-center h-fit">
+
+                            {/* Left: Layout Grid */}
+                            <div className="w-[320px] bg-white p-6 border-r border-slate-100 flex flex-col gap-6">
+                                <div>
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Shop By Category</h3>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                                            <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-100">
+                                                <div className="w-6 h-6 rounded bg-slate-200"></div>
+                                                <div className="h-2 w-12 bg-slate-200 rounded"></div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="mt-auto pt-4 border-t border-slate-50">
+                                    <div className="h-3 w-24 bg-blue-50 rounded"></div>
                                 </div>
                             </div>
 
-                            {/* Col 3: Promo Card */}
-                            <div className="w-1/2">
-                                <div
-                                    className="w-full h-[240px] rounded-xl p-4 flex flex-col justify-end items-start relative overflow-hidden"
-                                    style={{
-                                        backgroundColor: settings.background_url ? 'transparent' : '#F1F5F9',
-                                        color: settings.background_url ? '#FFFFFF' : settings.text_color
-                                    }}
-                                >
-                                    {/* ... Existing Card Content ... */}
-                                    {settings.background_url && (
-                                        <>
-                                            <Image src={settings.background_url} alt="bg" fill className="object-cover z-0" />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                                        </>
-                                    )}
-                                    <div className="relative z-20 w-full">
-                                        <span className={`inline-block px-1.5 py-0.5 text-[8px] font-bold uppercase rounded mb-2 ${settings.background_url ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white'}`}>
-                                            {settings.badge}
-                                        </span>
-                                        <h4 className="font-heading font-black text-lg leading-tight mb-1">{settings.title}</h4>
-                                        <p className={`text-[10px] mb-3 leading-tight ${settings.background_url ? 'text-white/80' : 'text-slate-500'}`}>{settings.subtitle}</p>
-                                        <div className="text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
-                                            {settings.linkText} →
-                                        </div>
+                            {/* Right: Blue Promo Card */}
+                            <div className="flex-1 relative min-h-[380px] bg-blue-600 flex flex-col justify-end p-8 text-white overflow-hidden">
+                                {settings.background_url && (
+                                    <>
+                                        <img src={settings.background_url} className="absolute inset-0 w-full h-full object-cover opacity-90" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                    </>
+                                )}
+
+                                <div className="relative z-10 max-w-[80%]">
+                                    <span className="inline-block px-3 py-1 bg-white text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-lg mb-4">
+                                        {settings.badge}
+                                    </span>
+                                    <h2 className="text-3xl font-heading font-black leading-tight mb-3">
+                                        {settings.title}
+                                    </h2>
+                                    <p className="text-sm font-medium opacity-90 mb-6 leading-relaxed">
+                                        {settings.subtitle}
+                                    </p>
+                                    <div className="bg-white text-slate-900 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2">
+                                        {settings.linkText} <span className="text-xs">→</span>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Cropper Modal */}
+            <ImageCropper
+                isOpen={isCropperOpen}
+                onClose={() => setIsCropperOpen(false)}
+                imageFile={tempImageFile}
+                aspectRatio={4 / 5} // Perfect vertical card ratio
+                onCropComplete={handleCropComplete}
+            />
         </div>
     )
 }
