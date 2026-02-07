@@ -68,15 +68,15 @@ export function Navbar() {
     const link = announcement?.content_json?.link || '#'
 
     return (
-        <div className="flex flex-col">
-            {/* Announcement Bar - Restored per user request */}
-            {(!loading && showAnnouncement) || true ? ( // Force show for now with fallback
-                <div className="bg-blue-600 text-white text-[11px] font-bold py-2 overflow-hidden relative z-50">
+        <div className="flex flex-col w-full relative z-40">
+            {/* Announcement Bar */}
+            {(!loading && showAnnouncement) || true ? (
+                <div className="bg-blue-600 text-white text-[10px] font-bold py-2.5 overflow-hidden relative z-50 tracking-wider">
                     <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] w-max">
                         {[...Array(10)].map((_, i) => (
-                            <span key={i} className="mx-8 inline-block uppercase tracking-widest select-none">
+                            <span key={i} className="mx-12 inline-block uppercase tracking-widest select-none opacity-90">
                                 {link && link !== '#' ? (
-                                    <Link href={link} className="hover:text-white/80 transition-colors">
+                                    <Link href={link} className="hover:text-white transition-colors hover:underline underline-offset-4">
                                         {text || "WELCOME TO TECHDEV STORE! FREE SHIPPING ON ORDERS OVER ₹2000"}
                                     </Link>
                                 ) : (
@@ -88,159 +88,175 @@ export function Navbar() {
                 </div>
             ) : null}
 
-            <nav className="flex h-16 items-center border-b border-slate-100 bg-white/95 backdrop-blur-2xl px-6 md:px-12 text-foreground sticky top-0 z-40 shadow-sm gap-8 transition-all duration-500">
-                {/* Vibrant Identity Line */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 z-50" />
+            {/* Main Navigation - Modern Minimalist */}
+            <nav className="flex h-20 items-center border-b border-slate-200 bg-white/95 backdrop-blur-3xl px-6 md:px-10 text-foreground sticky top-0 shadow-[0_2px_20px_-10px_rgba(0,0,0,0.05)] transition-all duration-500 z-40">
 
-                {/* Left: Logo & Navigation */}
-                <div className="flex items-center gap-10 shrink-0">
-                    <div className="flex items-center gap-4">
-                        <button
-                            className="lg:hidden text-slate-800 hover:text-primary transition-colors"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        >
-                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                        </button>
+                {/* Left: Brand & Nav */}
+                <div className="flex items-center h-full">
+                    {/* Mobile Toggle */}
+                    <button
+                        className="lg:hidden text-slate-900 hover:text-blue-600 transition-colors mr-4"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                    </button>
 
-                        <Link href="/" className="flex items-center gap-2 text-2xl font-heading font-black tracking-tighter text-slate-900 group">
-                            {settings?.logo_url ? (
-                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-9 w-auto object-contain transition-transform group-hover:scale-105" />
-                            ) : (
-                                <div className="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-all duration-500">
-                                    <ShoppingBag className="h-6 w-6" />
-                                </div>
-                            )}
-                            <span className="hidden min-[370px]:inline text-blue-700 font-black tracking-tight">{settings?.site_name || 'TechDev'}</span>
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-2.5 group mr-8">
+                        {settings?.logo_url ? (
+                            <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain" />
+                        ) : (
+                            <div className="bg-blue-600 text-white p-1.5 rounded-lg shadow-md hover:shadow-blue-500/30 transition-all">
+                                <ShoppingBag className="h-5 w-5" />
+                            </div>
+                        )}
+                        <span className="text-xl font-heading font-black tracking-tighter text-slate-900 group-hover:text-blue-600 transition-colors">
+                            {settings?.site_name || 'TechDev'}
+                        </span>
+                    </Link>
+
+                    {/* Vertical Divider */}
+                    <div className="hidden lg:block w-px h-8 bg-slate-200 mr-8" />
+
+                    {/* Desktop Links */}
+                    <div className="hidden lg:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
+                        <Link href="/" className="hover:text-blue-600 transition-colors py-8 border-b-2 border-transparent hover:border-blue-600">
+                            Home
                         </Link>
-                    </div>
-
-                    {/* Navigation Links (Desktop) */}
-                    <div className="hidden lg:flex items-center gap-8 text-xs font-extrabold uppercase tracking-widest text-slate-700">
-                        <Link href="/" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Home</Link>
 
                         {/* Mega Menu Trigger */}
-                        <div className="group relative h-16 flex items-center">
-                            <button className="hover:text-primary transition-all hover:translate-y-[-1px] py-6 font-black flex items-center gap-1 group-hover:text-primary font-bold">
-                                Catalog <ChevronDown className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-180" />
+                        <div className="group relative h-20 flex items-center">
+                            <button className="hover:text-blue-600 transition-colors py-8 border-b-2 border-transparent group-hover:border-blue-600 flex items-center gap-1.5">
+                                Catalog <ChevronDown className="h-3 w-3 mt-0.5 transition-transform duration-300 group-hover:rotate-180 opacity-50" />
                             </button>
 
-                            {/* Dropdown Backdrop Shim - To prevent closing when moving between button and menu */}
-                            <div className="absolute top-16 left-0 w-full h-4 bg-transparent invisible group-hover:visible" />
+                            {/* Dropdown Shim */}
+                            <div className="absolute top-20 left-0 w-full h-1 bg-transparent invisible group-hover:visible" />
 
-                            {/* Premium Dropdown */}
-                            <div className="absolute top-[calc(100%-4px)] left-0 w-[840px] bg-white/70 backdrop-blur-3xl border border-white/40 shadow-[0_40px_80px_-15px_rgba(45,92,247,0.15)] rounded-[2.5rem] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-700 transform translate-y-6 group-hover:translate-y-0 p-1.5 z-50 ring-1 ring-primary/5">
-                                <div className="flex bg-white/40 rounded-[2.2rem] overflow-hidden">
-                                    {/* Column 1: Categories */}
-                                    <div className="w-2/3 p-12 grid grid-cols-2 gap-x-12 gap-y-8">
-                                        <h3 className="col-span-2 text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-2 opacity-50">Industrial Categories</h3>
-                                        {categories.map(cat => (
-                                            <Link
-                                                key={cat.id}
-                                                href={`/products?category=${cat.slug || cat.id}`}
-                                                className="flex items-center gap-5 group/item cursor-pointer"
-                                            >
-                                                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm border border-slate-100/50 flex items-center justify-center text-2xl group-hover/item:scale-110 group-hover/item:shadow-primary/10 group-hover/item:border-primary/20 transition-all duration-700">
-                                                    {cat.icon || '🛍️'}
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="font-heading font-black text-base text-slate-900 group-hover/item:text-primary transition-colors tracking-tight leading-none mb-1">{cat.name}</span>
-                                                    <span className="text-[10px] font-bold text-slate-400 group-hover/item:text-slate-500 uppercase tracking-widest">In Stock</span>
-                                                </div>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                    {/* Column 2: Promo */}
-                                    <div className="w-1/3 bg-gradient-to-br from-primary to-indigo-900 text-white p-10 flex flex-col justify-center relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
-                                        <div className="relative z-10 space-y-4">
-                                            <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/20">Winter Drop</span>
-                                            <h3 className="text-3xl font-heading font-black leading-none tracking-tighter">ProDev<br />Series 2026</h3>
-                                            <Link href="/products" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:gap-4 transition-all">
-                                                Discover <ArrowRight className="h-3 w-3" />
-                                            </Link>
+                            {/* Minimalist Dropdown */}
+                            <div className="absolute top-full -left-4 w-[600px] bg-white border border-slate-100 shadow-xl rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 p-6 z-50">
+                                <div className="grid grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 px-2">Browse By</h3>
+                                        <div className="flex flex-col gap-1">
+                                            {categories.slice(0, 6).map(cat => (
+                                                <Link
+                                                    key={cat.id}
+                                                    href={`/products?category=${cat.slug || cat.id}`}
+                                                    className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors group/item"
+                                                >
+                                                    {cat.name}
+                                                    <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-transform text-blue-600" />
+                                                </Link>
+                                            ))}
                                         </div>
+                                    </div>
+                                    <div className="bg-slate-50 rounded-xl p-5 flex flex-col justify-end items-start group/ad cursor-pointer hover:bg-slate-100 transition-colors">
+                                        <span className="px-2 py-1 bg-blue-600 text-white text-[9px] font-bold uppercase rounded-md mb-2">New Arrival</span>
+                                        <h4 className="font-heading font-black text-lg text-slate-900 mb-1">Summer Tech<br />Collection</h4>
+                                        <p className="text-xs text-slate-500 mb-4">Upgrade your setup today.</p>
+                                        <Link href="/products" className="text-[10px] font-bold uppercase tracking-wider text-blue-600 flex items-center gap-2 group-hover/ad:gap-3 transition-all">
+                                            Shop Now <ArrowRight className="h-3 w-3" />
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <Link href="/products" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Explore</Link>
-                        <Link href="/about" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Our Story</Link>
+                        <Link href="/products" className="hover:text-blue-600 transition-colors py-8 border-b-2 border-transparent hover:border-blue-600">
+                            Explore
+                        </Link>
+                        <Link href="/about" className="hover:text-blue-600 transition-colors py-8 border-b-2 border-transparent hover:border-blue-600">
+                            Our Story
+                        </Link>
                     </div>
                 </div>
 
-                {/* Middle: Centered Search */}
-                <div className="hidden md:flex flex-1 max-w-xl mx-auto items-center justify-center">
-                    <InstantSearch />
+                {/* Center: Search Island */}
+                <div className="hidden md:flex flex-1 items-center justify-center px-8">
+                    <div className="w-full max-w-[480px] group relative z-10">
+                        {/* We wrap InstantSearch to styling it, assuming InstantSearch renders an input */}
+                        {/* Note: In a real implementation we might pass a className to InstantSearch or wrap it */}
+                        <div className="relative transform group-hover:scale-[1.01] transition-transform duration-300">
+                            <InstantSearch />
+                        </div>
+                    </div>
                 </div>
 
-                {/* Right: Actions */}
-                <div className="flex items-center gap-1 md:gap-6 shrink-0">
-                    {/* Mobile Search Icon */}
-                    <div className="flex md:hidden">
-                        <SpotlightSearch variant="icon" />
-                    </div>
-
-                    <div className="flex items-center gap-2 md:gap-4 md:pl-4 md:border-l border-slate-100">
+                {/* Right: Action Capsule */}
+                <div className="flex items-center justify-end shrink-0 ml-auto">
+                    <div className="flex items-center gap-1 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
+                        {/* User */}
                         {user ? (
-                            <Link href="/user" className="hidden md:flex flex-col items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors">
-                                <User className="h-5 w-5 mb-0.5 text-primary" />
+                            <Link href="/user" className="w-9 h-9 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors" title="My Account">
+                                <User className="h-4 w-4" />
                             </Link>
                         ) : (
-                            <Link href="/login" className="flex items-center gap-2 text-sm font-black text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-2 rounded-full border border-primary/10">
-                                <User className="h-4 w-4 shrink-0" />
-                                <span className="uppercase tracking-widest text-[9px]">Sign In</span>
+                            <Link href="/login" className="px-4 h-9 rounded-full flex items-center justify-center text-slate-900 hover:bg-slate-100 transition-colors text-[11px] font-bold uppercase tracking-wider bg-slate-50" title="Sign In">
+                                Sign In
                             </Link>
                         )}
 
-                        <Link href="/user/wishlist" className="hidden md:flex flex-col items-center text-xs font-medium text-slate-500 hover:text-primary transition-colors">
-                            <Heart className="h-5 w-5 mb-0.5" />
+                        <div className="w-px h-4 bg-slate-200 mx-1"></div>
+
+                        {/* Wishlist */}
+                        <Link href="/user/wishlist" className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-slate-600 hover:text-red-500 hover:bg-red-50 transition-colors" title="Wishlist">
+                            <Heart className="h-4 w-4" />
                         </Link>
 
-                        <Link href="/cart" className="relative flex items-center justify-center p-2 text-xs font-medium text-slate-500 hover:text-primary transition-colors">
-                            <div className="relative">
-                                <ShoppingCart className="h-5 w-5" />
-                                {cartCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-primary text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center shadow-lg shadow-primary/20">
-                                        {cartCount}
-                                    </span>
-                                )}
-                            </div>
+                        {/* Cart */}
+                        <Link href="/cart" className="w-9 h-9 rounded-full flex items-center justify-center text-slate-900 hover:text-blue-600 hover:bg-blue-50 transition-colors relative" title="Cart">
+                            <ShoppingCart className="h-4 w-4" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">
+                                    {cartCount}
+                                </span>
+                            )}
                         </Link>
                     </div>
                 </div>
             </nav>
 
-            {/* Mobile Menu Dropdown */}
+            {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-                <div className="lg:hidden fixed inset-0 top-16 z-30 bg-background/95 backdrop-blur-xl border-t border-slate-100 p-8 flex flex-col gap-8 animate-in slide-in-from-top-10 pb-24 overflow-y-auto">
-                    <div className="flex flex-col gap-6 text-xl font-black font-heading uppercase tracking-tight text-slate-900">
-                        <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-                        <Link href="/products" onClick={() => setIsMobileMenuOpen(false)}>All Products</Link>
-                        <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)}>Categories</Link>
-                        <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>Our Legacy</Link>
+                <div className="lg:hidden fixed inset-0 top-0 z-[100] bg-white flex flex-col animate-in slide-in-from-left duration-200">
+                    <div className="flex items-center justify-between p-6 border-b border-slate-100 h-20">
+                        <span className="text-lg font-heading font-black text-slate-900 tracking-tight">Menu</span>
+                        <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                            <X className="h-6 w-6 text-slate-900" />
+                        </button>
                     </div>
 
-                    <div className="border-t border-slate-100 pt-8 flex flex-col gap-6">
-                        {user ? (
-                            <>
-                                <Link href="/user/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 text-slate-600 font-bold">
-                                    <Heart className="h-6 w-6" /> Favorites
+                    <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
+                        <nav className="flex flex-col gap-2">
+                            {['Home', 'Products', 'Categories', 'About us'].map((item) => (
+                                <Link
+                                    key={item}
+                                    href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '')}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="text-2xl font-bold text-slate-900 py-3 border-b border-slate-50 hover:text-blue-600 hover:pl-2 transition-all"
+                                >
+                                    {item}
                                 </Link>
-                                <Link href="/user" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 text-slate-600 font-bold">
-                                    <User className="h-6 w-6" /> Private Vault
+                            ))}
+                        </nav>
+
+                        <div className="mt-auto pt-8 flex gap-4">
+                            {!user ? (
+                                <>
+                                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1 py-3 bg-slate-100 text-slate-900 text-center font-bold rounded-xl text-sm">
+                                        Log In
+                                    </Link>
+                                    <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1 py-3 bg-blue-600 text-white text-center font-bold rounded-xl text-sm shadow-lg shadow-blue-500/20">
+                                        Sign Up
+                                    </Link>
+                                </>
+                            ) : (
+                                <Link href="/user" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-3 bg-slate-900 text-white text-center font-bold rounded-xl text-sm">
+                                    My Account
                                 </Link>
-                            </>
-                        ) : (
-                            <div className="flex flex-col gap-4">
-                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-slate-50 text-slate-900 font-black tracking-widest text-[10px]">
-                                    Sign In
-                                </Link>
-                                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="w-full text-center py-4 rounded-2xl bg-primary text-white font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-                                    Join the Hub
-                                </Link>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
