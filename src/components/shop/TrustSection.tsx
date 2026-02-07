@@ -41,26 +41,26 @@ export default function TrustSection({ data, variant = 'default' }: { data?: any
 
     if (variant === 'overlay') {
         return (
-            <div className="w-full bg-white/10 backdrop-blur-md border-t border-white/10 py-4 md:py-6">
+            <div className="w-full bg-slate-950/80 backdrop-blur-md border-t border-white/5 py-6 md:py-8">
                 <div className="max-w-[1800px] mx-auto px-4 md:px-12 lg:px-16">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
                         {features.map((feature: any, idx: number) => (
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5 + (idx * 0.1) }}
-                                className="flex items-center gap-3 md:gap-4 group cursor-default"
+                                className="flex items-center gap-4 group cursor-default"
                             >
-                                <div className="hidden md:flex w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                                <div className="hidden md:flex w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/10 items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors shrink-0">
                                     {renderIcon(feature.icon, true)}
                                 </div>
                                 <div className="flex flex-col">
-                                    <h3 className="text-[10px] md:text-xs font-black uppercase tracking-wider text-white mb-0.5 group-hover:text-blue-400 transition-colors">
+                                    <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-1 group-hover:text-blue-400 transition-colors">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-[8px] md:text-[10px] text-white/60 font-medium leading-tight hidden xl:block">
-                                        {feature.description.split('.')[0]}
+                                    <p className="text-xs text-zinc-400 font-medium leading-relaxed hidden xl:block">
+                                        {feature.description.split('.')[0]}.
                                     </p>
                                 </div>
                             </motion.div>
