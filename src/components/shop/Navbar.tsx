@@ -71,12 +71,12 @@ export function Navbar() {
         <div className="flex flex-col">
             {/* Announcement Bar - Restored per user request */}
             {(!loading && showAnnouncement) || true ? ( // Force show for now with fallback
-                <div className="bg-[#0B1026] text-white text-[11px] font-bold py-2 overflow-hidden relative z-50">
+                <div className="bg-blue-600 text-white text-[11px] font-bold py-2 overflow-hidden relative z-50">
                     <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] w-max">
                         {[...Array(10)].map((_, i) => (
                             <span key={i} className="mx-8 inline-block uppercase tracking-widest select-none">
                                 {link && link !== '#' ? (
-                                    <Link href={link} className="hover:text-blue-200 transition-colors">
+                                    <Link href={link} className="hover:text-white/80 transition-colors">
                                         {text || "WELCOME TO TECHDEV STORE! FREE SHIPPING ON ORDERS OVER ₹2000"}
                                     </Link>
                                 ) : (
@@ -88,34 +88,34 @@ export function Navbar() {
                 </div>
             ) : null}
 
-            <nav className="flex h-16 items-center border-b border-slate-100 bg-white/80 backdrop-blur-2xl px-6 md:px-12 text-foreground sticky top-0 z-40 shadow-[0_4px_30px_-10px_rgba(45,92,247,0.15)] gap-8 transition-all duration-500">
+            <nav className="flex h-16 items-center border-b border-slate-100 bg-white/95 backdrop-blur-2xl px-6 md:px-12 text-foreground sticky top-0 z-40 shadow-sm gap-8 transition-all duration-500">
                 {/* Vibrant Identity Line */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-indigo-500 to-indigo-600 z-50" />
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 z-50" />
 
                 {/* Left: Logo & Navigation */}
                 <div className="flex items-center gap-10 shrink-0">
                     <div className="flex items-center gap-4">
                         <button
-                            className="lg:hidden text-slate-500 hover:text-primary transition-colors"
+                            className="lg:hidden text-slate-800 hover:text-primary transition-colors"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
-                            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </button>
 
                         <Link href="/" className="flex items-center gap-2 text-2xl font-heading font-black tracking-tighter text-slate-900 group">
                             {settings?.logo_url ? (
-                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-8 w-auto object-contain transition-transform group-hover:scale-105" />
+                                <img src={settings.logo_url} alt={settings.site_name || 'Logo'} className="h-9 w-auto object-contain transition-transform group-hover:scale-105" />
                             ) : (
                                 <div className="bg-blue-600 text-white p-2 rounded-xl shadow-lg shadow-blue-500/30 group-hover:rotate-6 transition-all duration-500">
-                                    <ShoppingBag className="h-5 w-5" />
+                                    <ShoppingBag className="h-6 w-6" />
                                 </div>
                             )}
-                            <span className="hidden min-[370px]:inline text-blue-600 font-black">{settings?.site_name || 'TechDev'}</span>
+                            <span className="hidden min-[370px]:inline text-blue-700 font-black tracking-tight">{settings?.site_name || 'TechDev'}</span>
                         </Link>
                     </div>
 
                     {/* Navigation Links (Desktop) */}
-                    <div className="hidden lg:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
+                    <div className="hidden lg:flex items-center gap-8 text-xs font-extrabold uppercase tracking-widest text-slate-700">
                         <Link href="/" className="hover:text-primary transition-all hover:translate-y-[-1px] active:scale-95 transform font-bold">Home</Link>
 
                         {/* Mega Menu Trigger */}
