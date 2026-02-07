@@ -9,6 +9,7 @@ import { TrendingEditor } from '@/components/admin/TrendingEditor'
 import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
 import { FooterEditor } from '@/components/admin/FooterEditor'
 import TrustSettingsForm from '@/components/admin/TrustSettingsForm'
+import { AnnouncementSettingsForm } from '@/components/admin/AnnouncementSettingsForm'
 
 type Product = {
     id: string
@@ -37,9 +38,10 @@ type HomepageBuilderProps = {
     trendingSection: any
     promoSection: any
     trustSection: any
+    announcementSection: any
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection, trustSection }: HomepageBuilderProps) {
+export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection, trustSection, announcementSection }: HomepageBuilderProps) {
     // ... Existing state logic ...
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
@@ -497,6 +499,9 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
 
             {/* Trending Spotlight Editor */}
             <TrendingEditor initialData={trendingSection?.content_json} />
+
+            {/* Announcement Bar Editor */}
+            <AnnouncementSettingsForm initialData={announcementSection} />
 
             {/* Promo Grid Editor */}
             <PromoGridEditor initialCards={promoSection?.content_json?.cards} />

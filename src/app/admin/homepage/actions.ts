@@ -317,6 +317,35 @@ export async function updatePromoGrid(formData: FormData) {
         await supabase.from('homepage_sections').insert(payload)
     }
 
+    revalidatePath('/', 'layout')
+}
+
+export async function updateAnnouncement(formData: FormData) {
+    const supabase = await createClient()
+
+    const text = formData.get('text') as string
+    const link = formData.get('link') as string
+    const is_active = formData.get('is_active') === 'true'
+
+    const { data: existing } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('section_type', 'announcement')
+        .single()
+
+    const payload = {
+        section_type: 'announcement',
+        title: 'Announcement Bar',
+        content_json: { text, link },
+        is_active,
+    }
+
+    if (existing) {
+        await supabase.from('homepage_sections').update(payload).eq('id', existing.id)
+    } else {
+        await supabase.from('homepage_sections').insert(payload)
+    }
+
     revalidatePath('/admin/homepage')
     revalidatePath('/', 'layout')
 }
