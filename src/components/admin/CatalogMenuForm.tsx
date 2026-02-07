@@ -65,7 +65,7 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
                 .from('images')
                 .getPublicUrl(filePath)
 
-            setSettings(prev => ({ ...prev, background_url: publicUrl }))
+            setSettings((prev: any) => ({ ...prev, background_url: publicUrl }))
             alert('Image cropped and uploaded!')
         } catch (error) {
             console.error('Upload error:', error)
