@@ -72,6 +72,12 @@ export default async function AdminHomepagePage() {
         .eq('section_type', 'announcement')
         .single()
 
+    const { data: catalogSection } = await supabase
+        .from('homepage_sections')
+        .select('*')
+        .eq('section_type', 'catalog_menu')
+        .single()
+
     return (
         <HomepageBuilder
             products={products || []}
@@ -85,6 +91,7 @@ export default async function AdminHomepagePage() {
             promoSection={promoSection}
             trustSection={trustSection}
             announcementSection={announcementSection}
+            catalogSection={catalogSection}
         />
     )
 }

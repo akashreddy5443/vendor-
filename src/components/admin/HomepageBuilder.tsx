@@ -8,8 +8,9 @@ import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
 import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
 import { FooterEditor } from '@/components/admin/FooterEditor'
-import TrustSettingsForm from '@/components/admin/TrustSettingsForm'
-import { AnnouncementSettingsForm } from '@/components/admin/AnnouncementSettingsForm'
+import { TrustSettingsForm } from './TrustSettingsForm'
+import { AnnouncementSettingsForm } from './AnnouncementSettingsForm'
+import { CatalogMenuSettingsForm } from './CatalogMenuForm' // New Import
 
 type Product = {
     id: string
@@ -39,9 +40,23 @@ type HomepageBuilderProps = {
     promoSection: any
     trustSection: any
     announcementSection: any
+    catalogSection: any // New Prop
 }
 
-export function HomepageBuilder({ products, heroSection, featuredSection, categoriesSection, footerSection, sliderSection, lifestyleSection, trendingSection, promoSection, trustSection, announcementSection }: HomepageBuilderProps) {
+export function HomepageBuilder({
+    products,
+    heroSection,
+    featuredSection,
+    categoriesSection,
+    footerSection,
+    sliderSection,
+    lifestyleSection,
+    trendingSection,
+    promoSection,
+    trustSection,
+    announcementSection,
+    catalogSection, // Destructure
+}: HomepageBuilderProps) {
     // ... Existing state logic ...
     // Hero State
     const [heroImage, setHeroImage] = useState(heroSection?.content_json?.imageUrl || '')
@@ -503,7 +518,10 @@ export function HomepageBuilder({ products, heroSection, featuredSection, catego
             {/* Announcement Bar Editor */}
             <AnnouncementSettingsForm initialData={announcementSection} />
 
-            {/* Promo Grid Editor */}
+            {/* Catalog Menu Editor */}
+            <CatalogMenuSettingsForm initialData={catalogSection} />
+
+            {/* Categories Layout */}
             <PromoGridEditor initialCards={promoSection?.content_json?.cards} />
         </div>
     )

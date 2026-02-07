@@ -17,6 +17,7 @@ export function Navbar() {
     const { cartCount } = useCart()
 
     const [settings, setSettings] = useState<any>(null)
+    const [catalogSection, setCatalogSection] = useState<any>(null) // Dynamic Catalog Data
 
     useEffect(() => {
         const supabase = createClient()
@@ -43,6 +44,15 @@ export function Navbar() {
                 setCategories(cats)
             }
 
+            // Fetch Catalog Menu Settings
+            const { data: catalogData } = await supabase
+                .from('homepage_sections')
+                .select('content_json')
+                .eq('section_type', 'catalog_menu')
+                .single()
+
+            if (catalogData) setCatalogSection(catalogData.content_json)
+
             // Fetch Announcement
             const { data } = await supabase
                 .from('homepage_sections')
@@ -66,6 +76,17 @@ export function Navbar() {
     const showAnnouncement = announcement?.is_active && announcement?.content_json?.show !== false
     const text = announcement?.content_json?.text || ''
     const link = announcement?.content_json?.link || '#'
+
+    // Dynamic Catalog Content with Fallback
+    const catalogContent = catalogSection || {
+        badge: "New Arrival",
+        title: "Summer Tech Collection",
+        subtitle: "Upgrade your setup today.",
+        link: "/products",
+        linkText: "Shop Now",
+        background_url: "",
+        text_color: "#0F172A"
+    }
 
     return (
         <div className="flex flex-col w-full relative z-40">
@@ -151,13 +172,41 @@ export function Navbar() {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 rounded-xl p-5 flex flex-col justify-end items-start group/ad cursor-pointer hover:bg-slate-100 transition-colors">
-                                        <span className="px-2 py-1 bg-blue-600 text-white text-[9px] font-bold uppercase rounded-md mb-2">New Arrival</span>
-                                        <h4 className="font-heading font-black text-lg text-slate-900 mb-1">Summer Tech<br />Collection</h4>
-                                        <p className="text-xs text-slate-500 mb-4">Upgrade your setup today.</p>
-                                        <Link href="/products" className="text-[10px] font-bold uppercase tracking-wider text-blue-600 flex items-center gap-2 group-hover/ad:gap-3 transition-all">
-                                            Shop Now <ArrowRight className="h-3 w-3" />
-                                        </Link>
+
+                                    {/* Dynamic Promo Card */}
+                                    <div
+                                        className="rounded-xl p-5 flex flex-col justify-end items-start group/ad cursor-pointer hover:shadow-lg transition-all relative overflow-hidden"
+                                        style={{
+                                            backgroundColor: catalogContent.background_url ? 'transparent' : '#F8FAFC', // slate-50
+                                            color: catalogContent.text_color || '#0F172A'
+                                        }}
+                                    >
+                                        {/* Background Image */}
+                                        {catalogContent.background_url && (
+                                            <>
+                                                <img
+                                                    src={catalogContent.background_url}
+                                                    alt="Promo"
+                                                    className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover/ad:scale-110"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                                            </>
+                                        )}
+
+                                        <div className="relative z-20 w-full">
+                                            <span className={`inline-block px-2 py-1 text-[9px] font-bold uppercase rounded-md mb-2 ${catalogContent.background_url ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white'}`}>
+                                                {catalogContent.badge}
+                                            </span>
+                                            <h4 className="font-heading font-black text-lg mb-1 leading-tight">
+                                                {catalogContent.title}
+                                            </h4>
+                                            <p className={`text-xs mb-4 ${catalogContent.background_url ? 'text-white/80' : 'text-slate-500'}`}>
+                                                {catalogContent.subtitle}
+                                            </p>
+                                            <Link href={catalogContent.link || '#'} className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 group-hover/ad:gap-3 transition-all ${catalogContent.background_url ? 'text-white' : 'text-blue-600'}`}>
+                                                {catalogContent.linkText} <ArrowRight className="h-3 w-3" />
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +224,6 @@ export function Navbar() {
                 {/* Center: Search Island */}
                 <div className="hidden md:flex flex-1 items-center justify-center px-8">
                     <div className="w-full max-w-[480px] group relative z-10">
-                        {/* We wrap InstantSearch to styling it, assuming InstantSearch renders an input */}
-                        {/* Note: In a real implementation we might pass a className to InstantSearch or wrap it */}
                         <div className="relative transform group-hover:scale-[1.01] transition-transform duration-300">
                             <InstantSearch />
                         </div>
