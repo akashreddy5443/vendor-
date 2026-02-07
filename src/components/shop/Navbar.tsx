@@ -193,7 +193,7 @@ export function Navbar() {
                                             ))}
                                             {(!catalogContent.brands || catalogContent.brands.length === 0) && (
                                                 <div className="col-span-2 text-xs text-slate-400 italic py-4">
-                                                    Add brands in Admin > Homepage
+                                                    Add brands in Admin &gt; Homepage
                                                 </div>
                                             )}
                                         </div>
