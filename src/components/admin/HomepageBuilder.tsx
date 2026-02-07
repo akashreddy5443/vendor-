@@ -8,9 +8,9 @@ import { LifestyleEditor } from '@/components/admin/LifestyleEditor'
 import { TrendingEditor } from '@/components/admin/TrendingEditor'
 import { PromoGridEditor } from '@/components/admin/PromoGridEditor'
 import { FooterEditor } from '@/components/admin/FooterEditor'
-import { TrustSettingsForm } from './TrustSettingsForm'
+import TrustSettingsForm from './TrustSettingsForm' // Fixed Default Import
 import { AnnouncementSettingsForm } from './AnnouncementSettingsForm'
-import { CatalogMenuSettingsForm } from './CatalogMenuForm' // New Import
+import { CatalogMenuSettingsForm } from './CatalogMenuForm'
 
 type Product = {
     id: string

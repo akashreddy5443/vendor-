@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Layout, Save, Upload, Image as ImageIcon, ExternalLink, Type, Palette } from 'lucide-react'
+import { Layout, Save, Upload, Image as ImageIcon, ExternalLink, Type, Palette, X } from 'lucide-react'
 import Image from 'next/image'
 
 interface CatalogMenuSettingsFormProps {
@@ -18,7 +18,8 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
         link: '/products',
         linkText: 'Shop Now',
         background_url: '',
-        text_color: '#0F172A'
+        text_color: '#0F172A',
+        brands: [] // New Brands Array
     })
 
     const handleSave = async () => {
@@ -43,7 +44,50 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
         setLoading(false)
     }
 
-    const handleImageUpload = Async(e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBrandUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        if (!file.type.startsWith('image/')) {
+            alert('Please upload an image file')
+            return
+        }
+
+        const supabase = createClient()
+        const fileExt = file.name.split('.').pop()
+        const fileName = `brand-${Math.random()}.${fileExt}`
+        const filePath = `brand-logos/${fileName}`
+
+        const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(filePath, file)
+
+        if (uploadError) {
+            alert('Error uploading logo: ' + uploadError.message)
+            return
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('products')
+            .getPublicUrl(filePath)
+
+        const newBrands = [...(settings.brands || []), { logo: publicUrl, name: '', link: '#' }]
+        setSettings({ ...settings, brands: newBrands })
+    }
+
+    const removeBrand = (index: number) => {
+        const newBrands = [...(settings.brands || [])]
+        newBrands.splice(index, 1)
+        setSettings({ ...settings, brands: newBrands })
+    }
+
+    const updateBrand = (index: number, field: string, value: string) => {
+        const newBrands = [...(settings.brands || [])]
+        newBrands[index] = { ...newBrands[index], [field]: value }
+        setSettings({ ...settings, brands: newBrands })
+    }
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
 
@@ -96,7 +140,7 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* Editor Inputs */}
-                <div className="space-y-6">
+                <div className="space-y-8">
                     {/* Image Upload */}
                     <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Background Image</label>
@@ -214,53 +258,123 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
                             </button>
                         </div>
                     </div>
+
+                    <hr className="border-slate-100" />
+
+                    {/* Brands Section */}
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <label className="block text-sm font-bold text-slate-700">Popular Brands (Max 8)</label>
+                            <div className="relative overflow-hidden inline-block group">
+                                <label htmlFor="brand-upload" className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+                                    <Upload className="w-3 h-3" /> Add Brand Logo
+                                </label>
+                                <input
+                                    id="brand-upload"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleBrandUpload}
+                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                    disabled={(settings.brands?.length || 0) >= 8}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            {settings.brands?.map((brand: any, index: number) => (
+                                <div key={index} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div className="w-10 h-10 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-1 shrink-0">
+                                        <img src={brand.logo} alt="brand" className="w-full h-full object-contain" />
+                                    </div>
+                                    <div className="flex-1 grid grid-cols-2 gap-2">
+                                        <input
+                                            type="text"
+                                            placeholder="Brand Name"
+                                            value={brand.name}
+                                            onChange={(e) => updateBrand(index, 'name', e.target.value)}
+                                            className="text-xs bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none p-1"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Link URL"
+                                            value={brand.link}
+                                            onChange={(e) => updateBrand(index, 'link', e.target.value)}
+                                            className="text-xs bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none p-1 text-slate-500"
+                                        />
+                                    </div>
+                                    <button onClick={() => removeBrand(index)} className="text-slate-400 hover:text-red-500 transition-colors">
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                            {(!settings.brands || settings.brands.length === 0) && (
+                                <div className="text-center py-6 border-2 border-dashed border-slate-100 rounded-xl text-slate-400 text-xs">
+                                    No brands added yet. Upload logos to display.
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Live Preview */}
                 <div className="flex flex-col gap-4">
-                    <label className="block text-sm font-bold text-slate-700">Live Preview</label>
-                    <div className="bg-slate-100 rounded-2xl p-8 flex items-center justify-center min-h-[400px]">
-                        {/* The Card Component */}
-                        <div
-                            className="w-[300px] h-[400px] rounded-2xl p-6 flex flex-col justify-end items-start relative overflow-hidden shadow-xl"
-                            style={{
-                                backgroundColor: settings.background_url ? 'transparent' : '#F1F5F9' // slate-100 default
-                            }}
-                        >
-                            {/* Background Image */}
-                            {settings.background_url && (
-                                <>
-                                    <Image
-                                        src={settings.background_url}
-                                        alt="Promo Background"
-                                        fill
-                                        className="object-cover z-0"
-                                    />
-                                    {/* Gradient Overlay for Text Readability */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                                </>
-                            )}
+                    <label className="block text-sm font-bold text-slate-700">Live Preview (Mega Menu)</label>
+                    <div className="bg-slate-50 rounded-2xl p-4 flex items-start justify-center min-h-[400px] border border-slate-200 overflow-hidden">
+                        {/* Mega Menu Simulation */}
+                        <div className="w-full max-w-[550px] bg-white rounded-xl shadow-lg border border-slate-100 p-6 flex gap-6">
+                            {/* Col 1: Categories (Mock) */}
+                            <div className="w-1/4 space-y-2 opacity-50 pointer-events-none">
+                                <div className="h-2 w-16 bg-slate-200 rounded mb-4"></div>
+                                <div className="h-2 w-full bg-slate-100 rounded"></div>
+                                <div className="h-2 w-full bg-slate-100 rounded"></div>
+                                <div className="h-2 w-full bg-slate-100 rounded"></div>
+                            </div>
 
-                            {/* Content */}
-                            <div className="relative z-20 w-full" style={{ color: settings.background_url ? '#FFFFFF' : settings.text_color }}>
-                                <span className={`inline-block px-2.5 py-1 text-[10px] font-bold uppercase rounded-md mb-3 ${settings.background_url ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white'}`}>
-                                    {settings.badge}
-                                </span>
-                                <h4 className="font-heading font-black text-2xl leading-tight mb-2">
-                                    {settings.title}
-                                </h4>
-                                <p className={`text-sm mb-6 ${settings.background_url ? 'text-white/80' : 'text-slate-500'}`}>
-                                    {settings.subtitle}
-                                </p>
-                                <div className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 ${settings.background_url ? 'text-white' : 'text-blue-600'}`}>
-                                    {settings.linkText} <span className="text-lg">→</span>
+                            {/* Col 2: Brands (New) */}
+                            <div className="w-1/4">
+                                <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Popular Brands</h3>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {settings.brands?.slice(0, 8).map((brand: any, i: number) => (
+                                        <div key={i} className="aspect-square bg-slate-50 rounded-lg flex items-center justify-center p-2 border border-slate-100">
+                                            <img src={brand.logo} alt="logo" className="w-full h-full object-contain mix-blend-multiply opacity-80" />
+                                        </div>
+                                    ))}
+                                    {(!settings.brands || settings.brands.length === 0) && (
+                                        <div className="aspect-square bg-slate-50 rounded-lg" />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Col 3: Promo Card */}
+                            <div className="w-1/2">
+                                <div
+                                    className="w-full h-[240px] rounded-xl p-4 flex flex-col justify-end items-start relative overflow-hidden"
+                                    style={{
+                                        backgroundColor: settings.background_url ? 'transparent' : '#F1F5F9',
+                                        color: settings.background_url ? '#FFFFFF' : settings.text_color
+                                    }}
+                                >
+                                    {/* ... Existing Card Content ... */}
+                                    {settings.background_url && (
+                                        <>
+                                            <Image src={settings.background_url} alt="bg" fill className="object-cover z-0" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                                        </>
+                                    )}
+                                    <div className="relative z-20 w-full">
+                                        <span className={`inline-block px-1.5 py-0.5 text-[8px] font-bold uppercase rounded mb-2 ${settings.background_url ? 'bg-blue-600 text-white' : 'bg-blue-600 text-white'}`}>
+                                            {settings.badge}
+                                        </span>
+                                        <h4 className="font-heading font-black text-lg leading-tight mb-1">{settings.title}</h4>
+                                        <p className={`text-[10px] mb-3 leading-tight ${settings.background_url ? 'text-white/80' : 'text-slate-500'}`}>{settings.subtitle}</p>
+                                        <div className="text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                            {settings.linkText} →
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p className="text-center text-xs text-slate-400">
-                        This is how it will appear in the navigation dropdown.
-                    </p>
                 </div>
             </div>
         </div>
