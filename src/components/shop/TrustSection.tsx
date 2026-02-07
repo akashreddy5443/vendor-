@@ -32,7 +32,9 @@ export default function TrustSection({ data, variant = 'default' }: { data?: any
         }
     ]
 
-    const features = data?.features || defaultFeatures
+    // Forced 'Authorized Hub' content effectively per user request to stop "switching" behavior.
+    // TODO: Re-enable data?.features once the database is updated to match.
+    const features = defaultFeatures // data?.features || defaultFeatures
 
     const renderIcon = (icon: any, isOverlay: boolean) => {
         const IconComp = (typeof icon === 'string' ? iconMap[icon] : icon) || ShieldCheck
