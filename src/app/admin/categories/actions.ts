@@ -34,33 +34,44 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, formData: FormData) {
-    const supabase = await createClient()
+    try {
+        const supabase = await createClient()
 
-    const name = formData.get('name') as string
-    const slug = formData.get('slug') as string
-    const icon = formData.get('icon') as string
-    const image_url = formData.get('image_url') as string
+        const name = formData.get('name') as string
+        const slug = formData.get('slug') as string
+        const icon = formData.get('icon') as string
+        const image_url = formData.get('image_url') as string
 
-    const { error } = await supabase
-        .from('categories')
-        .update({
-            name,
-            slug,
-            icon,
-            image_url,
-        })
-        .eq('id', id)
+        console.log('Updating category:', { id, name, slug, icon, image_url })
 
-    if (error) {
-        console.error('Error updating category:', error)
-        throw new Error('Failed to update category')
+        const { data, error } = await supabase
+            .from('categories')
+            .update({
+                name,
+                slug,
+                icon,
+                image_url,
+            })
+            .eq('id', id)
+            .select()
+
+        if (error) {
+            console.error('Error updating category:', error)
+            console.error('Error details:', JSON.stringify(error, null, 2))
+            throw new Error(`Failed to update category: ${error.message}`)
+        }
+
+        console.log('Category updated successfully:', data)
+
+        // Revalidate both admin and frontend pages
+        revalidatePath('/admin/categories')
+        revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
+
+        redirect('/admin/categories')
+    } catch (error: any) {
+        console.error('Unexpected error in updateCategory:', error)
+        throw error
     }
-
-    // Revalidate both admin and frontend pages
-    revalidatePath('/admin/categories')
-    revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
-
-    redirect('/admin/categories')
 }
 
 export async function deleteCategory(formData: FormData) {

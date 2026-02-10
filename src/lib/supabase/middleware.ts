@@ -44,8 +44,14 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     // Protected Routes Logic
-    // Protected Routes Logic
+    // DEVELOPMENT BYPASS: Skip auth check in development mode
     if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/login')) {
+        // Allow admin access in development without authentication
+        if (process.env.NODE_ENV === 'development') {
+            console.log('⚠️  DEV MODE: Bypassing admin authentication')
+            return response
+        }
+
         if (!user) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
