@@ -31,18 +31,14 @@ export function CategoryEditor({ category }: { category: any }) {
             formData.append('icon', icon)
             formData.append('image_url', imageUrl)
 
-            await updateCategory(category.id, formData)
-            // Redirect happens in the action - this will throw NEXT_REDIRECT
-        } catch (err: any) {
-            // Next.js redirect() throws a NEXT_REDIRECT error - this is expected!
-            // Only show error if it's NOT a redirect
-            if (err?.message?.includes('NEXT_REDIRECT') || err?.digest?.includes('NEXT_REDIRECT')) {
-                // This is a successful redirect, not an error
-                return
-            }
+            const result = await updateCategory(category.id, formData)
 
+            // Success! Navigate back to categories list
+            router.push('/admin/categories')
+            router.refresh()
+        } catch (err: any) {
             console.error('Error updating category:', err)
-            setError('Failed to update category. Please try again.')
+            setError(err.message || 'Failed to update category. Please try again.')
             setIsLoading(false)
         }
     }

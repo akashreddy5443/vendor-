@@ -67,7 +67,8 @@ export async function updateCategory(id: string, formData: FormData) {
         revalidatePath('/admin/categories')
         revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
 
-        redirect('/admin/categories')
+        // Don't redirect here - let the client component handle it
+        return { success: true, data }
     } catch (error: any) {
         console.error('Unexpected error in updateCategory:', error)
         throw error
