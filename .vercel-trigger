@@ -1,0 +1,8 @@
+# Deployment trigger file
+# Last deployment: 2026-02-11T03:28:36+05:30
+# 
+# This file is used to trigger Vercel deployments
+# Latest fixes included:
+# - Catalog menu API route with content_json column
+# - Announcement bar opacity fix for better readability
+# - Toast notifications for better UX
