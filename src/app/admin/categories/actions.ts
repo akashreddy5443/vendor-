@@ -24,11 +24,12 @@ export async function createCategory(formData: FormData) {
 
     if (error) {
         console.error('Error creating category:', error)
-        // ideally return error to UI, simplify for now
-        return { error: 'Failed to create category' }
+        throw new Error('Failed to create category')
     }
 
+    // Revalidate both admin and frontend pages
     revalidatePath('/admin/categories')
+    revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
     redirect('/admin/categories')
 }
 
@@ -52,10 +53,13 @@ export async function updateCategory(id: string, formData: FormData) {
 
     if (error) {
         console.error('Error updating category:', error)
-        return { error: 'Failed to update category' }
+        throw new Error('Failed to update category')
     }
 
+    // Revalidate both admin and frontend pages
     revalidatePath('/admin/categories')
+    revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
+
     redirect('/admin/categories')
 }
 
@@ -67,8 +71,10 @@ export async function deleteCategory(formData: FormData) {
 
     if (error) {
         console.error('Error deleting category:', error)
-        return { error: 'Failed to delete category' }
+        throw new Error('Failed to delete category')
     }
 
+    // Revalidate both admin and frontend pages
     revalidatePath('/admin/categories')
+    revalidatePath('/', 'layout')
 }

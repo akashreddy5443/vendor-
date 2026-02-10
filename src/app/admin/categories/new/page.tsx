@@ -2,11 +2,22 @@
 
 import { CldUploadWidget } from 'next-cloudinary'
 import { ImagePlus } from 'lucide-react'
+import * as Icons from 'lucide-react'
 import { useState } from 'react'
 import { createCategory } from '../actions'
+import { IconPicker } from '@/components/admin/IconPicker'
 
 export default function NewCategoryPage() {
     const [imageUrl, setImageUrl] = useState('')
+    const [icon, setIcon] = useState('')
+    const [showIconPicker, setShowIconPicker] = useState(false)
+
+    const renderIcon = () => {
+        if (!icon) return null
+        const IconComponent = (Icons as any)[icon]
+        if (!IconComponent) return <span className="text-2xl">{icon}</span>
+        return <IconComponent className="w-8 h-8" />
+    }
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
@@ -23,6 +34,7 @@ export default function NewCategoryPage() {
                     className="space-y-8"
                 >
                     <input type="hidden" name="image_url" value={imageUrl} />
+                    <input type="hidden" name="icon" value={icon} />
 
                     {/* Visual Asset Section */}
                     <div className="space-y-4">
@@ -81,16 +93,40 @@ export default function NewCategoryPage() {
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <label htmlFor="icon" className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                            Fallback Icon (Emoji)
-                        </label>
-                        <input
-                            id="icon"
-                            name="icon"
-                            className="w-full rounded-2xl border border-gray-100 bg-gray-50/50 px-4 py-3 text-2xl h-14 text-center focus:bg-white focus:border-indigo-500 outline-none transition-all"
-                            placeholder="🏠"
-                        />
+                    {/* Icon Picker Section */}
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Category Icon</label>
+                        <div className="flex items-center gap-4">
+                            <button
+                                type="button"
+                                onClick={() => setShowIconPicker(true)}
+                                className="flex items-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-gray-200 hover:border-indigo-400 bg-gray-50/50 hover:bg-indigo-50/50 transition-all group"
+                            >
+                                <div className="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-indigo-600 transition-colors">
+                                    {icon ? renderIcon() : <ImagePlus className="w-6 h-6" />}
+                                </div>
+                                <div className="text-left">
+                                    <div className="text-sm font-bold text-gray-900">
+                                        {icon || 'Select Icon'}
+                                    </div>
+                                    <div className="text-[10px] text-gray-400 uppercase tracking-widest">
+                                        Click to choose
+                                    </div>
+                                </div>
+                            </button>
+                            {icon && (
+                                <button
+                                    type="button"
+                                    onClick={() => setIcon('')}
+                                    className="px-4 py-2 text-xs font-bold text-red-500 hover:text-red-600 uppercase tracking-wider"
+                                >
+                                    Clear
+                                </button>
+                            )}
+                        </div>
+                        <p className="text-xs text-gray-500">
+                            This icon will appear in the Navbar catalog dropdown beside the category name.
+                        </p>
                     </div>
 
                     <div className="pt-6 border-t border-gray-50">
@@ -103,6 +139,15 @@ export default function NewCategoryPage() {
                     </div>
                 </form>
             </div>
+
+            {/* Icon Picker Modal */}
+            {showIconPicker && (
+                <IconPicker
+                    value={icon}
+                    onChange={setIcon}
+                    onClose={() => setShowIconPicker(false)}
+                />
+            )}
         </div>
     )
 }

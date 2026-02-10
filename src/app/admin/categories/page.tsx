@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Plus, Trash2, Edit } from 'lucide-react'
+import * as Icons from 'lucide-react'
 import { deleteCategory } from './actions'
 
 export default async function AdminCategoriesPage() {
@@ -9,6 +10,40 @@ export default async function AdminCategoriesPage() {
         .from('categories')
         .select('*')
         .order('name', { ascending: true })
+
+    // Helper to render category icon
+    const renderCategoryIcon = (iconName: string | null) => {
+        if (!iconName) {
+            const SearchIcon = Icons.Search
+            return <SearchIcon className="w-5 h-5 text-gray-400" />
+        }
+
+        const IconComponent = (Icons as any)[iconName]
+        if (IconComponent) {
+            return <IconComponent className="w-5 h-5" />
+        }
+
+        // Fallback
+        const SearchIcon = Icons.Search
+        return <SearchIcon className="w-5 h-5 text-gray-400" />
+    }
+
+    // Pastel colors for icon backgrounds
+    const getIconColor = (index: number) => {
+        const colors = [
+            'bg-orange-50 text-orange-600',
+            'bg-blue-50 text-blue-600',
+            'bg-green-50 text-green-600',
+            'bg-purple-50 text-purple-600',
+            'bg-pink-50 text-pink-600',
+            'bg-teal-50 text-teal-600',
+            'bg-indigo-50 text-indigo-600',
+            'bg-rose-50 text-rose-600',
+            'bg-amber-50 text-amber-600',
+            'bg-cyan-50 text-cyan-600'
+        ]
+        return colors[index % colors.length]
+    }
 
     return (
         <div className="space-y-6">
@@ -31,27 +66,31 @@ export default async function AdminCategoriesPage() {
                     <table className="w-full text-left text-sm text-gray-600">
                         <thead className="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-black tracking-widest">
                             <tr>
-                                <th className="px-6 py-4 w-20 text-center">Asset</th>
+                                <th className="px-6 py-4 w-20 text-center">Icon</th>
                                 <th className="px-6 py-4">Identity</th>
                                 <th className="px-6 py-4">Slug</th>
                                 <th className="px-6 py-4 text-right">Operations</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {categories?.map((category) => (
+                            {categories?.map((category, idx) => (
                                 <tr key={category.id} className="hover:bg-indigo-50/30 transition-colors group">
                                     <td className="px-6 py-4">
-                                        <div className="mx-auto h-12 w-10 shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-sm">
+                                        <div className="mx-auto h-12 w-12 shrink-0 overflow-hidden rounded-xl flex items-center justify-center shadow-sm">
                                             {category.image_url ? (
                                                 <img src={category.image_url} alt={category.name} className="h-full w-full object-cover" />
                                             ) : (
-                                                <span className="text-xl">{category.icon || '📦'}</span>
+                                                <div className={`w-full h-full flex items-center justify-center ${getIconColor(idx)}`} title={category.icon || 'No icon'}>
+                                                    {renderCategoryIcon(category.icon)}
+                                                </div>
                                             )}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="font-bold text-gray-900">{category.name}</div>
-                                        <div className="text-[10px] text-gray-400 uppercase tracking-widest leading-none mt-1">Status: Active</div>
+                                        <div className="text-[10px] text-gray-400 uppercase tracking-widest leading-none mt-1">
+                                            {category.icon ? `Icon: ${category.icon}` : 'No icon set'}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 font-mono text-xs text-gray-500">{category.slug}</td>
                                     <td className="px-6 py-4 text-right">
@@ -59,7 +98,7 @@ export default async function AdminCategoriesPage() {
                                             <Link
                                                 href={`/admin/categories/${category.id}`}
                                                 className="rounded-xl p-2.5 hover:bg-white hover:text-indigo-600 border border-transparent hover:border-indigo-100 text-gray-400 transition-all shadow-indigo-100 hover:shadow-lg"
-                                                title="Elevate"
+                                                title="Edit"
                                             >
                                                 <Edit className="h-4 w-4" />
                                             </Link>
