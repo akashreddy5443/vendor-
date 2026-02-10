@@ -7,16 +7,33 @@ export async function POST(request: Request) {
         const supabase = await createClient()
         const body = await request.json()
 
-        // Upsert to homepage_sections table
-        const { error } = await supabase
+        // Find existing catalog_menu section
+        const { data: existing } = await supabase
             .from('homepage_sections')
-            .upsert({
-                section_type: 'catalog_menu',
-                content: body,
-                updated_at: new Date().toISOString()
-            }, {
-                onConflict: 'section_type'
-            })
+            .select('id')
+            .eq('section_type', 'catalog_menu')
+            .single()
+
+        const payload = {
+            section_type: 'catalog_menu',
+            title: 'Catalog Menu',
+            content_json: body,  // Changed from 'content' to 'content_json'
+            is_active: true,
+        }
+
+        let error
+        if (existing) {
+            const { error: updateError } = await supabase
+                .from('homepage_sections')
+                .update(payload)
+                .eq('id', existing.id)
+            error = updateError
+        } else {
+            const { error: insertError } = await supabase
+                .from('homepage_sections')
+                .insert(payload)
+            error = insertError
+        }
 
         if (error) {
             console.error('Database error:', error)
@@ -25,6 +42,7 @@ export async function POST(request: Request) {
 
         // Revalidate frontend to show changes immediately
         revalidatePath('/', 'layout')
+        revalidatePath('/admin/homepage')
 
         return NextResponse.json({ success: true })
     } catch (error: any) {
