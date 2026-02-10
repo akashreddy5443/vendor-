@@ -34,45 +34,39 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, formData: FormData) {
-    try {
-        const supabase = await createClient()
+    console.log('=== UPDATE CATEGORY START ===')
+    console.log('ID:', id)
 
-        const name = formData.get('name') as string
-        const slug = formData.get('slug') as string
-        const icon = formData.get('icon') as string
-        const image_url = formData.get('image_url') as string
+    const supabase = await createClient()
 
-        console.log('Updating category:', { id, name, slug, icon, image_url })
+    const name = formData.get('name') as string
+    const slug = formData.get('slug') as string
+    const icon = formData.get('icon') as string
+    const image_url = formData.get('image_url') as string
 
-        const { data, error } = await supabase
-            .from('categories')
-            .update({
-                name,
-                slug,
-                icon,
-                image_url,
-            })
-            .eq('id', id)
-            .select()
+    console.log('Data:', { name, slug, icon, image_url })
 
-        if (error) {
-            console.error('Error updating category:', error)
-            console.error('Error details:', JSON.stringify(error, null, 2))
-            throw new Error(`Failed to update category: ${error.message}`)
-        }
+    const { data, error } = await supabase
+        .from('categories')
+        .update({
+            name,
+            slug,
+            icon,
+            image_url,
+        })
+        .eq('id', id)
+        .select()
 
-        console.log('Category updated successfully:', data)
-
-        // Revalidate both admin and frontend pages
-        revalidatePath('/admin/categories')
-        revalidatePath('/', 'layout') // Revalidate entire site to update Navbar
-
-        // Don't redirect here - let the client component handle it
-        return { success: true, data }
-    } catch (error: any) {
-        console.error('Unexpected error in updateCategory:', error)
-        throw error
+    if (error) {
+        console.error('Database error:', error)
+        throw new Error(`Database error: ${error.message}`)
     }
+
+    console.log('Update successful:', data)
+    console.log('=== UPDATE CATEGORY END ===')
+
+    // Return success without revalidation for now
+    return { success: true }
 }
 
 export async function deleteCategory(formData: FormData) {
