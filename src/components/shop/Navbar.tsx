@@ -184,14 +184,21 @@ export function Navbar() {
                                                 const renderCategoryIcon = () => {
                                                     if (!cat.icon) return <Search className="w-4 h-4" />
 
-                                                    // Try to get icon from lucide-react
+                                                    // Check if it's an emoji (non-ASCII character or common emoji patterns)
+                                                    const isEmoji = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u.test(cat.icon)
+                                                    if (isEmoji || cat.icon.length <= 2) {
+                                                        // Render emoji directly
+                                                        return <span className="text-lg">{cat.icon}</span>
+                                                    }
+
+                                                    // Try to get Lucide icon component
                                                     const IconComponent = (Icons as any)[cat.icon]
                                                     if (IconComponent) {
                                                         return <IconComponent className="w-4 h-4" />
                                                     }
 
-                                                    // Fallback to Search icon
-                                                    return <Search className="w-4 h-4" />
+                                                    // Fallback: display as text if not a valid Lucide icon
+                                                    return <span className="text-[10px] font-mono">{cat.icon}</span>
                                                 }
 
                                                 return (
