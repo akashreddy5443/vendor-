@@ -96,7 +96,7 @@ export function Navbar() {
                 <div className="bg-blue-600 text-white text-[10px] font-bold py-2.5 overflow-hidden relative z-50 tracking-wider">
                     <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] w-max">
                         {[...Array(10)].map((_, i) => (
-                            <span key={i} className="mx-12 inline-block uppercase tracking-widest select-none opacity-90">
+                            <span key={i} className="mx-12 inline-block uppercase tracking-widest select-none">
                                 {link && link !== '#' ? (
                                     <Link href={link} className="hover:text-white transition-colors hover:underline underline-offset-4">
                                         {text || "WELCOME TO TECHDEV STORE! FREE SHIPPING ON ORDERS OVER ₹2000"}
