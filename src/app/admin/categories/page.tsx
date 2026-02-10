@@ -18,14 +18,21 @@ export default async function AdminCategoriesPage() {
             return <SearchIcon className="w-5 h-5 text-gray-400" />
         }
 
+        // Check if it's an emoji (non-ASCII character or common emoji patterns)
+        const isEmoji = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u.test(iconName)
+        if (isEmoji || iconName.length <= 2) {
+            // Render emoji directly
+            return <span className="text-2xl">{iconName}</span>
+        }
+
+        // Try to find Lucide icon component
         const IconComponent = (Icons as any)[iconName]
         if (IconComponent) {
             return <IconComponent className="w-5 h-5" />
         }
 
-        // Fallback
-        const SearchIcon = Icons.Search
-        return <SearchIcon className="w-5 h-5 text-gray-400" />
+        // Fallback: display as text if it's not a valid Lucide icon
+        return <span className="text-xs font-mono text-gray-500">{iconName}</span>
     }
 
     // Pastel colors for icon backgrounds
