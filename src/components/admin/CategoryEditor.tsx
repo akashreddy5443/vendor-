@@ -14,17 +14,29 @@ export function CategoryEditor({ category }: { category: any }) {
     const [icon, setIcon] = useState(category.icon || '')
     const [imageUrl, setImageUrl] = useState(category.image_url || '')
     const [showIconPicker, setShowIconPicker] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('slug', slug)
-        formData.append('icon', icon)
-        formData.append('image_url', imageUrl)
+        setIsLoading(true)
+        setError('')
 
-        await updateCategory(category.id, formData)
+        try {
+            const formData = new FormData()
+            formData.append('name', name)
+            formData.append('slug', slug)
+            formData.append('icon', icon)
+            formData.append('image_url', imageUrl)
+
+            await updateCategory(category.id, formData)
+            // Redirect happens in the action
+        } catch (err) {
+            console.error('Error updating category:', err)
+            setError('Failed to update category. Please try again.')
+            setIsLoading(false)
+        }
     }
 
     const renderIcon = () => {
@@ -157,12 +169,19 @@ export function CategoryEditor({ category }: { category: any }) {
                         </p>
                     </div>
 
+                    {error && (
+                        <div className="p-4 rounded-xl bg-red-50 border border-red-200">
+                            <p className="text-sm text-red-600 font-medium">{error}</p>
+                        </div>
+                    )}
+
                     <div className="pt-6 border-t border-gray-50">
                         <button
                             type="submit"
-                            className="w-full rounded-2xl bg-indigo-600 py-4 font-black text-white hover:bg-indigo-700 hover:shadow-2xl hover:shadow-indigo-200 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase text-xs tracking-[0.2em]"
+                            disabled={isLoading}
+                            className="w-full rounded-2xl bg-indigo-600 py-4 font-black text-white hover:bg-indigo-700 hover:shadow-2xl hover:shadow-indigo-200 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase text-xs tracking-[0.2em] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
-                            Sync to Production
+                            {isLoading ? 'Syncing...' : 'Sync to Production'}
                         </button>
                     </div>
                 </form>
