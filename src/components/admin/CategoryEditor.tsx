@@ -18,6 +18,7 @@ export function CategoryEditor({ category }: { category: any }) {
     const [error, setError] = useState('')
     const router = useRouter()
 
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
@@ -31,8 +32,15 @@ export function CategoryEditor({ category }: { category: any }) {
             formData.append('image_url', imageUrl)
 
             await updateCategory(category.id, formData)
-            // Redirect happens in the action
-        } catch (err) {
+            // Redirect happens in the action - this will throw NEXT_REDIRECT
+        } catch (err: any) {
+            // Next.js redirect() throws a NEXT_REDIRECT error - this is expected!
+            // Only show error if it's NOT a redirect
+            if (err?.message?.includes('NEXT_REDIRECT') || err?.digest?.includes('NEXT_REDIRECT')) {
+                // This is a successful redirect, not an error
+                return
+            }
+
             console.error('Error updating category:', err)
             setError('Failed to update category. Please try again.')
             setIsLoading(false)
