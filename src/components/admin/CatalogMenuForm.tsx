@@ -66,10 +66,10 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
                 .getPublicUrl(filePath)
 
             setSettings((prev: any) => ({ ...prev, background_url: publicUrl }))
-            alert('Image cropped and uploaded!')
+            toast.success('Image uploaded successfully!')
         } catch (error) {
             console.error('Upload error:', error)
-            alert('Failed to upload image')
+            toast.error('Failed to upload image. Please try again.')
         } finally {
             setIsUploading(false)
             setTempImageFile(null)
@@ -85,12 +85,19 @@ export function CatalogMenuSettingsForm({ initialData }: CatalogMenuSettingsForm
                 body: JSON.stringify(settings)
             })
 
-            if (!response.ok) throw new Error('Failed to save settings')
+            const data = await response.json()
 
-            alert('Catalog menu updated successfully')
-        } catch (error) {
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to save settings')
+            }
+
+            toast.success('Catalog menu updated successfully! Changes are live.')
+
+            // Refresh to show updated data
+            window.location.reload()
+        } catch (error: any) {
             console.error('Save error:', error)
-            alert('Failed to save changes')
+            toast.error(error.message || 'Failed to save changes. Please try again.')
         } finally {
             setIsLoading(false)
         }
