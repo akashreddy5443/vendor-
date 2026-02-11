@@ -25,13 +25,24 @@ export function CategoryEditor({ category }: { category: any }) {
         setError('')
 
         try {
-            const formData = new FormData()
-            formData.append('name', name)
-            formData.append('slug', slug)
-            formData.append('icon', icon)
-            formData.append('image_url', imageUrl)
+            // Use API route instead of server action to avoid server component render issues
+            const response = await fetch('/api/test-update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: category.id,
+                    name,
+                    slug,
+                    icon,
+                    image_url: imageUrl
+                })
+            })
 
-            const result = await updateCategory(category.id, formData)
+            const result = await response.json()
+
+            if (!response.ok || result.error) {
+                throw new Error(result.error || 'Update failed')
+            }
 
             // Success! Navigate back to categories list
             router.push('/admin/categories')
