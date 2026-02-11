@@ -12,6 +12,9 @@ export function CategoryEditor({ category }: { category: any }) {
     const [name, setName] = useState(category.name)
     const [slug, setSlug] = useState(category.slug)
     const [icon, setIcon] = useState(category.icon || '')
+    const [iconBgColor, setIconBgColor] = useState(category.icon_bg_color || '#F3F4F6')
+    const [iconColor, setIconColor] = useState(category.icon_color || '#6B7280')
+    const [customIconUrl, setCustomIconUrl] = useState(category.custom_icon_url || '')
     const [imageUrl, setImageUrl] = useState(category.image_url || '')
     const [showIconPicker, setShowIconPicker] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -34,6 +37,9 @@ export function CategoryEditor({ category }: { category: any }) {
                     name,
                     slug,
                     icon,
+                    icon_bg_color: iconBgColor,
+                    icon_color: iconColor,
+                    custom_icon_url: customIconUrl,
                     image_url: imageUrl
                 })
             })
@@ -55,10 +61,13 @@ export function CategoryEditor({ category }: { category: any }) {
     }
 
     const renderIcon = () => {
+        if (customIconUrl) {
+            return <img src={customIconUrl} alt="Custom icon" className="w-8 h-8 object-contain" />
+        }
         if (!icon) return null
         const IconComponent = (Icons as any)[icon]
         if (!IconComponent) return <span className="text-2xl">{icon}</span>
-        return <IconComponent className="w-8 h-8" />
+        return <IconComponent className="w-8 h-8" style={{ color: iconColor }} />
     }
 
     return (
@@ -157,7 +166,10 @@ export function CategoryEditor({ category }: { category: any }) {
                                 onClick={() => setShowIconPicker(true)}
                                 className="flex items-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-gray-200 hover:border-indigo-400 bg-gray-50/50 hover:bg-indigo-50/50 transition-all group"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-indigo-600 transition-colors">
+                                <div
+                                    className="w-12 h-12 rounded-xl border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-indigo-600 transition-colors"
+                                    style={{ backgroundColor: iconBgColor }}
+                                >
                                     {icon ? renderIcon() : <ImagePlus className="w-6 h-6" />}
                                 </div>
                                 <div className="text-left">
@@ -206,7 +218,15 @@ export function CategoryEditor({ category }: { category: any }) {
             {showIconPicker && (
                 <IconPicker
                     value={icon}
-                    onChange={setIcon}
+                    bgColor={iconBgColor}
+                    iconColor={iconColor}
+                    customIconUrl={customIconUrl}
+                    onChange={(data) => {
+                        setIcon(data.icon)
+                        setIconBgColor(data.bgColor)
+                        setIconColor(data.iconColor)
+                        setCustomIconUrl(data.customIconUrl || '')
+                    }}
                     onClose={() => setShowIconPicker(false)}
                 />
             )}

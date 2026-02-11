@@ -3,17 +3,27 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
     try {
-        const { id, name, slug, icon, image_url } = await request.json()
+        const { id, name, slug, icon, icon_bg_color, icon_color, custom_icon_url, image_url } = await request.json()
 
-        console.log('API Route - Testing category update:', { id, name, slug, icon, image_url })
+        console.log('API Route - Testing category update:', { id, name, slug, icon, icon_bg_color, icon_color, custom_icon_url, image_url })
 
         const supabase = await createClient()
 
         const { data, error } = await supabase
             .from('categories')
-            .update({ name, slug, icon, image_url })
+            .update({
+                name,
+                slug,
+                icon,
+                icon_bg_color,
+                icon_color,
+                custom_icon_url,
+                image_url,
+                updated_at: new Date().toISOString()
+            })
             .eq('id', id)
             .select()
+            .single()
 
         if (error) {
             console.error('Update error:', error)
