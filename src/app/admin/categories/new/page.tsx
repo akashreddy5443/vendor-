@@ -10,13 +10,19 @@ import { IconPicker } from '@/components/admin/IconPicker'
 export default function NewCategoryPage() {
     const [imageUrl, setImageUrl] = useState('')
     const [icon, setIcon] = useState('')
+    const [iconBgColor, setIconBgColor] = useState('#F3F4F6')
+    const [iconColor, setIconColor] = useState('#6B7280')
+    const [customIconUrl, setCustomIconUrl] = useState('')
     const [showIconPicker, setShowIconPicker] = useState(false)
 
     const renderIcon = () => {
+        if (customIconUrl) {
+            return <img src={customIconUrl} alt="Custom icon" className="w-8 h-8 object-contain" />
+        }
         if (!icon) return null
         const IconComponent = (Icons as any)[icon]
         if (!IconComponent) return <span className="text-2xl">{icon}</span>
-        return <IconComponent className="w-8 h-8" />
+        return <IconComponent className="w-8 h-8" style={{ color: iconColor }} />
     }
 
     return (
@@ -35,6 +41,9 @@ export default function NewCategoryPage() {
                 >
                     <input type="hidden" name="image_url" value={imageUrl} />
                     <input type="hidden" name="icon" value={icon} />
+                    <input type="hidden" name="icon_bg_color" value={iconBgColor} />
+                    <input type="hidden" name="icon_color" value={iconColor} />
+                    <input type="hidden" name="custom_icon_url" value={customIconUrl} />
 
                     {/* Visual Asset Section */}
                     <div className="space-y-4">
@@ -102,7 +111,10 @@ export default function NewCategoryPage() {
                                 onClick={() => setShowIconPicker(true)}
                                 className="flex items-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-gray-200 hover:border-indigo-400 bg-gray-50/50 hover:bg-indigo-50/50 transition-all group"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-indigo-600 transition-colors">
+                                <div
+                                    className="w-12 h-12 rounded-xl border border-gray-100 flex items-center justify-center text-gray-400 group-hover:text-indigo-600 transition-colors"
+                                    style={{ backgroundColor: iconBgColor }}
+                                >
                                     {icon ? renderIcon() : <ImagePlus className="w-6 h-6" />}
                                 </div>
                                 <div className="text-left">
@@ -144,7 +156,15 @@ export default function NewCategoryPage() {
             {showIconPicker && (
                 <IconPicker
                     value={icon}
-                    onChange={setIcon}
+                    bgColor={iconBgColor}
+                    iconColor={iconColor}
+                    customIconUrl={customIconUrl}
+                    onChange={(data) => {
+                        setIcon(data.icon)
+                        setIconBgColor(data.bgColor)
+                        setIconColor(data.iconColor)
+                        setCustomIconUrl(data.customIconUrl || '')
+                    }}
                     onClose={() => setShowIconPicker(false)}
                 />
             )}

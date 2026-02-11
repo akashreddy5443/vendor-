@@ -10,6 +10,9 @@ export async function createCategory(formData: FormData) {
     const name = formData.get('name') as string
     const icon = formData.get('icon') as string
     const image_url = formData.get('image_url') as string
+    const icon_bg_color = formData.get('icon_bg_color') as string
+    const icon_color = formData.get('icon_color') as string
+    const custom_icon_url = formData.get('custom_icon_url') as string
     // Simple slug generator: lowercase, spaces to dashes, remove special chars
     const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
 
@@ -20,6 +23,9 @@ export async function createCategory(formData: FormData) {
             slug,
             icon: icon || '📦', // Default icon if none provided
             image_url: image_url || null,
+            icon_bg_color: icon_bg_color || '#F3F4F6',
+            icon_color: icon_color || '#6B7280',
+            custom_icon_url: custom_icon_url || null,
         })
 
     if (error) {
